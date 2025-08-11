@@ -1,1 +1,85 @@
-<p-button label="Login" />
+<p-card>
+  <ng-template pTemplate="header">
+    <div class="login-header">
+      <h2>Iniciar Sesión</h2>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-field">
+        <p-floatlabel>
+          <input
+            pInputText
+            id="username"
+            formControlName="username"
+            [class.ng-invalid]="isFieldInvalid('username')"
+          />
+          <label for="username">Usuario</label>
+        </p-floatlabel>
+        <small
+          *ngIf="isFieldInvalid('username')"
+          class="p-error"
+        >
+          {{ getFieldError('username') }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <p-floatlabel>
+          <p-password
+            id="password"
+            formControlName="password"
+            [toggleMask]="true"
+            [feedback]="false"
+            [class.ng-invalid]="isFieldInvalid('password')"
+          />
+          <label for="password">Contraseña</label>
+        </p-floatlabel>
+        <small
+          *ngIf="isFieldInvalid('password')"
+          class="p-error"
+        >
+          {{ getFieldError('password') }}
+        </small>
+      </div>
+
+      <div class="form-field">
+        <p-checkbox
+          [(ngModel)]="rememberMe"
+          [ngModelOptions]="{standalone: true}"
+          inputId="rememberMe"
+          label="Recordarme"
+        />
+      </div>
+
+      <div class="form-actions">
+        <p-button
+          type="submit"
+          label="Iniciar Sesión"
+          [loading]="loading"
+          [disabled]="loginForm.invalid"
+          styleClass="w-full"
+        />
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <div class="login-footer">
+      <p-button
+        label="¿Olvidaste tu contraseña?"
+        link="true"
+        (onClick)="onForgotPassword()"
+      />
+      <p-divider />
+      <p-button
+        label="Crear cuenta nueva"
+        link="true"
+        (onClick)="onRegister()"
+      />
+    </div>
+  </ng-template>
+</p-card>
+
+<p-toast />
