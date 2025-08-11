@@ -21,6 +21,12 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     RouterModule,
     PrimeNgModule,
     LayoutRoutingModule
-  ]
+  ],
+  exports: [
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent,
+    BreadcrumbComponent
+  ],
 })
 export class LayoutModule { }

@@ -3,7 +3,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-date-picker',
   templateUrl: './date-picker.component.html',
-  styleUrls: ['./date-picker.component.css']
+  styleUrls: ['./date-picker.component.css'],
+  standalone: false,
 })
 export class DatePickerComponent {
   @Input() value: Date | null = null;
