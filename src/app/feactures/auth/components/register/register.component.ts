@@ -13,8 +13,6 @@ import { AuthService } from '../../../../core/services/auth.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   loading = false;
-  showPassword = false;
-  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +27,7 @@ export class RegisterComponent implements OnInit {
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
-      acceptTerms: [false, [Validators.requiredTrue]]
+      acceptTerms: [false, [this.termsValidator]]
     }, {
       validators: this.passwordMatchValidator
     });
@@ -39,10 +37,14 @@ export class RegisterComponent implements OnInit {
     // Inicialización del componente
   }
 
+  termsValidator(control: any) {
+    return control.value === true ? null : { required: true };
+  }
+
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
-    
+
     if (password && confirmPassword && password.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
     } else {
@@ -57,7 +59,7 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.loading = true;
       const formData = this.registerForm.value;
-      
+
       // Remover confirmPassword y acceptTerms del objeto a enviar
       const { confirmPassword, acceptTerms, ...userData } = formData;
 
@@ -110,14 +112,6 @@ export class RegisterComponent implements OnInit {
       const control = this.registerForm.get(key);
       control?.markAsTouched();
     });
-  }
-
-  togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
-  }
-
-  toggleConfirmPasswordVisibility(): void {
-    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   getFieldError(fieldName: string): string {

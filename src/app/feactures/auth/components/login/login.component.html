@@ -45,12 +45,17 @@
       </div>
 
       <div class="form-field">
-        <p-checkbox
-          [(ngModel)]="rememberMe"
-          [ngModelOptions]="{standalone: true}"
-          inputId="rememberMe"
-          label="Recordarme"
-        />
+        <div class="checkbox-container">
+          <p-checkbox
+            [(ngModel)]="rememberMe"
+            [ngModelOptions]="{standalone: true}"
+            inputId="rememberMe"
+            [binary]="true"
+          />
+          <label for="rememberMe" class="checkbox-label">
+            Recordarme
+          </label>
+        </div>
       </div>
 
       <div class="form-actions">

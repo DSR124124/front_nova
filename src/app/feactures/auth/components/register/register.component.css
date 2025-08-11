@@ -50,6 +50,22 @@ p-card {
   width: 100%;
 }
 
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-label {
+  cursor: pointer;
+  user-select: none;
+  color: var(--p-text-color);
+}
+
+.checkbox-label:hover {
+  color: var(--p-primary-color);
+}
+
 .form-field p-checkbox {
   display: flex;
   align-items: center;

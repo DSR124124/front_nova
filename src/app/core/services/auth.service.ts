@@ -21,6 +21,14 @@ export class AuthService {
     return this.http.post(API_ENDPOINTS.REGISTER, userData);
   }
 
+  validateResetToken(token: string): Observable<any> {
+    return this.http.post(API_ENDPOINTS.VALIDATE_RESET_TOKEN, { token });
+  }
+
+  resetPassword(token: string, password: string): Observable<any> {
+    return this.http.post(API_ENDPOINTS.RESET_PASSWORD, { token, password });
+  }
+
   logout() {
     this.removeToken();
   }

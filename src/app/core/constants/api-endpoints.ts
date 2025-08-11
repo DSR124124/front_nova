@@ -2,6 +2,8 @@ export const API_ENDPOINTS = {
   LOGIN: '/api/auth/login',
   REGISTER: '/api/auth/register',
   FORGOT_PASSWORD: '/api/auth/forgot-password',
+  VALIDATE_RESET_TOKEN: '/api/auth/validate-reset-token',
+  RESET_PASSWORD: '/api/auth/reset-password',
   USUARIOS: '/api/usuarios',
   PAREJAS: '/api/parejas',
   CITAS: '/api/citas',
