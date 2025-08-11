@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-loading-spinner',
-  standalone: false,
   templateUrl: './loading-spinner.component.html',
-  styleUrl: './loading-spinner.component.css'
+  styleUrls: ['./loading-spinner.component.css']
 })
 export class LoadingSpinnerComponent {
-
+  @Input() size: string = '50px';
+  @Input() strokeWidth: string = '4';
+  @Input() animationDuration: string = '1s';
+  @Input() ariaLabel: string = 'Cargando...';
+  @Input() styleClass: string = '';
+  @Input() label?: string;
 }

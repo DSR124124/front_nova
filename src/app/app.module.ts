@@ -19,9 +19,6 @@ import { BreadcrumbComponent } from './layout/components/breadcrumb/breadcrumb.c
 @NgModule({
   declarations: [
     AppComponent,
-    LoadingSpinnerComponent,
-    ConfirmationDialogComponent,
-    DatePickerComponent,
     ImageUploadComponent,
     LocationPickerComponent,
     EmojiPickerComponent,

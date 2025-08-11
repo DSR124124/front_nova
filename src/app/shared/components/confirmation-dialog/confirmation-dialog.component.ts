@@ -1,11 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-confirmation-dialog',
-  standalone: false,
   templateUrl: './confirmation-dialog.component.html',
-  styleUrl: './confirmation-dialog.component.css'
+  styleUrls: ['./confirmation-dialog.component.css']
 })
 export class ConfirmationDialogComponent {
+  @Input() visible: boolean = false;
+  @Input() message: string = '¿Estás seguro?';
+  @Input() header: string = 'Confirmar';
+  @Input() acceptLabel: string = 'Sí';
+  @Input() rejectLabel: string = 'No';
+  @Input() icon: string = 'pi pi-exclamation-triangle';
 
+  @Output() accept = new EventEmitter<void>();
+  @Output() reject = new EventEmitter<void>();
+
+  onAccept() {
+    this.accept.emit();
+  }
+
+  onReject() {
+    this.reject.emit();
+  }
 }
