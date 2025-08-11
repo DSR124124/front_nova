@@ -20,6 +20,12 @@ import { RecentActivityComponent } from './components/recent-activity/recent-act
     CommonModule,
     PrimeNgModule,
     DashboardRoutingModule
+  ],
+  exports: [
+    DashboardHomeComponent,
+    StatsWidgetComponent,
+    UpcomingEventsComponent,
+    RecentActivityComponent
   ]
 })
 export class DashboardModule { }

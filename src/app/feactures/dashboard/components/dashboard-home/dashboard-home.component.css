@@ -1,25 +1,30 @@
+/* Contenedor principal */
 .dashboard-container {
-  padding: 2rem;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* Header del dashboard */
 .dashboard-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .dashboard-header h1 {
-  color: #2c3e50;
-  font-size: 2.5rem;
-  font-weight: 700;
+  color: var(--p-text-color);
+  font-size: 2rem;
+  font-weight: 600;
   margin: 0 0 0.5rem 0;
 }
 
 .welcome-text {
-  color: #7f8c8d;
-  font-size: 1.2rem;
+  color: var(--p-text-muted-color);
+  font-size: 1.1rem;
   margin: 0;
 }
 
+/* Contenido principal */
 .dashboard-content {
   display: flex;
   flex-direction: column;
@@ -30,31 +35,24 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
-.stat-card {
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Tarjetas de estadísticas básicas */
+:host ::ng-deep .stat-card {
+  border: 1px solid var(--p-surface-border);
 }
 
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-.stat-card ::ng-deep .p-card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 12px 12px 0 0;
+:host ::ng-deep .stat-card .p-card-header {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
   padding: 1rem;
 }
 
-.stat-card ::ng-deep .p-card-title {
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
+:host ::ng-deep .stat-card .p-card-title {
+  color: var(--p-primary-contrast-color);
+  font-size: 1rem;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -66,9 +64,9 @@
 }
 
 .stat-icon {
-  font-size: 2.5rem;
-  color: #667eea;
-  min-width: 60px;
+  font-size: 2rem;
+  color: var(--p-primary-color);
+  min-width: 50px;
   text-align: center;
 }
 
@@ -79,42 +77,43 @@
 }
 
 .stat-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2c3e50;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--p-text-color);
   line-height: 1;
 }
 
 .stat-label {
-  color: #7f8c8d;
+  color: var(--p-text-muted-color);
   font-size: 0.9rem;
-  font-weight: 500;
 }
 
-/* Tarjeta de tiempo */
-.current-time {
+/* Sección de tiempo */
+.time-section {
   max-width: 400px;
   margin: 0 auto;
 }
 
-.time-card {
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+:host ::ng-deep .time-card {
+  border: 1px solid var(--p-surface-border);
   text-align: center;
 }
 
-.time-card ::ng-deep .p-card-header {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  border-radius: 12px 12px 0 0;
+:host ::ng-deep .time-card .p-card-header {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
   padding: 1rem;
 }
 
-.time-card ::ng-deep .p-card-title {
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
+:host ::ng-deep .time-card .p-card-title {
+  color: var(--p-text-color);
+  font-size: 1rem;
+  font-weight: 500;
   margin: 0;
+}
+
+.time-content {
+  padding: 1rem 0;
 }
 
 .time-display {
@@ -126,22 +125,41 @@
 }
 
 .time-display i {
-  font-size: 2rem;
-  color: #e74c3c;
+  font-size: 1.5rem;
+  color: var(--p-primary-color);
 }
 
 .time-text {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2c3e50;
-  font-family: 'Courier New', monospace;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--p-text-color);
+  font-family: monospace;
 }
 
 .date-text {
-  color: #7f8c8d;
-  font-size: 1rem;
+  color: var(--p-text-muted-color);
+  font-size: 0.95rem;
   margin: 0;
-  text-transform: capitalize;
+}
+
+/* Acciones rápidas */
+.quick-actions h3 {
+  color: var(--p-text-color);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+:host ::ng-deep .action-btn {
+  width: 100%;
+  justify-content: center;
 }
 
 /* Responsive */
@@ -151,12 +169,11 @@
   }
 
   .dashboard-header h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 
   .stats-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
   }
 
   .stat-content {
@@ -166,7 +183,7 @@
   }
 
   .stat-icon {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 
   .stat-number {
@@ -174,7 +191,11 @@
   }
 
   .time-text {
-    font-size: 2rem;
+    font-size: 1.75rem;
+  }
+
+  .actions-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -184,7 +205,7 @@
   }
 
   .dashboard-header h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .welcome-text {
@@ -201,5 +222,10 @@
 
   .time-text {
     font-size: 1.5rem;
+  }
+
+  .time-display {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }

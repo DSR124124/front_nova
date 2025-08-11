@@ -1,1 +1,101 @@
-<p>recent-activity works!</p>
+<div class="recent-activity-container">
+  
+  <!-- Header con acciones -->
+  <div class="activity-header">
+    <h3>Actividad Reciente</h3>
+    <div class="header-actions">
+      <p-button
+        icon="pi pi-refresh"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        (onClick)="refreshActivities()"
+        [loading]="loading"
+        pTooltip="Actualizar"
+        tooltipPosition="top"
+      />
+      <p-button
+        icon="pi pi-trash"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        severity="secondary"
+        (onClick)="clearActivities()"
+        [disabled]="loading || activities.length === 0"
+        pTooltip="Limpiar todo"
+        tooltipPosition="top"
+      />
+    </div>
+  </div>
+
+  <!-- Lista de actividades -->
+  <div class="activities-content">
+    
+    <!-- Estado de carga -->
+    <div *ngIf="loading" class="loading-state">
+      <i class="pi pi-spin pi-spinner loading-icon"></i>
+      <p>Cargando actividades...</p>
+    </div>
+
+    <!-- Lista vacía -->
+    <div *ngIf="!loading && activities.length === 0" class="empty-state">
+      <i class="pi pi-inbox empty-icon"></i>
+      <p>No hay actividad reciente</p>
+      <small>Las actividades aparecerán aquí cuando interactúes con la aplicación</small>
+      <p-button
+        label="Actualizar"
+        icon="pi pi-refresh"
+        [outlined]="true"
+        size="small"
+        (onClick)="refreshActivities()"
+        styleClass="mt-3"
+      />
+    </div>
+
+    <!-- Lista de actividades -->
+    <div *ngIf="!loading && activities.length > 0" class="activities-list">
+      <div 
+        *ngFor="let activity of activities; trackBy: trackByActivity"
+        class="activity-item"
+      >
+        <div class="activity-icon">
+          <i [class]="activity.icon" [class]="'icon-' + activity.type"></i>
+        </div>
+        
+        <div class="activity-content">
+          <div class="activity-header-item">
+            <span class="activity-title">{{ activity.title }}</span>
+            <div class="activity-meta">
+              <span 
+                class="activity-tag"
+                [class]="'tag-' + activity.type"
+              >
+                {{ getActivityTypeLabel(activity.type) }}
+              </span>
+              <small class="activity-time">{{ formatTimeAgo(activity.date) }}</small>
+            </div>
+          </div>
+          
+          <p class="activity-description">{{ activity.description }}</p>
+          
+          <div *ngIf="activity.user" class="activity-user">
+            <i class="pi pi-user"></i>
+            <span>{{ activity.user }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ver más (si hay muchas actividades) -->
+    <div *ngIf="!loading && activities.length >= 5" class="view-more">
+      <p-button
+        label="Ver más actividades"
+        icon="pi pi-angle-down"
+        [text]="true"
+        size="small"
+        styleClass="view-more-btn"
+      />
+    </div>
+
+  </div>
+</div>
