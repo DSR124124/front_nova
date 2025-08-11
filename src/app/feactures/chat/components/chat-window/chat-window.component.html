@@ -1,1 +1,128 @@
-<p>chat-window works!</p>
+<div class="chat-container">
+  <!-- Header del chat -->
+  <div class="chat-header">
+    <div class="chat-title">
+      <i class="pi pi-comments"></i>
+      <span>Chat en Tiempo Real</span>
+    </div>
+    <div class="connection-status">
+      <span class="status-indicator" [class]="getConnectionStatusClass()"></span>
+      <span class="status-text">{{ getConnectionStatusText() }}</span>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-refresh"
+        class="p-button-text p-button-sm"
+        (click)="reconnect()"
+        [disabled]="isConnected">
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenido principal del chat -->
+  <div class="chat-content">
+    <!-- Panel izquierdo - Lista de salas -->
+    <div class="chat-sidebar">
+      <div class="sidebar-header">
+        <h3>Salas de Chat</h3>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-plus"
+          class="p-button-text p-button-sm"
+          pTooltip="Crear nueva sala">
+        </button>
+      </div>
+
+      <div class="chat-rooms">
+        <div
+          *ngFor="let room of chatRooms"
+          class="chat-room-item"
+          [class.active]="currentRoom?.id === room.id"
+          (click)="selectChatRoom(room)">
+
+          <div class="room-info">
+            <div class="room-name">{{ room.name }}</div>
+            <div class="room-last-message" *ngIf="room.lastMessage">
+              {{ room.lastMessage.content | slice:0:30 }}{{ room.lastMessage.content.length > 30 ? '...' : '' }}
+            </div>
+          </div>
+
+          <div class="room-meta">
+            <span class="unread-count" *ngIf="room.unreadCount > 0">
+              {{ room.unreadCount }}
+            </span>
+            <i class="pi pi-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel derecho - Área de mensajes -->
+    <div class="chat-main">
+      <!-- Header de la sala actual -->
+      <div class="room-header" *ngIf="currentRoom">
+        <div class="room-title">
+          <i class="pi pi-hashtag"></i>
+          <span>{{ currentRoom.name }}</span>
+        </div>
+        <div class="room-participants">
+          <span class="participant-count">{{ currentRoom.participants.length }} participantes</span>
+        </div>
+      </div>
+
+      <!-- Área de mensajes -->
+      <div class="messages-area" #messageContainer>
+        <div *ngIf="loading" class="loading-messages">
+          <p-progressSpinner size="small"></p-progressSpinner>
+          <span>Cargando mensajes...</span>
+        </div>
+
+        <div *ngIf="!loading && messages.length === 0" class="no-messages">
+          <i class="pi pi-comment-slash"></i>
+          <p>No hay mensajes en esta sala</p>
+          <span>¡Sé el primero en escribir!</span>
+        </div>
+
+        <div
+          *ngFor="let message of messages; trackBy: trackByMessageId"
+          class="message-item"
+          [class.own-message]="message.senderId === currentUserId">
+
+          <div class="message-avatar">
+            <p-avatar
+              [label]="message.senderName.charAt(0).toUpperCase()"
+              size="normal"
+              shape="circle">
+            </p-avatar>
+          </div>
+
+          <div class="message-content">
+            <div class="message-header">
+              <span class="sender-name">{{ message.senderName }}</span>
+              <span class="message-time">{{ message.timestamp | date:'shortTime' }}</span>
+            </div>
+
+            <div class="message-text">
+              <span *ngIf="message.messageType === 'TEXT'">{{ message.content }}</span>
+              <img *ngIf="message.messageType === 'IMAGE'" [src]="message.content" alt="Imagen" class="message-image">
+              <div *ngIf="message.messageType === 'FILE'" class="message-file">
+                <i class="pi pi-file"></i>
+                <span>{{ message.content }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input para enviar mensajes -->
+      <div class="message-input-area" *ngIf="currentRoom">
+        <app-message-input
+          [placeholder]="'Escribe un mensaje...'"
+          (messageSent)="sendMessage()"
+          [(messageText)]="newMessage">
+        </app-message-input>
+      </div>
+    </div>
+  </div>
+</div>

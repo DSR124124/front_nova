@@ -1,1 +1,51 @@
-<p>message-list works!</p>
+<div class="message-list-container" #messageContainer>
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-messages">
+    <p-progressSpinner size="small"></p-progressSpinner>
+    <span>Cargando mensajes...</span>
+  </div>
+
+  <!-- Mensaje cuando no hay mensajes -->
+  <div *ngIf="!loading && messages.length === 0" class="no-messages">
+    <i class="pi pi-comment-slash"></i>
+    <p>No hay mensajes en esta sala</p>
+    <span>¡Sé el primero en escribir!</span>
+  </div>
+
+  <!-- Lista de mensajes -->
+  <div
+    *ngFor="let message of messages; trackBy: trackByMessageId"
+    class="message-item"
+    [class.own-message]="isOwnMessage(message)">
+
+    <div class="message-avatar">
+      <p-avatar
+        [label]="message.senderName.charAt(0).toUpperCase()"
+        size="normal"
+        shape="circle">
+      </p-avatar>
+    </div>
+
+    <div class="message-content">
+      <div class="message-header">
+        <span class="sender-name">{{ message.senderName }}</span>
+        <span class="message-time">{{ getMessageTime(message) }}</span>
+      </div>
+
+      <div class="message-text">
+        <span *ngIf="message.messageType === 'TEXT'">{{ message.content }}</span>
+        <img *ngIf="message.messageType === 'IMAGE'" [src]="message.content" alt="Imagen" class="message-image">
+        <div *ngIf="message.messageType === 'FILE'" class="message-file">
+          <i class="pi pi-file"></i>
+          <span>{{ message.content }}</span>
+        </div>
+      </div>
+
+      <div class="message-footer">
+        <span class="message-status" *ngIf="getMessageStatus(message)">
+          {{ getMessageStatus(message) }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,63 @@
-<p>message-input works!</p>
+<div class="message-input-container">
+  <div class="input-wrapper">
+    <textarea
+      #messageInput
+      pInputTextarea
+      [placeholder]="placeholder"
+      [(ngModel)]="messageText"
+      (ngModelChange)="onMessageTextChange($event)"
+      (keypress)="onKeyPress($event)"
+      rows="3"
+      class="message-textarea"
+      [autoResize]="true">
+    </textarea>
+
+    <div class="input-actions">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-paperclip"
+        class="p-button-text p-button-sm"
+        pTooltip="Adjuntar archivo">
+      </button>
+
+      <button
+        pButton
+        type="button"
+        icon="pi pi-image"
+        class="p-button-text p-button-sm"
+        pTooltip="Adjuntar imagen">
+      </button>
+
+      <button
+        pButton
+        type="button"
+        icon="pi pi-smile"
+        class="p-button-text p-button-sm"
+        pTooltip="Emojis">
+      </button>
+    </div>
+  </div>
+
+  <div class="send-section">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-times"
+      class="p-button-text p-button-sm"
+      (click)="clearInput()"
+      [disabled]="!messageText.trim()"
+      pTooltip="Limpiar">
+    </button>
+
+    <button
+      pButton
+      type="button"
+      icon="pi pi-send"
+      class="p-button-primary"
+      (click)="sendMessage()"
+      [disabled]="!messageText.trim()"
+      pTooltip="Enviar mensaje">
+    </button>
+  </div>
+</div>
