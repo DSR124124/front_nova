@@ -1,4 +1,46 @@
-:host {
-  display: block;
+/* Contenedor principal */
+.date-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   width: 100%;
+}
+
+/* Calendar personalizado básico */
+:host ::ng-deep .custom-calendar {
+  width: 100%;
+}
+
+:host ::ng-deep .calendar-input {
+  width: 100%;
+}
+
+/* Botón limpiar */
+.clear-btn {
+  flex-shrink: 0;
+}
+
+/* Estados disabled */
+:host ::ng-deep .custom-calendar.p-disabled .calendar-input {
+  background-color: var(--p-surface-100);
+  color: var(--p-text-muted-color);
+}
+
+/* Focus mejorado */
+:host ::ng-deep .calendar-input:focus {
+  border-color: var(--p-primary-color);
+  box-shadow: 0 0 0 0.2rem var(--p-primary-50);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .date-picker-container {
+    gap: 0.375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .date-picker-container {
+    gap: 0.25rem;
+  }
 }

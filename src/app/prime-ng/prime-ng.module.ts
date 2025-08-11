@@ -30,6 +30,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { PasswordModule } from 'primeng/password';
 import { PopoverModule } from 'primeng/popover';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { RatingModule } from 'primeng/rating';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
@@ -72,6 +73,7 @@ import { DividerModule } from 'primeng/divider';
     PasswordModule,
     PopoverModule,
     ProgressSpinnerModule,
+    RatingModule,
     SelectModule,
     TableModule,
     TabsModule,

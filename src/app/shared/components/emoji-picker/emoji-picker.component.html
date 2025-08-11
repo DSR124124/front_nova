@@ -1,1 +1,85 @@
-<p>emoji-picker works!</p>
+<div class="emoji-picker-container">
+  <!-- Emoji seleccionado o placeholder -->
+  <div class="selected-emoji">
+    <p-button
+      [label]="selectedEmoji || placeholder"
+      icon="pi pi-angle-down"
+      iconPos="right"
+      [disabled]="disabled"
+      styleClass="emoji-display-btn"
+      (onClick)="emojiPanel.toggle($event)"
+    />
+    <p-button
+      *ngIf="selectedEmoji"
+      icon="pi pi-times"
+      [text]="true"
+      [rounded]="true"
+      size="small"
+      severity="secondary"
+      (onClick)="clearSelection()"
+      [disabled]="disabled"
+      pTooltip="Limpiar emoji"
+      tooltipPosition="top"
+    />
+  </div>
+
+  <!-- Panel de selección de emojis -->
+  <p-overlayPanel #emojiPanel styleClass="emoji-panel">
+    <div class="emoji-picker-content">
+
+      <!-- Buscador básico -->
+      <div class="search-section">
+        <p-iconfield iconPosition="left">
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            placeholder="Buscar..."
+            [value]="searchTerm"
+            (input)="onSearchChange($event)"
+            class="search-input"
+          />
+        </p-iconfield>
+      </div>
+
+      <!-- Categorías (si están habilitadas) -->
+      <div *ngIf="showCategories" class="categories-section">
+        <div class="category-tabs">
+          <p-button
+            *ngFor="let category of categories"
+            [label]="category.label"
+            [outlined]="selectedCategory !== category.name"
+            [text]="selectedCategory !== category.name"
+            size="small"
+            (onClick)="selectCategory(category.name)"
+            styleClass="category-btn"
+          />
+        </div>
+      </div>
+
+      <!-- Grid de emojis -->
+      <div class="emojis-section">
+        <div class="emojis-grid">
+          <button
+            *ngFor="let emoji of filteredEmojis"
+            type="button"
+            class="emoji-btn"
+            [class.selected]="selectedEmoji === emoji"
+            (click)="selectEmoji(emoji)"
+            [disabled]="disabled"
+            [title]="emoji"
+          >
+            {{ emoji }}
+          </button>
+        </div>
+
+        <!-- Mensaje cuando no hay emojis -->
+        <div *ngIf="filteredEmojis.length === 0" class="no-emojis">
+          <p>No se encontraron emojis</p>
+          <small>Intenta con otra búsqueda o categoría</small>
+        </div>
+      </div>
+
+    </div>
+  </p-overlayPanel>
+</div>

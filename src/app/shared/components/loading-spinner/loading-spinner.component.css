@@ -1,11 +1,111 @@
-:host {
+/* Contenedor principal */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+}
+
+/* Contenedor del spinner y label */
+.spinner-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.75rem;
 }
+
+/* Estilos para overlay */
+.loading-container.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  min-height: 100vh;
+}
+
+/* Tamaños del spinner */
+.loading-container.size-small .spinner-wrapper {
+  gap: 0.5rem;
+}
+
+.loading-container.size-medium .spinner-wrapper {
+  gap: 0.75rem;
+}
+
+.loading-container.size-large .spinner-wrapper {
+  gap: 1rem;
+}
+
+/* Estilos para el label */
 .spinner-label {
-  margin-top: 0.5rem;
+  color: var(--p-text-color);
+  font-family: var(--p-font-family);
+  text-align: center;
+  font-weight: 500;
+}
+
+.size-small .spinner-label {
+  font-size: 0.875rem;
+}
+
+.size-medium .spinner-label {
   font-size: 1rem;
-  color: var(--gray-700, #666);
+}
+
+.size-large .spinner-label {
+  font-size: 1.125rem;
+}
+
+/* Personalización del PrimeNG ProgressSpinner */
+:host ::ng-deep .custom-spinner {
+  color: var(--p-primary-color) !important;
+}
+
+:host ::ng-deep .size-small .custom-spinner svg {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+:host ::ng-deep .size-medium .custom-spinner svg {
+  width: 3rem !important;
+  height: 3rem !important;
+}
+
+:host ::ng-deep .size-large .custom-spinner svg {
+  width: 4rem !important;
+  height: 4rem !important;
+}
+
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+  .loading-container.overlay {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  :host ::ng-deep .custom-spinner svg {
+    animation-duration: 3s !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .loading-container {
+    min-height: 80px;
+  }
+
+  .spinner-wrapper {
+    gap: 0.5rem;
+  }
+
+  .spinner-label {
+    font-size: 0.9rem;
+  }
 }

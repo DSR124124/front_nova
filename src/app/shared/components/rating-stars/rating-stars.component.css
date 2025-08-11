@@ -1,0 +1,225 @@
+/* Contenedor principal */
+.rating-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rating-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cancel-button {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos base del rating de PrimeNG */
+:host ::ng-deep .custom-rating {
+  gap: 0.25rem;
+}
+
+:host ::ng-deep .custom-rating .p-rating-item {
+  transition: all 0.2s ease;
+  border-radius: 2px;
+}
+
+:host ::ng-deep .custom-rating .p-rating-item .p-rating-icon {
+  color: var(--p-surface-400);
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .custom-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+  color: var(--p-yellow-500);
+}
+
+:host ::ng-deep .custom-rating .p-rating-item:not(.p-disabled):not(.p-readonly):hover .p-rating-icon {
+  color: var(--p-yellow-400);
+  transform: scale(1.1);
+}
+
+:host ::ng-deep .custom-rating .p-rating-item:focus-visible {
+  outline: 2px solid var(--p-primary-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Tamaños */
+.rating-container.size-small {
+  gap: 0.5rem;
+}
+
+.rating-container.size-small .rating-wrapper {
+  gap: 0.375rem;
+}
+
+:host ::ng-deep .rating-small .p-rating-item .p-rating-icon {
+  font-size: 1rem;
+}
+
+.rating-container.size-medium {
+  gap: 0.75rem;
+}
+
+.rating-container.size-medium .rating-wrapper {
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .rating-medium .p-rating-item .p-rating-icon {
+  font-size: 1.25rem;
+}
+
+.rating-container.size-large {
+  gap: 1rem;
+}
+
+.rating-container.size-large .rating-wrapper {
+  gap: 0.75rem;
+}
+
+:host ::ng-deep .rating-large .p-rating-item .p-rating-icon {
+  font-size: 1.5rem;
+}
+
+/* Espaciado entre estrellas por tamaño */
+:host ::ng-deep .rating-small {
+  gap: 0.125rem;
+}
+
+:host ::ng-deep .rating-medium {
+  gap: 0.25rem;
+}
+
+:host ::ng-deep .rating-large {
+  gap: 0.375rem;
+}
+
+/* Label del rating */
+.rating-label {
+  color: var(--p-text-color);
+  font-family: var(--p-font-family);
+  font-weight: 500;
+  text-align: center;
+}
+
+.size-small .rating-label {
+  font-size: 0.875rem;
+}
+
+.size-medium .rating-label {
+  font-size: 1rem;
+}
+
+.size-large .rating-label {
+  font-size: 1.125rem;
+}
+
+/* Estados especiales */
+.rating-container.readonly :host ::ng-deep .custom-rating .p-rating-item .p-rating-icon {
+  cursor: default;
+}
+
+.rating-container.readonly :host ::ng-deep .custom-rating .p-rating-item:hover .p-rating-icon {
+  transform: none;
+}
+
+.rating-container.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.rating-container.disabled .rating-label {
+  color: var(--p-text-muted-color);
+}
+
+/* Botón de cancelar */
+.cancel-button {
+  margin-left: 0.5rem;
+}
+
+/* Animaciones suaves */
+:host ::ng-deep .custom-rating .p-rating-item .p-rating-icon {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rating-container {
+    gap: 0.5rem;
+  }
+
+  .rating-wrapper {
+    gap: 0.375rem;
+  }
+
+  .rating-label {
+    font-size: 0.9rem;
+  }
+
+  .cancel-button {
+    margin-left: 0.375rem;
+  }
+
+  :host ::ng-deep .rating-medium .p-rating-item .p-rating-icon {
+    font-size: 1.125rem;
+  }
+
+  :host ::ng-deep .rating-large .p-rating-item .p-rating-icon {
+    font-size: 1.375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .rating-container {
+    gap: 0.375rem;
+  }
+
+  .rating-wrapper {
+    gap: 0.25rem;
+  }
+
+  .rating-label {
+    font-size: 0.85rem;
+  }
+
+  .cancel-button {
+    margin-left: 0.25rem;
+  }
+
+  :host ::ng-deep .rating-small .p-rating-item .p-rating-icon {
+    font-size: 0.9rem;
+  }
+
+  :host ::ng-deep .rating-medium .p-rating-item .p-rating-icon {
+    font-size: 1rem;
+  }
+
+  :host ::ng-deep .rating-large .p-rating-item .p-rating-icon {
+    font-size: 1.25rem;
+  }
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  :host ::ng-deep .custom-rating .p-rating-item .p-rating-icon {
+    transition: none;
+  }
+
+  :host ::ng-deep .custom-rating .p-rating-item:hover .p-rating-icon {
+    transform: none;
+  }
+}
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+  :host ::ng-deep .custom-rating .p-rating-item .p-rating-icon {
+    color: var(--p-text-color);
+  }
+
+  :host ::ng-deep .custom-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+    color: var(--p-yellow-600);
+    font-weight: bold;
+  }
+}

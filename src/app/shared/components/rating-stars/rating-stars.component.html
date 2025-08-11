@@ -1,1 +1,36 @@
-<p>rating-stars works!</p>
+<div class="rating-container"
+     [class.size-small]="size === 'small'"
+     [class.size-medium]="size === 'medium'"
+     [class.size-large]="size === 'large'"
+     [class.readonly]="readonly"
+     [class.disabled]="disabled">
+
+  <div class="rating-wrapper">
+    <p-rating
+      [(ngModel)]="value"
+      [stars]="stars"
+      [readonly]="readonly"
+      [disabled]="disabled"
+      (onRate)="onRatingChange($event)"
+      [ngClass]="'custom-rating rating-' + size"
+    />
+
+    <div *ngIf="showLabel" class="rating-label">
+      {{ getRatingLabel() }}
+    </div>
+  </div>
+
+  <!-- Botón de cancelar personalizado si se necesita -->
+  <div *ngIf="showCancel && !readonly && !disabled && value > 0" class="cancel-button">
+    <p-button
+      icon="pi pi-times"
+      [text]="true"
+      [rounded]="true"
+      size="small"
+      severity="secondary"
+      (onClick)="clearRating()"
+      pTooltip="Limpiar calificación"
+      tooltipPosition="top"
+    />
+  </div>
+</div>

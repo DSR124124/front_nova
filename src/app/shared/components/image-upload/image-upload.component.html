@@ -1,1 +1,126 @@
-<p>image-upload works!</p>
+<div class="image-upload-container">
+  <!-- FileUpload de PrimeNG -->
+  <p-fileUpload
+    #fileUpload
+    [multiple]="multiple"
+    [accept]="accept"
+    [maxFileSize]="maxFileSize"
+    [disabled]="disabled"
+    [auto]="auto"
+    [url]="url"
+    [showUploadButton]="showUploadButton"
+    [showCancelButton]="showCancelButton"
+    [chooseLabel]="chooseLabel"
+    [uploadLabel]="uploadLabel"
+    [cancelLabel]="cancelLabel"
+    (onSelect)="onSelect($event)"
+    (onRemove)="onRemove($event, $event.file)"
+    (onUpload)="onUpload($event)"
+    (onError)="onError($event)"
+    (onClear)="onClear()"
+    styleClass="custom-file-upload"
+    [customUpload]="true"
+  >
+    <!-- Template personalizado para el área de drag & drop -->
+    <ng-template pTemplate="content">
+      <div class="upload-area" [class.has-files]="files.length > 0">
+        <!-- Área de arrastrar y soltar cuando no hay archivos -->
+        <div *ngIf="files.length === 0" class="empty-state">
+          <i class="pi pi-cloud-upload upload-icon"></i>
+          <div class="upload-text">
+            <p>{{ dragDropText }}</p>
+            <small>o haz clic para seleccionar</small>
+          </div>
+          <div class="upload-info">
+            <small>
+              Máximo {{ maxFiles }} archivo{{ maxFiles > 1 ? 's' : '' }}
+              de {{ formatSize(maxFileSize) }} cada uno
+            </small>
+          </div>
+        </div>
+
+        <!-- Lista de archivos seleccionados -->
+        <div *ngIf="files.length > 0" class="files-list">
+          <div
+            *ngFor="let file of files; let i = index"
+            class="file-item"
+          >
+            <!-- Vista previa de imagen -->
+            <div *ngIf="showPreview && file.preview" class="file-preview">
+              <img
+                [src]="file.preview"
+                [alt]="file.name"
+                [style.width.px]="previewWidth"
+                class="preview-image"
+              />
+            </div>
+
+            <!-- Información del archivo -->
+            <div class="file-info">
+              <div class="file-name">{{ file.name }}</div>
+              <div class="file-details">
+                <span class="file-size">{{ formatSize(file.size) }}</span>
+                <span class="file-type">{{ file.type }}</span>
+              </div>
+            </div>
+
+            <!-- Botón eliminar -->
+            <div class="file-actions">
+              <p-button
+                icon="pi pi-times"
+                [text]="true"
+                [rounded]="true"
+                size="small"
+                severity="danger"
+                (onClick)="removeFile(file)"
+                [disabled]="disabled"
+                pTooltip="Eliminar archivo"
+                tooltipPosition="top"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón para agregar más archivos (modo múltiple) -->
+        <div *ngIf="multiple && files.length > 0 && files.length < maxFiles" class="add-more">
+          <p-button
+            label="Agregar más archivos"
+            icon="pi pi-plus"
+            [outlined]="true"
+            size="small"
+            (onClick)="fileUpload.basicFileInput?.nativeElement?.click()"
+            [disabled]="disabled"
+          />
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- Template para la barra de herramientas (si se muestran botones) -->
+    <ng-template pTemplate="toolbar" *ngIf="showUploadButton || showCancelButton">
+      <div class="upload-toolbar">
+        <p-button
+          *ngIf="showUploadButton"
+          [label]="uploadLabel"
+          icon="pi pi-upload"
+          severity="success"
+          [disabled]="files.length === 0 || disabled"
+        />
+        <p-button
+          *ngIf="showCancelButton"
+          [label]="cancelLabel"
+          icon="pi pi-times"
+          severity="secondary"
+          [disabled]="files.length === 0 || disabled"
+        />
+      </div>
+    </ng-template>
+  </p-fileUpload>
+
+  <!-- Información adicional -->
+  <div *ngIf="files.length > 0" class="upload-summary">
+    <small class="summary-text">
+      {{ files.length }} archivo{{ files.length > 1 ? 's' : '' }} seleccionado{{ files.length > 1 ? 's' : '' }}
+      <span *ngIf="maxFiles > 1"> (máximo {{ maxFiles }})</span>
+    </small>
+  </div>
+</div>

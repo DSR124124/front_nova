@@ -1,0 +1,38 @@
+<div class="date-picker-container">
+  <!-- Calendar básico de PrimeNG -->
+  <p-calendar
+    [(ngModel)]="value"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [showIcon]="showIcon"
+    [dateFormat]="dateFormat"
+    [showTime]="showTime"
+    [hourFormat]="hourFormat"
+    [showButtonBar]="showButtonBar"
+    [selectionMode]="selectionMode"
+    [inline]="inline"
+    [readonlyInput]="readonlyInput"
+    [showWeek]="showWeek"
+    [minDate]="minDate"
+    [maxDate]="maxDate"
+
+    (onSelect)="onDateSelect($event)"
+    (ngModelChange)="onDateChange($event)"
+    styleClass="custom-calendar"
+    inputStyleClass="calendar-input"
+  />
+
+  <!-- Botón limpiar opcional -->
+  <p-button
+    *ngIf="value && !disabled && !readonlyInput"
+    icon="pi pi-times"
+    [text]="true"
+    [rounded]="true"
+    size="small"
+    severity="secondary"
+    (onClick)="clearDate()"
+    pTooltip="Limpiar fecha"
+    tooltipPosition="top"
+    styleClass="clear-btn"
+  />
+</div>

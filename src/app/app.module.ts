@@ -5,11 +5,11 @@ import Aura from '@primeuix/themes/aura';
 import { AppRoutingModule } from './app-routing.module';
 import { PrimeNgModule } from './prime-ng/prime-ng.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './feactures/auth/auth.module';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { LayoutModule } from './layout/layout.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,8 @@ import { LayoutModule } from './layout/layout.module';
     AppRoutingModule,
     PrimeNgModule,
     AuthModule,
-    LayoutModule
+    LayoutModule,
+    SharedModule
   ],
   providers: [
     provideAnimationsAsync(),

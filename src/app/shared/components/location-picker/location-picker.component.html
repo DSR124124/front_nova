@@ -1,1 +1,100 @@
-<p>location-picker works!</p>
+<div class="location-picker-container">
+  <!-- Campo de búsqueda principal -->
+  <div class="search-field">
+    <p-iconfield iconPosition="left">
+      <p-inputicon styleClass="pi pi-search" />
+      <input
+        pInputText
+        type="text"
+        [value]="searchText"
+        [placeholder]="placeholder"
+        [disabled]="disabled"
+        (input)="onSearchInput($event)"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+        class="location-input"
+      />
+    </p-iconfield>
+
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+      <p-button
+        *ngIf="showCurrentLocation"
+        icon="pi pi-map-marker"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        [loading]="loading"
+        (onClick)="getCurrentLocation()"
+        [disabled]="disabled"
+        pTooltip="Usar ubicación actual"
+        tooltipPosition="top"
+      />
+
+      <p-button
+        *ngIf="selectedLocation"
+        icon="pi pi-times"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        severity="secondary"
+        (onClick)="clearSelection()"
+        [disabled]="disabled"
+        pTooltip="Limpiar selección"
+        tooltipPosition="top"
+      />
+    </div>
+  </div>
+
+  <!-- Lista de sugerencias -->
+  <div *ngIf="showSuggestions && filteredSuggestions.length > 0" class="suggestions-container">
+    <p-card styleClass="suggestions-card">
+      <div class="suggestions-list">
+        <div
+          *ngFor="let location of filteredSuggestions"
+          class="suggestion-item"
+          (click)="selectLocation(location)"
+        >
+          <div class="suggestion-content">
+            <i [class]="getLocationIcon(location.type)" class="location-icon"></i>
+            <div class="location-details">
+              <div class="location-name">{{ location.name }}</div>
+              <div class="location-address">{{ location.address }}</div>
+              <div *ngIf="location.city || location.type" class="location-meta">
+                <span *ngIf="location.city" class="city">{{ location.city }}</span>
+                <span *ngIf="location.type" class="type">{{ location.type }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Mensaje cuando no hay resultados -->
+  <div *ngIf="showSuggestions && filteredSuggestions.length === 0" class="no-results">
+    <p-card styleClass="no-results-card">
+      <div class="no-results-content">
+        <i class="pi pi-search no-results-icon"></i>
+        <p>No se encontraron ubicaciones</p>
+        <small>Intenta con otros términos de búsqueda</small>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Ubicación seleccionada -->
+  <div *ngIf="selectedLocation && !showSuggestions" class="selected-location">
+    <p-card styleClass="selected-card">
+      <div class="selected-content">
+        <i [class]="getLocationIcon(selectedLocation.type)" class="selected-icon"></i>
+        <div class="selected-details">
+          <div class="selected-name">{{ selectedLocation.name }}</div>
+          <div class="selected-address">{{ selectedLocation.address }}</div>
+          <div *ngIf="selectedLocation.latitude && selectedLocation.longitude" class="coordinates">
+            <small>{{ selectedLocation.latitude }}, {{ selectedLocation.longitude }}</small>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>
