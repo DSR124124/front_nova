@@ -1,0 +1,232 @@
+.perfil-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+}
+
+.loading-container p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Error */
+.error-container {
+  margin: 2rem 0;
+}
+
+/* Contenido del perfil */
+.perfil-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Tarjeta de perfil */
+.perfil-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-card ::ng-deep .p-card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  padding: 1.5rem;
+}
+
+.perfil-card ::ng-deep .p-card-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Información del usuario */
+.usuario-info {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.avatar-section {
+  flex-shrink: 0;
+}
+
+.usuario-avatar {
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d) !important;
+  color: white !important;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.datos-usuario {
+  flex: 1;
+}
+
+.datos-usuario h2 {
+  margin: 0 0 0.5rem 0;
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.username {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.email {
+  color: #3498db;
+  font-size: 1rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.detalles-adicionales {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detalle-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.detalle-item i {
+  color: #e74c3c;
+  font-size: 1rem;
+}
+
+/* Tarjeta de pareja */
+.pareja-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pareja-card ::ng-deep .p-card-header {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  padding: 1.5rem;
+}
+
+.pareja-info {
+  padding: 1rem 0;
+}
+
+/* Estado de pareja activa */
+.pareja-activa {
+  text-align: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(45deg, #27ae60, #2ecc71);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-badge i {
+  font-size: 1.2rem;
+}
+
+.pareja-details {
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.pareja-details p {
+  margin: 0.5rem 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.pareja-details strong {
+  color: #2c3e50;
+}
+
+/* Sin pareja */
+.sin-pareja {
+  text-align: center;
+}
+
+.status-badge.inactive {
+  background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+}
+
+.mensaje-sin-pareja {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.acciones-pareja {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.acciones-pareja button {
+  min-width: 150px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .perfil-container {
+    padding: 1rem;
+  }
+
+  .usuario-info {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .acciones-pareja {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .acciones-pareja button {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .perfil-container {
+    padding: 0.75rem;
+  }
+
+  .datos-usuario h2 {
+    font-size: 1.5rem;
+  }
+
+  .status-badge {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+}

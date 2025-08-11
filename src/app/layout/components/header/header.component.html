@@ -1,1 +1,82 @@
-<p>header works!</p>
+<div class="header-container">
+  <div class="header-left">
+    <div class="logo">
+      <i class="pi pi-heart-fill"></i>
+      <span class="logo-text">Nova</span>
+    </div>
+  </div>
+
+  <div class="header-center">
+    <!-- Espacio para breadcrumb o título de página -->
+  </div>
+
+  <div class="header-right">
+    <!-- Notificaciones -->
+    <div class="notification-container">
+      <button 
+        pButton 
+        type="button" 
+        icon="pi pi-bell" 
+        class="p-button-text p-button-rounded notification-btn"
+        (click)="toggleNotifications()"
+        pTooltip="Notificaciones">
+      </button>
+      
+      <p-badge 
+        *ngIf="getUnreadCount() > 0"
+        [value]="getUnreadCount()" 
+        severity="danger"
+        class="notification-badge">
+      </p-badge>
+      
+      <p-overlayPanel 
+        #notificationPanel 
+        [showCloseIcon]="true"
+        styleClass="notification-panel">
+        <div class="notification-header">
+          <h3>Notificaciones</h3>
+        </div>
+        <div class="notification-list">
+          <div 
+            *ngFor="let notification of notifications" 
+            class="notification-item"
+            [class.unread]="!notification.read"
+            (click)="markAsRead(notification.id)">
+            <div class="notification-content">
+              <p class="notification-message">{{ notification.message }}</p>
+              <span class="notification-time">{{ notification.time }}</span>
+            </div>
+            <i *ngIf="!notification.read" class="pi pi-circle-fill unread-indicator"></i>
+          </div>
+        </div>
+        <div class="notification-footer">
+          <button pButton type="button" label="Ver todas" class="p-button-text"></button>
+        </div>
+      </p-overlayPanel>
+    </div>
+
+    <!-- Usuario y logout -->
+    <div class="user-menu">
+      <p-avatar 
+        [label]="user?.name?.charAt(0) || 'U'" 
+        size="normal"
+        shape="circle"
+        class="user-avatar">
+      </p-avatar>
+      
+      <div class="user-info">
+        <span class="user-name">{{ user?.name || 'Usuario' }}</span>
+        <span class="user-email">{{ user?.email || 'usuario@email.com' }}</span>
+      </div>
+      
+      <button 
+        pButton 
+        type="button" 
+        icon="pi pi-sign-out" 
+        class="p-button-text p-button-rounded logout-btn"
+        (click)="logout()"
+        pTooltip="Cerrar sesión">
+      </button>
+    </div>
+  </div>
+</div>

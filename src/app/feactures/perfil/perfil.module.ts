@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { PerfilRoutingModule } from './perfil-routing.module';
 import { PerfilUsuarioComponent } from './components/perfil-usuario/perfil-usuario.component';
@@ -17,6 +19,8 @@ import { CambiarPasswordComponent } from './components/cambiar-password/cambiar-
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    PrimeNgModule,
     PerfilRoutingModule
   ]
 })

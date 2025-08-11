@@ -1,1 +1,65 @@
-<p>footer works!</p>
+<footer class="footer-container">
+  <div class="footer-content">
+    <!-- Información principal -->
+    <div class="footer-section">
+      <div class="footer-brand">
+        <i class="pi pi-heart-fill"></i>
+        <span>Nova</span>
+      </div>
+      <p class="footer-description">
+        Conectando corazones, creando momentos inolvidables juntos.
+      </p>
+    </div>
+
+    <!-- Enlaces útiles -->
+    <div class="footer-section">
+      <h4>Enlaces útiles</h4>
+      <ul class="footer-links">
+        <li *ngFor="let link of footerLinks">
+          <a [routerLink]="link.route" class="footer-link">
+            {{ link.label }}
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Redes sociales -->
+    <div class="footer-section">
+      <h4>Síguenos</h4>
+      <div class="social-links">
+        <a 
+          *ngFor="let social of socialLinks"
+          [href]="social.url" 
+          class="social-link"
+          [attr.aria-label]="social.label"
+          target="_blank"
+          rel="noopener noreferrer">
+          <i [class]="social.icon"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Información de contacto -->
+    <div class="footer-section">
+      <h4>Contacto</h4>
+      <div class="contact-info">
+        <p><i class="pi pi-envelope"></i> info@nova-app.com</p>
+        <p><i class="pi pi-phone"></i> +1 (555) 123-4567</p>
+        <p><i class="pi pi-map-marker"></i> Ciudad, País</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Línea divisoria -->
+  <div class="footer-divider"></div>
+
+  <!-- Copyright y versión -->
+  <div class="footer-bottom">
+    <div class="copyright">
+      <p>&copy; {{ currentYear }} Nova App. Todos los derechos reservados.</p>
+    </div>
+    <div class="version">
+      <span>v1.0.0</span>
+    </div>
+  </div>
+</footer>

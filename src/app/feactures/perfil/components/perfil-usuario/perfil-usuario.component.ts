@@ -1,11 +1,89 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UsuarioService } from '../../../../core/services/usuario.service';
+import { ParejaService } from '../../../../core/services/pareja.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { Usuario } from '../../../../core/models/usuario';
+import { Pareja } from '../../../../core/models/pareja';
 
 @Component({
   selector: 'app-perfil-usuario',
-  standalone: false,
   templateUrl: './perfil-usuario.component.html',
-  styleUrl: './perfil-usuario.component.css'
+  styleUrls: ['./perfil-usuario.component.css'],
+  standalone: false
 })
-export class PerfilUsuarioComponent {
+export class PerfilUsuarioComponent implements OnInit {
+  usuario: Usuario | null = null;
+  pareja: Pareja | null = null;
+  loading = true;
+  error = '';
 
+  constructor(
+    private usuarioService: UsuarioService,
+    private parejaService: ParejaService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
+    this.cargarPerfilUsuario();
+  }
+
+  cargarPerfilUsuario() {
+    this.loading = true;
+    const currentUser = this.authService.getUser();
+    
+    if (currentUser && currentUser.idUsuario) {
+      this.usuarioService.listarPorId(currentUser.idUsuario).subscribe({
+        next: (usuario) => {
+          this.usuario = usuario;
+          if (usuario.parejaId) {
+            this.cargarPareja(usuario.parejaId);
+          } else {
+            this.loading = false;
+          }
+        },
+        error: (err) => {
+          this.error = 'Error al cargar el perfil del usuario';
+          this.loading = false;
+          console.error('Error cargando usuario:', err);
+        }
+      });
+    } else {
+      this.error = 'Usuario no autenticado';
+      this.loading = false;
+    }
+  }
+
+  cargarPareja(parejaId: number) {
+    this.parejaService.listarPorId(parejaId).subscribe({
+      next: (pareja) => {
+        this.pareja = pareja;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar información de la pareja';
+        this.loading = false;
+        console.error('Error cargando pareja:', err);
+      }
+    });
+  }
+
+  getNombreCompleto(): string {
+    if (!this.usuario) return '';
+    return `${this.usuario.nombre} ${this.usuario.apellido}`;
+  }
+
+  getEstadoPareja(): string {
+    if (!this.pareja) return 'Sin pareja';
+    
+    switch (this.pareja.estadoRelacion) {
+      case 'activa': return 'Activa';
+      case 'pausada': return 'Pausada';
+      case 'terminada': return 'Terminada';
+      default: return 'Desconocido';
+    }
+  }
+
+  tienePareja(): boolean {
+    return this.pareja !== null && this.pareja.estadoRelacion === 'activa';
+  }
 }

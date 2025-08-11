@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { AvatarModule } from 'primeng/avatar';
+import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
@@ -32,12 +33,14 @@ import { TabsModule } from 'primeng/tabs';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
 
 
 @NgModule({
   exports: [
     AvatarModule,
+    BadgeModule,
     ButtonModule,
     CardModule,
     CarouselModule,
@@ -69,6 +72,7 @@ import { DividerModule } from 'primeng/divider';
     TextareaModule,
     ToastModule,
     ToggleButtonModule,
+    TooltipModule,
     DividerModule,
   ]
 })

@@ -1,1 +1,95 @@
-<p>perfil-usuario works!</p>
+<div class="perfil-container">
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Cargando perfil...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="error-container">
+    <p-message severity="error" [text]="error"></p-message>
+  </div>
+
+  <!-- Contenido del perfil -->
+  <div *ngIf="!loading && !error" class="perfil-content">
+    <!-- Información del usuario -->
+    <p-card header="Mi Perfil" styleClass="perfil-card">
+      <div class="usuario-info">
+        <div class="avatar-section">
+          <p-avatar 
+            [label]="getNombreCompleto().charAt(0)" 
+            size="xlarge"
+            shape="circle"
+            class="usuario-avatar">
+          </p-avatar>
+        </div>
+        
+        <div class="datos-usuario">
+          <h2>{{ getNombreCompleto() }}</h2>
+          <p class="username">@{{ usuario?.username }}</p>
+          <p class="email">{{ usuario?.correo }}</p>
+          
+          <div class="detalles-adicionales">
+            <div class="detalle-item" *ngIf="usuario?.fechaNacimiento">
+              <i class="pi pi-calendar"></i>
+              <span>{{ usuario?.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
+            </div>
+            
+            <div class="detalle-item" *ngIf="usuario?.genero">
+              <i class="pi pi-user"></i>
+              <span>{{ usuario?.genero === 'M' ? 'Masculino' : usuario?.genero === 'F' ? 'Femenino' : 'Otro' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Estado de pareja -->
+    <p-card header="Estado de Pareja" styleClass="pareja-card">
+      <div class="pareja-info">
+        <div *ngIf="tienePareja()" class="pareja-activa">
+          <div class="status-badge">
+            <i class="pi pi-heart-fill"></i>
+            <span>Pareja Activa</span>
+          </div>
+          
+          <div class="pareja-details">
+            <p><strong>Estado:</strong> {{ getEstadoPareja() }}</p>
+            <p *ngIf="pareja?.fechaCreacion">
+              <strong>Desde:</strong> {{ pareja?.fechaCreacion | date:'dd/MM/yyyy' }}
+            </p>
+          </div>
+        </div>
+        
+        <div *ngIf="!tienePareja()" class="sin-pareja">
+          <div class="status-badge inactive">
+            <i class="pi pi-heart"></i>
+            <span>Sin Pareja</span>
+          </div>
+          
+          <p class="mensaje-sin-pareja">
+            No tienes una pareja vinculada actualmente.
+          </p>
+          
+          <div class="acciones-pareja">
+            <button 
+              pButton 
+              type="button" 
+              label="Buscar Pareja" 
+              icon="pi pi-search"
+              class="p-button-primary">
+            </button>
+            
+            <button 
+              pButton 
+              type="button" 
+              label="Invitar por Username" 
+              icon="pi pi-user-plus"
+              class="p-button-outlined">
+            </button>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>
