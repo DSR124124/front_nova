@@ -1,4 +1,4 @@
-import { Role } from './role.enum';
+import { Role } from './enums/role.enum';
 
 export interface Usuario {
   idUsuario?: number;
@@ -12,4 +12,5 @@ export interface Usuario {
   fechaNacimiento?: string; // ISO string, para interoperabilidad con LocalDate
   genero?: 'M' | 'F' | 'O';
   role: Role;
+  parejaId?: number;
 }

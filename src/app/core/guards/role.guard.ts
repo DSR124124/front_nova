@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Role } from '../models/role.enum';
+import { Role } from '../models/enums/role.enum';
 
 function decodeToken(token: string): any {
   try {

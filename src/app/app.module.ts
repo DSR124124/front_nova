@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
+import { PrimeNgModule } from './prime-ng/prime-ng.module';
 import { AppComponent } from './app.component';
 import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -32,7 +33,8 @@ import { BreadcrumbComponent } from './layout/components/breadcrumb/breadcrumb.c
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PrimeNgModule
   ],
   providers: [],
   bootstrap: [AppComponent]
