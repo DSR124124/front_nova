@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Client, Message, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { environment } from '../../environments/environment';
 
 export interface ChatMessage {
   id?: string;
@@ -12,6 +11,7 @@ export interface ChatMessage {
   timestamp: Date;
   messageType: 'TEXT' | 'IMAGE' | 'FILE';
   chatRoomId?: string;
+  read?: boolean;
 }
 
 export interface ChatRoom {
@@ -26,7 +26,7 @@ export interface ChatRoom {
   providedIn: 'root'
 })
 export class WebSocketService {
-  private client: Client;
+  private client!: Client;
   private connected = false;
   private connectionStatus = new BehaviorSubject<boolean>(false);
   private messageSubject = new Subject<ChatMessage>();
@@ -39,7 +39,7 @@ export class WebSocketService {
 
   private initializeWebSocket(): void {
     this.client = new Client({
-      webSocketFactory: () => new SockJS(`${environment.apiUrl}/ws`),
+      webSocketFactory: () => new SockJS(`/ws`),
       debug: (str) => {
         console.log('STOMP Debug:', str);
       },
