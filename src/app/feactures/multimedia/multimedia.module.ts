@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { MultimediaRoutingModule } from './multimedia-routing.module';
 import { MediaGalleryComponent } from './components/media-gallery/media-gallery.component';
@@ -17,6 +19,9 @@ import { MediaFilterComponent } from './components/media-filter/media-filter.com
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PrimeNgModule,
     MultimediaRoutingModule
   ]
 })

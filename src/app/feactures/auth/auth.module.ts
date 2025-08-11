@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './components/login/login.component';
@@ -17,6 +19,9 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PrimeNgModule,
     AuthRoutingModule
   ]
 })

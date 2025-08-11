@@ -6,6 +6,7 @@ import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SidebarItemComponent } from './components/sidebar-item/sidebar-item.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 
@@ -13,6 +14,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
   declarations: [
     HeaderComponent,
     SidebarComponent,
+    SidebarItemComponent,
     FooterComponent,
     BreadcrumbComponent
   ],
@@ -25,6 +27,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
   exports: [
     HeaderComponent,
     SidebarComponent,
+    SidebarItemComponent,
     FooterComponent,
     BreadcrumbComponent
   ],

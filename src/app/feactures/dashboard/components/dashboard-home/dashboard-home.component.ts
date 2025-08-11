@@ -2,10 +2,16 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-home',
-  standalone: false,
   templateUrl: './dashboard-home.component.html',
-  styleUrl: './dashboard-home.component.css'
+  styleUrls: ['./dashboard-home.component.css'],
+  standalone: false
 })
 export class DashboardHomeComponent {
-
+  currentTime = new Date();
+  
+  constructor() {
+    setInterval(() => {
+      this.currentTime = new Date();
+    }, 1000);
+  }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,67 +12,68 @@ import { filter } from 'rxjs/operators';
 export class SidebarComponent implements OnInit {
   collapsed = false;
   activeRoute = '';
+  currentExpandedItemIndex: number[] = [];
 
-  menuItems = [
+  menuItems: MenuItem[] = [
     {
       label: 'Dashboard',
       icon: 'pi pi-home',
-      route: '/dashboard',
-      badge: null
+      routerLink: '/dashboard',
+      badge: undefined
     },
     {
       label: 'Citas',
       icon: 'pi pi-calendar',
-      route: '/citas',
-      badge: null
+      routerLink: '/citas',
+      badge: undefined
     },
     {
       label: 'Eventos',
       icon: 'pi pi-calendar-plus',
-      route: '/eventos',
-      badge: null
+      routerLink: '/eventos',
+      badge: undefined
     },
     {
       label: 'Lugares',
       icon: 'pi pi-map-marker',
-      route: '/lugares',
-      badge: null
+      routerLink: '/lugares',
+      badge: undefined
     },
     {
       label: 'Chat',
       icon: 'pi pi-comments',
-      route: '/chat',
+      routerLink: '/chat',
       badge: '3'
     },
     {
       label: 'Regalos',
       icon: 'pi pi-gift',
-      route: '/regalos',
-      badge: null
+      routerLink: '/regalos',
+      badge: undefined
     },
     {
       label: 'Recordatorios',
       icon: 'pi pi-bell',
-      route: '/recordatorios',
+      routerLink: '/recordatorios',
       badge: '2'
     },
     {
       label: 'Notas',
       icon: 'pi pi-file-edit',
-      route: '/notas',
-      badge: null
+      routerLink: '/notas',
+      badge: undefined
     },
     {
       label: 'Multimedia',
       icon: 'pi pi-images',
-      route: '/multimedia',
-      badge: null
+      routerLink: '/multimedia',
+      badge: undefined
     },
     {
       label: 'Perfil',
       icon: 'pi pi-user',
-      route: '/perfil',
-      badge: null
+      routerLink: '/perfil',
+      badge: undefined
     }
   ];
 
@@ -89,10 +91,28 @@ export class SidebarComponent implements OnInit {
   setActiveRoute() {
     const currentUrl = this.router.url;
     this.activeRoute = currentUrl;
+
+    // Encontrar el índice del elemento activo
+    const activeIndex = this.menuItems.findIndex(item =>
+      item.routerLink && currentUrl.startsWith(item.routerLink)
+    );
+
+    if (activeIndex !== -1) {
+      this.currentExpandedItemIndex = [activeIndex];
+    }
   }
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
+  }
+
+  handleExpandChange(event: { index: number; expanded: boolean }) {
+    if (event.expanded) {
+      // Solo permitir un elemento expandido a la vez
+      this.currentExpandedItemIndex = [event.index];
+    } else {
+      this.currentExpandedItemIndex = this.currentExpandedItemIndex.filter(i => i !== event.index);
+    }
   }
 
   navigateTo(route: string) {

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { NotasRoutingModule } from './notas-routing.module';
 import { NotaListComponent } from './components/nota-list/nota-list.component';
@@ -17,6 +19,9 @@ import { NotaSearchComponent } from './components/nota-search/nota-search.compon
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PrimeNgModule,
     NotasRoutingModule
   ]
 })

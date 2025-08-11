@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { EventosRoutingModule } from './eventos-routing.module';
 import { EventoListComponent } from './components/evento-list/evento-list.component';
@@ -19,6 +21,9 @@ import { EventoTimelineComponent } from './components/evento-timeline/evento-tim
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PrimeNgModule,
     EventosRoutingModule
   ]
 })

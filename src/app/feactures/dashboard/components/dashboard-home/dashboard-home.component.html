@@ -1,1 +1,60 @@
-<p>dashboard-home works!</p>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p class="welcome-text">Bienvenido a Nova</p>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="stats-grid">
+      <p-card header="Citas Pendientes" styleClass="stat-card">
+        <div class="stat-content">
+          <i class="pi pi-calendar stat-icon"></i>
+          <div class="stat-info">
+            <span class="stat-number">5</span>
+            <span class="stat-label">Citas esta semana</span>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card header="Eventos Próximos" styleClass="stat-card">
+        <div class="stat-content">
+          <i class="pi pi-calendar-plus stat-icon"></i>
+          <div class="stat-info">
+            <span class="stat-number">3</span>
+            <span class="stat-label">Eventos próximos</span>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card header="Mensajes Nuevos" styleClass="stat-card">
+        <div class="stat-content">
+          <i class="pi pi-comments stat-icon"></i>
+          <div class="stat-info">
+            <span class="stat-number">12</span>
+            <span class="stat-label">Mensajes sin leer</span>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card header="Recordatorios" styleClass="stat-card">
+        <div class="stat-content">
+          <i class="pi pi-bell stat-icon"></i>
+          <div class="stat-info">
+            <span class="stat-number">2</span>
+            <span class="stat-label">Recordatorios activos</span>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="current-time">
+      <p-card header="Hora Actual" styleClass="time-card">
+        <div class="time-display">
+          <i class="pi pi-clock"></i>
+          <span class="time-text">{{ currentTime | date:'HH:mm:ss' }}</span>
+        </div>
+        <p class="date-text">{{ currentTime | date:'EEEE, d \'de\' MMMM, y' }}</p>
+      </p-card>
+    </div>
+  </div>
+</div>

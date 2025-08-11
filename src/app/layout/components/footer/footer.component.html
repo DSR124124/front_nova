@@ -27,9 +27,9 @@
     <div class="footer-section">
       <h4>Síguenos</h4>
       <div class="social-links">
-        <a 
+        <a
           *ngFor="let social of socialLinks"
-          [href]="social.url" 
+          [href]="social.url"
           class="social-link"
           [attr.aria-label]="social.label"
           target="_blank"
@@ -43,7 +43,6 @@
     <div class="footer-section">
       <h4>Contacto</h4>
       <div class="contact-info">
-        <p><i class="pi pi-envelope"></i> info@nova-app.com</p>
         <p><i class="pi pi-phone"></i> +1 (555) 123-4567</p>
         <p><i class="pi pi-map-marker"></i> Ciudad, País</p>
       </div>

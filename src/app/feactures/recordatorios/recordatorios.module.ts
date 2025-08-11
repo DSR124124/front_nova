@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { RecordatoriosRoutingModule } from './recordatorios-routing.module';
 import { RecordatorioListComponent } from './components/recordatorio-list/recordatorio-list.component';
@@ -17,6 +19,9 @@ import { RecordatorioNotificationsComponent } from './components/recordatorio-no
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PrimeNgModule,
     RecordatoriosRoutingModule
   ]
 })

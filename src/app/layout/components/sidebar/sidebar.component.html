@@ -10,30 +10,27 @@
     </div>
   </div>
 
-  <!-- Menú de navegación -->
-  <nav class="sidebar-nav">
-    <ul class="nav-list">
+  <!-- Menú de navegación usando componentes recursivos -->
+  <div class="sidebar-nav">
+    <ul class="menu">
       <li
-        *ngFor="let item of menuItems"
-        class="nav-item"
-        [class.active]="isActive(item.route)"
-        (click)="navigateTo(item.route)">
+        *ngFor="let item of menuItems; let i = index"
+        class="elemento menu-item"
+        [ngClass]="{ 'item-activo': currentExpandedItemIndex[0] === i }">
 
-        <div class="nav-link">
-          <i [class]="item.icon"></i>
-          <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
-
-          <!-- Badge para notificaciones -->
-          <p-badge
-            *ngIf="item.badge && !collapsed"
-            [value]="item.badge"
-            severity="danger"
-            class="nav-badge">
-          </p-badge>
-        </div>
+        <!-- Llamamos al componente recursivo -->
+        <app-sidebar-item
+          [item]="item"
+          [depth]="0"
+          [index]="i"
+          [expanded]="currentExpandedItemIndex[0] === i"
+          [currentExpandedItemIndex]="currentExpandedItemIndex"
+          [sidebarCollapsed]="collapsed"
+          (expandChange)="handleExpandChange($event)">
+        </app-sidebar-item>
       </li>
     </ul>
-  </nav>
+  </div>
 
   <!-- Footer del sidebar -->
   <div class="sidebar-footer" *ngIf="!collapsed">

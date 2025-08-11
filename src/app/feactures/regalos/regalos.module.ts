@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { RegalosRoutingModule } from './regalos-routing.module';
 import { RegaloListComponent } from './components/regalo-list/regalo-list.component';
@@ -19,6 +21,9 @@ import { RegaloStatsComponent } from './components/regalo-stats/regalo-stats.com
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PrimeNgModule,
     RegalosRoutingModule
   ]
 })
