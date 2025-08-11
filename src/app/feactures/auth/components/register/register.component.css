@@ -1,13 +1,81 @@
-.register-container {
-  padding: 2rem;
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+p-card {
+  width: 100%;
+  max-width: 500px;
+}
+
+.register-header {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.register-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.register-header p {
+  margin: 0;
+  color: var(--p-text-muted-color);
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-row .form-field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-field p-floatlabel {
+  width: 100%;
+}
+
+.form-field input,
+.form-field p-password {
+  width: 100%;
+}
+
+.form-field p-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.form-actions {
+  margin-top: 2rem;
+}
+
+.register-footer {
   text-align: center;
 }
 
-.register-container h2 {
-  color: #2c3e50;
-  margin-bottom: 1rem;
+.register-footer p-button {
+  width: 100%;
+  margin-top: 0.5rem;
 }
 
-.register-container p {
-  color: #7f8c8d;
+/* Responsive para pantallas pequeñas */
+@media (max-width: 576px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-row .form-field {
+    margin-bottom: 1.5rem;
+  }
 }

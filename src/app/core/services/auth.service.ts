@@ -13,6 +13,14 @@ export class AuthService {
     return this.http.post(API_ENDPOINTS.LOGIN, credentials);
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(API_ENDPOINTS.FORGOT_PASSWORD, { email });
+  }
+
+  register(userData: any): Observable<any> {
+    return this.http.post(API_ENDPOINTS.REGISTER, userData);
+  }
+
   logout() {
     this.removeToken();
   }

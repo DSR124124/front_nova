@@ -21,6 +21,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
+import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PaginatorModule } from 'primeng/paginator';
@@ -61,6 +62,7 @@ import { DividerModule } from 'primeng/divider';
     InputNumberModule,
     InputTextModule,
     MenuModule,
+    MessageModule,
     MultiSelectModule,
     OverlayPanelModule,
     PaginatorModule,
