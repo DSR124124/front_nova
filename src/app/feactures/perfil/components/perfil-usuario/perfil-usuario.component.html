@@ -1,14 +1,28 @@
 <div class="perfil-container">
-  <!-- Loading -->
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner></p-progressSpinner>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-state">
+    <i class="pi pi-spin pi-spinner loading-icon"></i>
     <p>Cargando perfil...</p>
   </div>
 
-
+  <!-- Estado de error -->
+  <div *ngIf="error && !loading" class="error-state">
+    <p-card header="Error" styleClass="error-card">
+      <i class="pi pi-exclamation-triangle error-icon"></i>
+      <p>{{ error }}</p>
+      <p-button
+        label="Reintentar"
+        icon="pi pi-refresh"
+        (onClick)="cargarPerfilUsuario()"
+        size="small"
+      />
+    </p-card>
+  </div>
 
   <!-- Contenido del perfil -->
   <div *ngIf="!loading && !error" class="perfil-content">
+
     <!-- Información del usuario -->
     <p-card header="Mi Perfil" styleClass="perfil-card">
       <div class="usuario-info">
@@ -17,13 +31,13 @@
             [label]="getNombreCompleto().charAt(0)"
             size="xlarge"
             shape="circle"
-            class="usuario-avatar">
+            styleClass="usuario-avatar">
           </p-avatar>
         </div>
 
         <div class="datos-usuario">
           <h2>{{ getNombreCompleto() }}</h2>
-          <p class="username">@{{ usuario?.username }}</p>
+          <p class="username">{{ '@' + (usuario?.username || '') }}</p>
           <p class="email">{{ usuario?.correo }}</p>
 
           <div class="detalles-adicionales">
@@ -31,11 +45,20 @@
               <i class="pi pi-calendar"></i>
               <span>{{ usuario?.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
             </div>
-
             <div class="detalle-item" *ngIf="usuario?.genero">
               <i class="pi pi-user"></i>
-              <span>{{ usuario?.genero === 'M' ? 'Masculino' : usuario?.genero === 'F' ? 'Femenino' : 'Otro' }}</span>
+              <span>{{ getGeneroTexto() }}</span>
             </div>
+          </div>
+
+          <!-- Acciones del perfil -->
+          <div class="acciones-perfil">
+            <p-button
+              label="Editar Perfil"
+              icon="pi pi-pencil"
+              [outlined]="true"
+              size="small"
+            />
           </div>
         </div>
       </div>
@@ -44,49 +67,53 @@
     <!-- Estado de pareja -->
     <p-card header="Estado de Pareja" styleClass="pareja-card">
       <div class="pareja-info">
-        <div *ngIf="tienePareja()" class="pareja-activa">
-          <div class="status-badge">
-            <i class="pi pi-heart-fill"></i>
-            <span>Pareja Activa</span>
-          </div>
 
-          <div class="pareja-details">
-            <p><strong>Estado:</strong> {{ getEstadoPareja() }}</p>
-            <p *ngIf="pareja?.fechaCreacion">
-              <strong>Desde:</strong> {{ pareja?.fechaCreacion | date:'dd/MM/yyyy' }}
-            </p>
+        <!-- Con pareja -->
+        <div *ngIf="tienePareja()" class="pareja-activa">
+          <div class="status-section">
+            <div class="status-badge activa">
+              <i class="pi pi-heart-fill"></i>
+              <span>Pareja Activa</span>
+            </div>
+            <div class="pareja-details">
+              <div class="detalle-item">
+                <strong>Estado:</strong> {{ getEstadoPareja() }}
+              </div>
+              <div class="detalle-item" *ngIf="pareja?.fechaCreacion">
+                <strong>Desde:</strong> {{ pareja?.fechaCreacion | date:'dd/MM/yyyy' }}
+              </div>
+            </div>
           </div>
         </div>
 
+        <!-- Sin pareja -->
         <div *ngIf="!tienePareja()" class="sin-pareja">
-          <div class="status-badge inactive">
-            <i class="pi pi-heart"></i>
-            <span>Sin Pareja</span>
+          <div class="status-section">
+            <div class="status-badge inactiva">
+              <i class="pi pi-heart"></i>
+              <span>Sin Pareja</span>
+            </div>
+            <p class="mensaje-sin-pareja">
+              No tienes una pareja vinculada actualmente.
+            </p>
           </div>
 
-          <p class="mensaje-sin-pareja">
-            No tienes una pareja vinculada actualmente.
-          </p>
-
           <div class="acciones-pareja">
-            <button
-              pButton
-              type="button"
+            <p-button
               label="Buscar Pareja"
               icon="pi pi-search"
-              class="p-button-primary">
-            </button>
-
-            <button
-              pButton
-              type="button"
+              styleClass="action-btn"
+            />
+            <p-button
               label="Invitar por Username"
               icon="pi pi-user-plus"
-              class="p-button-outlined">
-            </button>
+              [outlined]="true"
+              styleClass="action-btn"
+            />
           </div>
         </div>
       </div>
     </p-card>
+
   </div>
 </div>

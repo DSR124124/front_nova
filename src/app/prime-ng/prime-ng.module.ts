@@ -39,6 +39,8 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
+import { TagModule } from 'primeng/tag';
+import { ChipModule } from 'primeng/chip';
 
 
 @NgModule({
@@ -82,6 +84,8 @@ import { DividerModule } from 'primeng/divider';
     ToggleButtonModule,
     TooltipModule,
     DividerModule,
+    TagModule,
+    ChipModule,
   ]
 })
 export class PrimeNgModule { }

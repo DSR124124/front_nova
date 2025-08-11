@@ -1,0 +1,143 @@
+/* Contenedor principal */
+.configuracion-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Estado de carga */
+.loading-state {
+  text-align: center;
+  padding: 3rem;
+}
+
+.loading-state p {
+  margin-top: 1rem;
+  color: var(--text-color-secondary);
+}
+
+/* Espaciado entre cards */
+.config-card {
+  margin-bottom: 1.5rem;
+}
+
+/* Grid de configuración general */
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.config-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.config-item label {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Grid de privacidad */
+.privacy-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.privacy-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--border-radius);
+  background: var(--surface-50);
+}
+
+.privacy-item label {
+  font-weight: 600;
+  color: var(--text-color);
+  margin-left: 0.5rem;
+}
+
+.privacy-item small {
+  color: var(--text-color-secondary);
+  margin-left: 0.5rem;
+}
+
+/* Grid de notificaciones */
+.notifications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.notification-section h5 {
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.notification-item label {
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+/* Contenedor de acciones */
+.actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.primary-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .configuracion-container {
+    padding: 0.5rem;
+  }
+
+  .config-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .notifications-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .primary-actions,
+  .secondary-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-item {
+    padding: 0.75rem;
+  }
+
+  .notification-section {
+    margin-bottom: 1rem;
+  }
+}

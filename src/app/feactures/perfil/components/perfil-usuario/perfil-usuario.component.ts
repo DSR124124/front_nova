@@ -30,7 +30,7 @@ export class PerfilUsuarioComponent implements OnInit {
   cargarPerfilUsuario() {
     this.loading = true;
     const currentUser = this.authService.getUser();
-    
+
     if (currentUser && currentUser.idUsuario) {
       this.usuarioService.listarPorId(currentUser.idUsuario).subscribe({
         next: (usuario) => {
@@ -74,7 +74,7 @@ export class PerfilUsuarioComponent implements OnInit {
 
   getEstadoPareja(): string {
     if (!this.pareja) return 'Sin pareja';
-    
+
     switch (this.pareja.estadoRelacion) {
       case 'activa': return 'Activa';
       case 'pausada': return 'Pausada';
@@ -85,5 +85,14 @@ export class PerfilUsuarioComponent implements OnInit {
 
   tienePareja(): boolean {
     return this.pareja !== null && this.pareja.estadoRelacion === 'activa';
+  }
+
+  getGeneroTexto(): string {
+    if (!this.usuario?.genero) return '';
+    switch (this.usuario.genero) {
+      case 'M': return 'Masculino';
+      case 'F': return 'Femenino';
+      default: return 'Otro';
+    }
   }
 }

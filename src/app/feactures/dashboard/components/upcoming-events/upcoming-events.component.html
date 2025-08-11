@@ -1,1 +1,111 @@
-<p>upcoming-events works!</p>
+<div class="upcoming-events-container">
+
+  <!-- Header del widget -->
+  <div class="events-header">
+    <h3>Próximos Eventos</h3>
+    <div class="header-actions">
+      <p-button
+        icon="pi pi-refresh"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        (onClick)="refreshEvents()"
+        [loading]="loading"
+        pTooltip="Actualizar eventos"
+        tooltipPosition="top"
+      />
+      <p-button
+        icon="pi pi-plus"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        severity="success"
+        pTooltip="Crear evento"
+        tooltipPosition="top"
+      />
+    </div>
+  </div>
+
+  <!-- Contenido de eventos -->
+  <div class="events-content">
+
+    <!-- Estado de carga -->
+    <div *ngIf="loading" class="loading-state">
+      <i class="pi pi-spin pi-spinner loading-icon"></i>
+      <p>Cargando eventos...</p>
+    </div>
+
+    <!-- Lista vacía -->
+    <div *ngIf="!loading && events.length === 0" class="empty-state">
+      <i class="pi pi-calendar-plus empty-icon"></i>
+      <p>No hay eventos próximos</p>
+      <small>Tus próximos eventos aparecerán aquí</small>
+      <p-button
+        label="Crear Evento"
+        icon="pi pi-plus"
+        [outlined]="true"
+        size="small"
+        styleClass="mt-3"
+      />
+    </div>
+
+    <!-- Lista de eventos -->
+    <div *ngIf="!loading && events.length > 0" class="events-list">
+      <div
+        *ngFor="let event of events; trackBy: trackByEvent"
+        class="event-item"
+        [class]="'priority-' + event.priority"
+      >
+
+        <!-- Fecha lateral -->
+        <div class="event-date">
+          <div class="date-day">{{ event.date | date:'dd' }}</div>
+          <div class="date-month">{{ event.date | date:'MMM' }}</div>
+          <div class="date-time">{{ event.date | date:'HH:mm' }}</div>
+        </div>
+
+        <!-- Contenido del evento -->
+        <div class="event-content">
+          <div class="event-header">
+            <div class="event-title-section">
+              <div class="event-icon" [style.color]="getCategoryColor(event.category)">
+                <i [class]="event.icon"></i>
+              </div>
+              <div class="event-title">{{ event.title }}</div>
+            </div>
+
+            <div class="event-meta">
+              <span class="time-until">{{ formatTimeUntil(event.date) }}</span>
+              <i
+                [class]="getPriorityIcon(event.priority)"
+                [class]="'priority-icon priority-' + event.priority"
+                [title]="'Prioridad: ' + event.priority"
+              ></i>
+            </div>
+          </div>
+
+          <p class="event-description">{{ event.description }}</p>
+
+          <div *ngIf="event.location" class="event-location">
+            <i class="pi pi-map-marker"></i>
+            <span>{{ event.location }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ver más eventos -->
+    <div *ngIf="!loading && events.length >= maxEvents" class="view-all">
+      <p-button
+        label="Ver todos los eventos"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        [text]="true"
+        size="small"
+        (onClick)="viewAllEvents()"
+        styleClass="view-all-btn"
+      />
+    </div>
+
+  </div>
+</div>

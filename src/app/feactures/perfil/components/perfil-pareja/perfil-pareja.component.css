@@ -1,0 +1,126 @@
+/* Contenedor principal */
+.perfil-pareja-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Estado de carga */
+.loading-state {
+  text-align: center;
+  padding: 2rem;
+}
+
+.loading-state p {
+  margin-top: 1rem;
+  color: var(--text-color-secondary);
+}
+
+/* Espaciado entre cards */
+.perfil-pareja-container p-card {
+  margin-bottom: 1.5rem;
+}
+
+/* Acciones sin pareja */
+.acciones-sin-pareja {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Información de pareja */
+.pareja-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.estado-relacion {
+  text-align: center;
+}
+
+.tiempo-juntos h5,
+.fecha-inicio h5 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color);
+}
+
+.fecha-inicio p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Información del compañero */
+.companero-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.companero-principal {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.datos-companero h4 {
+  margin: 0 0 0.25rem 0;
+}
+
+.datos-companero .username {
+  margin: 0 0 0.25rem 0;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.datos-companero .email {
+  margin: 0;
+  color: var(--text-color-secondary);
+}
+
+.detalles-companero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detalle-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Acciones de pareja */
+.acciones-pareja {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .perfil-pareja-container {
+    padding: 0.5rem;
+  }
+
+  .pareja-info {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .companero-principal {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .acciones-pareja {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones-sin-pareja {
+    flex-direction: column;
+  }
+}

@@ -1,11 +1,12 @@
+/* Contenedor principal */
 .perfil-container {
-  padding: 2rem;
+  padding: 1.5rem;
   max-width: 800px;
   margin: 0 auto;
 }
 
-/* Loading */
-.loading-container {
+/* Estado de carga */
+.loading-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,14 +15,42 @@
   gap: 1rem;
 }
 
-.loading-container p {
-  color: #666;
-  font-size: 1.1rem;
+.loading-icon {
+  font-size: 2rem;
+  color: var(--p-primary-color);
 }
 
-/* Error */
-.error-container {
+.loading-state p {
+  color: var(--p-text-muted-color);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Estado de error */
+.error-state {
   margin: 2rem 0;
+}
+
+:host ::ng-deep .error-card {
+  border: 1px solid var(--p-red-500);
+}
+
+:host ::ng-deep .error-card .p-card-header {
+  background: var(--p-red-50);
+  color: var(--p-red-600);
+  padding: 1rem;
+}
+
+.error-icon {
+  font-size: 2rem;
+  color: var(--p-red-500);
+  margin-bottom: 1rem;
+}
+
+.error-state p {
+  color: var(--p-text-color);
+  margin: 1rem 0;
+  text-align: center;
 }
 
 /* Contenido del perfil */
@@ -31,23 +60,23 @@
   gap: 2rem;
 }
 
-/* Tarjeta de perfil */
-.perfil-card {
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+/* Tarjetas básicas */
+:host ::ng-deep .perfil-card,
+:host ::ng-deep .pareja-card {
+  border: 1px solid var(--p-surface-border);
 }
 
-.perfil-card ::ng-deep .p-card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 12px 12px 0 0;
+:host ::ng-deep .perfil-card .p-card-header,
+:host ::ng-deep .pareja-card .p-card-header {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
   padding: 1.5rem;
 }
 
-.perfil-card ::ng-deep .p-card-title {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 600;
+:host ::ng-deep .p-card-title {
+  color: var(--p-primary-contrast-color);
+  font-size: 1.25rem;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -62,10 +91,10 @@
   flex-shrink: 0;
 }
 
-.usuario-avatar {
-  background: linear-gradient(45deg, #ff6b6b, #ffd93d) !important;
-  color: white !important;
-  font-weight: bold;
+:host ::ng-deep .usuario-avatar {
+  background: var(--p-primary-color) !important;
+  color: var(--p-primary-contrast-color) !important;
+  font-weight: 600;
   font-size: 2rem;
 }
 
@@ -75,20 +104,20 @@
 
 .datos-usuario h2 {
   margin: 0 0 0.5rem 0;
-  color: #2c3e50;
-  font-size: 2rem;
-  font-weight: 700;
+  color: var(--p-text-color);
+  font-size: 1.75rem;
+  font-weight: 600;
 }
 
 .username {
-  color: #7f8c8d;
+  color: var(--p-text-muted-color);
   font-size: 1.1rem;
   margin: 0 0 0.5rem 0;
   font-weight: 500;
 }
 
 .email {
-  color: #3498db;
+  color: var(--p-primary-color);
   font-size: 1rem;
   margin: 0 0 1.5rem 0;
 }
@@ -97,74 +126,86 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .detalle-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #666;
+  color: var(--p-text-muted-color);
   font-size: 0.9rem;
 }
 
 .detalle-item i {
-  color: #e74c3c;
+  color: var(--p-primary-color);
   font-size: 1rem;
+  width: 16px;
+  text-align: center;
 }
 
-/* Tarjeta de pareja */
-.pareja-card {
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+.detalle-item strong {
+  color: var(--p-text-color);
+  margin-right: 0.5rem;
 }
 
-.pareja-card ::ng-deep .p-card-header {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-  color: white;
-  border-radius: 12px 12px 0 0;
-  padding: 1.5rem;
+/* Acciones del perfil */
+.acciones-perfil {
+  display: flex;
+  gap: 1rem;
 }
 
+/* Estado de pareja */
 .pareja-info {
   padding: 1rem 0;
 }
 
-/* Estado de pareja activa */
-.pareja-activa {
-  text-align: center;
+.status-section {
+  margin-bottom: 1.5rem;
 }
 
 .status-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(45deg, #27ae60, #2ecc71);
-  color: white;
   padding: 0.75rem 1.5rem;
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.status-badge.activa {
+  background: var(--p-green-50);
+  color: var(--p-green-600);
+  border: 1px solid var(--p-green-200);
+}
+
+.status-badge.inactiva {
+  background: var(--p-surface-100);
+  color: var(--p-text-muted-color);
+  border: 1px solid var(--p-surface-300);
 }
 
 .status-badge i {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
+/* Detalles de pareja */
 .pareja-details {
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   max-width: 400px;
+}
+
+.pareja-activa {
+  text-align: center;
+}
+
+.pareja-activa .pareja-details {
+  text-align: left;
   margin: 0 auto;
-}
-
-.pareja-details p {
-  margin: 0.5rem 0;
-  color: #666;
-  font-size: 1rem;
-}
-
-.pareja-details strong {
-  color: #2c3e50;
 }
 
 /* Sin pareja */
@@ -172,14 +213,10 @@
   text-align: center;
 }
 
-.status-badge.inactive {
-  background: linear-gradient(45deg, #95a5a6, #7f8c8d);
-}
-
 .mensaje-sin-pareja {
-  color: #666;
-  font-size: 1.1rem;
-  margin: 1.5rem 0;
+  color: var(--p-text-muted-color);
+  font-size: 1rem;
+  margin: 1rem 0 1.5rem 0;
 }
 
 .acciones-pareja {
@@ -189,7 +226,7 @@
   flex-wrap: wrap;
 }
 
-.acciones-pareja button {
+:host ::ng-deep .action-btn {
   min-width: 150px;
 }
 
@@ -205,14 +242,26 @@
     gap: 1.5rem;
   }
 
+  .datos-usuario h2 {
+    font-size: 1.5rem;
+  }
+
+  .acciones-perfil {
+    justify-content: center;
+  }
+
   .acciones-pareja {
     flex-direction: column;
     align-items: center;
   }
 
-  .acciones-pareja button {
+  :host ::ng-deep .action-btn {
     width: 100%;
     max-width: 250px;
+  }
+
+  .pareja-details {
+    max-width: 100%;
   }
 }
 
@@ -222,11 +271,19 @@
   }
 
   .datos-usuario h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .status-badge {
     padding: 0.5rem 1rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .acciones-perfil {
+    flex-direction: column;
+  }
+
+  :host ::ng-deep .action-btn {
+    width: 100%;
   }
 }

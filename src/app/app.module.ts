@@ -11,6 +11,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
 import { DashboardModule } from './feactures/dashboard/dashboard.module';
+import { PerfilModule } from './feactures/perfil/perfil.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { DashboardModule } from './feactures/dashboard/dashboard.module';
     AuthModule,
     LayoutModule,
     SharedModule,
-    DashboardModule
+    PerfilModule
   ],
   providers: [
     provideAnimationsAsync(),

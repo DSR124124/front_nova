@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { PerfilRoutingModule } from './perfil-routing.module';
@@ -20,8 +21,18 @@ import { CambiarPasswordComponent } from './components/cambiar-password/cambiar-
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     PrimeNgModule,
     PerfilRoutingModule
+  ],
+  providers: [
+    MessageService
+  ],
+  exports: [
+    PerfilUsuarioComponent,
+    PerfilParejaComponent,
+    ConfiguracionComponent,
+    CambiarPasswordComponent
   ]
 })
 export class PerfilModule { }

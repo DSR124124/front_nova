@@ -1,1 +1,223 @@
-<p>configuracion works!</p>
+<div class="configuracion-container">
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-state">
+    <p-progressSpinner />
+    <p>Cargando configuración...</p>
+  </div>
+
+  <!-- Formulario de configuración -->
+  <form [formGroup]="configuracionForm" (ngSubmit)="guardarConfiguracion()" *ngIf="!loading">
+
+    <!-- Configuración General -->
+    <p-card header="Configuración General" styleClass="config-card">
+      <div class="config-grid">
+
+        <!-- Idioma -->
+        <div class="config-item">
+          <label for="idioma">Idioma</label>
+          <p-select
+            id="idioma"
+            formControlName="idioma"
+            [options]="idiomas"
+            placeholder="Selecciona un idioma"
+            styleClass="w-full">
+          </p-select>
+        </div>
+
+        <!-- Tema -->
+        <div class="config-item">
+          <label for="tema">Tema</label>
+          <p-select
+            id="tema"
+            formControlName="tema"
+            [options]="temas"
+            placeholder="Selecciona un tema"
+            styleClass="w-full">
+          </p-select>
+        </div>
+
+        <!-- Zona horaria -->
+        <div class="config-item">
+          <label for="zona">Zona Horaria</label>
+          <p-select
+            id="zona"
+            formControlName="zona"
+            [options]="zonas"
+            placeholder="Selecciona zona horaria"
+            styleClass="w-full">
+          </p-select>
+        </div>
+
+        <!-- Formato de fecha -->
+        <div class="config-item">
+          <label for="formatoFecha">Formato de Fecha</label>
+          <p-select
+            id="formatoFecha"
+            formControlName="formatoFecha"
+            [options]="formatosFecha"
+            placeholder="Selecciona formato"
+            styleClass="w-full">
+          </p-select>
+        </div>
+
+      </div>
+    </p-card>
+
+    <!-- Configuración de Privacidad -->
+    <p-card header="Privacidad" styleClass="config-card">
+      <div class="privacy-grid">
+
+        <div class="privacy-item">
+          <p-checkbox
+            formControlName="perfilPublico"
+            inputId="perfilPublico"
+            binary="true">
+          </p-checkbox>
+          <label for="perfilPublico">Perfil público</label>
+          <small>Permite que otros usuarios encuentren tu perfil</small>
+        </div>
+
+        <div class="privacy-item">
+          <p-checkbox
+            formControlName="mostrarEmail"
+            inputId="mostrarEmail"
+            binary="true">
+          </p-checkbox>
+          <label for="mostrarEmail">Mostrar email</label>
+          <small>Tu email será visible en tu perfil</small>
+        </div>
+
+        <div class="privacy-item">
+          <p-checkbox
+            formControlName="mostrarFechaNacimiento"
+            inputId="mostrarFechaNacimiento"
+            binary="true">
+          </p-checkbox>
+          <label for="mostrarFechaNacimiento">Mostrar fecha de nacimiento</label>
+          <small>Tu fecha de nacimiento será visible</small>
+        </div>
+
+        <div class="privacy-item">
+          <p-checkbox
+            formControlName="permitirBusqueda"
+            inputId="permitirBusqueda"
+            binary="true">
+          </p-checkbox>
+          <label for="permitirBusqueda">Permitir búsqueda</label>
+          <small>Aparecerás en resultados de búsqueda</small>
+        </div>
+
+      </div>
+    </p-card>
+
+    <!-- Configuración de Notificaciones -->
+    <p-card header="Notificaciones" styleClass="config-card">
+      <div class="notifications-grid">
+
+        <div class="notification-section">
+          <h5>Tipos de Notificación</h5>
+
+          <div class="notification-item">
+            <p-checkbox
+              formControlName="notificacionesPush"
+              inputId="notificacionesPush"
+              binary="true">
+            </p-checkbox>
+            <label for="notificacionesPush">Notificaciones Push</label>
+          </div>
+
+          <div class="notification-item">
+            <p-checkbox
+              formControlName="notificacionesEmail"
+              inputId="notificacionesEmail"
+              binary="true">
+            </p-checkbox>
+            <label for="notificacionesEmail">Notificaciones por Email</label>
+          </div>
+        </div>
+
+        <div class="notification-section">
+          <h5>Contenido de Notificaciones</h5>
+
+          <div class="notification-item">
+            <p-checkbox
+              formControlName="notificacionesCitas"
+              inputId="notificacionesCitas"
+              binary="true">
+            </p-checkbox>
+            <label for="notificacionesCitas">Citas</label>
+          </div>
+
+          <div class="notification-item">
+            <p-checkbox
+              formControlName="notificacionesEventos"
+              inputId="notificacionesEventos"
+              binary="true">
+            </p-checkbox>
+            <label for="notificacionesEventos">Eventos</label>
+          </div>
+
+          <div class="notification-item">
+            <p-checkbox
+              formControlName="notificacionesRegalos"
+              inputId="notificacionesRegalos"
+              binary="true">
+            </p-checkbox>
+            <label for="notificacionesRegalos">Regalos</label>
+          </div>
+
+          <div class="notification-item">
+            <p-checkbox
+              formControlName="notificacionesRecordatorios"
+              inputId="notificacionesRecordatorios"
+              binary="true">
+            </p-checkbox>
+            <label for="notificacionesRecordatorios">Recordatorios</label>
+          </div>
+        </div>
+
+      </div>
+    </p-card>
+
+    <!-- Acciones -->
+    <p-card header="Acciones" styleClass="config-card">
+      <div class="actions-container">
+
+        <div class="primary-actions">
+          <p-button
+            label="Guardar Configuración"
+            icon="pi pi-save"
+            type="submit"
+            [loading]="loading"
+            styleClass="p-button-success">
+          </p-button>
+
+          <p-button
+            label="Restaurar Defecto"
+            icon="pi pi-refresh"
+            type="button"
+            (onClick)="restaurarDefecto()"
+            styleClass="p-button-outlined">
+          </p-button>
+        </div>
+
+        <div class="secondary-actions">
+          <p-button
+            label="Exportar Configuración"
+            icon="pi pi-download"
+            type="button"
+            (onClick)="exportarConfiguracion()"
+            styleClass="p-button-outlined p-button-secondary">
+          </p-button>
+        </div>
+
+      </div>
+    </p-card>
+
+  </form>
+
+  <!-- Toast para mensajes -->
+  <p-toast position="top-right" />
+
+</div>

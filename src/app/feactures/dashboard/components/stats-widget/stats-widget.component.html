@@ -1,1 +1,67 @@
-<p>stats-widget works!</p>
+<div class="stats-widget-container" [class.compact]="compact">
+
+  <!-- Header del widget -->
+  <div class="widget-header">
+    <h4>{{ title }}</h4>
+    <p-button
+      *ngIf="loading"
+      icon="pi pi-spin pi-spinner"
+      [text]="true"
+      [rounded]="true"
+      size="small"
+      disabled
+    />
+  </div>
+
+  <!-- Contenido del widget -->
+  <div class="widget-content">
+
+    <!-- Estado de carga -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="skeleton-stats">
+        <div *ngFor="let i of [1,2,3]" class="skeleton-stat">
+          <div class="skeleton-icon"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-text skeleton-number"></div>
+            <div class="skeleton-text skeleton-label"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista vacía -->
+    <div *ngIf="!loading && stats.length === 0" class="empty-state">
+      <i class="pi pi-chart-bar empty-icon"></i>
+      <p>No hay estadísticas disponibles</p>
+      <small>Los datos aparecerán aquí cuando estén disponibles</small>
+    </div>
+
+    <!-- Estadísticas -->
+    <div *ngIf="!loading && stats.length > 0" class="stats-grid" [class.compact]="compact">
+      <div
+        *ngFor="let stat of stats; trackBy: trackByStat"
+        class="stat-item"
+        [class.has-trend]="showTrends && stat.trend"
+      >
+
+        <!-- Icono -->
+        <div class="stat-icon" [style.color]="stat.color">
+          <i [class]="stat.icon"></i>
+        </div>
+
+        <!-- Contenido -->
+        <div class="stat-content">
+          <div class="stat-value">{{ formatValue(stat.value) }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+
+          <!-- Tendencia -->
+          <div *ngIf="showTrends && stat.trend" class="stat-trend">
+            <i [class]="getTrendIcon(stat.trend)" [class]="'trend-' + stat.trend"></i>
+            <span *ngIf="stat.trendValue" class="trend-value">{{ stat.trendValue }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

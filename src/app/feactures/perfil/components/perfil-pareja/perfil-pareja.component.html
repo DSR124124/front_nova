@@ -1,1 +1,141 @@
-<p>perfil-pareja works!</p>
+<div class="perfil-pareja-container">
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-state">
+    <p-progressSpinner />
+    <p>Cargando información de la pareja...</p>
+  </div>
+
+  <!-- Estado de error -->
+  <p-message
+    *ngIf="error && !loading"
+    severity="error"
+    [text]="error">
+  </p-message>
+
+  <!-- Sin pareja -->
+  <div *ngIf="!loading && !error && !pareja" class="sin-pareja">
+    <p-card header="Sin Pareja">
+      <p-message
+        severity="info"
+        text="No tienes una pareja vinculada actualmente">
+      </p-message>
+
+      <div class="acciones-sin-pareja">
+        <p-button
+          label="Buscar Pareja"
+          icon="pi pi-search"
+          styleClass="p-button-outlined">
+        </p-button>
+        <p-button
+          label="Invitar Usuario"
+          icon="pi pi-user-plus">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Con pareja -->
+  <div *ngIf="!loading && !error && pareja" class="con-pareja">
+
+    <!-- Información general de la pareja -->
+    <p-card header="Información de la Pareja">
+      <div class="pareja-info">
+
+        <!-- Estado de la relación -->
+        <div class="estado-relacion">
+          <p-tag
+            [value]="getEstadoInfo().label"
+            [icon]="getEstadoInfo().icon"
+            [severity]="getEstadoInfo().color">
+          </p-tag>
+        </div>
+
+        <!-- Tiempo juntos -->
+        <div class="tiempo-juntos">
+          <h5>Tiempo Juntos</h5>
+          <p-chip
+            [label]="calcularTiempoJuntos()"
+            icon="pi pi-calendar">
+          </p-chip>
+        </div>
+
+        <!-- Fecha de inicio -->
+        <div class="fecha-inicio">
+          <h5>Fecha de Inicio</h5>
+          <p>{{ pareja.fechaCreacion | date:'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Información del compañero -->
+    <p-card header="Tu Compañero/a">
+      <div class="companero-info">
+
+        <!-- Avatar y datos básicos -->
+        <div class="companero-principal">
+          <p-avatar
+            [label]="getIniciales(companero)"
+            size="large"
+            shape="circle">
+          </p-avatar>
+
+          <div class="datos-companero">
+            <h4>{{ getNombreCompleto(companero) }}</h4>
+            <p class="username">{{ '@' + (companero?.username || '') }}</p>
+            <p class="email">{{ companero?.correo }}</p>
+          </div>
+        </div>
+
+        <!-- Detalles adicionales -->
+        <div class="detalles-companero">
+          <div class="detalle-item" *ngIf="companero?.fechaNacimiento">
+            <p-chip
+              label="Nacimiento"
+              icon="pi pi-calendar">
+            </p-chip>
+            <span>{{ companero?.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
+          </div>
+
+          <div class="detalle-item" *ngIf="companero?.genero">
+            <p-chip
+              label="Género"
+              icon="pi pi-user">
+            </p-chip>
+            <span>{{ companero?.genero === 'M' ? 'Masculino' : companero?.genero === 'F' ? 'Femenino' : 'Otro' }}</span>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Acciones de pareja -->
+    <p-card header="Acciones">
+      <div class="acciones-pareja">
+        <p-button
+          label="Ver Chat"
+          icon="pi pi-comments"
+          styleClass="p-button-success">
+        </p-button>
+
+        <p-button
+          label="Ver Citas"
+          icon="pi pi-calendar"
+          styleClass="p-button-info">
+        </p-button>
+
+        <p-button
+          label="Ver Eventos"
+          icon="pi pi-star"
+          styleClass="p-button-warning">
+        </p-button>
+
+        <p-button
+          label="Configurar Pareja"
+          icon="pi pi-cog"
+          styleClass="p-button-outlined">
+        </p-button>
+      </div>
+    </p-card>
+
+  </div>
+</div>
