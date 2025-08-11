@@ -1,46 +1,19 @@
-<div class="sidebar-item" [style.padding-left]="getPaddingLeft()">
-  <!-- Elemento del menú -->
-  <div
-    class="menu-element"
-    [ngClass]="{
-      'active': item.routerLink && currentExpandedItemIndex[0] === index,
-      'has-children': hasChildren(),
-      'expanded': expanded
-    }"
-    (click)="toggleExpand()">
-
-    <!-- Icono -->
-    <div class="item-icon" *ngIf="item.icon">
-      <i [class]="item.icon"></i>
-    </div>
-
-    <!-- Texto del elemento -->
-    <span class="item-text" *ngIf="!sidebarCollapsed">
-      {{ item.label }}
+<div class="sidebar-item">
+  <!-- Item simple usando PrimeNG Button -->
+  <p-button
+    [label]="!sidebarCollapsed ? item.label : ''"
+    [icon]="item.icon"
+    [text]="true"
+    [routerLink]="item.routerLink"
+    styleClass="w-full justify-content-start sidebar-menu-item"
+    [ngClass]="{'active': isActive()}"
+  >
+    <!-- Badge si existe -->
+    <span
+      *ngIf="item.badge && !sidebarCollapsed"
+      class="item-badge"
+    >
+      {{ item.badge }}
     </span>
-
-    <!-- Badge -->
-    <div class="item-badge" *ngIf="item.badge && !sidebarCollapsed">
-      <span class="badge-value">{{ item.badge }}</span>
-    </div>
-
-    <!-- Flecha para elementos con hijos -->
-    <div class="expand-arrow" *ngIf="hasChildren() && !sidebarCollapsed">
-      <i class="pi" [class.pi-chevron-down]="expanded" [class.pi-chevron-right]="!expanded"></i>
-    </div>
-  </div>
-
-  <!-- Subelementos -->
-  <div class="submenu" *ngIf="hasChildren() && expanded && !sidebarCollapsed">
-    <app-sidebar-item
-      *ngFor="let subItem of item.items; let subIndex = index"
-      [item]="subItem"
-      [depth]="depth + 1"
-      [index]="subIndex"
-      [expanded]="false"
-      [currentExpandedItemIndex]="currentExpandedItemIndex"
-      [sidebarCollapsed]="sidebarCollapsed"
-      (expandChange)="onExpandChange($event)">
-    </app-sidebar-item>
-  </div>
+  </p-button>
 </div>

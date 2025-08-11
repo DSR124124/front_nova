@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 
-import { LayoutRoutingModule } from './layout-routing.module';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidebarItemComponent } from './components/sidebar-item/sidebar-item.component';
@@ -22,7 +21,6 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     CommonModule,
     RouterModule,
     PrimeNgModule,
-    LayoutRoutingModule
   ],
   exports: [
     HeaderComponent,

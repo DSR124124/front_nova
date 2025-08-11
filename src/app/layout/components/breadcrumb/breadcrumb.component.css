@@ -1,0 +1,75 @@
+/* Contenedor del breadcrumb */
+.breadcrumb-container {
+  padding: 1rem 1.5rem;
+  background-color: var(--p-surface-50);
+  border-bottom: 1px solid var(--p-surface-border);
+}
+
+/* Estilos para PrimeNG Breadcrumb */
+:host ::ng-deep .custom-breadcrumb {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+:host ::ng-deep .custom-breadcrumb .p-breadcrumb-list {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:host ::ng-deep .custom-breadcrumb .p-menuitem-link {
+  color: var(--p-text-muted-color) !important;
+  text-decoration: none !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+:host ::ng-deep .custom-breadcrumb .p-menuitem-link:hover {
+  color: var(--p-primary-color) !important;
+  background: var(--p-highlight-bg) !important;
+}
+
+:host ::ng-deep .custom-breadcrumb .p-menuitem-link:focus {
+  outline: 1px solid var(--p-primary-color) !important;
+  outline-offset: 2px !important;
+}
+
+:host ::ng-deep .custom-breadcrumb .p-breadcrumb-separator {
+  color: var(--p-text-muted-color) !important;
+  margin: 0 0.5rem !important;
+}
+
+:host ::ng-deep .custom-breadcrumb .p-menuitem-text {
+  color: inherit !important;
+}
+
+:host ::ng-deep .custom-breadcrumb .p-menuitem-icon {
+  color: var(--p-primary-color) !important;
+  margin-right: 0.25rem !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .breadcrumb-container {
+    padding: 0.75rem 1rem;
+  }
+
+  :host ::ng-deep .custom-breadcrumb .p-menuitem-link {
+    padding: 0.25rem !important;
+  }
+
+  :host ::ng-deep .custom-breadcrumb .p-breadcrumb-separator {
+    margin: 0 0.25rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .breadcrumb-container {
+    padding: 0.5rem 0.75rem;
+  }
+
+  :host ::ng-deep .custom-breadcrumb .p-menuitem-text {
+    font-size: 0.9rem !important;
+  }
+}

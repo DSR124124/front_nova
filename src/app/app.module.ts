@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './feactures/auth/auth.module';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
   declarations: [
@@ -16,10 +17,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,        // ← Agregado aquí
     AppRoutingModule,
     PrimeNgModule,
-    AuthModule
+    AuthModule,
+    LayoutModule
   ],
   providers: [
     provideAnimationsAsync(),

@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -9,30 +10,12 @@ import { MenuItem } from 'primeng/api';
 })
 export class SidebarItemComponent {
   @Input() item!: MenuItem;
-  @Input() depth: number = 0;
-  @Input() index: number = 0;
-  @Input() expanded: boolean = false;
-  @Input() currentExpandedItemIndex: number[] = [];
   @Input() sidebarCollapsed: boolean = false;
 
-  @Output() expandChange = new EventEmitter<{ index: number; expanded: boolean }>();
+  constructor(private router: Router) {}
 
-  toggleExpand() {
-    if (this.item.items && this.item.items.length > 0) {
-      this.expanded = !this.expanded;
-      this.expandChange.emit({ index: this.index, expanded: this.expanded });
-    }
-  }
-
-  onExpandChange(event: { index: number; expanded: boolean }) {
-    this.expandChange.emit(event);
-  }
-
-  hasChildren(): boolean {
-    return this.item.items !== undefined && this.item.items.length > 0;
-  }
-
-  getPaddingLeft(): string {
-    return `${this.depth * 20}px`;
+  isActive(): boolean {
+    if (!this.item.routerLink) return false;
+    return this.router.url.startsWith(this.item.routerLink);
   }
 }

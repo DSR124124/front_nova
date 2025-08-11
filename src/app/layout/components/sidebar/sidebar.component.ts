@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
@@ -11,33 +11,28 @@ import { MenuItem } from 'primeng/api';
 })
 export class SidebarComponent implements OnInit {
   collapsed = false;
-  activeRoute = '';
-  currentExpandedItemIndex: number[] = [];
+  isMobile = false;
 
   menuItems: MenuItem[] = [
     {
       label: 'Dashboard',
       icon: 'pi pi-home',
-      routerLink: '/dashboard',
-      badge: undefined
+      routerLink: '/dashboard'
     },
     {
       label: 'Citas',
       icon: 'pi pi-calendar',
-      routerLink: '/citas',
-      badge: undefined
+      routerLink: '/citas'
     },
     {
       label: 'Eventos',
       icon: 'pi pi-calendar-plus',
-      routerLink: '/eventos',
-      badge: undefined
+      routerLink: '/eventos'
     },
     {
       label: 'Lugares',
       icon: 'pi pi-map-marker',
-      routerLink: '/lugares',
-      badge: undefined
+      routerLink: '/lugares'
     },
     {
       label: 'Chat',
@@ -48,8 +43,7 @@ export class SidebarComponent implements OnInit {
     {
       label: 'Regalos',
       icon: 'pi pi-gift',
-      routerLink: '/regalos',
-      badge: undefined
+      routerLink: '/regalos'
     },
     {
       label: 'Recordatorios',
@@ -60,66 +54,39 @@ export class SidebarComponent implements OnInit {
     {
       label: 'Notas',
       icon: 'pi pi-file-edit',
-      routerLink: '/notas',
-      badge: undefined
+      routerLink: '/notas'
     },
     {
       label: 'Multimedia',
       icon: 'pi pi-images',
-      routerLink: '/multimedia',
-      badge: undefined
+      routerLink: '/multimedia'
     },
     {
       label: 'Perfil',
       icon: 'pi pi-user',
-      routerLink: '/perfil',
-      badge: undefined
+      routerLink: '/perfil'
     }
   ];
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.setActiveRoute();
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.setActiveRoute();
-      });
+    this.checkScreenSize();
   }
 
-  setActiveRoute() {
-    const currentUrl = this.router.url;
-    this.activeRoute = currentUrl;
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
 
-    // Encontrar el índice del elemento activo
-    const activeIndex = this.menuItems.findIndex(item =>
-      item.routerLink && currentUrl.startsWith(item.routerLink)
-    );
-
-    if (activeIndex !== -1) {
-      this.currentExpandedItemIndex = [activeIndex];
+  private checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
+    if (this.isMobile) {
+      this.collapsed = true;
     }
   }
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
-  }
-
-  handleExpandChange(event: { index: number; expanded: boolean }) {
-    if (event.expanded) {
-      // Solo permitir un elemento expandido a la vez
-      this.currentExpandedItemIndex = [event.index];
-    } else {
-      this.currentExpandedItemIndex = this.currentExpandedItemIndex.filter(i => i !== event.index);
-    }
-  }
-
-  navigateTo(route: string) {
-    this.router.navigate([route]);
-  }
-
-  isActive(route: string): boolean {
-    return this.activeRoute.startsWith(route);
   }
 }

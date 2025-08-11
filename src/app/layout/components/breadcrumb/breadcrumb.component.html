@@ -1,1 +1,7 @@
-<p>breadcrumb works!</p>
+<div class="breadcrumb-container" *ngIf="items.length > 0">
+  <p-breadcrumb
+    [model]="items"
+    [home]="home"
+    styleClass="custom-breadcrumb"
+  />
+</div>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
@@ -43,6 +44,7 @@ import { DividerModule } from 'primeng/divider';
   exports: [
     AvatarModule,
     BadgeModule,
+    BreadcrumbModule,
     ButtonModule,
     CardModule,
     CarouselModule,

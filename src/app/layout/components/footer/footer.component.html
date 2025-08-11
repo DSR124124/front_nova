@@ -14,28 +14,32 @@
     <!-- Enlaces útiles -->
     <div class="footer-section">
       <h4>Enlaces útiles</h4>
-      <ul class="footer-links">
-        <li *ngFor="let link of footerLinks">
-          <a [routerLink]="link.route" class="footer-link">
-            {{ link.label }}
-          </a>
-        </li>
-      </ul>
+      <div class="footer-links">
+        <p-button
+          *ngFor="let link of footerLinks"
+          [label]="link.label"
+          [routerLink]="link.route"
+          [text]="true"
+          size="small"
+          styleClass="footer-link-btn"
+        />
+      </div>
     </div>
 
     <!-- Redes sociales -->
     <div class="footer-section">
       <h4>Síguenos</h4>
       <div class="social-links">
-        <a
+        <p-button
           *ngFor="let social of socialLinks"
-          [href]="social.url"
-          class="social-link"
+          [icon]="social.icon"
+          [text]="true"
+          [rounded]="true"
+          size="small"
+          styleClass="social-link-btn"
           [attr.aria-label]="social.label"
-          target="_blank"
-          rel="noopener noreferrer">
-          <i [class]="social.icon"></i>
-        </a>
+          (onClick)="openSocialLink(social.url)"
+        />
       </div>
     </div>
 
@@ -43,22 +47,28 @@
     <div class="footer-section">
       <h4>Contacto</h4>
       <div class="contact-info">
-        <p><i class="pi pi-phone"></i> +1 (555) 123-4567</p>
-        <p><i class="pi pi-map-marker"></i> Ciudad, País</p>
+        <div class="contact-item">
+          <i class="pi pi-phone"></i>
+          <span>+1 (555) 123-4567</span>
+        </div>
+        <div class="contact-item">
+          <i class="pi pi-map-marker"></i>
+          <span>Ciudad, País</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Línea divisoria -->
-  <div class="footer-divider"></div>
+  <!-- Divisor simple -->
+  <p-divider />
 
   <!-- Copyright y versión -->
   <div class="footer-bottom">
     <div class="copyright">
-      <p>&copy; {{ currentYear }} Nova App. Todos los derechos reservados.</p>
+      <span>&copy; {{ currentYear }} Nova App. Todos los derechos reservados.</span>
     </div>
     <div class="version">
-      <span>v1.0.0</span>
+      <span class="version-tag">v1.0.0</span>
     </div>
   </div>
 </footer>

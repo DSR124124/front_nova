@@ -1,57 +1,56 @@
 <div class="sidebar-container" [class.collapsed]="collapsed">
-  <!-- Header del sidebar -->
+  <!-- Header básico -->
   <div class="sidebar-header">
-    <div class="sidebar-toggle" (click)="toggleSidebar()">
-      <i class="pi" [class.pi-chevron-left]="!collapsed" [class.pi-chevron-right]="collapsed"></i>
-    </div>
+    <p-button
+      [icon]="collapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
+      [text]="true"
+      [rounded]="true"
+      size="small"
+      (onClick)="toggleSidebar()"
+    />
     <div class="sidebar-title" *ngIf="!collapsed">
       <i class="pi pi-heart-fill"></i>
       <span>Nova</span>
     </div>
   </div>
 
-  <!-- Menú de navegación usando componentes recursivos -->
+  <!-- Menú principal usando sidebar-item simplificado -->
   <div class="sidebar-nav">
-    <ul class="menu">
-      <li
-        *ngFor="let item of menuItems; let i = index"
-        class="elemento menu-item"
-        [ngClass]="{ 'item-activo': currentExpandedItemIndex[0] === i }">
-
-        <!-- Llamamos al componente recursivo -->
-        <app-sidebar-item
-          [item]="item"
-          [depth]="0"
-          [index]="i"
-          [expanded]="currentExpandedItemIndex[0] === i"
-          [currentExpandedItemIndex]="currentExpandedItemIndex"
-          [sidebarCollapsed]="collapsed"
-          (expandChange)="handleExpandChange($event)">
-        </app-sidebar-item>
-      </li>
-    </ul>
+    <app-sidebar-item
+      *ngFor="let item of menuItems"
+      [item]="item"
+      [sidebarCollapsed]="collapsed"
+    />
   </div>
 
-  <!-- Footer del sidebar -->
+  <!-- Footer básico -->
   <div class="sidebar-footer" *ngIf="!collapsed">
     <div class="user-info">
       <p-avatar
         label="U"
         size="normal"
         shape="circle"
-        class="user-avatar">
-      </p-avatar>
+      />
       <div class="user-details">
         <span class="user-name">Usuario</span>
         <span class="user-status">En línea</span>
       </div>
     </div>
   </div>
+
+  <!-- Avatar solo cuando está colapsado -->
+  <div class="sidebar-footer-collapsed" *ngIf="collapsed">
+    <p-avatar
+      label="U"
+      size="normal"
+      shape="circle"
+    />
+  </div>
 </div>
 
-<!-- Overlay para cerrar sidebar en móvil -->
+<!-- Overlay para móvil -->
 <div
   class="sidebar-overlay"
-  *ngIf="!collapsed"
-  (click)="toggleSidebar()">
-</div>
+  *ngIf="!collapsed && isMobile"
+  (click)="toggleSidebar()"
+></div>

@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
   currentYear = new Date().getFullYear();
-  
+
   footerLinks = [
     { label: 'Acerca de', route: '/about' },
     { label: 'Privacidad', route: '/privacy' },
@@ -22,4 +22,10 @@ export class FooterComponent {
     { icon: 'pi pi-instagram', url: '#', label: 'Instagram' },
     { icon: 'pi pi-linkedin', url: '#', label: 'LinkedIn' }
   ];
+
+  openSocialLink(url: string): void {
+    if (url !== '#') {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  }
 }
