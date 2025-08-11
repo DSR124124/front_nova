@@ -10,8 +10,7 @@ import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
-import { DashboardModule } from './feactures/dashboard/dashboard.module';
-import { PerfilModule } from './feactures/perfil/perfil.module';
+import { ChatModule } from './feactures/chat/chat.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,7 @@ import { PerfilModule } from './feactures/perfil/perfil.module';
     AuthModule,
     LayoutModule,
     SharedModule,
-    PerfilModule
+    ChatModule
   ],
   providers: [
     provideAnimationsAsync(),

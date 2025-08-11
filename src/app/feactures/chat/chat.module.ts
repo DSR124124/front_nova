@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 
 import { ChatRoutingModule } from './chat-routing.module';
@@ -22,6 +23,15 @@ import { EmojiSelectorComponent } from './components/emoji-selector/emoji-select
     FormsModule,
     PrimeNgModule,
     ChatRoutingModule
+  ],
+  providers: [
+    MessageService
+  ],
+  exports: [
+    ChatWindowComponent,
+    MessageListComponent,
+    MessageInputComponent,
+    EmojiSelectorComponent
   ]
 })
 export class ChatModule { }

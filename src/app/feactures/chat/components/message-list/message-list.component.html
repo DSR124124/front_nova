@@ -1,51 +1,126 @@
 <div class="message-list-container" #messageContainer>
+
   <!-- Estado de carga -->
-  <div *ngIf="loading" class="loading-messages">
-    <p-progressSpinner size="small"></p-progressSpinner>
-    <span>Cargando mensajes...</span>
+  <div *ngIf="loading" class="loading-state">
+    <p-progressSpinner size="small" />
+    <p>Cargando mensajes...</p>
   </div>
 
-  <!-- Mensaje cuando no hay mensajes -->
-  <div *ngIf="!loading && messages.length === 0" class="no-messages">
+  <!-- Estado sin mensajes -->
+  <div *ngIf="!loading && messages.length === 0" class="empty-state">
     <i class="pi pi-comment-slash"></i>
-    <p>No hay mensajes en esta sala</p>
-    <span>¡Sé el primero en escribir!</span>
+    <h4>{{ emptyStateMessage }}</h4>
+    <p>{{ emptyStateSubMessage }}</p>
   </div>
 
   <!-- Lista de mensajes -->
-  <div
-    *ngFor="let message of messages; trackBy: trackByMessageId"
-    class="message-item"
-    [class.own-message]="isOwnMessage(message)">
+  <div *ngIf="!loading && messages.length > 0" class="messages-wrapper">
 
-    <div class="message-avatar">
-      <p-avatar
-        [label]="message.senderName.charAt(0).toUpperCase()"
-        size="normal"
-        shape="circle">
-      </p-avatar>
-    </div>
+    <ng-container *ngFor="let message of messages; let i = index; trackBy: trackByMessageId">
 
-    <div class="message-content">
-      <div class="message-header">
-        <span class="sender-name">{{ message.senderName }}</span>
-        <span class="message-time">{{ getMessageTime(message) }}</span>
+      <!-- Separador de fecha -->
+      <div *ngIf="shouldShowDateSeparator(message, i)" class="date-separator">
+        <p-divider align="center">
+          <p-chip [label]="formatDateSeparator(message.timestamp)" />
+        </p-divider>
       </div>
 
-      <div class="message-text">
-        <span *ngIf="message.messageType === 'TEXT'">{{ message.content }}</span>
-        <img *ngIf="message.messageType === 'IMAGE'" [src]="message.content" alt="Imagen" class="message-image">
-        <div *ngIf="message.messageType === 'FILE'" class="message-file">
-          <i class="pi pi-file"></i>
-          <span>{{ message.content }}</span>
+      <!-- Mensaje -->
+      <div class="message-item" [class.own-message]="isOwnMessage(message)">
+
+        <!-- Avatar (solo para mensajes de otros) -->
+        <div *ngIf="!isOwnMessage(message)" class="message-avatar">
+          <p-avatar
+            [label]="getSenderInitials(message.senderName)"
+            size="normal"
+            shape="circle"
+            styleClass="sender-avatar">
+          </p-avatar>
+        </div>
+
+        <!-- Burbuja del mensaje -->
+        <div class="message-bubble" [class.own-bubble]="isOwnMessage(message)">
+
+          <!-- Header del mensaje (solo para mensajes de otros) -->
+          <div *ngIf="!isOwnMessage(message)" class="message-header">
+            <span class="sender-name">{{ message.senderName }}</span>
+          </div>
+
+          <!-- Contenido del mensaje -->
+          <div class="message-body">
+
+            <!-- Mensaje de texto -->
+            <div *ngIf="message.messageType === 'TEXT'" class="text-content">
+              <p>{{ message.content }}</p>
+            </div>
+
+            <!-- Mensaje con imagen -->
+            <div *ngIf="message.messageType === 'IMAGE'" class="image-content">
+              <img [src]="message.content" alt="Imagen compartida" class="message-image" />
+            </div>
+
+            <!-- Mensaje con archivo -->
+            <div *ngIf="message.messageType === 'FILE'" class="file-content">
+              <p-card styleClass="file-card">
+                <div class="file-info">
+                  <i class="pi pi-file file-icon"></i>
+                  <div class="file-details">
+                    <span class="file-name">{{ message.content }}</span>
+                    <small class="file-size">Archivo</small>
+                  </div>
+                  <p-button
+                    icon="pi pi-download"
+                    size="small"
+                    severity="secondary"
+                    [text]="true">
+                  </p-button>
+                </div>
+              </p-card>
+            </div>
+          </div>
+
+          <!-- Footer del mensaje -->
+          <div class="message-footer">
+            <div class="message-meta">
+              <small class="message-time">{{ getMessageTime(message) }}</small>
+
+              <!-- Estado del mensaje (solo para mensajes propios) -->
+              <div *ngIf="isOwnMessage(message)" class="message-status">
+                <i [class]="getMessageStatusIcon(message)" class="status-icon"></i>
+                <small>{{ getMessageStatusText(message) }}</small>
+              </div>
+            </div>
+
+            <!-- Acciones del mensaje -->
+            <div class="message-actions" *ngIf="isOwnMessage(message)">
+              <p-menu #messageMenu [model]="getMessageActions(message)" [popup]="true">
+              </p-menu>
+
+              <p-button
+                icon="pi pi-ellipsis-v"
+                size="small"
+                severity="secondary"
+                [text]="true"
+                (click)="messageMenu.toggle($event)"
+                styleClass="action-btn">
+              </p-button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="message-footer">
-        <span class="message-status" *ngIf="getMessageStatus(message)">
-          {{ getMessageStatus(message) }}
-        </span>
-      </div>
-    </div>
+    </ng-container>
   </div>
+
+  <!-- Botón para ir al inicio -->
+  <div class="scroll-actions" *ngIf="messages.length > 10">
+    <p-button
+      icon="pi pi-angle-up"
+      (onClick)="scrollToTop()"
+      size="small"
+      severity="secondary"
+      [rounded]="true"
+      styleClass="scroll-to-top">
+    </p-button>
+  </div>
+
 </div>

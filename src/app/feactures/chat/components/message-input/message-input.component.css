@@ -1,0 +1,306 @@
+/* Contenedor principal */
+.message-input-container {
+  padding: 1rem;
+  background: var(--surface-0);
+  border-top: 1px solid var(--surface-200);
+  position: relative;
+}
+
+/* Wrapper del input */
+.input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Contenedor del textarea */
+.textarea-container {
+  flex: 1;
+  position: relative;
+}
+
+/* Textarea principal */
+.message-textarea {
+  width: 100%;
+  min-height: 40px;
+  max-height: 120px;
+  resize: none;
+  border-radius: 1.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--surface-300);
+  transition: all 0.2s ease;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.message-textarea:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 2px rgba(var(--primary-500-rgb), 0.2);
+}
+
+.message-textarea.near-limit {
+  border-color: var(--orange-500);
+}
+
+.message-textarea.over-limit {
+  border-color: var(--red-500);
+}
+
+.message-textarea:disabled {
+  background: var(--surface-100);
+  color: var(--text-color-secondary);
+  cursor: not-allowed;
+}
+
+/* Indicador de escritura */
+.typing-indicator {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0.5rem;
+  color: var(--primary-500);
+  font-style: italic;
+}
+
+/* Acciones del input */
+.input-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.input-actions p-button.active {
+  background: var(--primary-100);
+  color: var(--primary-600);
+}
+
+/* Información adicional */
+.input-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  min-height: 1.5rem;
+}
+
+.character-count {
+  flex: 1;
+}
+
+.text-warning {
+  color: var(--orange-500);
+}
+
+.text-danger {
+  color: var(--red-500);
+}
+
+.text-secondary {
+  color: var(--text-color-secondary);
+}
+
+/* Sección de envío */
+.send-section {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.send-button {
+  min-width: 100px;
+}
+
+/* Picker de emojis */
+.emoji-picker {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  z-index: 1000;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.emoji-card {
+  min-width: 280px;
+  max-width: 320px;
+}
+
+.emoji-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.emoji-header h6 {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+}
+
+.emoji-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emoji-btn:hover {
+  background: var(--surface-100);
+}
+
+.emoji-btn:active {
+  background: var(--surface-200);
+  transform: scale(0.95);
+}
+
+/* Estados especiales */
+.message-textarea:placeholder-shown {
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .message-input-container {
+    padding: 0.75rem;
+  }
+
+  .input-wrapper {
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .message-textarea {
+    padding: 0.5rem 0.75rem;
+    border-radius: 1rem;
+  }
+
+  .emoji-picker {
+    right: 0.5rem;
+    left: 0.5rem;
+    width: auto;
+  }
+
+  .emoji-card {
+    min-width: auto;
+  }
+
+  .emoji-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .message-input-container {
+    padding: 0.5rem;
+  }
+
+  .input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .input-actions {
+    justify-content: center;
+  }
+
+  .input-info {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+
+  .character-count {
+    text-align: center;
+  }
+
+  .send-section {
+    justify-content: center;
+  }
+
+  .send-button {
+    width: 100%;
+  }
+
+  .emoji-grid {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0.25rem;
+  }
+
+  .emoji-btn {
+    padding: 0.25rem;
+    font-size: 1rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.emoji-picker {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.typing-indicator {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Focus states mejorados */
+.message-textarea:focus + .typing-indicator {
+  color: var(--primary-600);
+}
+
+/* Estados de hover */
+.input-actions p-button:hover:not(:disabled) {
+  background: var(--surface-100);
+}
+
+/* Mejoras de accesibilidad */
+.message-textarea:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: -2px;
+}
+
+.emoji-btn:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: -2px;
+}
+
+/* Scrollbar personalizada para textarea */
+.message-textarea::-webkit-scrollbar {
+  width: 4px;
+}
+
+.message-textarea::-webkit-scrollbar-track {
+  background: var(--surface-100);
+  border-radius: 2px;
+}
+
+.message-textarea::-webkit-scrollbar-thumb {
+  background: var(--surface-400);
+  border-radius: 2px;
+}
+
+.message-textarea::-webkit-scrollbar-thumb:hover {
+  background: var(--surface-500);
+}

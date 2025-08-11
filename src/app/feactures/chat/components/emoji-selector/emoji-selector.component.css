@@ -1,0 +1,374 @@
+/* Contenedor principal */
+.emoji-selector {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Overlay de fondo */
+.emoji-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+/* Panel principal */
+.emoji-panel {
+  position: relative;
+  width: 400px;
+  max-width: 90vw;
+  max-height: 80vh;
+  animation: slideIn 0.3s ease-out;
+}
+
+.emoji-card {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+.emoji-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--surface-200);
+}
+
+.search-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  width: 100%;
+  border-radius: 1.5rem;
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+  border: 1px solid var(--surface-300);
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 2px rgba(var(--primary-500-rgb), 0.2);
+}
+
+.close-btn {
+  flex-shrink: 0;
+}
+
+/* Categorías */
+.categories-container {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--surface-200);
+  padding-bottom: 1rem;
+}
+
+.categories-scroll {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  padding: 0.25rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.categories-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.category-btn {
+  background: none;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+}
+
+.category-btn:hover {
+  background: var(--surface-100);
+}
+
+.category-btn.active {
+  background: var(--primary-100);
+  color: var(--primary-600);
+  transform: scale(1.1);
+}
+
+/* Título de categoría */
+.category-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.category-title h6 {
+  margin: 0;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+/* Contenido de emojis */
+.emoji-content {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+/* Estado sin emojis */
+.no-emojis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-color-secondary);
+}
+
+.no-emojis p {
+  margin: 0.5rem 0 0.25rem 0;
+  font-weight: 500;
+}
+
+.no-emojis small {
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Grid de emojis */
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.25rem;
+  padding: 0.25rem;
+}
+
+.emoji-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+}
+
+.emoji-btn:hover {
+  background: var(--surface-100);
+  transform: scale(1.2);
+}
+
+.emoji-btn:active {
+  background: var(--surface-200);
+  transform: scale(1.1);
+}
+
+/* Footer */
+.emoji-footer {
+  padding-top: 1rem;
+  border-top: 1px solid var(--surface-200);
+  text-align: center;
+}
+
+.emoji-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-color-secondary);
+}
+
+/* Scroll personalizado */
+.emoji-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.emoji-content::-webkit-scrollbar-track {
+  background: var(--surface-100);
+  border-radius: 3px;
+}
+
+.emoji-content::-webkit-scrollbar-thumb {
+  background: var(--surface-400);
+  border-radius: 3px;
+}
+
+.emoji-content::-webkit-scrollbar-thumb:hover {
+  background: var(--surface-500);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .emoji-panel {
+    width: 350px;
+    max-height: 70vh;
+  }
+
+  .emoji-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .category-btn {
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .emoji-btn {
+    padding: 0.25rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .emoji-panel {
+    width: 320px;
+    max-height: 60vh;
+  }
+
+  .emoji-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.125rem;
+  }
+
+  .emoji-btn {
+    font-size: 1rem;
+    padding: 0.25rem;
+  }
+
+  .category-btn {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.875rem;
+    padding: 0.25rem;
+  }
+
+  .emoji-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+
+  .close-btn {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 320px) {
+  .emoji-panel {
+    width: 280px;
+  }
+
+  .emoji-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .categories-scroll {
+    gap: 0.125rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Estados de hover mejorados */
+.emoji-btn:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-btn:hover:not(.active) {
+  transform: translateY(-2px);
+}
+
+/* Focus states para accesibilidad */
+.emoji-btn:focus-visible,
+.category-btn:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+.search-input:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: -2px;
+}
+
+/* Estados especiales */
+.emoji-selector.closing {
+  animation: fadeOut 0.2s ease-out;
+}
+
+.emoji-selector.closing .emoji-panel {
+  animation: slideOut 0.2s ease-out;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+}

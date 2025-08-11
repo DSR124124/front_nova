@@ -1,1 +1,104 @@
-<p>emoji-selector works!</p>
+<div class="emoji-selector" *ngIf="visible">
+
+  <!-- Overlay de fondo -->
+  <div class="emoji-overlay" (click)="closeSelector()"></div>
+
+  <!-- Panel principal -->
+  <div class="emoji-panel">
+    <p-card styleClass="emoji-card">
+
+      <!-- Header con búsqueda -->
+      <div class="emoji-header">
+        <div class="search-container">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="searchTerm"
+              (input)="searchEmojis()"
+              placeholder="Buscar emojis..."
+              class="search-input">
+          </span>
+
+          <p-button
+            *ngIf="searchTerm"
+            icon="pi pi-times"
+            (onClick)="clearSearch()"
+            size="small"
+            severity="secondary"
+            [text]="true"
+            pTooltip="Limpiar búsqueda">
+          </p-button>
+        </div>
+
+        <p-button
+          icon="pi pi-times"
+          (onClick)="closeSelector()"
+          size="small"
+          severity="secondary"
+          [text]="true"
+          styleClass="close-btn"
+          pTooltip="Cerrar">
+        </p-button>
+      </div>
+
+      <!-- Categorías -->
+      <div class="categories-container">
+        <div class="categories-scroll">
+          <button
+            *ngFor="let category of emojiCategories"
+            class="category-btn"
+            [class.active]="selectedCategory === category.name"
+            (click)="selectCategory(category.name)"
+            [pTooltip]="getCategoryDisplayName(category.name)"
+            type="button">
+            {{ getCategoryIcon(category.name) }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Título de categoría actual -->
+      <div class="category-title">
+        <h6>{{ getCategoryDisplayName(selectedCategory) }}</h6>
+        <p-chip
+          [label]="getCurrentEmojis().length.toString()"
+          size="small">
+        </p-chip>
+      </div>
+
+      <!-- Grid de emojis -->
+      <div class="emoji-content">
+
+        <!-- Estado sin emojis -->
+        <div *ngIf="!hasEmojis()" class="no-emojis">
+          <i class="pi pi-face-smile" style="font-size: 2rem; opacity: 0.5;"></i>
+          <p>No se encontraron emojis</p>
+          <small *ngIf="searchTerm">Intenta con otro término de búsqueda</small>
+        </div>
+
+        <!-- Grid de emojis -->
+        <div *ngIf="hasEmojis()" class="emoji-grid">
+          <button
+            *ngFor="let emoji of getCurrentEmojis()"
+            class="emoji-btn"
+            (click)="selectEmoji(emoji)"
+            [pTooltip]="emoji"
+            type="button">
+            {{ emoji }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer informativo -->
+      <div class="emoji-footer">
+        <small class="emoji-info">
+          <i class="pi pi-info-circle"></i>
+          Haz clic en un emoji para agregarlo al mensaje
+        </small>
+      </div>
+
+    </p-card>
+  </div>
+
+</div>
