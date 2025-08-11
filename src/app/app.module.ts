@@ -1,23 +1,35 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import Aura from '@primeuix/themes/aura';
 
 import { AppRoutingModule } from './app-routing.module';
 import { PrimeNgModule } from './prime-ng/prime-ng.module';
 import { AppComponent } from './app.component';
-import { LayoutModule } from './layout/layout.module';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthModule } from './feactures/auth/auth.module';
+import { providePrimeNG } from 'primeng/config';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
-    AppComponent,
-
+    AppComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,        // ← Agregado aquí
     AppRoutingModule,
     PrimeNgModule,
-    LayoutModule,
+    AuthModule
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync(),
+    providePrimeNG({
+        theme: {
+            preset: Aura,
+
+        }
+    })
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

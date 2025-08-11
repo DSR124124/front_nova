@@ -7,11 +7,21 @@ import { roleGuard } from './core/guards/role.guard';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'auth',
+    pathMatch: 'full'
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./feactures/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: '',
+    path: 'dashboard',
+    loadChildren: () => import('./feactures/dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'app',
     loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule),
     canActivate: [authGuard, parejaGuard]
   },
@@ -21,13 +31,11 @@ const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { roles: ['ADMIN'] }
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'auth' }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-
-  }
+export class AppRoutingModule { }

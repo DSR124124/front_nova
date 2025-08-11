@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-register',
-  standalone: false,
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrls: ['./register.component.css'],
+  standalone: false
 })
 export class RegisterComponent {
-
+  // Componente básico para completar el módulo
 }
