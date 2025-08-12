@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,78 +8,80 @@ import { Router } from '@angular/router';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent implements OnInit {
-  collapsed = false;
+  @Input() collapsed: boolean = false;
+  @Output() sidebarToggle = new EventEmitter<void>();
+  
   isMobile = false;
 
   menuItems = [
     {
       label: 'Dashboard',
       icon: 'pi pi-home',
-      routerLink: '/dashboard'
+      routerLink: '/app/dashboard'
     },
     {
       label: 'Citas',
       icon: 'pi pi-calendar',
-      routerLink: '/citas',
+      routerLink: '/app/citas',
       items: [
         {
           label: 'Lista de Citas',
           icon: 'pi pi-list',
-          routerLink: '/citas/listar'
+          routerLink: '/app/citas/listar'
         },
         {
           label: 'Calendario',
           icon: 'pi pi-calendar',
-          routerLink: '/citas/calendario'
+          routerLink: '/app/citas/calendario'
         },
         {
           label: 'Nueva Cita',
           icon: 'pi pi-plus',
-          routerLink: '/citas/nueva'
+          routerLink: '/app/citas/nueva'
         }
       ]
     },
     {
       label: 'Eventos',
       icon: 'pi pi-calendar-plus',
-      routerLink: '/eventos'
+      routerLink: '/app/eventos'
     },
     {
       label: 'Lugares',
       icon: 'pi pi-map-marker',
-      routerLink: '/lugares'
+      routerLink: '/app/lugares'
     },
     {
       label: 'Chat',
       icon: 'pi pi-comments',
-      routerLink: '/chat',
+      routerLink: '/app/chat',
       badge: '3'
     },
     {
       label: 'Regalos',
       icon: 'pi pi-gift',
-      routerLink: '/regalos'
+      routerLink: '/app/regalos'
     },
     {
       label: 'Recordatorios',
       icon: 'pi pi-bell',
-      routerLink: '/recordatorios',
+      routerLink: '/app/recordatorios',
       badge: '2'
     },
     {
       label: 'Notas',
       icon: 'pi pi-file-edit',
-      routerLink: '/notas'
+      routerLink: '/app/notas'
     },
     {
       label: 'Multimedia',
       icon: 'pi pi-images',
-      routerLink: '/multimedia'
+      routerLink: '/app/multimedia'
     },
     {
       label: 'Perfil',
       icon: 'pi pi-user',
-      routerLink: '/perfil'
+      routerLink: '/app/perfil'
     }
   ];
 
@@ -98,10 +100,12 @@ export class SidebarComponent implements OnInit {
     this.isMobile = window.innerWidth <= 768;
     if (this.isMobile) {
       this.collapsed = true;
+      this.sidebarToggle.emit();
     }
   }
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
+    this.sidebarToggle.emit();
   }
 }

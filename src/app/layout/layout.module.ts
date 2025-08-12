@@ -8,6 +8,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidebarItemComponent } from './components/sidebar-item/sidebar-item.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { LayoutRoutingModule } from './layout-routing.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     CommonModule,
     RouterModule,
     PrimeNgModule,
+    LayoutRoutingModule
   ],
   exports: [
     HeaderComponent,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -9,6 +9,9 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
+  @Input() sidebarCollapsed: boolean = false;
+  @Output() toggleSidebar = new EventEmitter<void>();
+  
   user: any = null;
   notifications: any[] = [];
   showNotifications = false;
@@ -21,6 +24,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.user = this.authService.getUser();
     this.loadNotifications();
+  }
+
+  onToggleSidebar() {
+    this.toggleSidebar.emit();
   }
 
   loadNotifications() {

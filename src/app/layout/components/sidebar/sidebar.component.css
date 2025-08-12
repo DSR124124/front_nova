@@ -11,6 +11,7 @@
   z-index: 1001;
   display: flex;
   flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-container.collapsed {
@@ -24,6 +25,7 @@
   justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid var(--p-surface-border);
+  background: var(--p-surface-section);
 }
 
 .sidebar-title {
@@ -162,6 +164,7 @@
 .sidebar-footer {
   padding: 1rem;
   border-top: 1px solid var(--p-surface-border);
+  background: var(--p-surface-section);
 }
 
 .sidebar-footer-collapsed {
@@ -169,6 +172,7 @@
   border-top: 1px solid var(--p-surface-border);
   display: flex;
   justify-content: center;
+  background: var(--p-surface-section);
 }
 
 .user-info {
@@ -191,7 +195,7 @@
 
 .user-status {
   font-size: 0.75rem;
-  color: var(--p-text-muted-color);
+  color: var(--p-text-color-secondary);
 }
 
 /* Estados colapsados */

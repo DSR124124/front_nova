@@ -10,7 +10,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 })
 export class DashboardHomeComponent implements OnInit, OnDestroy {
   @ViewChild('mainContent') mainContent!: ElementRef;
-  
+
   currentTime = new Date();
   private timeInterval: any;
   sidebarCollapsed = false;
@@ -60,8 +60,8 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   }
 
   // Método para detectar cambios en el sidebar
-  onSidebarToggle(collapsed: boolean) {
-    this.sidebarCollapsed = collapsed;
+  onSidebarToggle() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
     this.updateMainContentClass();
   }
 

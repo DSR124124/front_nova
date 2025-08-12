@@ -1,9 +1,12 @@
 <div class="dashboard-layout">
   <!-- Sidebar usando el componente ya desarrollado -->
-  <app-sidebar></app-sidebar>
+  <app-sidebar
+    [collapsed]="sidebarCollapsed"
+    (sidebarToggle)="onSidebarToggle()">
+  </app-sidebar>
 
   <!-- Contenido principal -->
-  <div class="main-content" #mainContent>
+  <div class="main-content" #mainContent [class.sidebar-collapsed]="sidebarCollapsed">
     <!-- Header del dashboard -->
     <div class="dashboard-header">
       <div class="header-left">

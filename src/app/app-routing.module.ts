@@ -16,16 +16,6 @@ const routes: Routes = [
     loadChildren: () => import('./feactures/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: 'dashboard',
-    loadChildren: () => import('./feactures/dashboard/dashboard.module').then(m => m.DashboardModule),
-    canActivate: [authGuard]
-  },
-  {
-    path: 'citas',
-    loadChildren: () => import('./feactures/citas/citas.module').then(m => m.CitasModule),
-    canActivate: [authGuard, parejaGuard]
-  },
-  {
     path: 'app',
     loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule),
     canActivate: [authGuard, parejaGuard]
