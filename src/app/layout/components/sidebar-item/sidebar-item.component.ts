@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { SidebarItem, SidebarSubItem } from '../../../core/services/sidebar.service';
 
 @Component({
   selector: 'app-sidebar-item',
@@ -9,9 +9,9 @@ import { MenuItem } from 'primeng/api';
   standalone: false
 })
 export class SidebarItemComponent {
-  @Input() item!: MenuItem;
+  @Input() item!: SidebarItem;
   @Input() sidebarCollapsed: boolean = false;
-  
+
   expanded = false;
 
   constructor(public router: Router) {}
@@ -27,7 +27,7 @@ export class SidebarItemComponent {
 
   isSubmenuActive(): boolean {
     if (!this.hasSubmenu()) return false;
-    return this.item.items!.some(subItem => 
+    return this.item.items!.some(subItem =>
       subItem.routerLink && this.router.url.startsWith(subItem.routerLink)
     );
   }
@@ -39,6 +39,7 @@ export class SidebarItemComponent {
   }
 
   navigateTo(route: string): void {
-    this.router.navigate([route]);
+    const routeArray = route.split('/').filter(segment => segment.length > 0);
+    this.router.navigate(routeArray);
   }
 }

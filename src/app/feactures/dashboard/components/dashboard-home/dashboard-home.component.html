@@ -15,6 +15,14 @@
       </div>
       <div class="header-right">
         <div class="header-actions">
+          <p-button
+            [icon]="sidebarCollapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
+            [text]="true"
+            [rounded]="true"
+            size="small"
+            (onClick)="onSidebarToggle()"
+            pTooltip="Toggle Sidebar"
+          />
         </div>
       </div>
     </div>
@@ -85,28 +93,28 @@
             label="Nueva Cita"
             icon="pi pi-plus"
             styleClass="action-btn"
-            (onClick)="navigateTo('/citas')"
+            (onClick)="navigateTo('/app/citas/nueva')"
           />
           <p-button
             label="Nuevo Evento"
             icon="pi pi-calendar-plus"
             severity="secondary"
             styleClass="action-btn"
-            (onClick)="navigateTo('/eventos')"
+            (onClick)="navigateTo('/app/eventos')"
           />
           <p-button
             label="Ver Chat"
             icon="pi pi-comments"
             severity="info"
             styleClass="action-btn"
-            (onClick)="navigateTo('/chat')"
+            (onClick)="navigateTo('/app/chat')"
           />
           <p-button
             label="Recordatorios"
             icon="pi pi-bell"
             severity="contrast"
             styleClass="action-btn"
-            (onClick)="navigateTo('/recordatorios')"
+            (onClick)="navigateTo('/app/recordatorios')"
           />
         </div>
       </div>

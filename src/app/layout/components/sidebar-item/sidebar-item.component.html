@@ -37,7 +37,11 @@
       *ngFor="let subItem of item.items"
       class="submenu-item"
       [class.active]="router.url.startsWith(subItem.routerLink || '')"
-      (click)="navigateTo(subItem.routerLink || '')"
+      (click)="navigateTo(subItem.routerLink)"
+      role="button"
+      tabindex="0"
+      (keydown.enter)="navigateTo(subItem.routerLink)"
+      (keydown.space)="navigateTo(subItem.routerLink)"
     >
       <i [class]="subItem.icon"></i>
       <span>{{ subItem.label }}</span>

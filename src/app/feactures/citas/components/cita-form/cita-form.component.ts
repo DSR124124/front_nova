@@ -33,20 +33,24 @@ export class CitaFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private messageService: MessageService
   ) {
+    console.log('🔧 CitaFormComponent constructor ejecutado');
     this.citaForm = this.createForm();
   }
 
   ngOnInit() {
+    console.log('🚀 CitaFormComponent ngOnInit ejecutado');
     this.cargarLugares();
     this.checkEditMode();
   }
 
   ngOnDestroy() {
+    console.log('💀 CitaFormComponent ngOnDestroy ejecutado');
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   private createForm(): FormGroup {
+    console.log('📝 Creando formulario de cita');
     return this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(3)]],
       descripcion: [''],
@@ -57,26 +61,33 @@ export class CitaFormComponent implements OnInit, OnDestroy {
   }
 
   private checkEditMode() {
+    console.log('🔍 Verificando modo de edición');
     this.route.params
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
+        console.log('📋 Parámetros de ruta:', params);
         if (params['id']) {
           this.isEditMode = true;
           this.citaId = +params['id'];
+          console.log('✏️ Modo edición activado para cita ID:', this.citaId);
           this.cargarCita();
+        } else {
+          console.log('➕ Modo creación activado');
         }
       });
   }
 
   private cargarLugares() {
+    console.log('🏢 Cargando lugares...');
     this.lugarService.listar()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (lugares) => {
+          console.log('✅ Lugares cargados exitosamente:', lugares);
           this.lugares = lugares;
         },
         error: (error) => {
-          console.error('Error al cargar lugares:', error);
+          console.error('❌ Error al cargar lugares:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -89,11 +100,13 @@ export class CitaFormComponent implements OnInit, OnDestroy {
   private cargarCita() {
     if (!this.citaId) return;
 
+    console.log('📋 Cargando cita con ID:', this.citaId);
     this.loading = true;
     this.citaService.listarPorId(this.citaId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (cita) => {
+          console.log('✅ Cita cargada exitosamente:', cita);
           this.citaForm.patchValue({
             titulo: cita.titulo,
             descripcion: cita.descripcion,
@@ -104,7 +117,7 @@ export class CitaFormComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error al cargar cita:', error);
+          console.error('❌ Error al cargar cita:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -116,13 +129,16 @@ export class CitaFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    console.log('📤 Enviando formulario...');
     if (this.citaForm.invalid) {
+      console.log('❌ Formulario inválido, marcando campos como tocados');
       this.markFormGroupTouched();
       return;
     }
 
     this.loading = true;
     const formValue = this.citaForm.value;
+    console.log('📋 Valores del formulario:', formValue);
 
     // Formatear fecha para el backend
     const cita: Cita = {
@@ -132,28 +148,31 @@ export class CitaFormComponent implements OnInit, OnDestroy {
     };
 
     if (this.isEditMode && this.citaId) {
-      cita.id = this.citaId;
+      console.log('✏️ Actualizando cita existente');
       this.actualizarCita(cita);
     } else {
+      console.log('➕ Creando nueva cita');
       this.crearCita(cita);
     }
   }
 
   private crearCita(cita: Cita) {
+    console.log('🆕 Creando cita:', cita);
     this.citaService.registrar(cita)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
+          console.log('✅ Cita creada exitosamente');
           this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
             detail: 'Cita creada correctamente'
           });
-          this.router.navigate(['/citas']);
+          this.router.navigate(['/app/citas']);
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error al crear cita:', error);
+          console.error('❌ Error al crear cita:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -165,20 +184,22 @@ export class CitaFormComponent implements OnInit, OnDestroy {
   }
 
   private actualizarCita(cita: Cita) {
+    console.log('🔄 Actualizando cita:', cita);
     this.citaService.modificar(cita)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
+          console.log('✅ Cita actualizada exitosamente');
           this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
             detail: 'Cita actualizada correctamente'
           });
-          this.router.navigate(['/citas']);
+          this.router.navigate(['/app/citas']);
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error al actualizar cita:', error);
+          console.error('❌ Error al actualizar cita:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -202,7 +223,8 @@ export class CitaFormComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    this.router.navigate(['/citas']);
+    console.log('❌ Cancelando formulario, navegando a citas');
+    this.router.navigate(['/app/citas']);
   }
 
   // Métodos de validación para el template

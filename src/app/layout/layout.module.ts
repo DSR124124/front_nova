@@ -8,6 +8,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidebarItemComponent } from './components/sidebar-item/sidebar-item.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
+import { LayoutMainComponent } from './components/layout-main/layout-main.component';
 import { LayoutRoutingModule } from './layout-routing.module';
 
 @NgModule({
@@ -16,7 +17,8 @@ import { LayoutRoutingModule } from './layout-routing.module';
     SidebarComponent,
     SidebarItemComponent,
     FooterComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    LayoutMainComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { LayoutRoutingModule } from './layout-routing.module';
     SidebarComponent,
     SidebarItemComponent,
     FooterComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    LayoutMainComponent
   ],
 })
 export class LayoutModule { }

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CitaMainComponent } from './components/cita-main/cita-main.component';
 import { CitaListComponent } from './components/cita-list/cita-list.component';
 import { CitaFormComponent } from './components/cita-form/cita-form.component';
 import { CitaDetailComponent } from './components/cita-detail/cita-detail.component';
@@ -10,44 +9,38 @@ import { CitaFilterComponent } from './components/cita-filter/cita-filter.compon
 const routes: Routes = [
   {
     path: '',
-    component: CitaMainComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'listar',
-        pathMatch: 'full'
-      },
-      {
-        path: 'listar',
-        component: CitaListComponent,
-        title: 'Lista de Citas'
-      },
-      {
-        path: 'nueva',
-        component: CitaFormComponent,
-        title: 'Nueva Cita'
-      },
-      {
-        path: 'editar/:id',
-        component: CitaFormComponent,
-        title: 'Editar Cita'
-      },
-      {
-        path: ':id',
-        component: CitaDetailComponent,
-        title: 'Detalle de Cita'
-      },
-      {
-        path: 'calendario',
-        component: CitaCalendarComponent,
-        title: 'Calendario de Citas'
-      },
-      {
-        path: 'filtros',
-        component: CitaFilterComponent,
-        title: 'Filtros de Citas'
-      }
-    ]
+    redirectTo: 'listar',
+    pathMatch: 'full'
+  },
+  {
+    path: 'listar',
+    component: CitaListComponent,
+    title: 'Lista de Citas'
+  },
+  {
+    path: 'nueva',
+    component: CitaFormComponent,
+    title: 'Nueva Cita'
+  },
+  {
+    path: 'editar/:id',
+    component: CitaFormComponent,
+    title: 'Editar Cita'
+  },
+  {
+    path: ':id',
+    component: CitaDetailComponent,
+    title: 'Detalle de Cita'
+  },
+  {
+    path: 'calendario',
+    component: CitaCalendarComponent,
+    title: 'Calendario de Citas'
+  },
+  {
+    path: 'filtros',
+    component: CitaFilterComponent,
+    title: 'Filtros de Citas'
   }
 ];
 

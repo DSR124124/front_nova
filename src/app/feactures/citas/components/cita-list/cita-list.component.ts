@@ -98,15 +98,15 @@ export class CitaListComponent implements OnInit, OnDestroy {
 
   // Acciones
   nuevaCita() {
-    this.router.navigate(['/citas/nueva']);
+    this.router.navigate(['/app/citas/nueva']);
   }
 
   verDetalle(cita: Cita) {
-    this.router.navigate(['/citas', cita.id]);
+    this.router.navigate(['/app/citas', cita.id]);
   }
 
   editarCita(cita: Cita) {
-    this.router.navigate(['/citas/editar', cita.id]);
+    this.router.navigate(['/app/citas/editar', cita.id]);
   }
 
   eliminarCita(cita: Cita) {
@@ -123,7 +123,7 @@ export class CitaListComponent implements OnInit, OnDestroy {
             .subscribe({
               next: () => {
                 this.messageService.add({
-                  severity: 'success',
+                  severity: 'error',
                   summary: 'Éxito',
                   detail: 'Cita eliminada correctamente'
                 });
