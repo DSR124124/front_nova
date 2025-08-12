@@ -34,6 +34,7 @@
             [text]="true"
             (onClick)="navigateDate('prev')"
             pTooltip="Anterior"
+            styleClass="p-button-text"
           />
           <div class="current-date">
             <h3>{{ selectedDate | date:'MMMM yyyy' }}</h3>
@@ -43,6 +44,7 @@
             [text]="true"
             (onClick)="navigateDate('next')"
             pTooltip="Siguiente"
+            styleClass="p-button-text"
           />
         </div>
 
@@ -52,6 +54,7 @@
             [outlined]="true"
             size="small"
             (onClick)="goToToday()"
+            styleClass="p-button-outlined"
           />
           <div class="view-buttons">
             <p-button
@@ -59,18 +62,21 @@
               [outlined]="calendarView !== 'month'"
               size="small"
               (onClick)="changeView('month')"
+              styleClass="p-button-outlined"
             />
             <p-button
               label="Semana"
               [outlined]="calendarView !== 'week'"
               size="small"
               (onClick)="changeView('week')"
+              styleClass="p-button-outlined"
             />
             <p-button
               label="Día"
               [outlined]="calendarView !== 'day'"
               size="small"
               (onClick)="changeView('day')"
+              styleClass="p-button-outlined"
             />
           </div>
         </div>
@@ -107,6 +113,7 @@
               icon="pi pi-plus"
               (onClick)="createNewCita()"
               size="small"
+              styleClass="p-button-primary"
             />
           </div>
 
@@ -146,14 +153,14 @@
             label="Nueva Cita"
             icon="pi pi-plus"
             (onClick)="createNewCita()"
-            styleClass="new-cita-btn"
+            styleClass="p-button-primary"
           />
           <p-button
             label="Ver Todas"
             icon="pi pi-list"
             [outlined]="true"
             (onClick)="navigateToAllCitas()"
-            styleClass="view-all-btn"
+            styleClass="p-button-outlined"
           />
         </div>
       </div>

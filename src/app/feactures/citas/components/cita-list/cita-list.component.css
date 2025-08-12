@@ -1,106 +1,113 @@
+/* Contenedor principal */
 .cita-list-container {
-  padding: 1rem;
+  padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  background: var(--surface-ground);
+  min-height: 100vh;
 }
 
-/* Header */
+/* Header de la página */
 .list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding: 1rem 0;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface-card);
+  border-radius: 8px;
+  border: 1px solid var(--surface-border);
 }
 
 .header-title h1 {
   margin: 0;
-  color: #2c3e50;
+  color: var(--text-color);
   font-size: 2rem;
   font-weight: 600;
+  letter-spacing: -0.025em;
 }
 
 .subtitle {
   margin: 0.5rem 0 0 0;
-  color: #6c757d;
+  color: var(--text-color-secondary);
   font-size: 1rem;
+  font-weight: 400;
 }
 
 .header-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-/* Filters */
-.filters-card {
-  margin-bottom: 1.5rem;
+/* Sección de filtros */
+.filters-section {
+  margin-bottom: 2rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
 }
 
-.filters-grid {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 1rem;
-  align-items: end;
+/* El componente de filtros ahora tiene sus propios estilos */
+
+/* Sección de citas */
+.citas-section {
+  background: var(--surface-card);
+  border-radius: 8px;
+  border: 1px solid var(--surface-border);
+  overflow: hidden;
 }
 
-.filter-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.table-container {
+  padding: 0;
 }
 
-.filter-field label {
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.875rem;
-}
-
-/* Citas Card */
-.citas-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Loading */
+/* Estado de carga */
 .loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem;
-  gap: 1rem;
+  padding: 4rem 2rem;
+  gap: 1.5rem;
 }
 
 .loading-container p {
-  color: #6c757d;
+  color: var(--text-color-secondary);
   margin: 0;
+  font-size: 1rem;
 }
 
-/* Table Styles */
+/* Estilos de la tabla */
 .cita-titulo {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .titulo-principal {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--text-color);
+  font-size: 0.95rem;
 }
 
 .descripcion {
-  font-size: 0.875rem;
-  color: #6c757d;
+  font-size: 0.8rem;
+  color: var(--text-color-secondary);
   font-style: italic;
+  line-height: 1.4;
 }
 
 .fecha-info, .lugar-info {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #495057;
+  color: var(--text-color);
+  font-size: 0.875rem;
 }
 
 .fecha-info i, .lugar-info i {
-  color: #6c757d;
+  color: var(--primary-color);
+  font-size: 0.875rem;
 }
 
 .rating-display {
@@ -109,21 +116,22 @@
 }
 
 .text-muted {
-  color: #6c757d;
+  color: var(--text-color-muted);
   font-style: italic;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
 
-/* Action Buttons */
+/* Botones de acción */
 .action-buttons {
   display: flex;
-  gap: 0.25rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
-/* Empty State */
+/* Estado vacío */
 .empty-state {
-  padding: 3rem 1rem;
+  padding: 4rem 2rem;
 }
 
 .empty-content {
@@ -131,28 +139,153 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .empty-icon {
   font-size: 4rem;
-  color: #dee2e6;
-  margin-bottom: 1rem;
+  color: var(--surface-border);
+  margin-bottom: 0.5rem;
 }
 
 .empty-content h3 {
   margin: 0;
-  color: #6c757d;
+  color: var(--text-color-secondary);
   font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .empty-content p {
   margin: 0;
-  color: #6c757d;
+  color: var(--text-color-muted);
   max-width: 400px;
+  line-height: 1.6;
 }
 
-/* Responsive Design */
+/* Overrides de PrimeNG */
+::ng-deep .p-datatable-sm .p-datatable-tbody > tr > td {
+  padding: 1rem 0.75rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background: var(--surface-section);
+  border-color: var(--surface-border);
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 0.75rem;
+}
+
+::ng-deep .p-table .p-paginator {
+  border-top: 1px solid var(--surface-border);
+  background: var(--surface-section);
+  padding: 1rem;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .p-paginator .p-paginator-first,
+::ng-deep .p-paginator .p-paginator-prev,
+::ng-deep .p-paginator .p-paginator-next,
+::ng-deep .p-paginator .p-paginator-last {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+::ng-deep .p-paginator .p-paginator-first:hover,
+::ng-deep .p-paginator .p-paginator-prev:hover,
+::ng-deep .p-paginator .p-paginator-next:hover,
+::ng-deep .p-paginator .p-paginator-last:hover {
+  background: var(--surface-hover);
+  border-color: var(--primary-color);
+}
+
+::ng-deep .p-dropdown {
+  background: var(--surface-section);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+::ng-deep .p-dropdown:not(.p-disabled):hover {
+  border-color: var(--primary-color);
+}
+
+::ng-deep .p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+::ng-deep .p-dropdown-panel {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+}
+
+::ng-deep .p-dropdown-item {
+  color: var(--text-color);
+}
+
+::ng-deep .p-dropdown-item:hover {
+  background: var(--surface-hover);
+}
+
+::ng-deep .p-dropdown-item.p-highlight {
+  background: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+/* Tags de estado */
+::ng-deep .p-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+}
+
+::ng-deep .p-tag.p-tag-success {
+  background: var(--success-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .p-tag.p-tag-info {
+  background: var(--info-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .p-tag.p-tag-danger {
+  background: var(--danger-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .p-tag.p-tag-warning {
+  background: var(--warning-color);
+  color: var(--primary-color-text);
+}
+
+/* Rating */
+::ng-deep .p-rating .p-rating-item .p-rating-icon {
+  color: var(--warning-color);
+  font-size: 1rem;
+}
+
+::ng-deep .p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+  color: var(--warning-color);
+}
+
+/* Responsive */
 @media (max-width: 992px) {
   .filters-grid {
     grid-template-columns: 1fr;
@@ -160,7 +293,7 @@
 
   .list-header {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
     align-items: stretch;
   }
 
@@ -171,72 +304,54 @@
 
 @media (max-width: 768px) {
   .cita-list-container {
-    padding: 0.5rem;
+    padding: 1rem;
+  }
+
+  .list-header {
+    padding: 1rem;
   }
 
   .header-title h1 {
     font-size: 1.5rem;
   }
 
+  .filters-section {
+    padding: 1rem;
+  }
+
   .action-buttons {
     justify-content: center;
+    gap: 0.25rem;
   }
 
   .empty-icon {
     font-size: 3rem;
   }
+
+  ::ng-deep .p-datatable-sm .p-datatable-tbody > tr > td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
 }
 
-/* PrimeNG Overrides */
-::ng-deep .filters-card .p-card-body {
-  padding: 1rem;
-}
+@media (max-width: 480px) {
+  .cita-list-container {
+    padding: 0.5rem;
+  }
 
-::ng-deep .citas-card .p-card-body {
-  padding: 0;
-}
+  .list-header, .filters-section {
+    padding: 0.75rem;
+  }
 
-::ng-deep .p-datatable-sm .p-datatable-tbody > tr > td {
-  padding: 0.75rem;
-}
+  .header-title h1 {
+    font-size: 1.25rem;
+  }
 
-::ng-deep .p-datatable .p-datatable-thead > tr > th {
-  background-color: #f8f9fa;
-  border-color: #dee2e6;
-  color: #495057;
-  font-weight: 600;
-}
-
-::ng-deep .p-table .p-paginator {
-  border-top: 1px solid #dee2e6;
-  background: #f8f9fa;
-}
-
-::ng-deep .w-full {
-  width: 100%;
-}
-
-::ng-deep .p-iconfield {
-  width: 100%;
-}
-
-/* Tag colors */
-::ng-deep .p-tag.p-tag-success {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-::ng-deep .p-tag.p-tag-info {
-  background-color: #d1ecf1;
-  color: #0c5460;
-}
-
-::ng-deep .p-tag.p-tag-danger {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-::ng-deep .p-tag.p-tag-warning {
-  background-color: #fff3cd;
-  color: #856404;
+  .filters-grid {
+    gap: 1rem;
+  }
 }

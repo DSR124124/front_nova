@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { CitaService } from '../../../../core/services/cita.service';
 import { Cita, EstadoCita } from '../../../../core/models/cita';
+import { CitaFilter, LugarOption, CategoriaOption } from '../cita-filter/cita-filter.component';
 
 @Component({
   selector: 'app-cita-list',
@@ -15,10 +16,15 @@ import { Cita, EstadoCita } from '../../../../core/models/cita';
 export class CitaListComponent implements OnInit, OnDestroy {
   citas: Cita[] = [];
   loading = false;
-  searchTerm = '';
-  selectedEstado = '';
+  
+  // Filtros
+  filtros: CitaFilter = {};
+  
+  // Opciones para los filtros
+  lugares: LugarOption[] = [];
+  categorias: CategoriaOption[] = [];
 
-  // Opciones de filtrado
+  // Opciones de filtrado (mantenidas para compatibilidad)
   estadoOptions = [
     { label: 'Todos', value: '' },
     { label: 'Planificada', value: EstadoCita.PLANIFICADA },
@@ -46,6 +52,7 @@ export class CitaListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cargarCitas();
+    this.cargarOpcionesFiltros();
   }
 
   ngOnDestroy() {
@@ -74,13 +81,20 @@ export class CitaListComponent implements OnInit, OnDestroy {
       });
   }
 
+  cargarOpcionesFiltros() {
+    // Aquí cargarías las opciones de lugares y categorías desde los servicios
+    // Por ahora las dejo como arrays vacíos
+    this.lugares = [];
+    this.categorias = [];
+  }
+
   // Filtros
   get citasFiltradas(): Cita[] {
     let resultado = this.citas;
 
-    // Filtro por búsqueda
-    if (this.searchTerm.trim()) {
-      const term = this.searchTerm.toLowerCase();
+    // Aplicar filtros avanzados
+    if (this.filtros.titulo?.trim()) {
+      const term = this.filtros.titulo.toLowerCase();
       resultado = resultado.filter(cita =>
         cita.titulo.toLowerCase().includes(term) ||
         cita.lugarNombre?.toLowerCase().includes(term) ||
@@ -88,12 +102,63 @@ export class CitaListComponent implements OnInit, OnDestroy {
       );
     }
 
-    // Filtro por estado
-    if (this.selectedEstado) {
-      resultado = resultado.filter(cita => cita.estado === this.selectedEstado);
+    if (this.filtros.estado) {
+      resultado = resultado.filter(cita => cita.estado === this.filtros.estado);
+    }
+
+    if (this.filtros.fechaInicio) {
+      resultado = resultado.filter(cita => 
+        new Date(cita.fecha) >= this.filtros.fechaInicio!
+      );
+    }
+
+    if (this.filtros.fechaFin) {
+      resultado = resultado.filter(cita => 
+        new Date(cita.fecha) <= this.filtros.fechaFin!
+      );
+    }
+
+    if (this.filtros.lugarId) {
+      resultado = resultado.filter(cita => 
+        cita.lugarId === this.filtros.lugarId
+      );
+    }
+
+    if (this.filtros.categoriaId) {
+      resultado = resultado.filter(cita => 
+        cita.categoriaId === this.filtros.categoriaId
+      );
+    }
+
+    if (this.filtros.rating) {
+      resultado = resultado.filter(cita => 
+        (cita.rating || 0) >= this.filtros.rating!
+      );
     }
 
     return resultado;
+  }
+
+  // Métodos para manejar cambios de filtros
+  onFilterChange(filtros: CitaFilter) {
+    this.filtros = filtros;
+  }
+
+  onClearFilters() {
+    this.filtros = {};
+  }
+
+  // Verificar si hay filtros activos
+  get hasActiveFilters(): boolean {
+    return !!(
+      this.filtros.titulo?.trim() ||
+      this.filtros.estado ||
+      this.filtros.fechaInicio ||
+      this.filtros.fechaFin ||
+      this.filtros.lugarId ||
+      this.filtros.categoriaId ||
+      this.filtros.rating
+    );
   }
 
   // Acciones
@@ -123,7 +188,7 @@ export class CitaListComponent implements OnInit, OnDestroy {
             .subscribe({
               next: () => {
                 this.messageService.add({
-                  severity: 'error',
+                  severity: 'success',
                   summary: 'Éxito',
                   detail: 'Cita eliminada correctamente'
                 });
