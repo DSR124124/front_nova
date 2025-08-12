@@ -1,1 +1,220 @@
-<p>cita-list works!</p>
+<div class="cita-list-container">
+  <!-- Header -->
+  <div class="list-header">
+    <div class="header-title">
+      <h1>Mis Citas</h1>
+      <p class="subtitle">Administra todas tus citas románticas</p>
+    </div>
+    <div class="header-actions">
+      <p-button
+        label="Nueva Cita"
+        icon="pi pi-plus"
+        (onClick)="nuevaCita()"
+        styleClass="p-button-primary"
+      />
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <p-card header="Filtros" styleClass="filters-card">
+    <div class="filters-grid">
+      <div class="filter-field">
+        <label for="search">Buscar</label>
+        <p-iconField iconPosition="left" styleClass="w-full">
+          <p-inputIcon styleClass="pi pi-search" />
+          <input
+            pInputText
+            id="search"
+            [(ngModel)]="searchTerm"
+            placeholder="Buscar por título, lugar o descripción..."
+            class="w-full"
+          />
+        </p-iconField>
+      </div>
+
+      <div class="filter-field">
+        <label for="estado">Estado</label>
+        <p-dropdown
+          id="estado"
+          [(ngModel)]="selectedEstado"
+          [options]="estadoOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Filtrar por estado"
+          styleClass="w-full"
+        />
+      </div>
+    </div>
+  </p-card>
+
+  <!-- Lista de Citas -->
+  <p-card styleClass="citas-card">
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-container">
+      <p-progressSpinner />
+      <p>Cargando citas...</p>
+    </div>
+
+    <!-- Tabla de Citas -->
+    <p-table
+      *ngIf="!loading"
+      [value]="citasFiltradas"
+      [paginator]="true"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} citas"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [globalFilterFields]="['titulo', 'lugarNombre', 'descripcion']"
+      responsiveLayout="scroll"
+      styleClass="p-datatable-sm"
+    >
+      <!-- Header -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Título</th>
+          <th>Fecha & Hora</th>
+          <th>Lugar</th>
+          <th>Estado</th>
+          <th>Calificación</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+
+      <!-- Filas -->
+      <ng-template pTemplate="body" let-cita>
+        <tr>
+          <!-- Título -->
+          <td>
+            <div class="cita-titulo">
+              <div class="titulo-principal">{{ cita.titulo }}</div>
+              <div class="descripcion" *ngIf="cita.descripcion">
+                {{ cita.descripcion | slice:0:50 }}
+                <span *ngIf="cita.descripcion && cita.descripcion.length > 50">...</span>
+              </div>
+            </div>
+          </td>
+
+          <!-- Fecha -->
+          <td>
+            <div class="fecha-info">
+              <i class="pi pi-calendar"></i>
+              {{ formatearFecha(cita.fecha) }}
+            </div>
+          </td>
+
+          <!-- Lugar -->
+          <td>
+            <div class="lugar-info" *ngIf="cita.lugarNombre">
+              <i class="pi pi-map-marker"></i>
+              {{ cita.lugarNombre }}
+            </div>
+            <span *ngIf="!cita.lugarNombre" class="text-muted">Sin lugar</span>
+          </td>
+
+          <!-- Estado -->
+          <td>
+            <p-tag
+              [value]="cita.estado || 'Sin estado'"
+              [severity]="getEstadoSeverity(cita.estado)"
+            />
+          </td>
+
+          <!-- Calificación -->
+          <td>
+            <div *ngIf="cita.rating" class="rating-display">
+              <p-rating
+                [(ngModel)]="cita.rating"
+                [readonly]="true"
+                [stars]="5"
+              />
+            </div>
+            <span *ngIf="!cita.rating" class="text-muted">Sin calificar</span>
+          </td>
+
+          <!-- Acciones -->
+          <td>
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-eye"
+                severity="info"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Ver detalle"
+                (onClick)="verDetalle(cita)"
+              />
+
+              <p-button
+                icon="pi pi-pencil"
+                severity="secondary"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Editar"
+                (onClick)="editarCita(cita)"
+                *ngIf="cita.estado === 'PLANIFICADA'"
+              />
+
+              <p-button
+                icon="pi pi-check"
+                severity="success"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Marcar como realizada"
+                (onClick)="completarCita(cita)"
+                *ngIf="cita.estado === 'PLANIFICADA'"
+              />
+
+              <p-button
+                icon="pi pi-times"
+                severity="danger"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Cancelar"
+                (onClick)="cancelarCita(cita)"
+                *ngIf="cita.estado === 'PLANIFICADA'"
+              />
+
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Eliminar"
+                (onClick)="eliminarCita(cita)"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <!-- Empty State -->
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="empty-state">
+            <div class="empty-content">
+              <i class="pi pi-calendar-times empty-icon"></i>
+              <h3>No hay citas</h3>
+              <p *ngIf="searchTerm || selectedEstado">
+                No se encontraron citas con los filtros aplicados
+              </p>
+              <p *ngIf="!searchTerm && !selectedEstado">
+                ¡Crea tu primera cita romántica!
+              </p>
+              <p-button
+                label="Nueva Cita"
+                icon="pi pi-plus"
+                (onClick)="nuevaCita()"
+                *ngIf="!searchTerm && !selectedEstado"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+<!-- Toast para notificaciones -->
+<p-toast />
+
+<!-- Diálogo de confirmación -->
+<p-confirmDialog />

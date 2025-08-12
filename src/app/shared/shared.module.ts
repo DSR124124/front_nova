@@ -1,6 +1,7 @@
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { RouterModule } from '@angular/router';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
@@ -25,10 +26,15 @@ import { RatingStarsComponent } from './components/rating-stars/rating-stars.com
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     PrimeNgModule,
     RouterModule
   ],
   exports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     LoadingSpinnerComponent,
     ConfirmationDialogComponent,
     DatePickerComponent,

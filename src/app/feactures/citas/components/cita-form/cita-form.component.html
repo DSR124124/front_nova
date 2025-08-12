@@ -1,1 +1,149 @@
-<p>cita-form works!</p>
+<div class="cita-form-container">
+  <p-card [header]="isEditMode ? 'Editar Cita' : 'Nueva Cita'" styleClass="cita-form-card">
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="loading-container">
+      <p-progressSpinner />
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="citaForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+
+      <!-- Título -->
+      <div class="form-field">
+        <label for="titulo" class="form-label">
+          Título <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          pInputText
+          id="titulo"
+          formControlName="titulo"
+          placeholder="Ej: Cena romántica"
+          class="w-full"
+          [class.ng-invalid]="hasFieldError('titulo')"
+        />
+        <small
+          *ngIf="hasFieldError('titulo')"
+          class="form-error"
+        >
+          {{ getFieldError('titulo') }}
+        </small>
+      </div>
+
+      <!-- Descripción -->
+      <div class="form-field">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <textarea
+          pInputTextarea
+          id="descripcion"
+          formControlName="descripcion"
+          placeholder="Describe los detalles de tu cita..."
+          rows="3"
+          class="w-full"
+        ></textarea>
+      </div>
+
+      <!-- Fecha y Hora -->
+      <div class="form-field">
+        <label for="fecha" class="form-label">
+          Fecha y Hora <span class="required">*</span>
+        </label>
+        <p-calendar
+          id="fecha"
+          formControlName="fecha"
+          placeholder="Selecciona fecha y hora"
+          [showTime]="true"
+          [showIcon]="true"
+          hourFormat="24"
+          dateFormat="dd/mm/yy"
+          styleClass="w-full"
+          [class.ng-invalid]="hasFieldError('fecha')"
+        />
+        <small
+          *ngIf="hasFieldError('fecha')"
+          class="form-error"
+        >
+          {{ getFieldError('fecha') }}
+        </small>
+      </div>
+
+      <!-- Lugar -->
+      <div class="form-field">
+        <label for="lugar" class="form-label">
+          Lugar <span class="required">*</span>
+        </label>
+        <p-dropdown
+          id="lugar"
+          formControlName="lugarId"
+          [options]="lugares"
+          optionLabel="nombre"
+          optionValue="id"
+          placeholder="Selecciona un lugar"
+          styleClass="w-full"
+          [class.ng-invalid]="hasFieldError('lugarId')"
+        >
+          <ng-template pTemplate="selectedItem" let-lugar>
+            <div *ngIf="lugar" class="lugar-item">
+              <i class="pi pi-map-marker text-primary"></i>
+              <span class="ml-2">{{ lugar.nombre }}</span>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="item" let-lugar>
+            <div class="lugar-item">
+              <i class="pi pi-map-marker text-primary"></i>
+              <div class="ml-2">
+                <div class="font-semibold">{{ lugar.nombre }}</div>
+                <div class="text-sm text-gray-500" *ngIf="lugar.direccion">
+                  {{ lugar.direccion }}
+                </div>
+                <div class="text-xs text-gray-400" *ngIf="lugar.categoria">
+                  {{ lugar.categoria }}
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <small
+          *ngIf="hasFieldError('lugarId')"
+          class="form-error"
+        >
+          {{ getFieldError('lugarId') }}
+        </small>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="form-info">
+        <p-message
+          severity="info"
+          text="Una vez creada la cita, podrás calificarla después de realizarla."
+        />
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          icon="pi pi-times"
+          (onClick)="onCancel()"
+        />
+
+        <p-button
+          type="submit"
+          [label]="isEditMode ? 'Actualizar' : 'Crear Cita'"
+          icon="pi pi-check"
+          [loading]="loading"
+          [disabled]="citaForm.invalid"
+        />
+      </div>
+
+    </form>
+
+  </p-card>
+</div>
+
+<!-- Toast para mensajes -->
+<p-toast />

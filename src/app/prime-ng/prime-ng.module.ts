@@ -15,7 +15,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { FieldsetModule } from 'primeng/fieldset';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { FormsModule } from '@angular/forms';
+
 import { IconFieldModule } from 'primeng/iconfield';
 import { ImageModule } from 'primeng/image';
 import { InputIconModule } from 'primeng/inputicon';
@@ -41,6 +41,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { ChipModule } from 'primeng/chip';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 @NgModule({
@@ -60,7 +61,6 @@ import { ChipModule } from 'primeng/chip';
     FieldsetModule,
     FileUploadModule,
     FloatLabelModule,
-    FormsModule,
     IconFieldModule,
     ImageModule,
     InputIconModule,
@@ -86,6 +86,7 @@ import { ChipModule } from 'primeng/chip';
     DividerModule,
     TagModule,
     ChipModule,
+    DropdownModule,
   ]
 })
 export class PrimeNgModule { }

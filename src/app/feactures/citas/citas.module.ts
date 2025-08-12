@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { CitasRoutingModule } from './citas-routing.module';
 import { CitaListComponent } from './components/cita-list/cita-list.component';
@@ -30,10 +30,13 @@ import { CitaFilterComponent } from './components/cita-filter/cita-filter.compon
   exports: [
     CitaCalendarComponent,
     CitaDetailComponent,
-    CitaFilterComponent
+    CitaFilterComponent,
+    CitaFormComponent,
+    CitaListComponent
   ],
   providers: [
-    ConfirmationService
+    ConfirmationService,
+    MessageService
   ]
 })
 export class CitasModule { }

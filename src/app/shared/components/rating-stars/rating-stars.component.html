@@ -13,7 +13,7 @@
       [disabled]="disabled"
       (onRate)="onRatingChange($event)"
       [ngClass]="'custom-rating rating-' + size"
-    />
+    ></p-rating>
 
     <div *ngIf="showLabel" class="rating-label">
       {{ getRatingLabel() }}
