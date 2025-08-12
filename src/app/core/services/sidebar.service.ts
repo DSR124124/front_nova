@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 export interface SidebarItem {
   label: string;
   icon: string;
-  routerLink: string;
+  routerLink?: string;
   items?: SidebarSubItem[];
   badge?: string;
 }
@@ -29,7 +29,7 @@ export class SidebarService {
     {
       label: 'Citas',
       icon: 'pi pi-calendar',
-      routerLink: '/app/citas',
+      routerLink: '',
       items: [
         { label: 'Lista de Citas', icon: 'pi pi-list', routerLink: '/app/citas/listar' },
         { label: 'Calendario', icon: 'pi pi-calendar', routerLink: '/app/citas/calendario' },
@@ -39,7 +39,7 @@ export class SidebarService {
     {
       label: 'Eventos',
       icon: 'pi pi-star',
-      routerLink: '/app/eventos',
+      routerLink: '',
       items: [
         { label: 'Lista de Eventos', icon: 'pi pi-list', routerLink: '/app/eventos/listar' },
         { label: 'Crear Evento', icon: 'pi pi-plus', routerLink: '/app/eventos/crear' },
@@ -49,7 +49,7 @@ export class SidebarService {
     {
       label: 'Lugares',
       icon: 'pi pi-map-marker',
-      routerLink: '/app/lugares',
+      routerLink: '',
       items: [
         { label: 'Explorar Lugares', icon: 'pi pi-search', routerLink: '/app/lugares/explorar' },
         { label: 'Mis Favoritos', icon: 'pi pi-heart', routerLink: '/app/lugares/favoritos' },
@@ -64,7 +64,7 @@ export class SidebarService {
     {
       label: 'Regalos',
       icon: 'pi pi-gift',
-      routerLink: '/app/regalos',
+      routerLink: '',
       items: [
         { label: 'Lista de Deseos', icon: 'pi pi-heart', routerLink: '/app/regalos/deseos' },
         { label: 'Historial', icon: 'pi pi-history', routerLink: '/app/regalos/historial' },
@@ -74,7 +74,7 @@ export class SidebarService {
     {
       label: 'Recordatorios',
       icon: 'pi pi-bell',
-      routerLink: '/app/recordatorios',
+      routerLink: '',
       items: [
         { label: 'Lista de Recordatorios', icon: 'pi pi-list', routerLink: '/app/recordatorios/listar' },
         { label: 'Crear Recordatorio', icon: 'pi pi-plus', routerLink: '/app/recordatorios/crear' },
@@ -84,7 +84,7 @@ export class SidebarService {
     {
       label: 'Notas',
       icon: 'pi pi-file',
-      routerLink: '/app/notas',
+      routerLink: '',
       items: [
         { label: 'Mis Notas', icon: 'pi pi-list', routerLink: '/app/notas/listar' },
         { label: 'Nueva Nota', icon: 'pi pi-plus', routerLink: '/app/notas/crear' },
@@ -94,7 +94,7 @@ export class SidebarService {
     {
       label: 'Multimedia',
       icon: 'pi pi-images',
-      routerLink: '/app/multimedia',
+      routerLink: '',
       items: [
         { label: 'Galería', icon: 'pi pi-images', routerLink: '/app/multimedia/galeria' },
         { label: 'Subir Archivos', icon: 'pi pi-upload', routerLink: '/app/multimedia/subir' },
@@ -104,7 +104,7 @@ export class SidebarService {
     {
       label: 'Perfil',
       icon: 'pi pi-user',
-      routerLink: '/app/perfil',
+      routerLink: '',
       items: [
         { label: 'Mi Perfil', icon: 'pi pi-user', routerLink: '/app/perfil/usuario' },
         { label: 'Perfil de Pareja', icon: 'pi pi-users', routerLink: '/app/perfil/pareja' },

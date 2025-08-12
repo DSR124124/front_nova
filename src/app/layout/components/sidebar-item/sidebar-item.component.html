@@ -5,9 +5,9 @@
       [label]="!sidebarCollapsed ? item.label : ''"
       [icon]="item.icon"
       [text]="true"
-      [routerLink]="item.routerLink"
+      [routerLink]="item.routerLink || undefined"
       styleClass="w-full justify-content-start sidebar-menu-item"
-      [ngClass]="{'active': isActive()}"
+      [ngClass]="{'active': isActive(), 'no-route': !item.routerLink}"
       (onClick)="hasSubmenu() ? toggleSubmenu() : null"
     >
       <!-- Badge si existe -->

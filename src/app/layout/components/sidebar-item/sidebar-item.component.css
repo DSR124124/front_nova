@@ -1,67 +1,59 @@
-/* Contenedor del item */
+/* Contenedor del item del sidebar */
 .sidebar-item {
   width: 100%;
-  margin-bottom: 0.25rem;
-  transition: all 0.2s ease;
+  margin: 0;
+  padding: 0;
 }
 
-.sidebar-item.has-submenu {
-  position: relative;
-}
-
-.sidebar-item.submenu-active .sidebar-menu-item {
-  background: var(--surface-hover) !important;
-  color: var(--text-color) !important;
-}
-
-/* Estilos para el botón del menú */
+/* Estilos básicos para el botón del menú */
 :host ::ng-deep .sidebar-menu-item {
-  padding: 0.75rem 1rem !important;
-  border-radius: 8px !important;
-  color: var(--text-color) !important;
-  background: transparent !important;
-  border: none !important;
-  text-align: left !important;
-  position: relative !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  font-weight: 500 !important;
-  min-height: 44px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 0.75rem !important;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  color: var(--sidebar-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin: 0;
+  border-radius: 0;
 }
 
 :host ::ng-deep .sidebar-menu-item:hover {
-  background: var(--surface-hover) !important;
-  color: var(--text-color) !important;
-  transform: translateX(4px) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  background: var(--sidebar-hover);
+  color: var(--sidebar-text);
 }
 
 :host ::ng-deep .sidebar-menu-item.active {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%) !important;
-  color: var(--primary-color-text) !important;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
-  transform: translateX(4px) !important;
+  background: var(--sidebar-active);
+  color: var(--primary-color-text);
 }
 
-:host ::ng-deep .sidebar-menu-item .p-button-label {
-  font-weight: 500 !important;
-  margin-left: 0 !important;
-  font-size: 0.9rem !important;
-}
-
+/* Icono del botón */
 :host ::ng-deep .sidebar-menu-item .p-button-icon {
-  font-size: 1.1rem !important;
-  min-width: 20px !important;
-  color: inherit !important;
+  font-size: 1rem;
+  min-width: 20px;
+  color: inherit;
+  margin-left: 0;
+}
+
+/* Texto del botón */
+:host ::ng-deep .sidebar-menu-item .p-button-label {
+  font-weight: 500;
+  margin-left: 0;
+  font-size: 0.9rem;
+  text-align: left;
 }
 
 /* Badge */
 .item-badge {
   margin-left: auto;
-  background: var(--primary-color);
+  background: var(--danger-color);
   color: var(--primary-color-text);
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
@@ -69,15 +61,14 @@
   font-weight: 600;
   min-width: 20px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Flecha de submenú */
 .submenu-arrow {
   margin-left: auto;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 0.8rem;
-  color: var(--text-color-secondary);
+  color: var(--sidebar-text-secondary);
+  transition: transform 0.2s ease;
 }
 
 .submenu-arrow.rotated {
@@ -88,140 +79,122 @@
 .submenu {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: var(--surface-section);
-  margin: 0.5rem 1rem 0.5rem 2rem;
-  border-radius: 8px;
-  border: 1px solid var(--surface-border);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  transition: max-height 0.3s ease;
+  background: var(--submenu-bg);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
 }
 
 .submenu.expanded {
-  max-height: 300px;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  max-height: 200px;
+  margin: 0;
+  padding: 0;
 }
 
+/* Items del submenú */
 .submenu-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  color: var(--text-color);
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  color: var(--sidebar-text);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 0.875rem;
-  border-radius: 6px;
-  margin: 0.25rem;
+  border-radius: 0;
+  margin: 0;
   border: none;
   background: transparent;
   font-weight: 500;
-  position: relative;
-  overflow: hidden;
-}
-
-.submenu-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  text-align: left;
 }
 
 .submenu-item:hover {
-  color: var(--primary-color-text);
-  transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-}
-
-.submenu-item:hover::before {
-  opacity: 1;
+  background: var(--submenu-hover);
+  color: var(--sidebar-text);
 }
 
 .submenu-item.active {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%);
+  background: var(--submenu-active);
   color: var(--primary-color-text);
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  transform: translateX(4px);
 }
 
-.submenu-item.active::before {
-  opacity: 0;
-}
-
+/* Icono del subitem */
 .submenu-item i {
   font-size: 0.9rem;
   min-width: 20px;
-  color: var(--text-color-secondary);
-  transition: color 0.3s ease;
+  color: var(--sidebar-text-secondary);
+  margin-left: 0;
 }
 
-.submenu-item:hover i,
 .submenu-item.active i {
   color: var(--primary-color-text);
 }
 
 /* Estados especiales para items con submenús */
 .sidebar-item.has-submenu .sidebar-menu-item {
-  padding-right: 2.5rem !important;
+  padding-right: 2.5rem;
 }
 
 .sidebar-item.submenu-active .sidebar-menu-item {
-  background: var(--surface-hover) !important;
-  color: var(--text-color) !important;
+  background: var(--sidebar-hover);
+  color: var(--sidebar-text);
 }
 
-/* Animaciones adicionales */
-.sidebar-item {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Items sin ruta (solo contenedores) */
+.sidebar-item .sidebar-menu-item.no-route {
+  cursor: pointer;
+  color: var(--sidebar-text);
 }
 
-.sidebar-item:hover {
-  transform: translateX(2px);
+.sidebar-item .sidebar-menu-item.no-route:hover {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-text);
 }
 
-/* Estados de carga */
-.submenu.loading {
-  opacity: 0.7;
-  pointer-events: none;
+/* Mejorar la visibilidad de los subitems activos */
+.submenu-item.active {
+  background: var(--submenu-active);
+  color: var(--primary-color-text);
+  font-weight: 600;
+  border-left: 3px solid var(--primary-color);
+}
+
+.submenu-item.active i {
+  color: var(--primary-color-text);
+}
+
+/* Indicador visual para el item padre cuando hay subitems activos */
+.sidebar-item.submenu-active .sidebar-menu-item {
+  background: var(--sidebar-hover);
+  color: var(--sidebar-text);
+  border-left: 3px solid var(--primary-color);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   :host ::ng-deep .sidebar-menu-item {
-    padding: 0.625rem 0.75rem !important;
-    font-size: 0.85rem !important;
+    padding: 0.625rem 1rem;
+    font-size: 0.85rem;
   }
 
   .submenu-item {
-    padding: 0.625rem 0.75rem !important;
-    font-size: 0.8rem !important;
-  }
-
-  .submenu {
-    margin: 0.375rem 0.75rem 0.375rem 1.5rem;
+    padding: 0.625rem 1rem 0.625rem 2.5rem;
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   :host ::ng-deep .sidebar-menu-item {
-    padding: 0.5rem 0.625rem !important;
-    font-size: 0.8rem !important;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
   }
 
   .submenu-item {
-    padding: 0.5rem 0.625rem !important;
-    font-size: 0.75rem !important;
-  }
-
-  .submenu {
-    margin: 0.25rem 0.5rem 0.25rem 1.25rem;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    font-size: 0.75rem;
   }
 }

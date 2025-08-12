@@ -41,8 +41,17 @@ export class SidebarItemComponent implements OnInit, OnDestroy {
 
   isActive(): boolean {
     if (!this.item.routerLink) return false;
-    const isActive = this.router.url.startsWith(this.item.routerLink);
-    return isActive;
+    // Solo considerar activo si la ruta coincide exactamente
+    const currentUrl = this.router.url;
+    const itemRoute = this.item.routerLink;
+
+    // Si es la ruta exacta, está activo
+    if (currentUrl === itemRoute) return true;
+
+    // Para items padre con subitems, nunca están activos por sí mismos
+    if (this.hasSubmenu()) return false;
+
+    return false;
   }
 
   hasSubmenu(): boolean {
@@ -51,16 +60,16 @@ export class SidebarItemComponent implements OnInit, OnDestroy {
 
   isSubmenuActive(): boolean {
     if (!this.hasSubmenu()) return false;
-    const isActive = this.item.items!.some(subItem =>
-      subItem.routerLink && this.router.url.startsWith(subItem.routerLink)
-    );
-    
+
+    // Verificar si algún subitem está activo
+    const hasActiveSubItem = this.item.items!.some(subItem => this.isSubItemActive(subItem));
+
     // Si hay un subitem activo, expandir automáticamente
-    if (isActive && !this.expanded) {
+    if (hasActiveSubItem && !this.expanded) {
       this.expanded = true;
     }
-    
-    return isActive;
+
+    return hasActiveSubItem;
   }
 
   toggleSubmenu(): void {
@@ -71,12 +80,17 @@ export class SidebarItemComponent implements OnInit, OnDestroy {
 
   navigateTo(route: string): void {
     if (!route) return;
-    
-    // Cerrar el submenú después de navegar
-    if (this.expanded) {
-      this.expanded = false;
+
+    // Solo cerrar el submenú si estamos navegando a una ruta diferente
+    const currentUrl = this.router.url;
+    if (this.expanded && currentUrl !== route) {
+      // Mantener el submenú abierto si navegamos a un subitem del mismo menú
+      const isSameMenu = this.item.items?.some(subItem => subItem.routerLink === route);
+      if (!isSameMenu) {
+        this.expanded = false;
+      }
     }
-    
+
     const routeArray = route.split('/').filter(segment => segment.length > 0);
     this.router.navigate(routeArray).then(success => {
       if (success) {
@@ -97,32 +111,41 @@ export class SidebarItemComponent implements OnInit, OnDestroy {
   // Método para obtener la clase CSS del item
   getItemClass(): string {
     let classes = 'sidebar-item';
-    
+
     if (this.hasSubmenu()) {
       classes += ' has-submenu';
     }
-    
+
     if (this.isSubmenuActive()) {
       classes += ' submenu-active';
     }
-    
+
     return classes;
   }
 
   // Método para obtener la clase CSS del submenú
   getSubmenuClass(): string {
     let classes = 'submenu';
-    
+
     if (this.expanded) {
       classes += ' expanded';
     }
-    
+
     return classes;
   }
 
   // Método para verificar si un subitem está activo
   isSubItemActive(subItem: SidebarSubItem): boolean {
     if (!subItem.routerLink) return false;
-    return this.router.url.startsWith(subItem.routerLink);
+    const currentUrl = this.router.url;
+    const subItemRoute = subItem.routerLink;
+
+    // Verificar si la URL actual coincide exactamente con la ruta del subitem
+    if (currentUrl === subItemRoute) return true;
+
+    // Verificar si la URL actual es una subruta del subitem (pero no la misma)
+    if (currentUrl.startsWith(subItemRoute + '/')) return true;
+
+    return false;
   }
 }
