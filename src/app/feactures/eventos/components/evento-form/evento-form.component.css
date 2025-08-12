@@ -1,0 +1,112 @@
+.evento-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.evento-form-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.form-error {
+  color: #ef4444;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.form-info {
+  margin: 1.5rem 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.lugar-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .evento-form-container {
+    padding: 0.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions p-button {
+    width: 100%;
+  }
+}
+
+/* PrimeNG overrides para mejorar el diseño */
+::ng-deep .evento-form-card .p-card-body {
+  padding: 1.5rem;
+}
+
+::ng-deep .w-full {
+  width: 100%;
+}
+
+::ng-deep .ng-invalid.ng-touched {
+  border-color: #ef4444;
+}
+
+::ng-deep .text-primary {
+  color: var(--primary-color);
+}
+
+::ng-deep .text-gray-500 {
+  color: #6b7280;
+}
+
+::ng-deep .text-gray-400 {
+  color: #9ca3af;
+}
+
+::ng-deep .text-sm {
+  font-size: 0.875rem;
+}
+
+::ng-deep .text-xs {
+  font-size: 0.75rem;
+}
+
+::ng-deep .font-semibold {
+  font-weight: 600;
+}
+
+::ng-deep .ml-2 {
+  margin-left: 0.5rem;
+}
