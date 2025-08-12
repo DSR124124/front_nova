@@ -1,0 +1,437 @@
+/* Contenedor principal */
+.cita-detail-container {
+  padding: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Estado de carga */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+}
+
+.loading-icon {
+  font-size: 2rem;
+  color: var(--p-primary-color);
+}
+
+.loading-state p {
+  color: var(--p-text-muted-color);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Estado de error */
+.error-state {
+  margin: 2rem 0;
+}
+
+:host ::ng-deep .error-card {
+  border: 1px solid var(--p-red-500);
+}
+
+:host ::ng-deep .error-card .p-card-header {
+  background: var(--p-red-50);
+  color: var(--p-red-600);
+  padding: 1rem;
+}
+
+.error-icon {
+  font-size: 2rem;
+  color: var(--p-red-500);
+  margin-bottom: 1rem;
+}
+
+.error-state p {
+  color: var(--p-text-color);
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Header */
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.detail-header h1 {
+  color: var(--p-text-color);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Contenido */
+.cita-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Tarjetas básicas */
+:host ::ng-deep .info-card,
+:host ::ng-deep .actions-card {
+  border: 1px solid var(--p-surface-border);
+}
+
+:host ::ng-deep .p-card-header {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  padding: 1rem 1.5rem;
+}
+
+:host ::ng-deep .p-card-title {
+  color: var(--p-primary-contrast-color);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Grid de información */
+.cita-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-section h2 {
+  color: var(--p-text-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.info-section h3 {
+  color: var(--p-text-color);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+/* Título y descripción */
+.cita-titulo {
+  color: var(--p-text-color);
+  line-height: 1.4;
+}
+
+.cita-descripcion {
+  color: var(--p-text-muted-color);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.no-descripcion {
+  color: var(--p-text-muted-color);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Estado */
+.estado-container {
+  display: flex;
+  align-items: center;
+}
+
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.estado-badge.estado-planificada {
+  background: var(--p-blue-50);
+  color: var(--p-blue-600);
+  border: 1px solid var(--p-blue-200);
+}
+
+.estado-badge.estado-realizada {
+  background: var(--p-green-50);
+  color: var(--p-green-600);
+  border: 1px solid var(--p-green-200);
+}
+
+.estado-badge.estado-cancelada {
+  background: var(--p-red-50);
+  color: var(--p-red-600);
+  border: 1px solid var(--p-red-200);
+}
+
+.estado-badge i {
+  font-size: 1rem;
+}
+
+/* Fecha y hora */
+.fecha-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fecha-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--p-text-color);
+  font-size: 0.95rem;
+}
+
+.fecha-item i {
+  color: var(--p-primary-color);
+  width: 16px;
+  text-align: center;
+}
+
+/* Lugar y categoría */
+.lugar-info,
+.categoria-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--p-text-color);
+  font-size: 0.95rem;
+}
+
+.lugar-info i,
+.categoria-info i {
+  color: var(--p-primary-color);
+  width: 16px;
+  text-align: center;
+}
+
+/* Calificación */
+.rating-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+:host ::ng-deep .rating-display .p-rating {
+  display: flex;
+  gap: 0.25rem;
+}
+
+:host ::ng-deep .rating-display .p-rating-icon {
+  color: var(--p-yellow-500);
+  font-size: 1.2rem;
+}
+
+.rating-text {
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Acciones */
+.actions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.action-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.action-group-destructive {
+  margin-left: auto;
+}
+
+:host ::ng-deep .action-btn {
+  min-width: 140px;
+}
+
+/* Diálogo de calificación */
+:host ::ng-deep .rating-dialog {
+  width: 90vw;
+  max-width: 500px;
+}
+
+.rating-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.rating-dialog-content h3 {
+  color: var(--p-text-color);
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.rating-dialog-content p {
+  color: var(--p-text-muted-color);
+  margin: 0;
+}
+
+.rating-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+:host ::ng-deep .rating-input .p-rating {
+  display: flex;
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .rating-input .p-rating-icon {
+  font-size: 1.5rem;
+  color: var(--p-surface-400);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+:host ::ng-deep .rating-input .p-rating-icon.p-rating-icon-active {
+  color: var(--p-yellow-500);
+}
+
+:host ::ng-deep .rating-input .p-rating-icon:hover {
+  color: var(--p-yellow-400);
+}
+
+.rating-value {
+  color: var(--p-text-color);
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.rating-comment-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rating-comment-section label {
+  color: var(--p-text-color);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.rating-comment {
+  width: 100%;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.dialog-footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cita-detail-container {
+    padding: 1rem;
+  }
+
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .detail-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .cita-info-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .actions-grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-group {
+    flex-direction: column;
+  }
+
+  .action-group-destructive {
+    margin-left: 0;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--p-surface-border);
+  }
+
+  :host ::ng-deep .action-btn {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fecha-info {
+    gap: 0.75rem;
+  }
+
+  .rating-section {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cita-detail-container {
+    padding: 0.75rem;
+  }
+
+  .detail-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .info-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .estado-badge {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  :host ::ng-deep .rating-dialog {
+    width: 95vw;
+  }
+
+  .rating-dialog-content {
+    gap: 1rem;
+  }
+
+  :host ::ng-deep .rating-input .p-rating-icon {
+    font-size: 1.25rem;
+  }
+}

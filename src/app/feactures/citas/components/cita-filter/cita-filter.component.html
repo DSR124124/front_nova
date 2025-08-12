@@ -1,1 +1,203 @@
-<p>cita-filter works!</p>
+<div class="cita-filter-container">
+
+  <!-- Header del filtro -->
+  <div class="filter-header">
+    <div class="filter-title">
+      <i class="pi pi-filter"></i>
+      <span>Filtrar Citas</span>
+      <div *ngIf="hasActiveFilters" class="active-filters-badge">
+        {{ getActiveFiltersCount() }}
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <p-button
+        *ngIf="hasActiveFilters"
+        label="Limpiar"
+        icon="pi pi-times"
+        [text]="true"
+        size="small"
+        (onClick)="onClearFilters()"
+        [disabled]="disabled"
+      />
+      <p-button
+        [icon]="isExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+        [text]="true"
+        size="small"
+        (onClick)="toggleExpanded()"
+        [disabled]="disabled"
+        pTooltip="Expandir/Contraer filtros"
+      />
+    </div>
+  </div>
+
+  <!-- Filtros básicos (siempre visibles) -->
+  <div class="basic-filters">
+
+    <!-- Búsqueda por título -->
+    <div class="filter-field">
+      <label for="titulo">Buscar por título:</label>
+      <p-iconField iconPosition="left">
+        <p-inputIcon class="pi pi-search" />
+        <input
+          id="titulo"
+          pInputText
+          type="text"
+          [ngModel]="filtros.titulo"
+          (ngModelChange)="onTituloChange($event)"
+          placeholder="Buscar citas..."
+          [disabled]="disabled"
+          class="filter-input"
+        />
+      </p-iconField>
+    </div>
+
+    <!-- Estado -->
+    <div class="filter-field">
+      <label for="estado">Estado:</label>
+      <p-select
+        id="estado"
+        [options]="estadoOptions"
+        [ngModel]="filtros.estado"
+        (ngModelChange)="onEstadoChange($event)"
+        placeholder="Seleccionar estado"
+        [disabled]="disabled"
+        styleClass="filter-select"
+      />
+    </div>
+
+  </div>
+
+  <!-- Filtros avanzados (expandibles) -->
+  <div class="advanced-filters" [class.expanded]="isExpanded">
+
+    <!-- Rango de fechas -->
+    <div class="filter-section">
+      <h4>Rango de Fechas</h4>
+      <div class="date-range">
+        <div class="filter-field">
+          <label for="fechaInicio">Desde:</label>
+          <p-calendar
+            id="fechaInicio"
+            [ngModel]="filtros.fechaInicio"
+            (ngModelChange)="onFechaInicioChange($event)"
+            [showIcon]="true"
+            dateFormat="dd/mm/yy"
+            placeholder="Fecha inicio"
+            [disabled]="disabled"
+            styleClass="filter-calendar"
+          />
+        </div>
+
+        <div class="filter-field">
+          <label for="fechaFin">Hasta:</label>
+          <p-calendar
+            id="fechaFin"
+            [ngModel]="filtros.fechaFin"
+            (ngModelChange)="onFechaFinChange($event)"
+            [showIcon]="true"
+            dateFormat="dd/mm/yy"
+            placeholder="Fecha fin"
+            [disabled]="disabled"
+            [minDate]="filtros.fechaInicio"
+            styleClass="filter-calendar"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Lugar y Categoría -->
+    <div class="filter-section">
+      <h4>Lugar y Categoría</h4>
+      <div class="location-category">
+        <div class="filter-field">
+          <label for="lugar">Lugar:</label>
+          <p-select
+            id="lugar"
+            [options]="getLugarOptions()"
+            [ngModel]="filtros.lugarId"
+            (ngModelChange)="onLugarChange($event)"
+            placeholder="Seleccionar lugar"
+            [disabled]="disabled"
+            styleClass="filter-select"
+          />
+        </div>
+
+        <div class="filter-field">
+          <label for="categoria">Categoría:</label>
+          <p-select
+            id="categoria"
+            [options]="getCategoriaOptions()"
+            [ngModel]="filtros.categoriaId"
+            (ngModelChange)="onCategoriaChange($event)"
+            placeholder="Seleccionar categoría"
+            [disabled]="disabled"
+            styleClass="filter-select"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Calificación -->
+    <div class="filter-section">
+      <h4>Calificación</h4>
+      <div class="filter-field">
+        <label for="rating">Calificación mínima:</label>
+        <p-select
+          id="rating"
+          [options]="ratingOptions"
+          [ngModel]="filtros.rating"
+          (ngModelChange)="onRatingChange($event)"
+          placeholder="Seleccionar calificación"
+          [disabled]="disabled"
+          styleClass="filter-select"
+        />
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Filtros activos (resumen) -->
+  <div *ngIf="hasActiveFilters" class="active-filters-summary">
+    <h4>Filtros Activos:</h4>
+    <div class="active-filters-list">
+
+      <div *ngIf="filtros.titulo" class="active-filter-chip">
+        <span>Título: "{{ filtros.titulo }}"</span>
+        <i class="pi pi-times" (click)="clearTitulo()"></i>
+      </div>
+
+      <div *ngIf="filtros.estado" class="active-filter-chip">
+        <span>Estado: {{ filtros.estado }}</span>
+        <i class="pi pi-times" (click)="clearEstado()"></i>
+      </div>
+
+      <div *ngIf="filtros.fechaInicio" class="active-filter-chip">
+        <span>Desde: {{ formatDate(filtros.fechaInicio) }}</span>
+        <i class="pi pi-times" (click)="clearFechaInicio()"></i>
+      </div>
+
+      <div *ngIf="filtros.fechaFin" class="active-filter-chip">
+        <span>Hasta: {{ formatDate(filtros.fechaFin) }}</span>
+        <i class="pi pi-times" (click)="clearFechaFin()"></i>
+      </div>
+
+      <div *ngIf="filtros.lugarId" class="active-filter-chip">
+        <span>Lugar: {{ getLugarNombre() }}</span>
+        <i class="pi pi-times" (click)="clearLugar()"></i>
+      </div>
+
+      <div *ngIf="filtros.categoriaId" class="active-filter-chip">
+        <span>Categoría: {{ getCategoriaNombre() }}</span>
+        <i class="pi pi-times" (click)="clearCategoria()"></i>
+      </div>
+
+      <div *ngIf="filtros.rating" class="active-filter-chip">
+        <span>Rating: {{ filtros.rating }}+ estrellas</span>
+        <i class="pi pi-times" (click)="clearRating()"></i>
+      </div>
+
+    </div>
+  </div>
+
+</div>

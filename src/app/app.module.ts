@@ -11,6 +11,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
 import { ChatModule } from './feactures/chat/chat.module';
+import { CitasModule } from './feactures/citas/citas.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ChatModule } from './feactures/chat/chat.module';
     AuthModule,
     LayoutModule,
     SharedModule,
-    ChatModule
+    ChatModule,
+    CitasModule
   ],
   providers: [
     provideAnimationsAsync(),

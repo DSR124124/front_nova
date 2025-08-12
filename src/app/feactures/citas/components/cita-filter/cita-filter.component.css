@@ -1,0 +1,306 @@
+/* Contenedor principal */
+.cita-filter-container {
+  background: var(--p-surface-card);
+  border: 1px solid var(--p-surface-border);
+  border-radius: var(--p-border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Header del filtro */
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--p-surface-border);
+}
+
+.filter-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--p-text-color);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.filter-title i {
+  color: var(--p-primary-color);
+  font-size: 1.2rem;
+}
+
+.active-filters-badge {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 20px;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Filtros básicos */
+.basic-filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Filtros avanzados */
+.advanced-filters {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.advanced-filters.expanded {
+  max-height: 500px;
+  opacity: 1;
+  margin-bottom: 1rem;
+}
+
+.filter-section {
+  margin-bottom: 1.5rem;
+}
+
+.filter-section h4 {
+  color: var(--p-text-color);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--p-surface-100);
+}
+
+/* Campos de filtro */
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-field label {
+  color: var(--p-text-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+:host ::ng-deep .filter-input,
+:host ::ng-deep .filter-select,
+:host ::ng-deep .filter-calendar {
+  width: 100%;
+}
+
+:host ::ng-deep .filter-input {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Rangos específicos */
+.date-range,
+.location-category {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Filtros activos */
+.active-filters-summary {
+  background: var(--p-surface-50);
+  border: 1px solid var(--p-surface-border);
+  border-radius: var(--p-border-radius);
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.active-filters-summary h4 {
+  color: var(--p-text-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+}
+
+.active-filters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.active-filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.active-filter-chip span {
+  flex: 1;
+}
+
+.active-filter-chip i {
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.active-filter-chip i:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Estados de input */
+:host ::ng-deep .filter-input:focus,
+:host ::ng-deep .filter-select .p-select:focus,
+:host ::ng-deep .filter-calendar .p-calendar input:focus {
+  border-color: var(--p-primary-color);
+  box-shadow: 0 0 0 0.2rem var(--p-primary-color-alpha-20);
+}
+
+:host ::ng-deep .filter-input:disabled,
+:host ::ng-deep .filter-select .p-select:disabled,
+:host ::ng-deep .filter-calendar .p-calendar input:disabled {
+  background: var(--p-surface-100);
+  color: var(--p-text-muted-color);
+  cursor: not-allowed;
+}
+
+/* Iconos en campos */
+:host ::ng-deep .p-iconfield .p-inputicon {
+  color: var(--p-text-muted-color);
+}
+
+:host ::ng-deep .filter-calendar .p-calendar-w-btn .p-button {
+  border-left: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filter-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .filter-title {
+    justify-content: center;
+  }
+
+  .filter-actions {
+    justify-content: center;
+  }
+
+  .basic-filters {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .date-range,
+  .location-category {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .active-filters-list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .active-filter-chip {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .cita-filter-container {
+    padding: 0.75rem;
+  }
+
+  .filter-section {
+    margin-bottom: 1rem;
+  }
+
+  .filter-field {
+    gap: 0.4rem;
+  }
+
+  .filter-field label {
+    font-size: 0.85rem;
+  }
+
+  .filter-title {
+    font-size: 1rem;
+  }
+
+  .active-filter-chip {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .active-filters-summary {
+    padding: 0.75rem;
+  }
+}
+
+/* Estados específicos del componente */
+.cita-filter-container.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Animaciones suaves */
+.filter-field {
+  transition: opacity 0.2s ease;
+}
+
+.filter-field:has(:disabled) {
+  opacity: 0.7;
+}
+
+/* Mejoras de accesibilidad */
+.filter-field label:hover {
+  color: var(--p-primary-color);
+}
+
+:host ::ng-deep .filter-input:focus-visible,
+:host ::ng-deep .filter-select .p-select:focus-visible,
+:host ::ng-deep .filter-calendar .p-calendar input:focus-visible {
+  outline: 2px solid var(--p-primary-color);
+  outline-offset: 2px;
+}
+
+/* Estados de validación */
+.filter-field.error label {
+  color: var(--p-red-500);
+}
+
+.filter-field.error :host ::ng-deep .filter-input,
+.filter-field.error :host ::ng-deep .filter-select .p-select,
+.filter-field.error :host ::ng-deep .filter-calendar .p-calendar input {
+  border-color: var(--p-red-500);
+}
+
+/* Indicadores visuales */
+.filter-section:has(.filter-field :not(:placeholder-shown)) h4::after {
+  content: ' ●';
+  color: var(--p-primary-color);
+  font-size: 0.8rem;
+}

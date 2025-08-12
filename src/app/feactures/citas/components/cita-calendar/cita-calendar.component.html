@@ -1,1 +1,185 @@
-<p>cita-calendar works!</p>
+<div class="cita-calendar-container">
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-state">
+    <i class="pi pi-spin pi-spinner loading-icon"></i>
+    <p>Cargando calendario...</p>
+  </div>
+
+  <!-- Estado de error -->
+  <div *ngIf="error && !loading" class="error-state">
+    <p-card header="Error" styleClass="error-card">
+      <i class="pi pi-exclamation-triangle error-icon"></i>
+      <p>{{ error }}</p>
+      <p-button
+        label="Reintentar"
+        icon="pi pi-refresh"
+        (onClick)="cargarCitas()"
+        size="small"
+      />
+    </p-card>
+  </div>
+
+  <!-- Calendario principal -->
+  <div *ngIf="!loading && !error" class="calendar-content">
+
+    <!-- Header del calendario -->
+    <p-card header="Calendario de Citas" styleClass="calendar-card">
+
+      <!-- Controles del calendario -->
+      <div class="calendar-controls">
+        <div class="date-navigation">
+          <p-button
+            icon="pi pi-chevron-left"
+            [text]="true"
+            (onClick)="navigateDate('prev')"
+            pTooltip="Anterior"
+          />
+          <div class="current-date">
+            <h3>{{ selectedDate | date:'MMMM yyyy' }}</h3>
+          </div>
+          <p-button
+            icon="pi pi-chevron-right"
+            [text]="true"
+            (onClick)="navigateDate('next')"
+            pTooltip="Siguiente"
+          />
+        </div>
+
+        <div class="view-controls">
+          <p-button
+            label="Hoy"
+            [outlined]="true"
+            size="small"
+            (onClick)="goToToday()"
+          />
+          <div class="view-buttons">
+            <p-button
+              label="Mes"
+              [outlined]="calendarView !== 'month'"
+              size="small"
+              (onClick)="changeView('month')"
+            />
+            <p-button
+              label="Semana"
+              [outlined]="calendarView !== 'week'"
+              size="small"
+              (onClick)="changeView('week')"
+            />
+            <p-button
+              label="Día"
+              [outlined]="calendarView !== 'day'"
+              size="small"
+              (onClick)="changeView('day')"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendario simple -->
+      <div class="calendar-wrapper">
+        <p-calendar
+          [(ngModel)]="selectedDate"
+          [inline]="true"
+          [showWeek]="true"
+          dateFormat="dd/mm/yy"
+          (onSelect)="onDateSelect($event)"
+          styleClass="calendar-component"
+        />
+      </div>
+
+    </p-card>
+
+    <!-- Lista de citas del día seleccionado -->
+    <p-card header="Citas del día" styleClass="citas-dia-card">
+      <div class="citas-dia-content">
+        <div class="selected-date-header">
+          <i class="pi pi-calendar"></i>
+          <span>{{ selectedDate | date:'fullDate' }}</span>
+        </div>
+
+        <div class="citas-list">
+          <div *ngIf="getCitasDelDia().length === 0" class="no-citas">
+            <i class="pi pi-calendar-times"></i>
+            <p>No hay citas programadas para este día</p>
+            <p-button
+              label="Programar Cita"
+              icon="pi pi-plus"
+              (onClick)="createNewCita()"
+              size="small"
+            />
+          </div>
+
+          <div
+            *ngFor="let cita of getCitasDelDia(); trackBy: trackByCita"
+            class="cita-item"
+            (click)="onCitaClick(cita)"
+          >
+            <div class="cita-time">
+              <i class="pi pi-clock"></i>
+              <span>{{ formatTime(cita.fecha) }}</span>
+            </div>
+
+            <div class="cita-details">
+              <h4>{{ cita.titulo }}</h4>
+              <p *ngIf="cita.descripcion" class="cita-descripcion">{{ cita.descripcion }}</p>
+              <div class="cita-info">
+                <span *ngIf="cita.lugarNombre" class="lugar">
+                  <i class="pi pi-map-marker"></i>
+                  {{ cita.lugarNombre }}
+                </span>
+                <span class="estado" [class]="getEstadoCssClass(cita.estado)">
+                  {{ getEstadoText(cita.estado || EstadoCita.PLANIFICADA) }}
+                </span>
+              </div>
+            </div>
+
+            <div class="cita-actions">
+              <i class="pi pi-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones rápidas -->
+        <div class="quick-actions">
+          <p-button
+            label="Nueva Cita"
+            icon="pi pi-plus"
+            (onClick)="createNewCita()"
+            styleClass="new-cita-btn"
+          />
+          <p-button
+            label="Ver Todas"
+            icon="pi pi-list"
+            [outlined]="true"
+            (onClick)="navigateToAllCitas()"
+            styleClass="view-all-btn"
+          />
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Resumen de citas -->
+    <p-card header="Resumen" styleClass="resumen-card">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value">{{ getTotalCitas() }}</div>
+          <div class="stat-label">Total Citas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ getCitasPorEstado(EstadoCita.PLANIFICADA).length }}</div>
+          <div class="stat-label">Planificadas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ getCitasPorEstado(EstadoCita.REALIZADA).length }}</div>
+          <div class="stat-label">Realizadas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">{{ getCitasPorEstado(EstadoCita.CANCELADA).length }}</div>
+          <div class="stat-label">Canceladas</div>
+        </div>
+      </div>
+    </p-card>
+
+  </div>
+</div>

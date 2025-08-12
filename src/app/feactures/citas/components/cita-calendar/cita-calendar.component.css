@@ -1,0 +1,402 @@
+/* Contenedor principal */
+.cita-calendar-container {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Estado de carga */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+}
+
+.loading-icon {
+  font-size: 2rem;
+  color: var(--p-primary-color);
+}
+
+.loading-state p {
+  color: var(--p-text-muted-color);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Estado de error */
+.error-state {
+  margin: 2rem 0;
+}
+
+:host ::ng-deep .error-card {
+  border: 1px solid var(--p-red-500);
+}
+
+:host ::ng-deep .error-card .p-card-header {
+  background: var(--p-red-50);
+  color: var(--p-red-600);
+  padding: 1rem;
+}
+
+.error-icon {
+  font-size: 2rem;
+  color: var(--p-red-500);
+  margin-bottom: 1rem;
+}
+
+.error-state p {
+  color: var(--p-text-color);
+  margin: 1rem 0;
+  text-align: center;
+}
+
+/* Contenido del calendario */
+.calendar-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+/* Tarjetas básicas */
+:host ::ng-deep .calendar-card,
+:host ::ng-deep .citas-dia-card,
+:host ::ng-deep .resumen-card {
+  border: 1px solid var(--p-surface-border);
+}
+
+:host ::ng-deep .p-card-header {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  padding: 1rem 1.5rem;
+}
+
+:host ::ng-deep .p-card-title {
+  color: var(--p-primary-contrast-color);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Controles del calendario */
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.date-navigation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.current-date h3 {
+  margin: 0;
+  color: var(--p-text-color);
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.view-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Calendario */
+.calendar-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+:host ::ng-deep .calendar-component {
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep .calendar-component .p-datepicker {
+  box-shadow: none;
+  border: 1px solid var(--p-surface-border);
+}
+
+:host ::ng-deep .calendar-component .p-datepicker table td {
+  padding: 0.5rem;
+}
+
+:host ::ng-deep .calendar-component .p-datepicker table td > span {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--p-border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Citas del día */
+.citas-dia-content {
+  padding: 0;
+}
+
+.selected-date-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--p-surface-50);
+  border-bottom: 1px solid var(--p-surface-border);
+  margin: -1rem -1rem 0 -1rem;
+}
+
+.selected-date-header i {
+  color: var(--p-primary-color);
+  font-size: 1.1rem;
+}
+
+.selected-date-header span {
+  color: var(--p-text-color);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.citas-list {
+  margin: 1rem 0;
+}
+
+.no-citas {
+  text-align: center;
+  padding: 2rem;
+  color: var(--p-text-muted-color);
+}
+
+.no-citas i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--p-surface-400);
+}
+
+.no-citas p {
+  margin: 0.5rem 0;
+}
+
+/* Item de cita */
+.cita-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--p-surface-border);
+  border-radius: var(--p-border-radius);
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cita-item:hover {
+  background: var(--p-highlight-bg);
+  border-color: var(--p-primary-color);
+}
+
+.cita-time {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.cita-time i {
+  color: var(--p-primary-color);
+}
+
+.cita-details {
+  flex: 1;
+}
+
+.cita-details h4 {
+  margin: 0 0 0.25rem 0;
+  color: var(--p-text-color);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.cita-descripcion {
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+  line-height: 1.4;
+}
+
+.cita-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.lugar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--p-text-muted-color);
+  font-size: 0.8rem;
+}
+
+.lugar i {
+  color: var(--p-primary-color);
+}
+
+.estado {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.estado-planificada {
+  background: var(--p-blue-50);
+  color: var(--p-blue-600);
+}
+
+.estado-realizada {
+  background: var(--p-green-50);
+  color: var(--p-green-600);
+}
+
+.estado-cancelada {
+  background: var(--p-red-50);
+  color: var(--p-red-600);
+}
+
+.cita-actions {
+  flex-shrink: 0;
+  color: var(--p-text-muted-color);
+}
+
+/* Acciones rápidas */
+.quick-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--p-surface-50);
+  border-top: 1px solid var(--p-surface-border);
+  margin: 1rem -1rem -1rem -1rem;
+  justify-content: center;
+}
+
+/* Resumen */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 1rem;
+  background: var(--p-surface-50);
+  border-radius: var(--p-border-radius);
+  border: 1px solid var(--p-surface-border);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--p-primary-color);
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  color: var(--p-text-muted-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .calendar-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cita-calendar-container {
+    padding: 1rem;
+  }
+
+  .calendar-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .date-navigation {
+    justify-content: center;
+  }
+
+  .view-controls {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cita-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .cita-time {
+    justify-content: center;
+  }
+
+  .cita-info {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .quick-actions {
+    flex-direction: column;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cita-calendar-container {
+    padding: 0.75rem;
+  }
+
+  .view-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .view-buttons .p-button {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+}
