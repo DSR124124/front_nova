@@ -1,77 +1,100 @@
-/* You can add global styles to this file, and also import other style files */
-
-/* Custom Fonts Configuration */
-@font-face {
-  font-family: 'Anek Latin';
-  src: url('./assets/fonts/AnekLatin-VariableFont_wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-stretch: 75% 125%;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Anek Devanagari';
-  src: url('./assets/fonts/AnekDevanagari-VariableFont_wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-stretch: 75% 125%;
-  font-display: swap;
-}
-
-/* CSS Custom Properties for Fonts */
-:root {
-  --custom-font-primary: 'Anek Latin', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --custom-font-secondary: 'Anek Devanagari', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-/* Global styles for better PrimeNG integration */
-body {
+/* Estilos globales para la aplicación Nova */
+* {
   margin: 0;
   padding: 0;
-  font-family: var(--custom-font-primary);
-  background-color: var(--p-surface-ground);
+  box-sizing: border-box;
 }
 
-/* Ensure PrimeNG components render properly */
-.p-component {
-  font-family: var(--custom-font-primary);
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--surface-ground);
+  color: var(--text-color);
+  line-height: 1.6;
 }
 
-/* Override PrimeNG font variables */
-:root {
-  --p-font-family: var(--custom-font-primary);
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-card: #1f2937;
+    --surface-border: #374151;
+    --surface-ground: #111827;
+    --text-color: #f9fafb;
+    --text-secondary: #d1d5db;
+  }
 }
 
-/* Additional font classes for flexibility */
-.font-primary {
-  font-family: var(--custom-font-primary) !important;
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.font-secondary {
-  font-family: var(--custom-font-secondary) !important;
+::-webkit-scrollbar-track {
+  background: var(--surface-ground);
 }
 
-/* Custom utility classes for spacing */
-.p-mb-0 { margin-bottom: 0 !important; }
-.p-mb-1 { margin-bottom: 0.25rem !important; }
-.p-mb-2 { margin-bottom: 0.5rem !important; }
-.p-mb-3 { margin-bottom: 1rem !important; }
-.p-mb-4 { margin-bottom: 1.5rem !important; }
+::-webkit-scrollbar-thumb {
+  background: var(--surface-border);
+  border-radius: 4px;
+}
 
-.p-mt-1 { margin-top: 0.25rem !important; }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
 
-.p-ml-2 { margin-left: 0.5rem !important; }
+/* Utilidades */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
 
-.p-mr-2 { margin-right: 0.5rem !important; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-5 { margin-top: 1.25rem; }
 
-.p-w-100 { width: 100% !important; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-5 { margin-bottom: 1.25rem; }
 
-.p-d-block { display: block !important; }
-.p-d-flex { display: flex !important; }
-.p-jc-center { justify-content: center !important; }
-.p-jc-between { justify-content: space-between !important; }
-.p-ai-center { align-items: center !important; }
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.p-5 { padding: 1.25rem; }
 
-.p-text-center { text-align: center !important; }
-.p-text-bold { font-weight: bold !important; }
-.p-text-xl { font-size: 1.25rem !important; }
-.p-text-secondary { color: var(--p-text-muted-color) !important; }
+/* Animaciones */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Estados de hover y focus */
+button:hover, .btn:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .hidden-mobile { display: none !important; }
+}
+
+@media (min-width: 769px) {
+  .hidden-desktop { display: none !important; }
+}

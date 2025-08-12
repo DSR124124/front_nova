@@ -4,12 +4,14 @@ import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { DrawerModule } from 'primeng/drawer';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -48,12 +50,14 @@ import { ChipModule } from 'primeng/chip';
     BadgeModule,
     BreadcrumbModule,
     ButtonModule,
+    CalendarModule,
     CardModule,
     CarouselModule,
     CheckboxModule,
     ConfirmDialogModule,
     DatePickerModule,
     DialogModule,
+    DropdownModule,
     DynamicDialogModule,
     DrawerModule,
     FieldsetModule,

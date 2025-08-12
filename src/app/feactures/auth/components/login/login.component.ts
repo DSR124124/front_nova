@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
 
           // Redirigir al dashboard
           setTimeout(() => {
-            this.router.navigate(['/app']);
+            this.router.navigate(['/dashboard']);
           }, 1000);
         },
         error: (error) => {

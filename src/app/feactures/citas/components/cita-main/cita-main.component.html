@@ -1,0 +1,29 @@
+<div class="cita-main-container">
+  <!-- Header del módulo de citas -->
+  <div class="cita-header">
+    <div class="header-content">
+      <h1><i class="pi pi-calendar"></i> Gestión de Citas</h1>
+      <p>Organiza y gestiona tus citas románticas</p>
+    </div>
+  </div>
+
+  <!-- Navegación interna -->
+  <div class="cita-navigation">
+    <div class="nav-tabs">
+      <button
+        *ngFor="let item of menuItems"
+        class="nav-tab"
+        [class.active]="isActive(item.route)"
+        (click)="navigateTo(item.route)"
+      >
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenido del router outlet -->
+  <div class="cita-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

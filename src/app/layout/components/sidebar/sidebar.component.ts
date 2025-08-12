@@ -1,7 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +11,7 @@ export class SidebarComponent implements OnInit {
   collapsed = false;
   isMobile = false;
 
-  menuItems: MenuItem[] = [
+  menuItems = [
     {
       label: 'Dashboard',
       icon: 'pi pi-home',
@@ -22,7 +20,24 @@ export class SidebarComponent implements OnInit {
     {
       label: 'Citas',
       icon: 'pi pi-calendar',
-      routerLink: '/citas'
+      routerLink: '/citas',
+      items: [
+        {
+          label: 'Lista de Citas',
+          icon: 'pi pi-list',
+          routerLink: '/citas/listar'
+        },
+        {
+          label: 'Calendario',
+          icon: 'pi pi-calendar',
+          routerLink: '/citas/calendario'
+        },
+        {
+          label: 'Nueva Cita',
+          icon: 'pi pi-plus',
+          routerLink: '/citas/nueva'
+        }
+      ]
     },
     {
       label: 'Eventos',

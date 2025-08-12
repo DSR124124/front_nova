@@ -4,6 +4,15 @@
   margin-bottom: 0.25rem;
 }
 
+.sidebar-item.has-submenu {
+  position: relative;
+}
+
+.sidebar-item.submenu-active .sidebar-menu-item {
+  background: var(--p-primary-50) !important;
+  color: var(--p-primary-color) !important;
+}
+
 /* Estilos para el botón del menú */
 :host ::ng-deep .sidebar-menu-item {
   padding: 0.75rem 1rem !important;
@@ -12,6 +21,7 @@
   background: transparent !important;
   border: none !important;
   text-align: left !important;
+  position: relative !important;
 }
 
 :host ::ng-deep .sidebar-menu-item:hover {
@@ -40,4 +50,68 @@
   font-weight: 600;
   min-width: 20px;
   text-align: center;
+}
+
+/* Flecha de submenú */
+.submenu-arrow {
+  margin-left: auto;
+  transition: transform 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.submenu-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+/* Submenús */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: var(--p-surface-50);
+  margin-left: 1rem;
+  border-radius: 6px;
+}
+
+.submenu.expanded {
+  max-height: 200px;
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  color: var(--p-text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  margin: 0.25rem;
+}
+
+.submenu-item:hover {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+}
+
+.submenu-item.active {
+  background: var(--p-primary-100);
+  color: var(--p-primary-color);
+  font-weight: 500;
+}
+
+.submenu-item i {
+  font-size: 0.9rem;
+  min-width: 20px;
+}
+
+/* Estados especiales para items con submenús */
+.sidebar-item.has-submenu .sidebar-menu-item {
+  padding-right: 2.5rem !important;
+}
+
+.sidebar-item.submenu-active .sidebar-menu-item {
+  background: var(--p-primary-50) !important;
+  color: var(--p-primary-color) !important;
 }

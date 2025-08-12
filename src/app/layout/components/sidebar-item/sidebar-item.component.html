@@ -1,19 +1,46 @@
-<div class="sidebar-item">
-  <!-- Item simple usando PrimeNG Button -->
-  <p-button
-    [label]="!sidebarCollapsed ? item.label : ''"
-    [icon]="item.icon"
-    [text]="true"
-    [routerLink]="item.routerLink"
-    styleClass="w-full justify-content-start sidebar-menu-item"
-    [ngClass]="{'active': isActive()}"
-  >
-    <!-- Badge si existe -->
-    <span
-      *ngIf="item.badge && !sidebarCollapsed"
-      class="item-badge"
+<div class="sidebar-item" [class.has-submenu]="hasSubmenu()" [class.submenu-active]="isSubmenuActive()">
+  <!-- Item principal -->
+  <div class="sidebar-item-main">
+    <p-button
+      [label]="!sidebarCollapsed ? item.label : ''"
+      [icon]="item.icon"
+      [text]="true"
+      [routerLink]="item.routerLink"
+      styleClass="w-full justify-content-start sidebar-menu-item"
+      [ngClass]="{'active': isActive()}"
+      (onClick)="hasSubmenu() ? toggleSubmenu() : null"
     >
-      {{ item.badge }}
-    </span>
-  </p-button>
+      <!-- Badge si existe -->
+      <span
+        *ngIf="item.badge && !sidebarCollapsed"
+        class="item-badge"
+      >
+        {{ item.badge }}
+      </span>
+
+      <!-- Flecha para submenús -->
+      <i
+        *ngIf="hasSubmenu() && !sidebarCollapsed"
+        class="pi pi-chevron-down submenu-arrow"
+        [class.rotated]="expanded"
+      ></i>
+    </p-button>
+  </div>
+
+  <!-- Submenús -->
+  <div
+    *ngIf="hasSubmenu() && !sidebarCollapsed"
+    class="submenu"
+    [class.expanded]="expanded"
+  >
+    <div
+      *ngFor="let subItem of item.items"
+      class="submenu-item"
+      [class.active]="router.url.startsWith(subItem.routerLink || '')"
+      (click)="navigateTo(subItem.routerLink || '')"
+    >
+      <i [class]="subItem.icon"></i>
+      <span>{{ subItem.label }}</span>
+    </div>
+  </div>
 </div>

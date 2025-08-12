@@ -15,20 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class DatePickerComponent implements ControlValueAccessor {
-  @Input() minDate?: Date;
-  @Input() maxDate?: Date;
-  @Input() showIcon: boolean = true;
-  @Input() placeholder: string = 'Selecciona una fecha';
-  @Input() dateFormat: string = 'dd/mm/yy';
   @Input() disabled: boolean = false;
-  @Input() showTime: boolean = false;
-  @Input() hourFormat: string = '24';
-  @Input() showButtonBar: boolean = false;
-  @Input() selectionMode: 'single' | 'multiple' | 'range' = 'single';
-  @Input() inline: boolean = false;
-  @Input() readonlyInput: boolean = false;
-  @Input() showWeek: boolean = false;
-
 
   @Output() valueChange = new EventEmitter<Date | Date[] | null>();
   @Output() onSelect = new EventEmitter<Date>();

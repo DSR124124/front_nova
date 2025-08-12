@@ -10,8 +10,7 @@ import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { LayoutModule } from './layout/layout.module';
 import { SharedModule } from './shared/shared.module';
-import { EventosModule } from './feactures/eventos/eventos.module';
-import { CitasModule } from './feactures/citas/citas.module';
+import { DashboardModule } from './feactures/dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { CitasModule } from './feactures/citas/citas.module';
     AuthModule,
     LayoutModule,
     SharedModule,
-    EventosModule,
-    CitasModule
+    DashboardModule
   ],
   providers: [
     provideAnimationsAsync(),

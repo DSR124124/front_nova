@@ -5,6 +5,7 @@ import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { CitasRoutingModule } from './citas-routing.module';
+import { CitaMainComponent } from './components/cita-main/cita-main.component';
 import { CitaListComponent } from './components/cita-list/cita-list.component';
 import { CitaFormComponent } from './components/cita-form/cita-form.component';
 import { CitaDetailComponent } from './components/cita-detail/cita-detail.component';
@@ -14,6 +15,7 @@ import { CitaFilterComponent } from './components/cita-filter/cita-filter.compon
 
 @NgModule({
   declarations: [
+    CitaMainComponent,
     CitaListComponent,
     CitaFormComponent,
     CitaDetailComponent,
@@ -28,6 +30,7 @@ import { CitaFilterComponent } from './components/cita-filter/cita-filter.compon
     CitasRoutingModule
   ],
   exports: [
+    CitaMainComponent,
     CitaCalendarComponent,
     CitaDetailComponent,
     CitaFilterComponent,

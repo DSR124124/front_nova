@@ -21,6 +21,11 @@ const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'citas',
+    loadChildren: () => import('./feactures/citas/citas.module').then(m => m.CitasModule),
+    canActivate: [authGuard, parejaGuard]
+  },
+  {
     path: 'app',
     loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule),
     canActivate: [authGuard, parejaGuard]

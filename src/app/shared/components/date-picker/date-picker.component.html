@@ -2,29 +2,15 @@
   <!-- Calendar básico de PrimeNG -->
   <p-calendar
     [(ngModel)]="value"
-    [placeholder]="placeholder"
     [disabled]="disabled"
-    [showIcon]="showIcon"
-    [dateFormat]="dateFormat"
-    [showTime]="showTime"
-    [hourFormat]="hourFormat"
-    [showButtonBar]="showButtonBar"
-    [selectionMode]="selectionMode"
-    [inline]="inline"
-    [readonlyInput]="readonlyInput"
-    [showWeek]="showWeek"
-    [minDate]="minDate"
-    [maxDate]="maxDate"
-
     (onSelect)="onDateSelect($event)"
     (ngModelChange)="onDateChange($event)"
     styleClass="custom-calendar"
-    inputStyleClass="calendar-input"
   />
 
   <!-- Botón limpiar opcional -->
   <p-button
-    *ngIf="value && !disabled && !readonlyInput"
+    *ngIf="value && !disabled"
     icon="pi pi-times"
     [text]="true"
     [rounded]="true"
