@@ -17,8 +17,9 @@ export interface Activity {
   styleUrl: './recent-activity.component.css'
 })
 export class RecentActivityComponent implements OnInit {
-  activities: Activity[] = [];
+  showDrawer = false;
   loading: boolean = true;
+  activities: Activity[] = [];
 
   // Actividades simuladas para mostrar
   private sampleActivities: Activity[] = [
