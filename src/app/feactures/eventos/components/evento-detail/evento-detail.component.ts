@@ -249,4 +249,5 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
     if (this.esEventoPasado) return 'Pasado';
     return 'Próximo';
   }
+
 }

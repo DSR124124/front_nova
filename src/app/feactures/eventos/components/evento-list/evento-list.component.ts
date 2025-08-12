@@ -22,6 +22,9 @@ export class EventoListComponent implements OnInit, OnDestroy {
   selectedTipo = '';
   selectedEstado = '';
 
+  // Vista
+  viewMode: 'list' | 'gallery' = 'list';
+
   // Opciones de filtro
   tipoOptions = [
     { label: 'Todos los tipos', value: '' },
@@ -223,15 +226,14 @@ export class EventoListComponent implements OnInit, OnDestroy {
   }
 
   getEstadoTexto(fecha: string): string {
-    const estado = this.getEstadoEvento(fecha);
-    const textos: { [key: string]: string } = {
-      'PASADO': 'Pasado',
-      'HOY': 'Hoy',
-      'PROXIMO': 'Próximo',
-      'FUTURO': 'Futuro'
-    };
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    return textos[estado] || 'Futuro';
+    if (diffDays < 0) return 'Pasado';
+    if (diffDays === 0) return 'Hoy';
+    return 'Próximo';
   }
 
   // Acciones
@@ -285,5 +287,33 @@ export class EventoListComponent implements OnInit, OnDestroy {
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
+  }
+
+  // Cambio de vista
+  cambiarVista(mode: 'list' | 'gallery') {
+    this.viewMode = mode;
+  }
+
+  // Métodos para CSS classes y estados (para vista galería)
+  getEstadoCssClass(fecha: string): string {
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'estado-pasado';
+    if (diffDays === 0) return 'estado-hoy';
+    return 'estado-futuro';
+  }
+
+  getEstadoIcono(fecha: string): string {
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'pi pi-check-circle';
+    if (diffDays === 0) return 'pi pi-calendar-times';
+    return 'pi pi-clock';
   }
 }

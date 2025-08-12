@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -27,8 +28,10 @@ export class EventoGalleryComponent implements OnInit, OnDestroy {
     { label: 'Aniversario', value: 'ANIVERSARIO' },
     { label: 'Cumpleaños', value: 'CUMPLEAÑOS' },
     { label: 'San Valentín', value: 'SAN_VALENTIN' },
-    { label: 'Navidad', value: 'NAVIDAD' },
-    { label: 'Año Nuevo', value: 'AÑO_NUEVO' },
+    { label: 'Fecha Especial', value: 'FECHA_ESPECIAL' },
+    { label: 'Cita Romántica', value: 'CITA_ROMANTICA' },
+    { label: 'Viaje', value: 'VIAJE' },
+    { label: 'Celebración', value: 'CELEBRACION' },
     { label: 'Otro', value: 'OTRO' }
   ];
 
@@ -49,7 +52,8 @@ export class EventoGalleryComponent implements OnInit, OnDestroy {
   constructor(
     private eventoService: EventoService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -156,15 +160,17 @@ export class EventoGalleryComponent implements OnInit, OnDestroy {
   // Utilidades
   getTipoIcono(tipo?: string): string {
     const iconos: { [key: string]: string } = {
-      'ANIVERSARIO': 'pi pi-heart-fill',
-      'CUMPLEAÑOS': 'pi pi-birthday-cake',
-      'SAN_VALENTIN': 'pi pi-heart',
-      'NAVIDAD': 'pi pi-star-fill',
-      'AÑO_NUEVO': 'pi pi-calendar-plus',
-      'OTRO': 'pi pi-calendar'
+      'ANIVERSARIO': 'pi pi-heart',
+      'CUMPLEAÑOS': 'pi pi-gift',
+      'SAN_VALENTIN': 'pi pi-heart-fill',
+      'FECHA_ESPECIAL': 'pi pi-star',
+      'CITA_ROMANTICA': 'pi pi-calendar-plus',
+      'VIAJE': 'pi pi-map',
+      'CELEBRACION': 'pi pi-sparkles',
+      'OTRO': 'pi pi-circle'
     };
 
-    return iconos[tipo || ''] || 'pi pi-calendar';
+    return iconos[tipo || ''] || 'pi pi-circle';
   }
 
   getTipoColor(tipo?: string): string {
@@ -212,15 +218,60 @@ export class EventoGalleryComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Paginación
+  onPageChange(event: any) {
+    this.currentPage = Math.floor(event.first / event.rows) + 1;
+  }
+
+  // Métodos para CSS classes y estados
+  getEstadoCssClass(fecha: string): string {
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'estado-pasado';
+    if (diffDays === 0) return 'estado-hoy';
+    return 'estado-futuro';
+  }
+
+  getEstadoIcono(fecha: string): string {
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'pi pi-check-circle';
+    if (diffDays === 0) return 'pi pi-calendar-times';
+    return 'pi pi-clock';
+  }
+
+  getEstadoTexto(fecha: string): string {
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'Pasado';
+    if (diffDays === 0) return 'Hoy';
+    return 'Próximo';
+  }
+
   // Acciones
   verDetalle(evento: Evento) {
-    // Navegación al detalle del evento
-    console.log('Ver detalle:', evento);
+    if (evento.id) {
+      this.router.navigate(['/app/eventos/detalle', evento.id]);
+    }
   }
 
   editarEvento(evento: Evento) {
-    // Navegación a editar evento
-    console.log('Editar evento:', evento);
+    if (evento.id) {
+      this.router.navigate(['/app/eventos/editar', evento.id]);
+    }
+  }
+
+  crearEvento() {
+    this.router.navigate(['/app/eventos/crear']);
   }
 
   eliminarEvento(evento: Evento) {

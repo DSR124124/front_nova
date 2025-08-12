@@ -16,23 +16,25 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
   eventos: Evento[] = [];
   eventosFiltrados: Evento[] = [];
   loading = false;
-  
+
   // Filtros
   searchTerm = '';
   selectedTipo = '';
   selectedPeriodo = '';
-  
+
   // Opciones de filtro
   tipoOptions = [
     { label: 'Todos los tipos', value: '' },
     { label: 'Aniversario', value: 'ANIVERSARIO' },
     { label: 'Cumpleaños', value: 'CUMPLEAÑOS' },
     { label: 'San Valentín', value: 'SAN_VALENTIN' },
-    { label: 'Navidad', value: 'NAVIDAD' },
-    { label: 'Año Nuevo', value: 'AÑO_NUEVO' },
+    { label: 'Fecha Especial', value: 'FECHA_ESPECIAL' },
+    { label: 'Cita Romántica', value: 'CITA_ROMANTICA' },
+    { label: 'Viaje', value: 'VIAJE' },
+    { label: 'Celebración', value: 'CELEBRACION' },
     { label: 'Otro', value: 'OTRO' }
   ];
-  
+
   periodoOptions = [
     { label: 'Todos los períodos', value: '' },
     { label: 'Este mes', value: 'ESTE_MES' },
@@ -40,11 +42,11 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
     { label: 'Este año', value: 'ESTE_AÑO' },
     { label: 'Pasado', value: 'PASADO' }
   ];
-  
+
   // Vista de timeline
   viewMode: 'chronological' | 'grouped' = 'chronological';
   groupBy: 'month' | 'year' | 'type' = 'month';
-  
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -87,7 +89,7 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
 
   private aplicarFiltros() {
     let resultado = this.eventos;
-    
+
     // Filtro por búsqueda
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
@@ -97,19 +99,19 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
         evento.lugarNombre?.toLowerCase().includes(term)
       );
     }
-    
+
     // Filtro por tipo
     if (this.selectedTipo) {
       resultado = resultado.filter(evento => evento.tipo === this.selectedTipo);
     }
-    
+
     // Filtro por período
     if (this.selectedPeriodo) {
       resultado = resultado.filter(evento => {
         return this.cumplePeriodo(evento.fecha, this.selectedPeriodo);
       });
     }
-    
+
     this.eventosFiltrados = resultado;
   }
 
@@ -166,15 +168,17 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
   // Utilidades
   getTipoIcono(tipo?: string): string {
     const iconos: { [key: string]: string } = {
-      'ANIVERSARIO': 'pi pi-heart-fill',
-      'CUMPLEAÑOS': 'pi pi-birthday-cake',
-      'SAN_VALENTIN': 'pi pi-heart',
-      'NAVIDAD': 'pi pi-star-fill',
-      'AÑO_NUEVO': 'pi pi-calendar-plus',
-      'OTRO': 'pi pi-calendar'
+      'ANIVERSARIO': 'pi pi-heart',
+      'CUMPLEAÑOS': 'pi pi-gift',
+      'SAN_VALENTIN': 'pi pi-heart-fill',
+      'FECHA_ESPECIAL': 'pi pi-star',
+      'CITA_ROMANTICA': 'pi pi-calendar-plus',
+      'VIAJE': 'pi pi-map',
+      'CELEBRACION': 'pi pi-sparkles',
+      'OTRO': 'pi pi-circle'
     };
-    
-    return iconos[tipo || ''] || 'pi pi-calendar';
+
+    return iconos[tipo || ''] || 'pi pi-circle';
   }
 
   getTipoColor(tipo?: string): string {
@@ -186,7 +190,7 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
       'AÑO_NUEVO': 'info',
       'OTRO': 'secondary'
     };
-    
+
     return colores[tipo || ''] || 'info';
   }
 
@@ -251,24 +255,13 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
   }
 
   // Agrupación de eventos
-  getEventosAgrupados(): any[] {
-    if (this.viewMode === 'chronological') {
-      return this.getEventosCronologicos();
-    } else {
-      return this.getEventosAgrupadosPor();
-    }
-  }
-
-  private getEventosCronologicos(): any[] {
-    const eventosOrdenados = [...this.eventosFiltrados].sort((a, b) => 
+    getEventosAgrupados(): any[] {
+    // Para p-timeline siempre devolvemos eventos cronológicos
+    const eventosOrdenados = [...this.eventosFiltrados].sort((a, b) =>
       new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
     );
 
-    return eventosOrdenados.map(evento => ({
-      evento,
-      fecha: new Date(evento.fecha),
-      esPasado: new Date(evento.fecha) < new Date()
-    }));
+    return eventosOrdenados;
   }
 
   private getEventosAgrupadosPor(): any[] {
@@ -276,7 +269,7 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
 
     this.eventosFiltrados.forEach(evento => {
       let clave = '';
-      
+
       switch (this.groupBy) {
         case 'month':
           clave = this.formatearMes(evento.fecha);
@@ -297,19 +290,61 @@ export class EventoTimelineComponent implements OnInit, OnDestroy {
 
     return Object.keys(grupos).map(clave => ({
       clave,
-      eventos: grupos[clave].sort((a, b) => 
+      eventos: grupos[clave].sort((a, b) =>
         new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
       )
     }));
   }
 
+  // Métodos para CSS classes y estados
+  getEstadoCssClass(fecha: string): string {
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'estado-pasado';
+    if (diffDays === 0) return 'estado-hoy';
+    return 'estado-futuro';
+  }
+
+  getEstadoIcono(fecha: string): string {
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'pi pi-check-circle';
+    if (diffDays === 0) return 'pi pi-calendar-times';
+    return 'pi pi-clock';
+  }
+
+  getEstadoTexto(fecha: string): string {
+    const fechaEvento = new Date(fecha);
+    const hoy = new Date();
+    const diffTime = fechaEvento.getTime() - hoy.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return 'Pasado';
+    if (diffDays === 0) return 'Hoy';
+    return 'Próximo';
+  }
+
   // Acciones
   verDetalle(evento: Evento) {
-    this.router.navigate(['/eventos', evento.id]);
+    if (evento.id) {
+      this.router.navigate(['/app/eventos/detalle', evento.id]);
+    }
   }
 
   editarEvento(evento: Evento) {
-    this.router.navigate(['/eventos/editar', evento.id]);
+    if (evento.id) {
+      this.router.navigate(['/app/eventos/editar', evento.id]);
+    }
+  }
+
+  crearEvento() {
+    this.router.navigate(['/app/eventos/crear']);
   }
 
   eliminarEvento(evento: Evento) {

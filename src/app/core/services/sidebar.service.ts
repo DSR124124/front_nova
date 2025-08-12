@@ -43,7 +43,7 @@ export class SidebarService {
       items: [
         { label: 'Lista de Eventos', icon: 'pi pi-list', routerLink: '/app/eventos/listar' },
         { label: 'Crear Evento', icon: 'pi pi-plus', routerLink: '/app/eventos/crear' },
-        { label: 'Galería', icon: 'pi pi-images', routerLink: '/app/eventos/galeria' }
+        { label: 'Línea de Tiempo', icon: 'pi pi-clock', routerLink: '/app/eventos/timeline' }
       ]
     },
     {

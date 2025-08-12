@@ -43,6 +43,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { ChipModule } from 'primeng/chip';
+import { TimelineModule } from 'primeng/timeline';
 
 @NgModule({
   exports: [
@@ -88,6 +89,7 @@ import { ChipModule } from 'primeng/chip';
     DividerModule,
     TagModule,
     ChipModule,
+    TimelineModule,
   ]
 })
 export class PrimeNgModule { }

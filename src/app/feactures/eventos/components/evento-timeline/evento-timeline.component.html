@@ -1,311 +1,212 @@
 <div class="evento-timeline-container">
-  <p-card header="Línea de Tiempo de Eventos" styleClass="timeline-card">
 
-    <!-- Loading Spinner -->
-    <div *ngIf="loading" class="loading-container">
-      <p-progressSpinner />
-    </div>
+  <!-- Header -->
+  <div class="timeline-header">
+    <h2 class="timeline-title">
+      <i class="pi pi-clock"></i>
+      Línea de Tiempo de Eventos
+    </h2>
+    <p class="timeline-subtitle">Visualiza tus eventos en orden cronológico</p>
+  </div>
 
-    <!-- Contenido principal -->
-    <div *ngIf="!loading">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-state">
+    <i class="pi pi-spin pi-spinner loading-icon"></i>
+    <p>Cargando línea de tiempo...</p>
+  </div>
 
-      <!-- Header con controles -->
-      <div class="timeline-header">
-        <h2>Cronología de Eventos</h2>
-        <div class="view-controls">
-          <p-button
-            [icon]="viewMode === 'chronological' ? 'pi pi-calendar' : 'pi pi-calendar-times'"
-            [severity]="viewMode === 'chronological' ? 'primary' : 'secondary'"
-            (onClick)="cambiarVista('chronological')"
-            size="small"
-            [pTooltip]="'Vista cronológica'"
-          />
-          <p-button
-            [icon]="viewMode === 'grouped' ? 'pi pi-calendar' : 'pi pi-calendar-times'"
-            [severity]="viewMode === 'grouped' ? 'primary' : 'secondary'"
-            (onClick)="cambiarVista('grouped')"
-            size="small"
-            [pTooltip]="'Vista agrupada'"
-          />
-        </div>
-      </div>
+  <!-- Contenido principal -->
+  <div *ngIf="!loading" class="timeline-content">
 
-      <!-- Filtros -->
-      <div class="filters-section">
+    <!-- Controles y filtros -->
+    <p-card header="Filtros y Vista" styleClass="filters-card">
+      <div class="filters-grid">
+
         <!-- Búsqueda -->
-        <div class="search-section">
+        <div class="filter-section">
+          <label class="filter-label">Buscar eventos</label>
           <span class="p-input-icon-left">
             <i class="pi pi-search"></i>
             <input
               type="text"
               pInputText
-              placeholder="Buscar eventos..."
+              placeholder="Buscar por título, descripción..."
               [(ngModel)]="searchTerm"
               (input)="onSearchChange()"
-              class="search-input"
+              class="filter-input"
             />
           </span>
         </div>
 
-        <!-- Filtros de tipo y período -->
-        <div class="filter-controls">
-          <p-dropdown
+        <!-- Filtro por tipo -->
+        <div class="filter-section">
+          <label class="filter-label">Tipo de evento</label>
+          <p-select
             [options]="tipoOptions"
             [(ngModel)]="selectedTipo"
             (onChange)="onTipoChange()"
-            placeholder="Tipo de evento"
-            styleClass="filter-dropdown"
+            placeholder="Todos los tipos"
+            styleClass="filter-input"
           />
+        </div>
 
-          <p-dropdown
+        <!-- Filtro por período -->
+        <div class="filter-section">
+          <label class="filter-label">Período</label>
+          <p-select
             [options]="periodoOptions"
             [(ngModel)]="selectedPeriodo"
             (onChange)="onPeriodoChange()"
-            placeholder="Período"
-            styleClass="filter-dropdown"
+            placeholder="Todos los períodos"
+            styleClass="filter-input"
           />
+        </div>
 
+        <!-- Botón limpiar filtros -->
+        <div class="filter-section">
+          <label class="filter-label">&nbsp;</label>
           <p-button
             label="Limpiar filtros"
             icon="pi pi-refresh"
             severity="secondary"
+            [outlined]="true"
             (onClick)="limpiarFiltros()"
-            size="small"
           />
         </div>
 
-        <!-- Controles de agrupación (solo en vista agrupada) -->
-        <div *ngIf="viewMode === 'grouped'" class="grouping-controls">
-          <span class="grouping-label">Agrupar por:</span>
-          <p-button
-            [icon]="groupBy === 'month' ? 'pi pi-calendar' : 'pi pi-calendar-times'"
-            [severity]="groupBy === 'month' ? 'primary' : 'secondary'"
-            (onClick)="cambiarAgrupacion('month')"
-            size="small"
-            [pTooltip]="'Por mes'"
-          />
-          <p-button
-            [icon]="groupBy === 'year' ? 'pi pi-calendar' : 'pi pi-calendar-times'"
-            [severity]="groupBy === 'year' ? 'primary' : 'secondary'"
-            (onClick)="cambiarAgrupacion('year')"
-            size="small"
-            [pTooltip]="'Por año'"
-          />
-          <p-button
-            [icon]="groupBy === 'type' ? 'pi pi-calendar' : 'pi pi-calendar-times'"
-            [severity]="groupBy === 'type' ? 'primary' : 'secondary'"
-            (onClick)="cambiarAgrupacion('type')"
-            size="small"
-            [pTooltip]="'Por tipo'"
-          />
-        </div>
       </div>
+    </p-card>
 
-      <!-- Información de resultados -->
-      <div class="results-info">
-        <p>Mostrando {{ eventosFiltrados.length }} de {{ eventos.length }} eventos</p>
-      </div>
-
-      <!-- Timeline de eventos -->
-      <div class="timeline-content">
-
-        <!-- Vista cronológica -->
-        <div *ngIf="viewMode === 'chronological'" class="chronological-timeline">
-          <div
-            *ngFor="let item of getEventosAgrupados(); let i = index"
-            class="timeline-item"
-            [ngClass]="{
-              'past': item.esPasado,
-              'future': !item.esPasado,
-              'today': getDiasRestantes(item.evento.fecha) === 0
-            }"
-          >
-            <div class="timeline-marker">
-              <div class="marker-dot"></div>
-              <div class="marker-line" *ngIf="i < getEventosAgrupados().length - 1"></div>
-            </div>
-
-            <div class="timeline-content">
-              <div class="evento-card">
-                <div class="evento-header">
-                  <p-tag
-                    [value]="item.evento.tipo || 'Evento'"
-                    [severity]="getTipoColor(item.evento.tipo)"
-                    [icon]="getTipoIcono(item.evento.tipo)"
-                    size="small"
-                  />
-                  <div class="evento-actions">
-                    <p-button
-                      icon="pi pi-eye"
-                      severity="info"
-                      size="small"
-                      (onClick)="verDetalle(item.evento)"
-                      [pTooltip]="'Ver detalle'"
-                    />
-                    <p-button
-                      icon="pi pi-pencil"
-                      severity="secondary"
-                      size="small"
-                      (onClick)="editarEvento(item.evento)"
-                      [pTooltip]="'Editar'"
-                    />
-                    <p-button
-                      icon="pi pi-trash"
-                      severity="danger"
-                      size="small"
-                      (onClick)="eliminarEvento(item.evento)"
-                      [pTooltip]="'Eliminar'"
-                    />
-                  </div>
-                </div>
-
-                <div class="evento-body">
-                  <h3 class="evento-titulo">{{ item.evento.titulo }}</h3>
-                  <p class="evento-descripcion" *ngIf="item.evento.descripcion">
-                    {{ item.evento.descripcion }}
-                  </p>
-
-                  <div class="evento-info">
-                    <div class="info-item">
-                      <i class="pi pi-calendar"></i>
-                      <span>{{ formatearFecha(item.evento.fecha) }}</span>
-                    </div>
-                    <div class="info-item">
-                      <i class="pi pi-clock"></i>
-                      <span>{{ formatearHora(item.evento.fecha) }}</span>
-                    </div>
-                    <div class="info-item" *ngIf="item.evento.lugarNombre">
-                      <i class="pi pi-map-marker"></i>
-                      <span>{{ item.evento.lugarNombre }}</span>
-                    </div>
-                  </div>
-
-                  <div class="evento-timeline-info">
-                    <p-tag
-                      [value]="getEstadoEvento(item.evento.fecha).texto"
-                      [severity]="getEstadoEvento(item.evento.fecha).severity"
-                      size="small"
-                    />
-                    <span class="dias-restantes">{{ getDiasRestantesTexto(item.evento.fecha) }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Vista agrupada -->
-        <div *ngIf="viewMode === 'grouped'" class="grouped-timeline">
-          <div
-            *ngFor="let grupo of getEventosAgrupados()"
-            class="timeline-group"
-          >
-            <div class="group-header">
-              <h3 class="group-title">{{ grupo.clave }}</h3>
-              <span class="group-count">{{ grupo.eventos.length }} evento(s)</span>
-            </div>
-
-            <div class="group-events">
-              <div
-                *ngFor="let evento of grupo.eventos; let i = index"
-                class="timeline-item"
-                [ngClass]="{
-                  'past': getDiasRestantes(evento.fecha) < 0,
-                  'future': getDiasRestantes(evento.fecha) >= 0,
-                  'today': getDiasRestantes(evento.fecha) === 0
-                }"
-              >
-                <div class="timeline-marker">
-                  <div class="marker-dot"></div>
-                  <div class="marker-line" *ngIf="i < grupo.eventos.length - 1"></div>
-                </div>
-
-                <div class="timeline-content">
-                  <div class="evento-card">
-                    <div class="evento-header">
-                      <p-tag
-                        [value]="evento.tipo || 'Evento'"
-                        [severity]="getTipoColor(evento.tipo)"
-                        [icon]="getTipoIcono(evento.tipo)"
-                        size="small"
-                      />
-                      <div class="evento-actions">
-                        <p-button
-                          icon="pi pi-eye"
-                          severity="info"
-                          size="small"
-                          (onClick)="verDetalle(evento)"
-                          [pTooltip]="'Ver detalle'"
-                        />
-                        <p-button
-                          icon="pi pi-pencil"
-                          severity="secondary"
-                          size="small"
-                          (onClick)="editarEvento(evento)"
-                          [pTooltip]="'Editar'"
-                        />
-                        <p-button
-                          icon="pi pi-trash"
-                          severity="danger"
-                          size="small"
-                          (onClick)="eliminarEvento(evento)"
-                          [pTooltip]="'Eliminar'"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="evento-body">
-                      <h3 class="evento-titulo">{{ evento.titulo }}</h3>
-                      <p class="evento-descripcion" *ngIf="evento.descripcion">
-                        {{ evento.descripcion }}
-                      </p>
-
-                      <div class="evento-info">
-                        <div class="info-item">
-                          <i class="pi pi-calendar"></i>
-                          <span>{{ formatearFecha(evento.fecha) }}</span>
-                        </div>
-                        <div class="info-item">
-                          <i class="pi pi-clock"></i>
-                          <span>{{ formatearHora(evento.fecha) }}</span>
-                        </div>
-                        <div class="info-item" *ngIf="evento.lugarNombre">
-                          <i class="pi pi-map-marker"></i>
-                          <span>{{ evento.lugarNombre }}</span>
-                        </div>
-                      </div>
-
-                      <div class="evento-timeline-info">
-                        <p-tag
-                          [value]="getEstadoEvento(evento.fecha).texto"
-                          [severity]="getEstadoEvento(evento.fecha).severity"
-                          size="small"
-                        />
-                        <span class="dias-restantes">{{ getDiasRestantesTexto(evento.fecha) }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Estado vacío -->
-        <div *ngIf="eventosFiltrados.length === 0" class="empty-state">
-          <i class="pi pi-calendar-times empty-icon"></i>
-          <h3>No se encontraron eventos</h3>
-          <p>Intenta ajustar los filtros de búsqueda</p>
-        </div>
-      </div>
-
+    <!-- Información de resultados -->
+    <div class="results-info">
+      <span class="results-text">
+        Mostrando {{ eventosFiltrados.length }} de {{ eventos.length }} eventos
+      </span>
     </div>
 
-  </p-card>
+    <!-- Timeline PrimeNG -->
+    <div class="timeline-wrapper">
+      <p-timeline
+        [value]="getEventosAgrupados()"
+        align="alternate"
+        styleClass="custom-timeline"
+      >
+        <!-- Marcador personalizado -->
+        <ng-template pTemplate="marker" let-event>
+          <span
+            class="timeline-marker-custom"
+            [class.past]="getDiasRestantes(event.fecha) < 0"
+            [class.today]="getDiasRestantes(event.fecha) === 0"
+            [class.future]="getDiasRestantes(event.fecha) > 0"
+          >
+            <i class="pi" [class]="getTipoIcono(event.tipo)"></i>
+          </span>
+        </ng-template>
+
+        <!-- Contenido del evento -->
+        <ng-template pTemplate="content" let-event>
+          <p-card styleClass="timeline-event-card">
+            <ng-template pTemplate="header">
+              <div class="card-header">
+                <span class="evento-tipo-badge">
+                  <i class="pi" [class]="getTipoIcono(event.tipo)"></i>
+                  {{ event.tipo || 'EVENTO' }}
+                </span>
+                <div class="card-actions">
+                  <p-button
+                    icon="pi pi-eye"
+                    severity="info"
+                    size="small"
+                    [text]="true"
+                    (onClick)="verDetalle(event)"
+                    pTooltip="Ver detalle"
+                  />
+                  <p-button
+                    icon="pi pi-pencil"
+                    severity="secondary"
+                    size="small"
+                    [text]="true"
+                    (onClick)="editarEvento(event)"
+                    pTooltip="Editar"
+                  />
+                  <p-button
+                    icon="pi pi-trash"
+                    severity="danger"
+                    size="small"
+                    [text]="true"
+                    (onClick)="eliminarEvento(event)"
+                    pTooltip="Eliminar"
+                  />
+                </div>
+              </div>
+            </ng-template>
+
+            <div class="card-content">
+              <h3 class="evento-titulo">{{ event.titulo }}</h3>
+              <p *ngIf="event.descripcion" class="evento-descripcion">
+                {{ event.descripcion }}
+              </p>
+
+              <div class="evento-details">
+                <div class="detail-item">
+                  <i class="pi pi-calendar"></i>
+                  <span>{{ formatearFecha(event.fecha) }}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="pi pi-clock"></i>
+                  <span>{{ formatearHora(event.fecha) }}</span>
+                </div>
+                <div class="detail-item" *ngIf="event.lugarNombre">
+                  <i class="pi pi-map-marker"></i>
+                  <span>{{ event.lugarNombre }}</span>
+                </div>
+              </div>
+
+              <div class="evento-status">
+                <span class="estado-badge" [class]="getEstadoCssClass(event.fecha)">
+                  <i class="pi" [class]="getEstadoIcono(event.fecha)"></i>
+                  {{ getEstadoTexto(event.fecha) }}
+                </span>
+                <span class="dias-restantes">{{ getDiasRestantesTexto(event.fecha) }}</span>
+              </div>
+            </div>
+          </p-card>
+        </ng-template>
+
+        <!-- Fecha del evento (lado opuesto) -->
+        <ng-template pTemplate="opposite" let-event>
+          <div class="timeline-date">
+            <div class="date-main">{{ formatearFecha(event.fecha) }}</div>
+            <div class="date-time">{{ formatearHora(event.fecha) }}</div>
+            <div class="date-status">{{ getDiasRestantesTexto(event.fecha) }}</div>
+          </div>
+        </ng-template>
+      </p-timeline>
+
+      <!-- Estado vacío -->
+      <div *ngIf="eventosFiltrados.length === 0" class="empty-state">
+        <i class="pi pi-clock empty-icon"></i>
+        <h3 class="empty-title">No hay eventos en la línea de tiempo</h3>
+        <p class="empty-text">
+          {{ searchTerm || selectedTipo || selectedPeriodo ?
+             'Intenta ajustar los filtros de búsqueda' :
+             'Crea tu primer evento para comenzar' }}
+        </p>
+        <p-button
+          *ngIf="!searchTerm && !selectedTipo && !selectedPeriodo"
+          label="Crear primer evento"
+          icon="pi pi-plus"
+          (onClick)="crearEvento()"
+        />
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Diálogo de confirmación -->
+  <p-confirmDialog></p-confirmDialog>
+
+  <!-- Toast -->
+  <p-toast position="top-right"></p-toast>
+
 </div>
-
-<!-- Toast para mensajes -->
-<p-toast />
-
-<!-- Diálogo de confirmación -->
-<p-confirmDialog />
