@@ -23,6 +23,12 @@ app-recent-activity {
   width: 100%;
 }
 
+/* Integración del componente stats-widget */
+app-stats-widget {
+  display: block;
+  width: 100%;
+}
+
 /* Contenedor de actividad reciente */
 .activity-section {
   display: flex;

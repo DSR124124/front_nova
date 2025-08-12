@@ -20,7 +20,6 @@ export class StatsWidgetComponent {
   @Input() stats: StatData[] = [];
   @Input() loading: boolean = false;
   @Input() showTrends: boolean = true;
-  @Input() compact: boolean = false;
 
   getTrendIcon(trend?: string): string {
     switch (trend) {
@@ -28,15 +27,6 @@ export class StatsWidgetComponent {
       case 'down': return 'pi pi-arrow-down';
       case 'stable': return 'pi pi-minus';
       default: return '';
-    }
-  }
-
-  getTrendSeverity(trend?: string): string {
-    switch (trend) {
-      case 'up': return 'success';
-      case 'down': return 'danger';
-      case 'stable': return 'secondary';
-      default: return 'secondary';
     }
   }
 

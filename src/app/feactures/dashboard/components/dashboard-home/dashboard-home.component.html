@@ -1,8 +1,7 @@
-<div class="p-4">
-<!-- Actividad Reciente -->
-<div class="mb-6 text-right">
-  <app-recent-activity></app-recent-activity>
-</div>
+<div class="p-4">  <!-- Actividad Reciente -->
+  <div class="mb-6 text-right">
+    <app-recent-activity></app-recent-activity>
+  </div>
 
   <!-- Header del dashboard -->
   <div class="mb-4">
@@ -12,40 +11,17 @@
     </div>
   </div>
 
-  <!-- Grid de estadísticas -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-    <p-card styleClass="h-full">
-      <div class="text-center">
-        <i class="pi pi-calendar text-4xl text-primary mb-3"></i>
-        <div class="text-3xl font-bold text-900 mb-1">{{ stats.appointments }}</div>
-        <div class="text-600">Citas esta semana</div>
-      </div>
-    </p-card>
-
-    <p-card styleClass="h-full">
-      <div class="text-center">
-        <i class="pi pi-calendar-plus text-4xl text-primary mb-3"></i>
-        <div class="text-3xl font-bold text-900 mb-1">{{ stats.events }}</div>
-        <div class="text-600">Eventos próximos</div>
-      </div>
-    </p-card>
-
-    <p-card styleClass="h-full">
-      <div class="text-center">
-        <i class="pi pi-comments text-4xl text-primary mb-3"></i>
-        <div class="text-3xl font-bold text-900 mb-1">{{ stats.messages }}</div>
-        <div class="text-600">Mensajes sin leer</div>
-      </div>
-    </p-card>
-
-    <p-card styleClass="h-full">
-      <div class="text-center">
-        <i class="pi pi-bell text-4xl text-primary mb-3"></i>
-        <div class="text-3xl font-bold text-900 mb-1">{{ stats.reminders }}</div>
-        <div class="text-600">Recordatorios activos</div>
-      </div>
-    </p-card>
+  <!-- Widget de estadísticas detalladas -->
+  <div class="mb-6">
+    <app-stats-widget
+      title="Resumen General"
+      [stats]="detailedStats"
+      [loading]="loadingStats"
+      [showTrends]="true"
+      [compact]="false"
+    ></app-stats-widget>
   </div>
+
 
 
   <!-- Sección de tiempo actual -->

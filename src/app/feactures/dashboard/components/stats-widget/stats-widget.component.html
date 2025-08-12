@@ -1,8 +1,8 @@
-<div class="stats-widget-container" [class.compact]="compact">
+<div class="stats-widget-container">
 
   <!-- Header del widget -->
   <div class="widget-header">
-    <h4>{{ title }}</h4>
+    <h4 class="text-xl font-semibold text-900">{{ title }}</h4>
     <p-button
       *ngIf="loading"
       icon="pi pi-spin pi-spinner"
@@ -17,31 +17,28 @@
   <div class="widget-content">
 
     <!-- Estado de carga -->
-    <div *ngIf="loading" class="loading-state">
-      <div class="skeleton-stats">
-        <div *ngFor="let i of [1,2,3]" class="skeleton-stat">
-          <div class="skeleton-icon"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-text skeleton-number"></div>
-            <div class="skeleton-text skeleton-label"></div>
-          </div>
-        </div>
-      </div>
+    <div *ngIf="loading" class="text-center p-4">
+      <p-progressSpinner
+        styleClass="w-4rem h-4rem"
+        strokeWidth="4"
+        fill="var(--surface-card)"
+        animationDuration=".5s">
+      </p-progressSpinner>
+      <p class="text-600 mt-3">Cargando estadísticas...</p>
     </div>
 
     <!-- Lista vacía -->
-    <div *ngIf="!loading && stats.length === 0" class="empty-state">
-      <i class="pi pi-chart-bar empty-icon"></i>
-      <p>No hay estadísticas disponibles</p>
-      <small>Los datos aparecerán aquí cuando estén disponibles</small>
+    <div *ngIf="!loading && stats.length === 0" class="text-center p-4">
+      <i class="pi pi-chart-bar text-4xl text-500 mb-3"></i>
+      <p class="text-900 font-semibold">No hay estadísticas disponibles</p>
+      <small class="text-600">Los datos aparecerán aquí cuando estén disponibles</small>
     </div>
 
     <!-- Estadísticas -->
-    <div *ngIf="!loading && stats.length > 0" class="stats-grid" [class.compact]="compact">
+    <div *ngIf="!loading && stats.length > 0" class="stats-grid">
       <div
         *ngFor="let stat of stats; trackBy: trackByStat"
         class="stat-item"
-        [class.has-trend]="showTrends && stat.trend"
       >
 
         <!-- Icono -->
@@ -51,8 +48,8 @@
 
         <!-- Contenido -->
         <div class="stat-content">
-          <div class="stat-value">{{ formatValue(stat.value) }}</div>
-          <div class="stat-label">{{ stat.label }}</div>
+          <div class="stat-value text-900">{{ formatValue(stat.value) }}</div>
+          <div class="stat-label text-600">{{ stat.label }}</div>
 
           <!-- Tendencia -->
           <div *ngIf="showTrends && stat.trend" class="stat-trend">
