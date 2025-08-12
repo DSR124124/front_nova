@@ -2,7 +2,10 @@
   <!-- Header -->
   <div class="list-header">
     <div class="header-title">
-      <h1>Mis Citas</h1>
+      <h2>
+        <i class="pi pi-heart"></i>
+        Mis Citas
+      </h2>
       <p class="subtitle">Administra todas tus citas románticas</p>
     </div>
     <div class="header-actions">
@@ -45,7 +48,7 @@
         [rowsPerPageOptions]="[5, 10, 20]"
         [globalFilterFields]="['titulo', 'lugarNombre', 'descripcion']"
         responsiveLayout="scroll"
-        styleClass="p-datatable-sm"
+        styleClass="p-datatable-sm nova-table"
       >
         <!-- Header -->
         <ng-template pTemplate="header">
@@ -76,8 +79,14 @@
             <!-- Fecha -->
             <td>
               <div class="fecha-info">
-                <i class="pi pi-calendar"></i>
-                {{ formatearFecha(cita.fecha) }}
+                <div class="fecha-principal">
+                  <i class="pi pi-calendar"></i>
+                  {{ formatearFecha(cita.fecha) }}
+                </div>
+                <div class="fecha-hora">
+                  <i class="pi pi-clock"></i>
+                  {{ formatearHora(cita.fecha) }}
+                </div>
               </div>
             </td>
 

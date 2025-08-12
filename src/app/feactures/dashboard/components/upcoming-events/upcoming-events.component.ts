@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 export interface UpcomingEvent {
   id: number;
@@ -21,6 +22,9 @@ export class UpcomingEventsComponent implements OnInit {
   events: UpcomingEvent[] = [];
   loading: boolean = true;
   maxEvents: number = 5;
+  drawerVisible: boolean = false;
+
+  constructor(private router: Router) {}
 
   // Eventos simulados para mostrar
   private sampleEvents: UpcomingEvent[] = [
@@ -146,8 +150,39 @@ export class UpcomingEventsComponent implements OnInit {
   }
 
   viewAllEvents() {
-    // Aquí navegarías a la página de eventos completa
-    console.log('Navegar a todos los eventos');
+    this.router.navigate(['/app/eventos']);
+  }
+
+  createEvent() {
+    this.router.navigate(['/app/eventos/nuevo']);
+  }
+
+  getCategoryLabel(category: string): string {
+    const labels = {
+      'cita': 'Cita',
+      'aniversario': 'Aniversario',
+      'especial': 'Especial',
+      'recordatorio': 'Recordatorio'
+    };
+    return labels[category as keyof typeof labels] || category;
+  }
+
+  viewEventDetails(event: UpcomingEvent) {
+    // Navegar según el tipo de evento
+    switch (event.category) {
+      case 'cita':
+        this.router.navigate(['/app/citas']);
+        break;
+      case 'aniversario':
+      case 'especial':
+        this.router.navigate(['/app/eventos']);
+        break;
+      case 'recordatorio':
+        this.router.navigate(['/app/recordatorios']);
+        break;
+      default:
+        this.router.navigate(['/app/eventos']);
+    }
   }
 
   trackByEvent(index: number, event: UpcomingEvent): number {

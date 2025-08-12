@@ -16,10 +16,10 @@ import { CitaFilter, LugarOption, CategoriaOption } from '../cita-filter/cita-fi
 export class CitaListComponent implements OnInit, OnDestroy {
   citas: Cita[] = [];
   loading = false;
-  
+
   // Filtros
   filtros: CitaFilter = {};
-  
+
   // Opciones para los filtros
   lugares: LugarOption[] = [];
   categorias: CategoriaOption[] = [];
@@ -107,31 +107,31 @@ export class CitaListComponent implements OnInit, OnDestroy {
     }
 
     if (this.filtros.fechaInicio) {
-      resultado = resultado.filter(cita => 
+      resultado = resultado.filter(cita =>
         new Date(cita.fecha) >= this.filtros.fechaInicio!
       );
     }
 
     if (this.filtros.fechaFin) {
-      resultado = resultado.filter(cita => 
+      resultado = resultado.filter(cita =>
         new Date(cita.fecha) <= this.filtros.fechaFin!
       );
     }
 
     if (this.filtros.lugarId) {
-      resultado = resultado.filter(cita => 
+      resultado = resultado.filter(cita =>
         cita.lugarId === this.filtros.lugarId
       );
     }
 
     if (this.filtros.categoriaId) {
-      resultado = resultado.filter(cita => 
+      resultado = resultado.filter(cita =>
         cita.categoriaId === this.filtros.categoriaId
       );
     }
 
     if (this.filtros.rating) {
-      resultado = resultado.filter(cita => 
+      resultado = resultado.filter(cita =>
         (cita.rating || 0) >= this.filtros.rating!
       );
     }
@@ -283,9 +283,14 @@ export class CitaListComponent implements OnInit, OnDestroy {
 
   formatearFecha(fecha: string): string {
     return new Date(fecha).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: '2-digit',
       day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+
+  formatearHora(fecha: string): string {
+    return new Date(fecha).toLocaleTimeString('es-ES', {
       hour: '2-digit',
       minute: '2-digit'
     });

@@ -20,6 +20,7 @@ export class StatsWidgetComponent {
   @Input() stats: StatData[] = [];
   @Input() loading: boolean = false;
   @Input() showTrends: boolean = true;
+  @Input() compact: boolean = false;
 
   getTrendIcon(trend?: string): string {
     switch (trend) {

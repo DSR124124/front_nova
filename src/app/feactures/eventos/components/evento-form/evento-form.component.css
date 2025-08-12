@@ -1,112 +1,290 @@
+/* Contenedor principal */
 .evento-form-container {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
-.evento-form-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* Header del formulario */
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--surface-border);
 }
 
+.form-title {
+  color: var(--text-color);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.form-title i {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+.form-subtitle {
+  color: var(--text-color-secondary);
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Loading */
 .loading-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
 }
 
+.loading-text {
+  color: var(--text-color-secondary);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Wrapper del formulario */
+.form-wrapper {
+  background: var(--surface-card);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--surface-border);
+}
+
+/* Secciones del formulario */
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  color: var(--text-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.section-title i {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+/* Campos del formulario */
 .form-field {
   margin-bottom: 1.5rem;
 }
 
-.form-label {
+.field-label {
   display: block;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.95rem;
   margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #374151;
 }
 
 .required {
-  color: #ef4444;
+  color: var(--red-500);
+  font-weight: 600;
 }
 
-.form-error {
-  color: #ef4444;
-  display: block;
+.field-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--surface-ground);
+  color: var(--text-color);
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.field-input.field-error {
+  border-color: var(--red-500);
+  background: var(--red-50);
+}
+
+/* Mensajes de error */
+.error-message {
+  color: var(--red-500);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   margin-top: 0.25rem;
 }
 
-.form-info {
-  margin: 1.5rem 0;
+.error-message i {
+  font-size: 0.8rem;
 }
 
-.form-actions {
+/* Dropdown items */
+.dropdown-item {
   display: flex;
+  align-items: flex-start;
   gap: 0.75rem;
-  justify-content: flex-end;
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
+  padding: 0.5rem 0;
 }
 
-.lugar-item {
+.dropdown-icon {
+  color: var(--primary-color);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.dropdown-content {
+  flex: 1;
+}
+
+.dropdown-name {
+  font-weight: 500;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.dropdown-details {
   display: flex;
   align-items: center;
-  padding: 0.5rem 0;
+  gap: 0.5rem;
+  color: var(--text-color-secondary);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.dropdown-details i {
+  font-size: 0.75rem;
+  width: 12px;
+  text-align: center;
+}
+
+/* Información adicional */
+.form-info {
+  margin: 2rem 0;
+}
+
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-200);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.info-icon {
+  color: var(--blue-500);
+  font-size: 1.25rem;
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-title {
+  color: var(--blue-700);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.info-text {
+  color: var(--blue-600);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Botones de acción */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--surface-border);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .evento-form-container {
-    padding: 0.5rem;
+    padding: 1rem;
+  }
+
+  .form-wrapper {
+    padding: 1.5rem;
+  }
+
+  .form-title {
+    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .form-actions {
     flex-direction: column;
+    gap: 0.75rem;
   }
 
   .form-actions p-button {
     width: 100%;
   }
+
+  .info-card {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
 }
 
-/* PrimeNG overrides para mejorar el diseño */
-::ng-deep .evento-form-card .p-card-body {
-  padding: 1.5rem;
-}
+@media (max-width: 480px) {
+  .evento-form-container {
+    padding: 0.75rem;
+  }
 
-::ng-deep .w-full {
-  width: 100%;
-}
+  .form-wrapper {
+    padding: 1rem;
+  }
 
-::ng-deep .ng-invalid.ng-touched {
-  border-color: #ef4444;
-}
+  .form-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
 
-::ng-deep .text-primary {
-  color: var(--primary-color);
-}
+  .form-title {
+    font-size: 1.25rem;
+  }
 
-::ng-deep .text-gray-500 {
-  color: #6b7280;
-}
+  .form-subtitle {
+    font-size: 0.9rem;
+  }
 
-::ng-deep .text-gray-400 {
-  color: #9ca3af;
-}
-
-::ng-deep .text-sm {
-  font-size: 0.875rem;
-}
-
-::ng-deep .text-xs {
-  font-size: 0.75rem;
-}
-
-::ng-deep .font-semibold {
-  font-weight: 600;
-}
-
-::ng-deep .ml-2 {
-  margin-left: 0.5rem;
+  .section-title {
+    font-size: 1.1rem;
+  }
 }

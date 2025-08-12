@@ -28,8 +28,10 @@ export class EventoListComponent implements OnInit, OnDestroy {
     { label: 'Aniversario', value: 'ANIVERSARIO' },
     { label: 'Cumpleaños', value: 'CUMPLEAÑOS' },
     { label: 'San Valentín', value: 'SAN_VALENTIN' },
-    { label: 'Navidad', value: 'NAVIDAD' },
-    { label: 'Año Nuevo', value: 'AÑO_NUEVO' },
+    { label: 'Fecha Especial', value: 'FECHA_ESPECIAL' },
+    { label: 'Cita Romántica', value: 'CITA_ROMANTICA' },
+    { label: 'Viaje', value: 'VIAJE' },
+    { label: 'Celebración', value: 'CELEBRACION' },
     { label: 'Otro', value: 'OTRO' }
   ];
 
@@ -148,12 +150,14 @@ export class EventoListComponent implements OnInit, OnDestroy {
   // Utilidades
   getTipoIcono(tipo?: string): string {
     const iconos: { [key: string]: string } = {
-      'ANIVERSARIO': 'pi pi-heart-fill',
-      'CUMPLEAÑOS': 'pi pi-birthday-cake',
-      'SAN_VALENTIN': 'pi pi-heart',
-      'NAVIDAD': 'pi pi-star-fill',
-      'AÑO_NUEVO': 'pi pi-calendar-plus',
-      'OTRO': 'pi pi-calendar'
+      'ANIVERSARIO': 'pi pi-heart',
+      'CUMPLEAÑOS': 'pi pi-gift',
+      'SAN_VALENTIN': 'pi pi-heart-fill',
+      'FECHA_ESPECIAL': 'pi pi-star',
+      'CITA_ROMANTICA': 'pi pi-calendar-plus',
+      'VIAJE': 'pi pi-map',
+      'CELEBRACION': 'pi pi-sparkles',
+      'OTRO': 'pi pi-circle'
     };
 
     return iconos[tipo || ''] || 'pi pi-calendar';
@@ -164,8 +168,10 @@ export class EventoListComponent implements OnInit, OnDestroy {
       'ANIVERSARIO': 'danger',
       'CUMPLEAÑOS': 'warning',
       'SAN_VALENTIN': 'danger',
-      'NAVIDAD': 'success',
-      'AÑO_NUEVO': 'info',
+      'FECHA_ESPECIAL': 'info',
+      'CITA_ROMANTICA': 'secondary',
+      'VIAJE': 'success',
+      'CELEBRACION': 'warning',
       'OTRO': 'secondary'
     };
 
@@ -230,15 +236,15 @@ export class EventoListComponent implements OnInit, OnDestroy {
 
   // Acciones
   nuevoEvento() {
-    this.router.navigate(['/eventos/nuevo']);
+    this.router.navigate(['/app/eventos/crear']);
   }
 
   verDetalle(evento: Evento) {
-    this.router.navigate(['/eventos', evento.id]);
+    this.router.navigate(['/app/eventos/detalle', evento.id]);
   }
 
   editarEvento(evento: Evento) {
-    this.router.navigate(['/eventos/editar', evento.id]);
+    this.router.navigate(['/app/eventos/editar', evento.id]);
   }
 
   eliminarEvento(evento: Evento) {

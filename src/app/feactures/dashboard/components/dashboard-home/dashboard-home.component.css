@@ -29,12 +29,20 @@ app-stats-widget {
   width: 100%;
 }
 
+/* Layout simplificado sin grid */
+
 /* Contenedor de actividad reciente */
 .activity-section {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem 0;
+}
+
+/* Integración del componente upcoming-events */
+app-upcoming-events {
+  display: block;
+  width: 100%;
 }
 
 /* Responsive básico */

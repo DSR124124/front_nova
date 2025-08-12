@@ -20,12 +20,12 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
   eventoId: number = 0;
   loading = true;
   error = '';
-  
+
   // Información adicional del evento
   diasRestantes: number = 0;
   esEventoPasado: boolean = false;
   esEventoHoy: boolean = false;
-  
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -56,7 +56,7 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private cargarEvento() {
+  cargarEvento() {
     this.loading = true;
     this.eventoService.listarPorId(this.eventoId)
       .pipe(takeUntil(this.destroy$))
@@ -111,7 +111,7 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
   // Acciones
   editarEvento() {
     if (this.evento?.id) {
-      this.router.navigate(['/eventos/editar', this.evento.id]);
+      this.router.navigate(['/app/eventos/editar', this.evento.id]);
     }
   }
 
@@ -135,7 +135,7 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
                   summary: 'Éxito',
                   detail: 'Evento eliminado correctamente'
                 });
-                this.router.navigate(['/eventos']);
+                this.router.navigate(['/app/eventos']);
               },
               error: (error) => {
                 console.error('Error al eliminar evento:', error);
@@ -152,7 +152,7 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
   }
 
   volverALista() {
-    this.router.navigate(['/eventos']);
+    this.router.navigate(['/app/eventos']);
   }
 
   // Utilidades
@@ -173,23 +173,25 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
   }
 
   getTipoIcono(tipo?: string): string {
-    if (!tipo) return 'pi pi-calendar';
-    
+    if (!tipo) return 'pi pi-circle';
+
     const iconos: { [key: string]: string } = {
-      'ANIVERSARIO': 'pi pi-heart-fill',
-      'CUMPLEAÑOS': 'pi pi-birthday-cake',
-      'SAN_VALENTIN': 'pi pi-heart',
-      'NAVIDAD': 'pi pi-star-fill',
-      'AÑO_NUEVO': 'pi pi-calendar-plus',
-      'OTRO': 'pi pi-calendar'
+      'ANIVERSARIO': 'pi pi-heart',
+      'CUMPLEAÑOS': 'pi pi-gift',
+      'SAN_VALENTIN': 'pi pi-heart-fill',
+      'FECHA_ESPECIAL': 'pi pi-star',
+      'CITA_ROMANTICA': 'pi pi-calendar-plus',
+      'VIAJE': 'pi pi-map',
+      'CELEBRACION': 'pi pi-sparkles',
+      'OTRO': 'pi pi-circle'
     };
-    
-    return iconos[tipo] || 'pi pi-calendar';
+
+    return iconos[tipo] || 'pi pi-circle';
   }
 
   getTipoColor(tipo?: string): string {
     if (!tipo) return 'info';
-    
+
     const colores: { [key: string]: string } = {
       'ANIVERSARIO': 'danger',
       'CUMPLEAÑOS': 'warning',
@@ -198,7 +200,7 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
       'AÑO_NUEVO': 'info',
       'OTRO': 'secondary'
     };
-    
+
     return colores[tipo] || 'info';
   }
 
@@ -222,5 +224,29 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
     if (this.diasRestantes <= 30) return `${this.diasRestantes} días`;
     if (this.diasRestantes <= 365) return `${Math.floor(this.diasRestantes / 30)} meses`;
     return `${Math.floor(this.diasRestantes / 365)} años`;
+  }
+
+  // Métodos para CSS classes
+  getTipoCssClass(tipo?: string): string {
+    if (!tipo) return 'tipo-otro';
+    return `tipo-${tipo.toLowerCase().replace('_', '-')}`;
+  }
+
+  getEstadoCssClass(): string {
+    if (this.esEventoHoy) return 'estado-hoy';
+    if (this.esEventoPasado) return 'estado-pasado';
+    return 'estado-futuro';
+  }
+
+  getEstadoIcono(): string {
+    if (this.esEventoHoy) return 'pi pi-calendar-times';
+    if (this.esEventoPasado) return 'pi pi-check-circle';
+    return 'pi pi-clock';
+  }
+
+  getEstadoTexto(): string {
+    if (this.esEventoHoy) return '¡Hoy!';
+    if (this.esEventoPasado) return 'Pasado';
+    return 'Próximo';
   }
 }

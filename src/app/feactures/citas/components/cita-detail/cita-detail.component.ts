@@ -79,7 +79,7 @@ export class CitaDetailComponent implements OnInit, OnDestroy {
 
   editarCita() {
     if (this.cita?.id) {
-      this.router.navigate(['/citas/editar', this.cita.id]);
+      this.router.navigate(['/app/citas/editar', this.cita.id]);
     }
   }
 
@@ -101,7 +101,7 @@ export class CitaDetailComponent implements OnInit, OnDestroy {
                   summary: 'Éxito',
                   detail: 'Cita eliminada correctamente'
                 });
-                this.router.navigate(['/citas']);
+                this.router.navigate(['/app/citas']);
               },
               error: (err) => {
                 console.error('Error eliminando cita:', err);
@@ -208,7 +208,7 @@ export class CitaDetailComponent implements OnInit, OnDestroy {
   }
 
   volver() {
-    this.router.navigate(['/citas']);
+    this.router.navigate(['/app/citas']);
   }
 
   getEstadoText(estado?: EstadoCita): string {

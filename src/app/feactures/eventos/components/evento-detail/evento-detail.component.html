@@ -1,154 +1,192 @@
 <div class="evento-detail-container">
-  <!-- Loading Spinner -->
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner />
-    <p>Cargando evento...</p>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-state">
+    <i class="pi pi-spin pi-spinner loading-icon"></i>
+    <p>Cargando detalles del evento...</p>
   </div>
 
-  <!-- Error State -->
-  <div *ngIf="error && !loading" class="error-container">
-    <p-message
-      severity="error"
-      [text]="error"
-    />
-    <div class="error-actions">
+  <!-- Estado de error -->
+  <div *ngIf="error && !loading" class="error-state">
+    <p-card header="Error" styleClass="error-card">
+      <i class="pi pi-exclamation-triangle error-icon"></i>
+      <p>{{ error }}</p>
+      <div class="error-actions">
+        <p-button
+          label="Reintentar"
+          icon="pi pi-refresh"
+          (onClick)="cargarEvento()"
+          size="small"
+        />
+        <p-button
+          label="Volver"
+          icon="pi pi-arrow-left"
+          [outlined]="true"
+          (onClick)="volverALista()"
+          size="small"
+        />
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Contenido del evento -->
+  <div *ngIf="!loading && !error && evento" class="evento-detail-content">
+
+    <!-- Header con navegación -->
+    <div class="detail-header">
       <p-button
-        label="Volver"
         icon="pi pi-arrow-left"
+        [text]="true"
         (onClick)="volverALista()"
-        severity="secondary"
+        pTooltip="Volver a la lista"
+        size="small"
       />
+      <h1>Detalles del Evento</h1>
     </div>
-  </div>
 
-  <!-- Detalle del Evento -->
-  <div *ngIf="evento && !loading" class="evento-content">
-    <!-- Header del Evento -->
-    <div class="evento-header">
-      <div class="header-info">
-        <div class="evento-tipo">
-          <p-tag
-            [value]="evento.tipo || 'Evento'"
-            [severity]="getTipoColor(evento.tipo)"
-            [icon]="getTipoIcono(evento.tipo)"
-          />
+    <!-- Información principal -->
+    <p-card header="Información General" styleClass="info-card">
+      <div class="evento-info-grid">
+
+        <!-- Título, descripción y tipo -->
+        <div class="info-section">
+          <h2 class="evento-titulo">{{ evento.titulo }}</h2>
+          <p *ngIf="evento.descripcion" class="evento-descripcion">{{ evento.descripcion }}</p>
+          <p *ngIf="!evento.descripcion" class="no-descripcion">Sin descripción</p>
+
+          <!-- Tipo de evento -->
+          <div class="tipo-container">
+            <span class="tipo-badge" [class]="getTipoCssClass(evento.tipo)">
+              <i class="pi" [class]="getTipoIcono(evento.tipo)"></i>
+              {{ evento.tipo || 'OTRO' }}
+            </span>
+          </div>
         </div>
-        <h1 class="evento-titulo">{{ evento.titulo }}</h1>
-        <p class="evento-descripcion" *ngIf="evento.descripcion">
-          {{ evento.descripcion }}
-        </p>
-      </div>
 
-      <div class="header-actions">
-        <p-button
-          label="Editar"
-          icon="pi pi-pencil"
-          (onClick)="editarEvento()"
-        />
-        <p-button
-          label="Eliminar"
-          icon="pi pi-trash"
-          (onClick)="eliminarEvento()"
-          severity="danger"
-        />
-      </div>
-    </div>
-
-    <!-- Información Principal -->
-    <div class="evento-main">
-      <div class="main-grid">
-        <!-- Fecha y Tiempo -->
-        <p-card header="📅 Fecha y Hora" styleClass="info-card">
+        <!-- Fecha y hora -->
+        <div class="info-section">
+          <h3>Fecha y Hora</h3>
           <div class="fecha-info">
-            <div class="fecha-principal">
+            <div class="fecha-item">
               <i class="pi pi-calendar"></i>
               <span>{{ formatearFecha(evento.fecha) }}</span>
             </div>
-            <div class="tiempo-info">
+            <div class="fecha-item">
               <i class="pi pi-clock"></i>
               <span>{{ formatearHora(evento.fecha) }}</span>
             </div>
           </div>
-        </p-card>
+        </div>
 
-        <!-- Estado del Evento -->
-        <p-card header="⏰ Estado" styleClass="info-card">
-          <div class="estado-info">
-            <p-message
-              [severity]="getEstadoEvento().severity"
-              [text]="getEstadoEvento().texto"
-            />
+        <!-- Estado del evento -->
+        <div class="info-section">
+          <h3>Estado</h3>
+          <div class="estado-container">
+            <span class="estado-badge" [class]="getEstadoCssClass()">
+              <i class="pi" [class]="getEstadoIcono()"></i>
+              {{ getEstadoTexto() }}
+            </span>
             <div class="dias-restantes">
               <i class="pi pi-calendar-times"></i>
               <span>{{ getDiasRestantesTexto() }}</span>
             </div>
           </div>
-        </p-card>
+        </div>
 
         <!-- Lugar -->
-        <p-card header="📍 Lugar" styleClass="info-card" *ngIf="evento.lugarId || evento.lugarNombre">
-          <div class="lugar-info">
-            <div *ngIf="lugar" class="lugar-detallado">
-              <div class="lugar-nombre">
-                <i class="pi pi-map-marker"></i>
-                <span>{{ lugar.nombre }}</span>
-              </div>
-              <div class="lugar-direccion" *ngIf="lugar.direccion">
-                <i class="pi pi-home"></i>
-                <span>{{ lugar.direccion }}</span>
-              </div>
-              <div class="lugar-categoria" *ngIf="lugar.categoria">
-                <p-tag
-                  [value]="lugar.categoria"
-                  severity="info"
-                  size="small"
-                />
-              </div>
+        <div class="info-section" *ngIf="evento.lugarId || evento.lugarNombre">
+          <h3>Lugar</h3>
+          <div class="lugar-info" *ngIf="lugar">
+            <div class="lugar-item">
+              <i class="pi pi-map-marker"></i>
+              <span>{{ lugar.nombre }}</span>
             </div>
-            <div *ngIf="!lugar && evento.lugarNombre" class="lugar-basico">
+            <div class="lugar-item" *ngIf="lugar.direccion">
+              <i class="pi pi-home"></i>
+              <span>{{ lugar.direccion }}</span>
+            </div>
+            <div class="categoria-container" *ngIf="lugar.categoria">
+              <span class="categoria-badge">
+                <i class="pi pi-tag"></i>
+                {{ lugar.categoria }}
+              </span>
+            </div>
+          </div>
+          <div class="lugar-info" *ngIf="!lugar && evento.lugarNombre">
+            <div class="lugar-item">
               <i class="pi pi-map-marker"></i>
               <span>{{ evento.lugarNombre }}</span>
             </div>
           </div>
-        </p-card>
+        </div>
 
-        <!-- Información de la Pareja -->
-        <p-card header="💕 Pareja" styleClass="info-card">
+        <!-- Pareja -->
+        <div class="info-section">
+          <h3>Pareja</h3>
           <div class="pareja-info">
             <i class="pi pi-users"></i>
             <span>Evento de la pareja #{{ evento.parejaId }}</span>
           </div>
-        </p-card>
-      </div>
-    </div>
+        </div>
 
-    <!-- Acciones Adicionales -->
-    <div class="evento-actions">
-      <p-button
-        label="Volver a la Lista"
-        icon="pi pi-arrow-left"
-        (onClick)="volverALista()"
-        severity="secondary"
-      />
-
-      <div class="action-buttons">
-        <p-button
-          label="Compartir"
-          icon="pi pi-share-alt"
-          severity="info"
-        />
-        <p-button
-          label="Agregar a Calendario"
-          icon="pi pi-calendar-plus"
-          severity="success"
-        />
       </div>
-    </div>
+    </p-card>
+
+    <!-- Acciones -->
+    <p-card header="Acciones" styleClass="actions-card">
+      <div class="actions-grid">
+
+        <!-- Acciones principales -->
+        <div class="action-group">
+          <p-button
+            label="Editar Evento"
+            icon="pi pi-pencil"
+            (onClick)="editarEvento()"
+            styleClass="action-btn edit-btn"
+          />
+        </div>
+
+        <div class="action-group">
+          <p-button
+            label="Compartir"
+            icon="pi pi-share-alt"
+            severity="info"
+            [outlined]="true"
+            styleClass="action-btn share-btn"
+          />
+        </div>
+
+        <div class="action-group">
+          <p-button
+            label="Agregar a Calendario"
+            icon="pi pi-calendar-plus"
+            severity="success"
+            [outlined]="true"
+            styleClass="action-btn calendar-btn"
+          />
+        </div>
+
+        <!-- Acciones de eliminación -->
+        <div class="action-group action-group-destructive">
+          <p-button
+            label="Eliminar"
+            icon="pi pi-trash"
+            severity="danger"
+            [outlined]="true"
+            (onClick)="eliminarEvento()"
+            styleClass="action-btn delete-btn"
+          />
+        </div>
+
+      </div>
+    </p-card>
+
   </div>
+
+  <!-- Diálogo de confirmación -->
+  <p-confirmDialog></p-confirmDialog>
+
+  <!-- Toast -->
+  <p-toast position="top-right"></p-toast>
+
 </div>
-
-<!-- Toast para mensajes -->
-<p-toast />
-
-<!-- Diálogo de confirmación -->
-<p-confirmDialog />

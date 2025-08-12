@@ -190,9 +190,185 @@ button:hover, .btn:hover {
   transition: transform 0.2s ease;
 }
 
+/* ===== ESTILOS GLOBALES DE TABLAS NOVA ===== */
+/* Tabla principal con clase nova-table */
+::ng-deep .nova-table.p-datatable {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--surface-border);
+}
+
+/* Header de la tabla */
+::ng-deep .nova-table .p-datatable-thead > tr > th {
+  background: var(--surface-section);
+  border-color: var(--surface-border);
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 0.75rem;
+}
+
+/* Filas del body */
+::ng-deep .nova-table .p-datatable-tbody > tr {
+  transition: background-color 0.2s ease;
+}
+
+::ng-deep .nova-table .p-datatable-tbody > tr:hover {
+  background: var(--surface-hover);
+}
+
+::ng-deep .nova-table .p-datatable-tbody > tr > td {
+  padding: 1rem 0.75rem;
+  border-bottom: 1px solid var(--surface-border);
+  vertical-align: top;
+}
+
+/* Paginador */
+::ng-deep .nova-table .p-paginator {
+  border-top: 1px solid var(--surface-border);
+  background: var(--surface-section);
+  padding: 1rem;
+}
+
+::ng-deep .nova-table .p-paginator .p-paginator-pages .p-paginator-page {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+::ng-deep .nova-table .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .nova-table .p-paginator .p-paginator-first,
+::ng-deep .nova-table .p-paginator .p-paginator-prev,
+::ng-deep .nova-table .p-paginator .p-paginator-next,
+::ng-deep .nova-table .p-paginator .p-paginator-last {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+::ng-deep .nova-table .p-paginator .p-paginator-first:hover,
+::ng-deep .nova-table .p-paginator .p-paginator-prev:hover,
+::ng-deep .nova-table .p-paginator .p-paginator-next:hover,
+::ng-deep .nova-table .p-paginator .p-paginator-last:hover {
+  background: var(--surface-hover);
+  border-color: var(--primary-color);
+}
+
+/* Tags globales */
+::ng-deep .p-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+}
+
+::ng-deep .p-tag.p-tag-success {
+  background: var(--success-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .p-tag.p-tag-info {
+  background: var(--info-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .p-tag.p-tag-danger {
+  background: var(--danger-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .p-tag.p-tag-warning {
+  background: var(--warning-color);
+  color: var(--primary-color-text);
+}
+
+::ng-deep .p-tag.p-tag-secondary {
+  background: var(--text-color-muted);
+  color: var(--primary-color-text);
+}
+
+/* Dropdowns/Select globales */
+::ng-deep .p-select {
+  background: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+::ng-deep .p-select:not(.p-disabled):hover {
+  border-color: var(--primary-color);
+}
+
+::ng-deep .p-select:not(.p-disabled).p-focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+::ng-deep .p-select-panel {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+}
+
+::ng-deep .p-select-option {
+  color: var(--text-color);
+}
+
+::ng-deep .p-select-option:hover {
+  background: var(--surface-hover);
+}
+
+::ng-deep .p-select-option.p-highlight {
+  background: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+/* Inputs globales */
+::ng-deep .p-inputtext {
+  background: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+::ng-deep .p-inputtext:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Botones globales */
+::ng-deep .p-button {
+  border-radius: 4px;
+}
+
+::ng-deep .p-button.p-button-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Tooltips globales */
+::ng-deep .p-tooltip {
+  font-size: 0.8rem;
+}
+
 /* Responsive utilities */
 @media (max-width: 768px) {
   .hidden-mobile { display: none !important; }
+
+  /* Responsive para tablas nova */
+  ::ng-deep .nova-table .p-datatable-tbody > tr > td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  ::ng-deep .nova-table .p-datatable-thead > tr > th {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
 }
 
 @media (min-width: 769px) {

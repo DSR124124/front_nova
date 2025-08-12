@@ -1,6 +1,7 @@
-<div class="p-4">  <!-- Actividad Reciente -->
-  <div class="mb-6 text-right">
-    <app-recent-activity></app-recent-activity>
+<div class="p-4">  <!-- Actividades y Eventos -->
+  <div class="mb-6 flex justify-end items-center gap-4">
+    <app-recent-activity class="recent-activity"></app-recent-activity>
+    <app-upcoming-events class="upcoming-events"></app-upcoming-events>
   </div>
 
   <!-- Header del dashboard -->
@@ -21,8 +22,6 @@
       [compact]="false"
     ></app-stats-widget>
   </div>
-
-
 
   <!-- Sección de tiempo actual -->
   <div class="text-center mb-6">

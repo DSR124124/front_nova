@@ -1,210 +1,220 @@
 <div class="evento-list-container">
-  <p-card header="Lista de Eventos" styleClass="evento-list-card">
 
-    <!-- Loading Spinner -->
+  <!-- Header -->
+  <div class="list-header">
+    <div class="header-title">
+      <h2>
+        <i class="pi pi-calendar"></i>
+        Eventos Especiales
+      </h2>
+      <p class="subtitle">Administra todos tus eventos especiales</p>
+    </div>
+    <div class="header-actions">
+      <p-button
+        label="Nuevo Evento"
+        icon="pi pi-plus"
+        (onClick)="nuevoEvento()"
+        styleClass="p-button-primary"
+      />
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters-section">
+    <div class="search-field">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          placeholder="Buscar eventos..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+        />
+      </span>
+    </div>
+
+    <div class="filter-fields">
+      <p-select
+        [options]="tipoOptions"
+        [(ngModel)]="selectedTipo"
+        (onChange)="onTipoChange()"
+        placeholder="Filtrar por tipo"
+      />
+
+      <p-select
+        [options]="estadoOptions"
+        [(ngModel)]="selectedEstado"
+        (onChange)="onEstadoChange()"
+        placeholder="Filtrar por estado"
+      />
+
+      <p-button
+        icon="pi pi-refresh"
+        severity="secondary"
+        (onClick)="limpiarFiltros()"
+        pTooltip="Limpiar filtros"
+      />
+    </div>
+  </div>
+
+  <!-- Sección de eventos -->
+  <div class="eventos-section">
+    <!-- Loading -->
     <div *ngIf="loading" class="loading-container">
       <p-progressSpinner />
+      <p>Cargando eventos...</p>
     </div>
 
-    <!-- Contenido principal -->
-    <div *ngIf="!loading">
+    <!-- Tabla de Eventos -->
+    <div *ngIf="!loading" class="table-container">
+      <p-table
+        [value]="eventosFiltrados"
+        [paginator]="true"
+        [rows]="rows"
+        [first]="first"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} eventos"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        [globalFilterFields]="['titulo', 'lugarNombre', 'descripcion']"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm nova-table"
+        (onPageChange)="onPageChange($event)"
+      >
+        <!-- Header -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Fecha & Hora</th>
+            <th>Lugar</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
 
-      <!-- Header con botón de nuevo evento -->
-      <div class="list-header">
-        <h2>Gestión de Eventos</h2>
-        <p-button
-          label="Nuevo Evento"
-          icon="pi pi-plus"
-          severity="primary"
-          (onClick)="nuevoEvento()"
-        />
-      </div>
-
-      <!-- Filtros -->
-      <div class="filters-section">
-        <!-- Búsqueda -->
-        <div class="search-section">
-          <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input
-              type="text"
-              pInputText
-              placeholder="Buscar eventos..."
-              [(ngModel)]="searchTerm"
-              (input)="onSearchChange()"
-              class="search-input"
-            />
-          </span>
-        </div>
-
-        <!-- Filtros de tipo y estado -->
-        <div class="filter-controls">
-          <p-dropdown
-            [options]="tipoOptions"
-            [(ngModel)]="selectedTipo"
-            (onChange)="onTipoChange()"
-            placeholder="Tipo de evento"
-            styleClass="filter-dropdown"
-          />
-
-          <p-dropdown
-            [options]="estadoOptions"
-            [(ngModel)]="selectedEstado"
-            (onChange)="onEstadoChange()"
-            placeholder="Estado del evento"
-            styleClass="filter-dropdown"
-          />
-
-          <p-button
-            label="Limpiar filtros"
-            icon="pi pi-refresh"
-            severity="secondary"
-            (onClick)="limpiarFiltros()"
-            size="small"
-          />
-        </div>
-      </div>
-
-      <!-- Información de resultados -->
-      <div class="results-info">
-        <p>Mostrando {{ eventosFiltrados.length }} de {{ eventos.length }} eventos</p>
-      </div>
-
-      <!-- Tabla de eventos -->
-      <div class="table-container">
-        <p-table
-          [value]="eventosFiltrados"
-          [paginator]="true"
-          [rows]="rows"
-          [first]="first"
-          [showCurrentPageReport]="true"
-          [tableStyle]="{ 'min-width': '50rem' }"
-          [rowHover]="true"
-          [loading]="loading"
-          (onPageChange)="onPageChange($event)"
-          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} eventos"
-          [rowsPerPageOptions]="[5, 10, 25, 50]"
-          styleClass="p-datatable-sm"
-        >
-          <!-- Columna: Título -->
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Título</th>
-              <th>Tipo</th>
-              <th>Fecha</th>
-              <th>Lugar</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </ng-template>
-
-          <ng-template pTemplate="body" let-evento>
-            <tr>
-              <!-- Título -->
-              <td>
-                <div class="evento-titulo">
-                  <strong>{{ evento.titulo }}</strong>
-                  <small *ngIf="evento.descripcion" class="evento-descripcion">
-                    {{ evento.descripcion }}
-                  </small>
+        <!-- Filas -->
+        <ng-template pTemplate="body" let-evento>
+          <tr>
+            <!-- Título -->
+            <td>
+              <div class="evento-titulo">
+                <div class="titulo-principal">{{ evento.titulo }}</div>
+                <div class="descripcion" *ngIf="evento.descripcion">
+                  {{ evento.descripcion | slice:0:50 }}
+                  <span *ngIf="evento.descripcion && evento.descripcion.length > 50">...</span>
                 </div>
-              </td>
+              </div>
+            </td>
 
-              <!-- Tipo -->
-              <td>
-                <p-tag
-                  [value]="evento.tipo || 'Evento'"
-                  [severity]="getTipoColor(evento.tipo)"
-                  [icon]="getTipoIcono(evento.tipo)"
+            <!-- Tipo -->
+            <td>
+              <p-tag
+                [value]="evento.tipo || 'Evento'"
+                [severity]="getTipoColor(evento.tipo)"
+                [icon]="getTipoIcono(evento.tipo)"
+              />
+            </td>
+
+            <!-- Fecha -->
+            <td>
+              <div class="fecha-info">
+                <div class="fecha-principal">
+                  <i class="pi pi-calendar"></i>
+                  {{ formatearFecha(evento.fecha) }}
+                </div>
+                <div class="fecha-hora">
+                  <i class="pi pi-clock"></i>
+                  {{ formatearHora(evento.fecha) }}
+                </div>
+              </div>
+            </td>
+
+            <!-- Lugar -->
+            <td>
+              <div class="lugar-info" *ngIf="evento.lugarNombre">
+                <i class="pi pi-map-marker"></i>
+                {{ evento.lugarNombre }}
+              </div>
+              <span *ngIf="!evento.lugarNombre" class="text-muted">Sin lugar</span>
+            </td>
+
+            <!-- Estado -->
+            <td>
+              <p-tag
+                [value]="getEstadoTexto(evento.fecha)"
+                [severity]="getEstadoSeverity(evento.fecha)"
+              />
+            </td>
+
+            <!-- Acciones -->
+            <td>
+              <div class="action-buttons">
+                <p-button
+                  icon="pi pi-eye"
+                  severity="info"
+                  [text]="true"
+                  [rounded]="true"
                   size="small"
+                  pTooltip="Ver detalle"
+                  (onClick)="verDetalle(evento)"
                 />
-              </td>
 
-              <!-- Fecha -->
-              <td>
-                <div class="evento-fecha">
-                  <div class="fecha-principal">
-                    <i class="pi pi-calendar"></i>
-                    {{ formatearFecha(evento.fecha) }}
-                  </div>
-                  <div class="fecha-hora">
-                    <i class="pi pi-clock"></i>
-                    {{ formatearHora(evento.fecha) }}
-                  </div>
-                </div>
-              </td>
-
-              <!-- Lugar -->
-              <td>
-                <div *ngIf="evento.lugarNombre" class="evento-lugar">
-                  <i class="pi pi-map-marker"></i>
-                  {{ evento.lugarNombre }}
-                </div>
-                <span *ngIf="!evento.lugarNombre" class="no-lugar">
-                  Sin lugar asignado
-                </span>
-              </td>
-
-              <!-- Estado -->
-              <td>
-                <p-tag
-                  [value]="getEstadoTexto(evento.fecha)"
-                  [severity]="getEstadoSeverity(evento.fecha)"
+                <p-button
+                  icon="pi pi-pencil"
+                  severity="secondary"
+                  [text]="true"
+                  [rounded]="true"
                   size="small"
+                  pTooltip="Editar"
+                  (onClick)="editarEvento(evento)"
                 />
-              </td>
 
-              <!-- Acciones -->
-              <td>
-                <div class="evento-actions">
-                  <p-button
-                    icon="pi pi-eye"
-                    severity="info"
-                    size="small"
-                    (onClick)="verDetalle(evento)"
-                    [pTooltip]="'Ver detalle'"
-                  />
-                  <p-button
-                    icon="pi pi-pencil"
-                    severity="secondary"
-                    size="small"
-                    (onClick)="editarEvento(evento)"
-                    [pTooltip]="'Editar'"
-                  />
-                  <p-button
-                    icon="pi pi-trash"
-                    severity="danger"
-                    size="small"
-                    (onClick)="eliminarEvento(evento)"
-                    [pTooltip]="'Eliminar'"
-                  />
-                </div>
-              </td>
-            </tr>
-          </ng-template>
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [text]="true"
+                  [rounded]="true"
+                  size="small"
+                  pTooltip="Eliminar"
+                  (onClick)="eliminarEvento(evento)"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
 
-          <!-- Estado vacío -->
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="6" class="empty-message">
-                <div class="empty-state">
-                  <i class="pi pi-calendar-times empty-icon"></i>
-                  <h3>No se encontraron eventos</h3>
-                  <p>Intenta ajustar los filtros de búsqueda</p>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-
+        <!-- Empty State -->
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="empty-state">
+              <div class="empty-content">
+                <i class="pi pi-calendar-times empty-icon"></i>
+                <h3>No se encontraron eventos</h3>
+                <p *ngIf="searchTerm || selectedTipo || selectedEstado">
+                  No se encontraron eventos con los filtros aplicados
+                </p>
+                <p *ngIf="!searchTerm && !selectedTipo && !selectedEstado">
+                  ¡Crea tu primer evento especial!
+                </p>
+                <p-button
+                  label="Nuevo Evento"
+                  icon="pi pi-plus"
+                  (onClick)="nuevoEvento()"
+                  *ngIf="!searchTerm && !selectedTipo && !selectedEstado"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
+  </div>
 
-  </p-card>
 </div>
 
 <!-- Toast para mensajes -->
-<p-toast />
+<p-toast position="top-right" />
 
 <!-- Diálogo de confirmación -->
 <p-confirmDialog />

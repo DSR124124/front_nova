@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -15,7 +15,7 @@ import { Lugar } from '../../../../core/models/lugar';
   templateUrl: './evento-form.component.html',
   styleUrl: './evento-form.component.css'
 })
-export class EventoFormComponent implements OnInit, OnDestroy {
+export class EventoFormComponent implements OnInit, AfterViewInit, OnDestroy {
   eventoForm: FormGroup;
   lugares: Lugar[] = [];
   loading = false;
@@ -24,12 +24,14 @@ export class EventoFormComponent implements OnInit, OnDestroy {
 
   // Opciones para el tipo de evento
   tipoOptions = [
-    { label: 'Aniversario', value: 'ANIVERSARIO' },
-    { label: 'Cumpleaños', value: 'CUMPLEAÑOS' },
-    { label: 'San Valentín', value: 'SAN_VALENTIN' },
-    { label: 'Navidad', value: 'NAVIDAD' },
-    { label: 'Año Nuevo', value: 'AÑO_NUEVO' },
-    { label: 'Otro', value: 'OTRO' }
+    { label: 'Aniversario', value: 'ANIVERSARIO', icon: 'pi pi-heart' },
+    { label: 'Cumpleaños', value: 'CUMPLEAÑOS', icon: 'pi pi-gift' },
+    { label: 'San Valentín', value: 'SAN_VALENTIN', icon: 'pi pi-heart-fill' },
+    { label: 'Fecha Especial', value: 'FECHA_ESPECIAL', icon: 'pi pi-star' },
+    { label: 'Cita Romántica', value: 'CITA_ROMANTICA', icon: 'pi pi-calendar-plus' },
+    { label: 'Viaje', value: 'VIAJE', icon: 'pi pi-map' },
+    { label: 'Celebración', value: 'CELEBRACION', icon: 'pi pi-sparkles' },
+    { label: 'Otro', value: 'OTRO', icon: 'pi pi-circle' }
   ];
 
   private destroy$ = new Subject<void>();
@@ -48,6 +50,10 @@ export class EventoFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cargarLugares();
     this.checkEditMode();
+  }
+
+  ngAfterViewInit() {
+    // Asegurar que el DOM esté completamente cargado para PrimeNG Calendar
   }
 
   ngOnDestroy() {
@@ -102,10 +108,15 @@ export class EventoFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (evento) => {
+          // Convertir la fecha ISO a formato datetime-local
+          const fechaEvento = new Date(evento.fecha);
+          const fechaLocal = new Date(fechaEvento.getTime() - fechaEvento.getTimezoneOffset() * 60000)
+            .toISOString().slice(0, 16);
+
           this.eventoForm.patchValue({
             titulo: evento.titulo,
             descripcion: evento.descripcion || '',
-            fecha: new Date(evento.fecha),
+            fecha: fechaLocal,
             tipo: evento.tipo || 'OTRO',
             lugarId: evento.lugarId || '',
             parejaId: evento.parejaId
@@ -133,9 +144,9 @@ export class EventoFormComponent implements OnInit, OnDestroy {
     this.loading = true;
     const eventoData: Evento = this.eventoForm.value;
 
-    // Convertir la fecha a string ISO si es un objeto Date
-    if (eventoData.fecha && typeof eventoData.fecha === 'object' && 'toISOString' in eventoData.fecha) {
-      eventoData.fecha = (eventoData.fecha as Date).toISOString();
+    // Convertir la fecha datetime-local a ISO string
+    if (eventoData.fecha) {
+      eventoData.fecha = new Date(eventoData.fecha).toISOString();
     }
 
     if (this.editMode) {
@@ -149,7 +160,7 @@ export class EventoFormComponent implements OnInit, OnDestroy {
               summary: 'Éxito',
               detail: 'Evento actualizado correctamente'
             });
-            this.router.navigate(['/eventos']);
+            this.router.navigate(['/app/eventos']);
           },
           error: (error) => {
             console.error('Error al actualizar evento:', error);
@@ -171,7 +182,7 @@ export class EventoFormComponent implements OnInit, OnDestroy {
               summary: 'Éxito',
               detail: 'Evento creado correctamente'
             });
-            this.router.navigate(['/eventos']);
+            this.router.navigate(['/app/eventos']);
           },
           error: (error) => {
             console.error('Error al crear evento:', error);
@@ -206,9 +217,30 @@ export class EventoFormComponent implements OnInit, OnDestroy {
   getFieldError(fieldName: string): string {
     const field = this.eventoForm.get(fieldName);
     if (field && field.errors) {
-      if (field.errors['required']) return `${fieldName} es requerido`;
-      if (field.errors['minlength']) return `${fieldName} debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
+      if (field.errors['required']) {
+        const labels: { [key: string]: string } = {
+          'titulo': 'El título',
+          'fecha': 'La fecha'
+        };
+        return `${labels[fieldName] || fieldName} es requerido`;
+      }
+      if (field.errors['minlength']) {
+        return `El título debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
+      }
     }
     return '';
+  }
+
+  // Método para obtener fecha mínima en formato datetime-local
+  getMinDateTime(): string {
+    const now = new Date();
+    const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+      .toISOString().slice(0, 16);
+    return localDateTime;
+  }
+
+  // Método para cancelar y volver a la lista
+  cancelar(): void {
+    this.router.navigate(['/app/eventos']);
   }
 }

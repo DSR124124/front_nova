@@ -49,6 +49,12 @@ export class CitaFormComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // Método para obtener fecha mínima para el input datetime-local
+  getMinDateTime(): string {
+    const now = new Date();
+    return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  }
+
   private createForm(): FormGroup {
     console.log('📝 Creando formulario de cita');
     return this.fb.group({
@@ -107,10 +113,15 @@ export class CitaFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (cita) => {
           console.log('✅ Cita cargada exitosamente:', cita);
+          // Convertir la fecha ISO a formato datetime-local
+          const fechaCita = new Date(cita.fecha);
+          const fechaLocal = new Date(fechaCita.getTime() - fechaCita.getTimezoneOffset() * 60000)
+            .toISOString().slice(0, 16);
+
           this.citaForm.patchValue({
             titulo: cita.titulo,
             descripcion: cita.descripcion,
-            fecha: new Date(cita.fecha),
+            fecha: fechaLocal,
             lugarId: cita.lugarId,
             parejaId: cita.parejaId
           });
@@ -210,8 +221,12 @@ export class CitaFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  private formatDateForBackend(date: Date): string {
+  private formatDateForBackend(date: string | Date): string {
     if (!date) return '';
+    // Si viene como string del datetime-local, convertir a Date y luego a ISO
+    if (typeof date === 'string') {
+      return new Date(date).toISOString();
+    }
     return date.toISOString();
   }
 
