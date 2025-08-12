@@ -10,7 +10,6 @@ import { LayoutModule } from './layout/layout.module';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { SharedModule } from './shared/shared.module';
-import { DashboardModule } from './feactures/dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -22,8 +21,7 @@ import { DashboardModule } from './feactures/dashboard/dashboard.module';
     PrimeNgModule,
     AuthModule,
     LayoutModule,
-    SharedModule,
-    DashboardModule
+    SharedModule
   ],
   providers: [
     providePrimeNG({

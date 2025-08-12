@@ -1,4 +1,4 @@
-<div class="breadcrumb-container" *ngIf="items.length > 0">
+<div [class]="getContainerClass()" *ngIf="items.length > 0">
   <p-breadcrumb
     [model]="items"
     [home]="home"

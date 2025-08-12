@@ -1,4 +1,4 @@
-<div class="sidebar-item" [class.has-submenu]="hasSubmenu()" [class.submenu-active]="isSubmenuActive()">
+<div [class]="getItemClass()">
   <!-- Item principal -->
   <div class="sidebar-item-main">
     <p-button
@@ -30,13 +30,12 @@
   <!-- Submenús -->
   <div
     *ngIf="hasSubmenu() && !sidebarCollapsed"
-    class="submenu"
-    [class.expanded]="expanded"
+    [class]="getSubmenuClass()"
   >
     <div
       *ngFor="let subItem of item.items"
       class="submenu-item"
-      [class.active]="router.url.startsWith(subItem.routerLink || '')"
+      [class.active]="isSubItemActive(subItem)"
       (click)="navigateTo(subItem.routerLink)"
       role="button"
       tabindex="0"

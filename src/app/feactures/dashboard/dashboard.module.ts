@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
-import { LayoutModule } from '../../layout/layout.module';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
@@ -20,7 +19,6 @@ import { RecentActivityComponent } from './components/recent-activity/recent-act
   imports: [
     CommonModule,
     PrimeNgModule,
-    LayoutModule,
     DashboardRoutingModule
   ],
   exports: [

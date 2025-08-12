@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -9,9 +10,16 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './breadcrumb.component.html',
   styleUrl: './breadcrumb.component.css'
 })
-export class BreadcrumbComponent implements OnInit {
+export class BreadcrumbComponent implements OnInit, OnDestroy {
   items: MenuItem[] = [];
-  home: MenuItem = { icon: 'pi pi-home', routerLink: '/dashboard' };
+  home: MenuItem = {
+    icon: 'pi pi-home',
+    routerLink: '/app/dashboard',
+    label: 'Inicio'
+  };
+
+  loading = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -20,7 +28,10 @@ export class BreadcrumbComponent implements OnInit {
 
   ngOnInit() {
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => {
         this.updateBreadcrumb();
       });
@@ -29,8 +40,19 @@ export class BreadcrumbComponent implements OnInit {
     this.updateBreadcrumb();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   private updateBreadcrumb() {
-    this.items = this.createBreadcrumbs(this.activatedRoute.root);
+    this.loading = true;
+
+    // Pequeño delay para mostrar el estado de carga
+    setTimeout(() => {
+      this.items = this.createBreadcrumbs(this.activatedRoute.root);
+      this.loading = false;
+    }, 100);
   }
 
   private createBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
@@ -50,7 +72,8 @@ export class BreadcrumbComponent implements OnInit {
       if (label) {
         breadcrumbs.push({
           label: label,
-          routerLink: url
+          routerLink: url,
+          icon: this.getBreadcrumbIcon(routeURL)
         });
       }
 
@@ -70,14 +93,34 @@ export class BreadcrumbComponent implements OnInit {
     const routeLabels: { [key: string]: string } = {
       'dashboard': 'Dashboard',
       'citas': 'Citas',
+      'listar': 'Lista',
+      'nueva': 'Nueva Cita',
+      'editar': 'Editar Cita',
+      'calendario': 'Calendario',
+      'filtros': 'Filtros',
       'eventos': 'Eventos',
+      'crear': 'Crear',
+      'galeria': 'Galería',
       'lugares': 'Lugares',
+      'explorar': 'Explorar',
+      'favoritos': 'Favoritos',
+      'agregar': 'Agregar',
       'chat': 'Chat',
       'regalos': 'Regalos',
+      'deseos': 'Lista de Deseos',
+      'historial': 'Historial',
+      'estadisticas': 'Estadísticas',
       'recordatorios': 'Recordatorios',
+      'notificaciones': 'Notificaciones',
       'notas': 'Notas',
+      'buscar': 'Buscar',
       'multimedia': 'Multimedia',
+      'subir': 'Subir Archivos',
       'perfil': 'Perfil',
+      'usuario': 'Mi Perfil',
+      'pareja': 'Perfil de Pareja',
+      'configuracion': 'Configuración',
+      'password': 'Cambiar Contraseña',
       'auth': 'Autenticación',
       'login': 'Iniciar Sesión',
       'register': 'Registro',
@@ -88,8 +131,58 @@ export class BreadcrumbComponent implements OnInit {
     return routeLabels[url] || this.capitalizeFirst(url);
   }
 
+  private getBreadcrumbIcon(url: string): string {
+    // Mapeo de rutas a iconos
+    const routeIcons: { [key: string]: string } = {
+      'dashboard': 'pi pi-home',
+      'citas': 'pi pi-calendar',
+      'listar': 'pi pi-list',
+      'nueva': 'pi pi-plus',
+      'editar': 'pi pi-pencil',
+      'calendario': 'pi pi-calendar',
+      'filtros': 'pi pi-filter',
+      'eventos': 'pi pi-star',
+      'crear': 'pi pi-plus',
+      'galeria': 'pi pi-images',
+      'lugares': 'pi pi-map-marker',
+      'explorar': 'pi pi-search',
+      'favoritos': 'pi pi-heart',
+      'agregar': 'pi pi-plus',
+      'chat': 'pi pi-comments',
+      'regalos': 'pi pi-gift',
+      'deseos': 'pi pi-heart',
+      'historial': 'pi pi-history',
+      'estadisticas': 'pi pi-chart-bar',
+      'recordatorios': 'pi pi-bell',
+      'notificaciones': 'pi pi-bell',
+      'notas': 'pi pi-file',
+      'buscar': 'pi pi-search',
+      'multimedia': 'pi pi-images',
+      'subir': 'pi pi-upload',
+      'perfil': 'pi pi-user',
+      'usuario': 'pi pi-user',
+      'pareja': 'pi pi-users',
+      'configuracion': 'pi pi-cog',
+      'password': 'pi pi-key'
+    };
+
+    return routeIcons[url] || 'pi pi-circle';
+  }
+
   private capitalizeFirst(str: string): string {
     if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  // Método para navegar manualmente
+  navigateTo(route: string): void {
+    if (route && route !== this.router.url) {
+      this.router.navigate([route]);
+    }
+  }
+
+  // Método para obtener la clase CSS del contenedor
+  getContainerClass(): string {
+    return `breadcrumb-container ${this.loading ? 'loading' : ''}`;
   }
 }

@@ -5,13 +5,14 @@
   top: 0;
   height: 100vh;
   width: 280px;
-  background-color: var(--p-surface-card);
-  border-right: 1px solid var(--p-surface-border);
-  transition: width 0.3s ease;
+  background: linear-gradient(180deg, var(--surface-section) 0%, var(--surface-card) 100%);
+  border-right: 1px solid var(--surface-border);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
 }
 
 .sidebar-container.collapsed {
@@ -24,8 +25,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: 1px solid var(--p-surface-border);
-  background: var(--p-surface-section);
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--surface-section);
+  backdrop-filter: blur(10px);
 }
 
 .sidebar-title {
@@ -34,11 +36,11 @@
   gap: 0.5rem;
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--p-text-color);
+  color: var(--text-color);
 }
 
 .sidebar-title i {
-  color: var(--p-primary-color);
+  color: var(--primary-color);
   font-size: 1.4rem;
 }
 
@@ -47,6 +49,25 @@
   flex: 1;
   padding: 1rem 0;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-border) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: var(--surface-border);
+  border-radius: 3px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--text-color-secondary);
 }
 
 .sidebar-menu-item {
@@ -61,46 +82,55 @@
   padding: 0.75rem 1rem;
   border: none;
   background: transparent;
-  color: var(--p-text-color);
+  color: var(--text-color);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: left;
   position: relative;
+  border-radius: 8px;
 }
 
 .menu-button:hover {
-  background: var(--p-surface-100);
-  color: var(--p-text-color);
+  background: var(--surface-hover);
+  color: var(--text-color);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .menu-button.active {
-  background: var(--p-primary-color);
-  color: var(--p-primary-color-text);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%);
+  color: var(--primary-color-text);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transform: translateX(4px);
 }
 
 .menu-button i {
   font-size: 1rem;
   min-width: 20px;
+  color: inherit;
 }
 
 .menu-button span {
   font-weight: 500;
   flex: 1;
+  font-size: 0.9rem;
 }
 
 .badge {
-  background: var(--p-primary-color);
-  color: var(--p-primary-color-text);
+  background: var(--primary-color);
+  color: var(--primary-color-text);
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 600;
   min-width: 20px;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .submenu-arrow {
-  transition: transform 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-color-secondary);
 }
 
 .submenu-arrow.rotated {
@@ -111,12 +141,19 @@
 .submenu {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
-  background: var(--p-surface-50);
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--surface-section);
+  margin: 0.5rem 1rem 0.5rem 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .submenu.expanded {
-  max-height: 200px;
+  max-height: 300px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .submenu-item {
@@ -124,30 +161,66 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.5rem 1rem 0.5rem 2.5rem;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
   border: none;
   background: transparent;
-  color: var(--p-text-color);
+  color: var(--text-color);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: left;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  border-radius: 6px;
+  margin: 0.25rem;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.submenu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
 }
 
 .submenu-item:hover {
-  background: var(--p-surface-100);
-  color: var(--p-text-color);
+  color: var(--primary-color-text);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.submenu-item:hover::before {
+  opacity: 1;
 }
 
 .submenu-item.active {
-  background: var(--p-primary-100);
-  color: var(--p-primary-color);
-  font-weight: 500;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-600) 100%);
+  color: var(--primary-color-text);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transform: translateX(4px);
+}
+
+.submenu-item.active::before {
+  opacity: 0;
 }
 
 .submenu-item i {
   font-size: 0.9rem;
   min-width: 20px;
+  color: var(--text-color-secondary);
+  transition: color 0.3s ease;
+}
+
+.submenu-item:hover i,
+.submenu-item.active i {
+  color: var(--primary-color-text);
 }
 
 /* Estados especiales */
@@ -156,23 +229,25 @@
 }
 
 .sidebar-menu-item.submenu-active .menu-button {
-  background: var(--p-primary-50);
-  color: var(--p-primary-color);
+  background: var(--surface-hover);
+  color: var(--text-color);
 }
 
 /* Footer */
 .sidebar-footer {
   padding: 1rem;
-  border-top: 1px solid var(--p-surface-border);
-  background: var(--p-surface-section);
+  border-top: 1px solid var(--surface-border);
+  background: var(--surface-section);
+  backdrop-filter: blur(10px);
 }
 
 .sidebar-footer-collapsed {
   padding: 1rem;
-  border-top: 1px solid var(--p-surface-border);
+  border-top: 1px solid var(--surface-border);
   display: flex;
   justify-content: center;
-  background: var(--p-surface-section);
+  background: var(--surface-section);
+  backdrop-filter: blur(10px);
 }
 
 .user-info {
@@ -190,12 +265,12 @@
 .user-name {
   font-weight: 500;
   font-size: 0.9rem;
-  color: var(--p-text-color);
+  color: var(--text-color);
 }
 
 .user-status {
   font-size: 0.75rem;
-  color: var(--p-text-color-secondary);
+  color: var(--text-color-secondary);
 }
 
 /* Estados colapsados */
@@ -227,6 +302,7 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
 /* Responsive */

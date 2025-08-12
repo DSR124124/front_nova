@@ -1,123 +1,110 @@
-<div class="dashboard-layout">
-  <!-- Sidebar usando el componente ya desarrollado -->
-  <app-sidebar
-    [collapsed]="sidebarCollapsed"
-    (sidebarToggle)="onSidebarToggle()">
-  </app-sidebar>
-
-  <!-- Contenido principal -->
-  <div class="main-content" #mainContent [class.sidebar-collapsed]="sidebarCollapsed">
-    <!-- Header del dashboard -->
-    <div class="dashboard-header">
-      <div class="header-left">
-        <h1>Dashboard</h1>
-        <p class="welcome-text">Bienvenido a Nova</p>
-      </div>
-      <div class="header-right">
-        <div class="header-actions">
-          <p-button
-            [icon]="sidebarCollapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
-            [text]="true"
-            [rounded]="true"
-            size="small"
-            (onClick)="onSidebarToggle()"
-            pTooltip="Toggle Sidebar"
-          />
-        </div>
+<div class="dashboard-content">
+  <!-- Header del dashboard -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h1>Dashboard</h1>
+      <p class="welcome-text">Bienvenido a Nova</p>
+    </div>
+    <div class="header-right">
+      <div class="header-actions">
+        <p-button
+          icon="pi pi-clock"
+          [text]="true"
+          [rounded]="true"
+          size="small"
+          pTooltip="Hora actual"
+        />
       </div>
     </div>
+  </div>
 
-    <!-- Contenido del dashboard -->
-    <div class="dashboard-content">
-      <!-- Grid de estadísticas -->
-      <div class="stats-grid">
-        <p-card header="Citas Pendientes" styleClass="stat-card">
-          <div class="stat-content">
-            <i class="pi pi-calendar stat-icon"></i>
-            <div class="stat-info">
-              <span class="stat-number">{{ stats.appointments }}</span>
-              <span class="stat-label">Citas esta semana</span>
-            </div>
-          </div>
-        </p-card>
-
-        <p-card header="Eventos Próximos" styleClass="stat-card">
-          <div class="stat-content">
-            <i class="pi pi-calendar-plus stat-icon"></i>
-            <div class="stat-info">
-              <span class="stat-number">{{ stats.events }}</span>
-              <span class="stat-label">Eventos próximos</span>
-            </div>
-          </div>
-        </p-card>
-
-        <p-card header="Mensajes Nuevos" styleClass="stat-card">
-          <div class="stat-content">
-            <i class="pi pi-comments stat-icon"></i>
-            <div class="stat-info">
-              <span class="stat-number">{{ stats.messages }}</span>
-              <span class="stat-label">Mensajes sin leer</span>
-            </div>
-          </div>
-        </p-card>
-
-        <p-card header="Recordatorios" styleClass="stat-card">
-          <div class="stat-content">
-            <i class="pi pi-bell stat-icon"></i>
-            <div class="stat-info">
-              <span class="stat-number">{{ stats.reminders }}</span>
-              <span class="stat-label">Recordatorios activos</span>
-            </div>
-          </div>
-        </p-card>
-      </div>
-
-      <!-- Sección de tiempo actual -->
-      <div class="time-section">
-        <p-card header="Información Actual" styleClass="time-card">
-          <div class="time-content">
-            <div class="time-display">
-              <i class="pi pi-clock"></i>
-              <span class="time-text">{{ currentTime | date:'HH:mm:ss' }}</span>
-            </div>
-            <p class="date-text">{{ currentTime | date:'EEEE, d \'de\' MMMM, y' }}</p>
-          </div>
-        </p-card>
-      </div>
-
-      <!-- Acciones rápidas -->
-      <div class="quick-actions">
-        <h3>Acciones Rápidas</h3>
-        <div class="actions-grid">
-          <p-button
-            label="Nueva Cita"
-            icon="pi pi-plus"
-            styleClass="action-btn"
-            (onClick)="navigateTo('/app/citas/nueva')"
-          />
-          <p-button
-            label="Nuevo Evento"
-            icon="pi pi-calendar-plus"
-            severity="secondary"
-            styleClass="action-btn"
-            (onClick)="navigateTo('/app/eventos')"
-          />
-          <p-button
-            label="Ver Chat"
-            icon="pi pi-comments"
-            severity="info"
-            styleClass="action-btn"
-            (onClick)="navigateTo('/app/chat')"
-          />
-          <p-button
-            label="Recordatorios"
-            icon="pi pi-bell"
-            severity="contrast"
-            styleClass="action-btn"
-            (onClick)="navigateTo('/app/recordatorios')"
-          />
+  <!-- Grid de estadísticas -->
+  <div class="stats-grid">
+    <p-card header="Citas Pendientes" styleClass="stat-card">
+      <div class="stat-content">
+        <i class="pi pi-calendar stat-icon"></i>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.appointments }}</span>
+          <span class="stat-label">Citas esta semana</span>
         </div>
       </div>
+    </p-card>
+
+    <p-card header="Eventos Próximos" styleClass="stat-card">
+      <div class="stat-content">
+        <i class="pi pi-calendar-plus stat-icon"></i>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.events }}</span>
+          <span class="stat-label">Eventos próximos</span>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card header="Mensajes Nuevos" styleClass="stat-card">
+      <div class="stat-content">
+        <i class="pi pi-comments stat-icon"></i>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.messages }}</span>
+          <span class="stat-label">Mensajes sin leer</span>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card header="Recordatorios" styleClass="stat-card">
+      <div class="stat-content">
+        <i class="pi pi-bell stat-icon"></i>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.reminders }}</span>
+          <span class="stat-label">Recordatorios activos</span>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Sección de tiempo actual -->
+  <div class="time-section">
+    <p-card header="Información Actual" styleClass="time-card">
+      <div class="time-content">
+        <div class="time-display">
+          <i class="pi pi-clock"></i>
+          <span class="time-text">{{ currentTime | date:'HH:mm:ss' }}</span>
+        </div>
+        <p class="date-text">{{ currentTime | date:'EEEE, d \'de\' MMMM, y' }}</p>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Acciones rápidas -->
+  <div class="quick-actions">
+    <h3>Acciones Rápidas</h3>
+    <div class="actions-grid">
+      <p-button
+        label="Nueva Cita"
+        icon="pi pi-plus"
+        styleClass="action-btn"
+        (onClick)="navigateTo('/app/citas/nueva')"
+      />
+      <p-button
+        label="Nuevo Evento"
+        icon="pi pi-calendar-plus"
+        severity="secondary"
+        styleClass="action-btn"
+        (onClick)="navigateTo('/app/eventos')"
+      />
+      <p-button
+        label="Ver Chat"
+        icon="pi pi-comments"
+        severity="info"
+        styleClass="action-btn"
+        (onClick)="navigateTo('/app/chat')"
+      />
+      <p-button
+        label="Recordatorios"
+        icon="pi pi-bell"
+        severity="contrast"
+        styleClass="action-btn"
+        (onClick)="navigateTo('/app/recordatorios')"
+      />
     </div>
   </div>
 </div>
