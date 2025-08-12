@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
+import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
   constructor(private http: HttpClient) {}
 
   login(credentials: { username: string; password: string }): Observable<any> {
@@ -17,8 +19,8 @@ export class AuthService {
     return this.http.post(API_ENDPOINTS.FORGOT_PASSWORD, { email });
   }
 
-  register(userData: any): Observable<any> {
-    return this.http.post(API_ENDPOINTS.REGISTER, userData);
+  register(usuario: Usuario): Observable<void> {
+    return this.http.post<void>(API_ENDPOINTS.REGISTER, usuario);
   }
 
   validateResetToken(token: string): Observable<any> {

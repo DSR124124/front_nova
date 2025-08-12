@@ -1,3 +1,4 @@
+/* ===== LAYOUT PRINCIPAL ===== */
 :host {
   display: flex;
   justify-content: center;
@@ -6,11 +7,13 @@
   padding: 1rem;
 }
 
+/* ===== CARD PRINCIPAL ===== */
 p-card {
   width: 100%;
   max-width: 500px;
 }
 
+/* ===== HEADER DEL FORMULARIO ===== */
 .register-header {
   text-align: center;
   padding: 1rem 0;
@@ -23,12 +26,16 @@ p-card {
 
 .register-header p {
   margin: 0;
-  color: var(--p-text-muted-color);
 }
 
+/* ===== ESTRUCTURA DEL FORMULARIO ===== */
 .form-row {
   display: flex;
   gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-field {
   margin-bottom: 1.5rem;
 }
 
@@ -37,8 +44,11 @@ p-card {
   margin-bottom: 0;
 }
 
-.form-field {
-  margin-bottom: 1.5rem;
+/* ===== LABELS Y CAMPOS ===== */
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .form-field p-floatlabel {
@@ -50,6 +60,7 @@ p-card {
   width: 100%;
 }
 
+/* ===== CHECKBOX ===== */
 .checkbox-container {
   display: flex;
   align-items: center;
@@ -59,11 +70,6 @@ p-card {
 .checkbox-label {
   cursor: pointer;
   user-select: none;
-  color: var(--p-text-color);
-}
-
-.checkbox-label:hover {
-  color: var(--p-primary-color);
 }
 
 .form-field p-checkbox {
@@ -71,6 +77,7 @@ p-card {
   align-items: center;
 }
 
+/* ===== BOTONES Y ACCIONES ===== */
 .form-actions {
   margin-top: 2rem;
 }
@@ -84,7 +91,33 @@ p-card {
   margin-top: 0.5rem;
 }
 
-/* Responsive para pantallas pequeñas */
+/* ===== CAMPO DE FOTO ===== */
+.file-preview {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.preview-image {
+  border-radius: 8px;
+  border: 2px solid;
+  object-fit: cover;
+}
+
+.form-help {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+/* ===== MENSAJES DE ERROR ===== */
+.simplified-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 576px) {
   .form-row {
     flex-direction: column;

@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../../core/services/auth.service';
+import { Usuario } from '../../../../core/models/usuario';
+import { Role } from '../../../../core/models/enums/role.enum';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +15,14 @@ import { AuthService } from '../../../../core/services/auth.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   loading = false;
+  maxDate = new Date(); // Fecha actual como límite máximo
+  minDate = new Date(1900, 0, 1); // Fecha mínima (1900)
+  defaultDate = new Date(1990, 0, 1); // Fecha por defecto
+  generos = [
+    { label: 'Masculino', value: 'M' },
+    { label: 'Femenino', value: 'F' },
+    { label: 'Otro', value: 'O' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -21,12 +31,15 @@ export class RegisterComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.registerForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
+      nombre: ['', [Validators.required, Validators.minLength(2)]],
+      apellido: ['', [Validators.required, Validators.minLength(2)]],
+      correo: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
+      fechaNacimiento: ['', [Validators.required]],
+      genero: ['', [Validators.required]],
+      fotoPerfil: [''],
       acceptTerms: [false, [this.termsValidator]]
     }, {
       validators: this.passwordMatchValidator
@@ -63,7 +76,21 @@ export class RegisterComponent implements OnInit {
       // Remover confirmPassword y acceptTerms del objeto a enviar
       const { confirmPassword, acceptTerms, ...userData } = formData;
 
-      this.authService.register(userData).subscribe({
+      // Crear el objeto Usuario con los campos correctos
+      const usuario: Usuario = {
+        nombre: userData.nombre,
+        apellido: userData.apellido,
+        correo: userData.correo,
+        username: userData.username,
+        password: userData.password,
+        fechaNacimiento: userData.fechaNacimiento ? this.formatDateToISO(userData.fechaNacimiento) : undefined,
+        genero: userData.genero,
+        fotoPerfil: userData.fotoPerfil || undefined,
+        enabled: true,
+        role: Role.USER // Por defecto asignamos USER
+      };
+
+      this.authService.register(usuario).subscribe({
         next: (response) => {
           this.loading = false;
 
@@ -144,5 +171,33 @@ export class RegisterComponent implements OnInit {
 
   onBackToLogin(): void {
     this.router.navigate(['/auth/login']);
+  }
+
+  onFileSelect(event: any): void {
+    const file = event.files[0];
+    if (file) {
+      // Convertir la imagen a base64
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.registerForm.patchValue({
+          fotoPerfil: e.target.result
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  private formatDateToISO(date: string): string {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 }

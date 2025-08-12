@@ -14,17 +14,16 @@
           <p-floatlabel>
             <input
               pInputText
-              id="firstName"
-              formControlName="firstName"
-              [class.ng-invalid]="isFieldInvalid('firstName')"
+              id="nombre"
+              formControlName="nombre"
             />
-            <label for="firstName">Nombre</label>
+            <label for="nombre">Nombre</label>
           </p-floatlabel>
           <small
-            *ngIf="isFieldInvalid('firstName')"
-            class="p-error"
+            *ngIf="isFieldInvalid('nombre')"
+            class="simplified-error"
           >
-            {{ getFieldError('firstName') }}
+            {{ getFieldError('nombre') }}
           </small>
         </div>
 
@@ -32,58 +31,122 @@
           <p-floatlabel>
             <input
               pInputText
-              id="lastName"
-              formControlName="lastName"
-              [class.ng-invalid]="isFieldInvalid('lastName')"
+              id="apellido"
+              formControlName="apellido"
             />
-            <label for="lastName">Apellido</label>
+            <label for="apellido">Apellido</label>
           </p-floatlabel>
           <small
-            *ngIf="isFieldInvalid('lastName')"
-            class="p-error"
+            *ngIf="isFieldInvalid('apellido')"
+            class="simplified-error"
           >
-            {{ getFieldError('lastName') }}
+            {{ getFieldError('apellido') }}
           </small>
         </div>
       </div>
 
       <!-- Email -->
       <div class="form-field">
-        <p-floatlabel>
+                <p-floatlabel>
           <input
             pInputText
-            id="email"
-            formControlName="email"
-            [class.ng-invalid]="isFieldInvalid('email')"
+            id="correo"
+            formControlName="correo"
             type="email"
           />
-          <label for="email">Correo Electrónico</label>
+          <label for="correo">Correo Electrónico</label>
         </p-floatlabel>
         <small
-          *ngIf="isFieldInvalid('email')"
-          class="p-error"
+          *ngIf="isFieldInvalid('correo')"
+          class="simplified-error"
         >
-          {{ getFieldError('email') }}
+          {{ getFieldError('correo') }}
         </small>
       </div>
 
       <!-- Usuario -->
       <div class="form-field">
-        <p-floatlabel>
+                <p-floatlabel>
           <input
             pInputText
             id="username"
             formControlName="username"
-            [class.ng-invalid]="isFieldInvalid('username')"
           />
           <label for="username">Nombre de Usuario</label>
         </p-floatlabel>
         <small
           *ngIf="isFieldInvalid('username')"
-          class="p-error"
+          class="simplified-error"
         >
           {{ getFieldError('username') }}
         </small>
+      </div>
+
+      <!-- Fecha de Nacimiento -->
+      <div class="form-field">
+        <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento *</label>
+        <p-datepicker
+          id="fechaNacimiento"
+          formControlName="fechaNacimiento"
+          [showIcon]="true"
+          dateFormat="dd/mm/yy"
+          [maxDate]="maxDate"
+          [minDate]="minDate"
+          placeholder="dd/mm/aaaa"
+        />
+        <small
+          *ngIf="isFieldInvalid('fechaNacimiento')"
+          class="simplified-error"
+        >
+          {{ getFieldError('fechaNacimiento') }}
+        </small>
+      </div>
+
+      <!-- Género -->
+      <div class="form-field">
+        <label for="genero" class="form-label">Género *</label>
+        <p-select
+          id="genero"
+          formControlName="genero"
+          [options]="generos"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona tu género"
+        />
+        <small
+          *ngIf="isFieldInvalid('genero')"
+          class="simplified-error"
+        >
+          {{ getFieldError('genero') }}
+        </small>
+      </div>
+
+      <!-- Foto de Perfil -->
+      <div class="form-field">
+        <label for="fotoPerfil" class="form-label">Foto de Perfil (Opcional)</label>
+        <p-fileUpload
+          id="fotoPerfil"
+          [customUpload]="true"
+          [auto]="true"
+          [maxFileSize]="2097152"
+          accept="image/*"
+          [showCancelButton]="false"
+          [showUploadButton]="false"
+          (onSelect)="onFileSelect($event)"
+          chooseLabel="Seleccionar Foto"
+          [fileLimit]="1"
+        />
+        <div class="file-preview" *ngIf="registerForm.get('fotoPerfil')?.value">
+          <p-image
+            [src]="registerForm.get('fotoPerfil')?.value"
+            alt="Vista previa"
+            width="100"
+            height="100"
+            [preview]="true"
+            imageClass="preview-image"
+          />
+        </div>
+        <small class="form-help">Formatos aceptados: JPG, PNG, GIF. Máximo 2MB</small>
       </div>
 
       <!-- Contraseña -->
@@ -94,13 +157,12 @@
             formControlName="password"
             [toggleMask]="true"
             [feedback]="true"
-            [class.ng-invalid]="isFieldInvalid('password')"
           />
           <label for="password">Contraseña</label>
         </p-floatlabel>
         <small
           *ngIf="isFieldInvalid('password')"
-          class="p-error"
+          class="simplified-error"
         >
           {{ getFieldError('password') }}
         </small>
@@ -114,13 +176,12 @@
             formControlName="confirmPassword"
             [toggleMask]="true"
             [feedback]="false"
-            [class.ng-invalid]="isFieldInvalid('confirmPassword')"
           />
           <label for="confirmPassword">Confirmar Contraseña</label>
         </p-floatlabel>
         <small
           *ngIf="isFieldInvalid('confirmPassword')"
-          class="p-error"
+          class="simplified-error"
         >
           {{ getFieldError('confirmPassword') }}
         </small>
@@ -140,7 +201,7 @@
         </div>
         <small
           *ngIf="isFieldInvalid('acceptTerms')"
-          class="p-error"
+          class="simplified-error"
         >
           {{ getFieldError('acceptTerms') }}
         </small>
