@@ -1,1 +1,376 @@
-<p>recordatorio-list works!</p>
+<div class="recordatorio-list-container">
+  <!-- Header -->
+  <div class="list-header">
+    <div class="header-title">
+      <h2>
+        <i class="pi pi-bell"></i>
+        Mis Recordatorios
+      </h2>
+      <p class="subtitle">Administra todos tus recordatorios importantes</p>
+    </div>
+    <div class="header-actions">
+      <p-button
+        label="Nuevo Recordatorio"
+        icon="pi pi-plus"
+        (onClick)="nuevoRecordatorio()"
+        styleClass="p-button-primary"
+      />
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters-section">
+    <div class="filters-row">
+      <!-- Búsqueda -->
+      <div class="filter-item">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            placeholder="Buscar recordatorios..."
+            [(ngModel)]="searchTerm"
+            (input)="aplicarFiltros()"
+            class="p-inputtext-sm"
+          />
+        </span>
+      </div>
+
+      <!-- Filtro por tipo -->
+      <div class="filter-item">
+        <p-dropdown
+          [options]="tipoOptions"
+          [(ngModel)]="selectedTipo"
+          placeholder="Tipo"
+          (onChange)="aplicarFiltros()"
+          styleClass="p-inputtext-sm"
+        />
+      </div>
+
+      <!-- Filtro por estado -->
+      <div class="filter-item">
+        <p-dropdown
+          [options]="estadoOptions"
+          [(ngModel)]="selectedEstado"
+          placeholder="Estado"
+          (onChange)="aplicarFiltros()"
+          styleClass="p-inputtext-sm"
+        />
+      </div>
+
+      <!-- Filtro por frecuencia -->
+      <div class="filter-item">
+        <p-dropdown
+          [options]="frecuenciaOptions"
+          [(ngModel)]="selectedFrecuencia"
+          placeholder="Frecuencia"
+          (onChange)="aplicarFiltros()"
+          styleClass="p-inputtext-sm"
+        />
+      </div>
+
+      <!-- Botón limpiar filtros -->
+      <div class="filter-item">
+        <p-button
+          label="Limpiar"
+          icon="pi pi-times"
+          (onClick)="limpiarFiltros()"
+          styleClass="p-button-outlined p-button-sm"
+        />
+      </div>
+
+      <!-- Cambiar vista -->
+      <div class="filter-item">
+        <p-button
+          [icon]="viewMode === 'list' ? 'pi pi-th-large' : 'pi pi-list'"
+          (onClick)="cambiarVista()"
+          [pTooltip]="viewMode === 'list' ? 'Vista de galería' : 'Vista de lista'"
+          styleClass="p-button-outlined p-button-sm"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de recordatorios -->
+  <div class="recordatorios-section">
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-container">
+      <p-progressSpinner />
+      <p>Cargando recordatorios...</p>
+    </div>
+
+    <!-- Vista de lista (tabla) -->
+    <div *ngIf="!loading && viewMode === 'list'" class="table-container">
+      <p-table
+        [value]="recordatoriosFiltrados"
+        [paginator]="true"
+        [rows]="rows"
+        [first]="first"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} recordatorios"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        [globalFilterFields]="['titulo', 'descripcion', 'lugarNombre']"
+        responsiveLayout="scroll"
+        styleClass="p-datatable-sm nova-table"
+        (onPageChange)="onPageChange($event)"
+      >
+        <!-- Header -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Título</th>
+            <th>Tipo</th>
+            <th>Fecha & Hora</th>
+            <th>Lugar</th>
+            <th>Estado</th>
+            <th>Frecuencia</th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
+
+        <!-- Filas -->
+        <ng-template pTemplate="body" let-recordatorio>
+          <tr [class.recordatorio-proximo]="esRecordatorioProximo(recordatorio)"
+              [class.recordatorio-vencido]="esRecordatorioVencido(recordatorio)">
+            <!-- Título -->
+            <td>
+              <div class="recordatorio-titulo">
+                <div class="titulo-principal">{{ recordatorio.titulo }}</div>
+                <div class="descripcion" *ngIf="recordatorio.descripcion">
+                  {{ recordatorio.descripcion | slice:0:50 }}
+                  <span *ngIf="recordatorio.descripcion && recordatorio.descripcion.length > 50">...</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Tipo -->
+            <td>
+              <p-tag
+                [value]="recordatorio.tipo || 'Sin tipo'"
+                [severity]="getTipoColor(recordatorio.tipo)"
+                [icon]="getTipoIcono(recordatorio.tipo)"
+              />
+            </td>
+
+            <!-- Fecha -->
+            <td>
+              <div class="fecha-info">
+                <div class="fecha-principal">
+                  <i class="pi pi-calendar"></i>
+                  {{ formatearFecha(recordatorio.fechaHora) }}
+                </div>
+                <div class="fecha-hora">
+                  <i class="pi pi-clock"></i>
+                  {{ formatearHora(recordatorio.fechaHora) }}
+                </div>
+                <div class="minutos-antes" *ngIf="recordatorio.minutosAntes">
+                  <i class="pi pi-bell"></i>
+                  {{ recordatorio.minutosAntes }} min antes
+                </div>
+              </div>
+            </td>
+
+            <!-- Lugar -->
+            <td>
+              <div class="lugar-info" *ngIf="recordatorio.lugarNombre">
+                <i class="pi pi-map-marker"></i>
+                {{ recordatorio.lugarNombre }}
+              </div>
+              <span *ngIf="!recordatorio.lugarNombre" class="text-muted">Sin lugar</span>
+            </td>
+
+            <!-- Estado -->
+            <td>
+              <p-tag
+                [value]="recordatorio.estado || 'Sin estado'"
+                [severity]="getEstadoSeverity(recordatorio.estado)"
+              />
+            </td>
+
+            <!-- Frecuencia -->
+            <td>
+              <p-tag
+                [value]="recordatorio.frecuencia || 'Sin repetición'"
+                [severity]="getFrecuenciaSeverity(recordatorio.frecuencia)"
+                *ngIf="recordatorio.esRecurrente"
+              />
+              <span *ngIf="!recordatorio.esRecurrente" class="text-muted">Sin repetición</span>
+            </td>
+
+            <!-- Acciones -->
+            <td>
+              <div class="acciones-container">
+                <!-- Cambiar estado -->
+                <p-button
+                  *ngIf="recordatorio.estado === 'ACTIVO'"
+                  icon="pi pi-check"
+                  (onClick)="cambiarEstado(recordatorio, EstadoRecordatorio.COMPLETADO)"
+                  styleClass="p-button-success p-button-sm p-button-text"
+                  pTooltip="Marcar como completado"
+                />
+
+                <p-button
+                  *ngIf="recordatorio.estado === 'COMPLETADO'"
+                  icon="pi pi-refresh"
+                  (onClick)="cambiarEstado(recordatorio, EstadoRecordatorio.ACTIVO)"
+                  styleClass="p-button-info p-button-sm p-button-text"
+                  pTooltip="Reactivar recordatorio"
+                />
+
+                <!-- Editar -->
+                <p-button
+                  icon="pi pi-pencil"
+                  (onClick)="editarRecordatorio(recordatorio)"
+                  styleClass="p-button-primary p-button-sm p-button-text"
+                  pTooltip="Editar recordatorio"
+                />
+
+                <!-- Eliminar -->
+                <p-button
+                  icon="pi pi-trash"
+                  (onClick)="eliminarRecordatorio(recordatorio)"
+                  styleClass="p-button-danger p-button-sm p-button-text"
+                  pTooltip="Eliminar recordatorio"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <!-- Empty message -->
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="text-center">
+              <div class="empty-state">
+                <i class="pi pi-bell" style="font-size: 3rem; color: var(--text-color-muted);"></i>
+                <h3>No hay recordatorios</h3>
+                <p>No se encontraron recordatorios con los filtros aplicados</p>
+                <p-button
+                  label="Crear primer recordatorio"
+                  icon="pi pi-plus"
+                  (onClick)="nuevoRecordatorio()"
+                  styleClass="p-button-primary"
+                />
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Vista de galería -->
+    <div *ngIf="!loading && viewMode === 'gallery'" class="gallery-container">
+      <div class="gallery-header">
+        <h3>Recordatorios ({{ recordatoriosFiltrados.length }})</h3>
+        <p class="gallery-description">Vista de tarjetas para tus recordatorios</p>
+      </div>
+
+      <div class="recordatorios-grid">
+        <div
+          *ngFor="let recordatorio of recordatoriosFiltrados; trackBy: trackByRecordatorio"
+          class="recordatorio-card"
+          [class.recordatorio-proximo]="esRecordatorioProximo(recordatorio)"
+          [class.recordatorio-vencido]="esRecordatorioVencido(recordatorio)"
+        >
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="pi" [class]="getTipoIcono(recordatorio.tipo)"></i>
+            </div>
+            <div class="card-actions">
+              <p-button
+                icon="pi pi-pencil"
+                (onClick)="editarRecordatorio(recordatorio)"
+                styleClass="p-button-text p-button-sm"
+                pTooltip="Editar"
+              />
+              <p-button
+                icon="pi pi-trash"
+                (onClick)="eliminarRecordatorio(recordatorio)"
+                styleClass="p-button-text p-button-sm p-button-danger"
+                pTooltip="Eliminar"
+              />
+            </div>
+          </div>
+
+          <div class="card-content">
+            <h4 class="card-title">{{ recordatorio.titulo }}</h4>
+            <p class="card-description" *ngIf="recordatorio.descripcion">
+              {{ recordatorio.descripcion }}
+            </p>
+
+            <div class="card-details">
+              <div class="detail-item">
+                <i class="pi pi-calendar"></i>
+                <span>{{ formatearFecha(recordatorio.fechaHora) }}</span>
+              </div>
+
+              <div class="detail-item">
+                <i class="pi pi-clock"></i>
+                <span>{{ formatearHora(recordatorio.fechaHora) }}</span>
+              </div>
+
+              <div class="detail-item" *ngIf="recordatorio.lugarNombre">
+                <i class="pi pi-map-marker"></i>
+                <span>{{ recordatorio.lugarNombre }}</span>
+              </div>
+
+              <div class="detail-item" *ngIf="recordatorio.minutosAntes">
+                <i class="pi pi-bell"></i>
+                <span>{{ recordatorio.minutosAntes }} min antes</span>
+              </div>
+            </div>
+
+            <div class="card-tags">
+              <p-tag
+                [value]="recordatorio.tipo"
+                [severity]="getTipoColor(recordatorio.tipo)"
+                size="small"
+              />
+              <p-tag
+                [value]="recordatorio.estado"
+                [severity]="getEstadoSeverity(recordatorio.estado)"
+                size="small"
+              />
+              <p-tag
+                *ngIf="recordatorio.esRecurrente"
+                [value]="recordatorio.frecuencia"
+                [severity]="getFrecuenciaSeverity(recordatorio.frecuencia)"
+                size="small"
+              />
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <p-button
+              *ngIf="recordatorio.estado === 'ACTIVO'"
+              label="Completar"
+              icon="pi pi-check"
+              (onClick)="cambiarEstado(recordatorio, EstadoRecordatorio.COMPLETADO)"
+              styleClass="p-button-success p-button-sm"
+            />
+
+            <p-button
+              *ngIf="recordatorio.estado === 'COMPLETADO'"
+              label="Reactivar"
+              icon="pi pi-refresh"
+              (onClick)="cambiarEstado(recordatorio, EstadoRecordatorio.ACTIVO)"
+              styleClass="p-button-info p-button-sm"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty gallery state -->
+      <div *ngIf="recordatoriosFiltrados.length === 0" class="empty-gallery">
+        <i class="pi pi-bell" style="font-size: 4rem; color: var(--text-color-muted);"></i>
+        <h3>No hay recordatorios</h3>
+        <p>No se encontraron recordatorios con los filtros aplicados</p>
+        <p-button
+          label="Crear primer recordatorio"
+          icon="pi pi-plus"
+          (onClick)="nuevoRecordatorio()"
+          styleClass="p-button-primary"
+        />
+      </div>
+    </div>
+  </div>
+</div>

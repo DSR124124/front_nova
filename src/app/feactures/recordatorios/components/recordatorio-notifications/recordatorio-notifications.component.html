@@ -1,1 +1,131 @@
-<p>recordatorio-notifications works!</p>
+<div class="upcoming-notifications-container">
+  <!-- Botón trigger minimalista -->
+  <div class="notifications-trigger">
+    <p-button
+      icon="pi pi-bell"
+      label="Próximas Notificaciones"
+      [outlined]="true"
+      size="small"
+      (onClick)="drawerVisible = true"
+      class="notifications-trigger-btn"
+    />
+    <span *ngIf="getRecordatoriosFiltrados().length > 0" class="notifications-badge">{{ getRecordatoriosFiltrados().length }}</span>
+  </div>
+
+  <!-- Drawer optimizado -->
+  <p-drawer
+    [(visible)]="drawerVisible"
+    position="right"
+    [modal]="false"
+    [showCloseIcon]="true"
+    styleClass="notifications-drawer"
+    [style]="{width: '380px'}"
+  >
+    <ng-template pTemplate="header">
+      <div class="drawer-header">
+        <h3 class="text-xl font-semibold text-900">Próximas Notificaciones</h3>
+        <div class="header-actions">
+          <p-button
+            icon="pi pi-refresh"
+            [text]="true"
+            [rounded]="true"
+            size="small"
+            (onClick)="refreshNotifications()"
+            [loading]="loading"
+            pTooltip="Actualizar"
+          />
+          <p-button
+            icon="pi pi-plus"
+            [text]="true"
+            [rounded]="true"
+            size="small"
+            severity="success"
+            (onClick)="crearNuevoRecordatorio()"
+            pTooltip="Crear recordatorio"
+          />
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="content">
+      <div class="notifications-content">
+
+        <!-- Estado de carga -->
+        <div *ngIf="loading" class="loading-state text-center">
+          <i class="pi pi-spin pi-spinner text-3xl text-primary mb-3"></i>
+          <p class="text-600">Cargando notificaciones...</p>
+        </div>
+
+        <!-- Lista vacía -->
+        <div *ngIf="!loading && getRecordatoriosFiltrados().length === 0" class="empty-state text-center">
+          <i class="pi pi-bell text-4xl text-500 mb-3"></i>
+          <p class="text-900 font-semibold mb-1">No hay notificaciones próximas</p>
+          <small class="text-600">Tus próximas notificaciones aparecerán aquí</small>
+          <div class="mt-3">
+            <p-button
+              label="Crear Recordatorio"
+              icon="pi pi-plus"
+              [outlined]="true"
+              size="small"
+              (onClick)="crearNuevoRecordatorio()"
+            />
+          </div>
+        </div>
+
+        <!-- Lista de notificaciones -->
+        <div *ngIf="!loading && getRecordatoriosFiltrados().length > 0" class="notifications-list">
+          <div
+            *ngFor="let recordatorio of getRecordatoriosFiltrados(); trackBy: trackByRecordatorio"
+            class="notification-item"
+            (click)="viewNotificationDetails(recordatorio)"
+          >
+            <div class="notification-icon">
+              <i [class]="'pi pi-bell icon-' + recordatorio.tipo.toLowerCase()"></i>
+            </div>
+
+            <div class="notification-content">
+              <div class="notification-header-item">
+                <span class="notification-title text-900 font-medium">{{ recordatorio.titulo }}</span>
+                <div class="notification-meta">
+                  <span
+                    class="notification-tag"
+                    [class]="'tag-' + recordatorio.tipo.toLowerCase()"
+                  >
+                    {{ getCategoryLabel(recordatorio.tipo) }}
+                  </span>
+                  <small class="notification-time text-600">{{ formatTimeUntil(recordatorio.fechaHora) }}</small>
+                </div>
+              </div>
+
+              <p class="notification-description text-600">{{ recordatorio.descripcion || 'Sin descripción' }}</p>
+
+              <div class="notification-details">
+                <div *ngIf="recordatorio.lugarNombre" class="notification-location">
+                  <i class="pi pi-map-marker text-500"></i>
+                  <span class="text-600">{{ recordatorio.lugarNombre }}</span>
+                </div>
+                <div class="notification-priority">
+                  <i [class]="esRecordatorioUrgente(recordatorio) ? 'pi pi-exclamation-triangle' : 'pi pi-info-circle'" class="text-500"></i>
+                  <span class="text-600">{{ esRecordatorioUrgente(recordatorio) ? 'Urgente' : 'Normal' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ver más -->
+        <div *ngIf="!loading && recordatorios.length >= maxNotifications" class="view-more text-center">
+          <p-button
+            label="Ver todas las notificaciones"
+            icon="pi pi-angle-down"
+            [text]="true"
+            size="small"
+            (onClick)="viewAllNotifications()"
+            class="view-more-btn"
+          />
+        </div>
+
+      </div>
+    </ng-template>
+  </p-drawer>
+</div>

@@ -1,13 +1,18 @@
-/* Estilos simplificados para upcoming-events */
+/* Estilos minimalistas para upcoming-events usando utilidades globales */
 
+/* Contenedor principal */
 .upcoming-events-container {
   width: 100%;
 }
 
-/* Botón trigger */
+/* Botón trigger del drawer */
 .events-trigger {
   position: relative;
   display: inline-block;
+}
+
+.events-trigger-btn {
+  position: relative;
 }
 
 .events-badge {
@@ -24,9 +29,10 @@
   justify-content: center;
   font-size: 0.75rem;
   font-weight: 600;
+  min-width: 20px;
 }
 
-/* Drawer */
+/* Drawer personalizado */
 :host ::ng-deep .events-drawer .p-drawer {
   border-left: 1px solid var(--p-surface-border);
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
@@ -43,6 +49,7 @@
   background: var(--p-surface-0);
 }
 
+/* Header del drawer */
 .drawer-header {
   display: flex;
   justify-content: space-between;
@@ -61,6 +68,7 @@
   min-height: 200px;
 }
 
+/* Estados */
 .loading-state, .empty-state {
   display: flex;
   flex-direction: column;
@@ -95,7 +103,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Icono */
+/* Icono de evento */
 .event-icon {
   flex-shrink: 0;
   width: 36px;
@@ -109,8 +117,14 @@
 
 .event-icon i {
   font-size: 1rem;
-  color: var(--p-text-color);
+  color: var(--p-primary-color);
 }
+
+/* Iconos por categoría */
+.icon-cita { color: var(--p-pink-500) !important; }
+.icon-aniversario { color: var(--p-yellow-500) !important; }
+.icon-especial { color: var(--p-purple-500) !important; }
+.icon-recordatorio { color: var(--p-blue-500) !important; }
 
 /* Contenido del evento */
 .event-content {
@@ -129,7 +143,6 @@
 .event-title {
   flex: 1;
   min-width: 0;
-  font-weight: 500;
 }
 
 .event-meta {
@@ -149,9 +162,14 @@
   white-space: nowrap;
 }
 
+/* Tags por categoría */
+.tag-cita { background: var(--p-pink-50); color: var(--p-pink-600); }
+.tag-aniversario { background: var(--p-yellow-50); color: var(--p-yellow-600); }
+.tag-especial { background: var(--p-purple-50); color: var(--p-purple-600); }
+.tag-recordatorio { background: var(--p-blue-50); color: var(--p-blue-600); }
+
 .event-time {
   font-size: 0.75rem;
-  color: var(--p-text-muted-color);
   white-space: nowrap;
 }
 
@@ -159,7 +177,6 @@
   font-size: 0.875rem;
   margin: 0 0 0.5rem 0;
   line-height: 1.4;
-  color: var(--p-text-muted-color);
 }
 
 .event-details {
@@ -184,10 +201,9 @@
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--p-surface-border);
-  text-align: center;
 }
 
-/* Responsive */
+/* Responsive básico */
 @media (max-width: 768px) {
   .drawer-header {
     flex-direction: column;
@@ -213,6 +229,10 @@
   .event-icon {
     width: 32px;
     height: 32px;
+  }
+
+  .event-icon i {
+    font-size: 0.9rem;
   }
 
   .event-details {

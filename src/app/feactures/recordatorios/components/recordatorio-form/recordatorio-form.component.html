@@ -1,1 +1,276 @@
-<p>recordatorio-form works!</p>
+<div class="recordatorio-form-container">
+  <!-- Header -->
+  <div class="form-header">
+    <h2 class="form-title">
+      <i class="pi pi-bell"></i>
+      {{ isEditMode ? 'Editar Recordatorio' : 'Crear Nuevo Recordatorio' }}
+    </h2>
+    <p class="form-subtitle">
+      {{ isEditMode ? 'Actualiza la información de tu recordatorio' : 'Configura un recordatorio importante para no olvidar' }}
+    </p>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">{{ isEditMode ? 'Cargando recordatorio...' : 'Guardando recordatorio...' }}</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="form-wrapper" *ngIf="!loading">
+    <form [formGroup]="recordatorioForm" (ngSubmit)="onSubmit()" class="recordatorio-form">
+
+      <!-- Información Básica -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-info-circle"></i>
+          Información Básica
+        </h3>
+
+        <!-- Título -->
+        <div class="form-field">
+          <label for="titulo" class="field-label">
+            Título del Recordatorio <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            pInputText
+            id="titulo"
+            formControlName="titulo"
+            placeholder="Ej: Aniversario de pareja"
+            class="field-input"
+            [class.field-error]="hasFieldError('titulo')"
+          />
+          <small *ngIf="hasFieldError('titulo')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('titulo') }}
+          </small>
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-field">
+          <label for="descripcion" class="field-label">Descripción</label>
+          <textarea
+            pInputTextarea
+            id="descripcion"
+            formControlName="descripcion"
+            placeholder="Describe los detalles del recordatorio..."
+            rows="3"
+            class="field-input"
+          ></textarea>
+        </div>
+
+        <!-- Tipo -->
+        <div class="form-field">
+          <label for="tipo" class="field-label">
+            Tipo <span class="required">*</span>
+          </label>
+          <p-select
+            id="tipo"
+            formControlName="tipo"
+            [options]="tipoOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecciona el tipo"
+            styleClass="field-input"
+            [class.field-error]="hasFieldError('tipo')"
+            (onChange)="onTipoChange()"
+          >
+            <ng-template pTemplate="selectedItem" let-option>
+              <div class="dropdown-item" *ngIf="option">
+                <i class="pi" [class]="option.icon"></i>
+                <span>{{ option.label }}</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="item" let-option>
+              <div class="dropdown-item">
+                <i class="pi" [class]="option.icon"></i>
+                <span>{{ option.label }}</span>
+              </div>
+            </ng-template>
+          </p-select>
+          <small *ngIf="hasFieldError('tipo')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('tipo') }}
+          </small>
+        </div>
+      </div>
+
+      <!-- Detalles del Recordatorio -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-calendar"></i>
+          Detalles del Recordatorio
+        </h3>
+
+        <!-- Fecha y Hora -->
+        <div class="form-field">
+          <label for="fechaHora" class="field-label">
+            Fecha y Hora <span class="required">*</span>
+          </label>
+          <input
+            type="datetime-local"
+            id="fechaHora"
+            formControlName="fechaHora"
+            class="field-input"
+            [class.field-error]="hasFieldError('fechaHora')"
+            [min]="getMinDateTime()"
+          />
+          <small *ngIf="hasFieldError('fechaHora')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('fechaHora') }}
+          </small>
+        </div>
+
+        <!-- Lugar -->
+        <div class="form-field">
+          <label for="lugar" class="field-label">Lugar</label>
+          <p-select
+            id="lugar"
+            formControlName="lugarId"
+            [options]="lugares"
+            optionLabel="nombre"
+            optionValue="id"
+            placeholder="Selecciona un lugar (opcional)"
+            styleClass="field-input"
+            [filter]="true"
+            filterBy="nombre,direccion,categoria"
+          >
+            <ng-template pTemplate="selectedItem" let-option>
+              <div class="dropdown-item" *ngIf="option">
+                <i class="pi pi-map-marker dropdown-icon"></i>
+                <span>{{ option.nombre }}</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="item" let-option>
+              <div class="dropdown-item">
+                <i class="pi pi-map-marker dropdown-icon"></i>
+                <div class="dropdown-content">
+                  <div class="dropdown-name">{{ option.nombre }}</div>
+                  <div class="dropdown-details" *ngIf="option.direccion">
+                    <i class="pi pi-home"></i>
+                    {{ option.direccion }}
+                  </div>
+                  <div class="dropdown-details" *ngIf="option.categoria">
+                    <i class="pi pi-tag"></i>
+                    {{ option.categoria }}
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </p-select>
+        </div>
+      </div>
+
+      <!-- Configuración de Notificaciones -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-bell"></i>
+          Configuración de Notificaciones
+        </h3>
+
+        <!-- Minutos antes -->
+        <div class="form-field">
+          <label for="minutosAntes" class="field-label">
+            Notificar <span class="required">*</span>
+          </label>
+          <p-select
+            id="minutosAntes"
+            formControlName="minutosAntes"
+            [options]="minutosAntesOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecciona cuándo notificar"
+            styleClass="field-input"
+          >
+            <ng-template pTemplate="selectedItem" let-option>
+              <div class="dropdown-item" *ngIf="option">
+                <i class="pi pi-clock dropdown-icon"></i>
+                <span>{{ option.label }}</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="item" let-option>
+              <div class="dropdown-item">
+                <i class="pi pi-clock dropdown-icon"></i>
+                <span>{{ option.label }}</span>
+              </div>
+            </ng-template>
+          </p-select>
+        </div>
+
+        <!-- Recordatorio recurrente -->
+        <div class="form-field checkbox-field">
+          <div class="checkbox-container">
+            <p-checkbox
+              id="esRecurrente"
+              formControlName="esRecurrente"
+              (onChange)="onRecurrenteChange()"
+              [binary]="true"
+            />
+            <label for="esRecurrente" class="checkbox-label">
+              Recordatorio recurrente
+            </label>
+          </div>
+          <small class="field-help">
+            Marca esta opción si quieres que el recordatorio se repita
+          </small>
+        </div>
+
+        <!-- Frecuencia -->
+        <div class="form-field" [class.disabled]="!recordatorioForm.get('esRecurrente')?.value">
+          <label for="frecuencia" class="field-label">Frecuencia</label>
+                     <p-select
+             id="frecuencia"
+             formControlName="frecuencia"
+             [options]="frecuenciaOptions"
+             optionLabel="label"
+             optionValue="value"
+             placeholder="Selecciona la frecuencia"
+             styleClass="field-input"
+           />
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="form-info">
+        <div class="info-card">
+          <i class="pi pi-info-circle info-icon"></i>
+          <div class="info-content">
+            <h4 class="info-title">¿Sabías que...?</h4>
+            <p class="info-text">
+              Los recordatorios te ayudarán a no olvidar fechas importantes. Puedes configurar
+              notificaciones personalizadas y recordatorios recurrentes para eventos que se repiten.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          icon="pi pi-times"
+          [outlined]="true"
+          (onClick)="onCancel()"
+          styleClass="cancel-btn"
+        />
+
+        <p-button
+          type="submit"
+          [label]="isEditMode ? 'Actualizar Recordatorio' : 'Crear Recordatorio'"
+          icon="pi pi-check"
+          [loading]="loading"
+          [disabled]="recordatorioForm.invalid"
+          styleClass="submit-btn"
+        />
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<!-- Toast para mensajes -->
+<p-toast />

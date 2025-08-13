@@ -1,0 +1,417 @@
+/* Estilos para el componente de lista de recordatorios */
+.recordatorio-list-container {
+  padding: 1.5rem;
+  background-color: var(--surface-ground);
+  min-height: 100vh;
+}
+
+/* Header */
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface-card);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-title h2 {
+  color: var(--text-color);
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-title h2 i {
+  color: var(--primary-color);
+}
+
+.header-title .subtitle {
+  color: var(--text-color-secondary);
+  margin: 0;
+  font-size: 1rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Filtros */
+.filters-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface-card);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filter-item {
+  min-width: 200px;
+}
+
+.filter-item:last-child {
+  min-width: auto;
+}
+
+/* Sección de recordatorios */
+.recordatorios-section {
+  background: var(--surface-card);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: var(--text-color-secondary);
+}
+
+.loading-container p {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Tabla */
+.table-container {
+  overflow-x: auto;
+}
+
+.nova-table {
+  border: none;
+}
+
+.nova-table .p-datatable-header {
+  background: var(--surface-section);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.nova-table .p-datatable-thead > tr > th {
+  background: var(--surface-section);
+  border-bottom: 1px solid var(--surface-border);
+  color: var(--text-color);
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.nova-table .p-datatable-tbody > tr > td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--surface-border);
+  vertical-align: top;
+}
+
+.nova-table .p-datatable-tbody > tr:hover {
+  background: var(--surface-hover);
+}
+
+/* Estados especiales de recordatorios */
+.recordatorio-proximo {
+  background: rgba(59, 130, 246, 0.1) !important;
+  border-left: 4px solid var(--primary-color);
+}
+
+.recordatorio-vencido {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-left: 4px solid var(--danger-color);
+}
+
+/* Información del recordatorio */
+.recordatorio-titulo .titulo-principal {
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.25rem;
+}
+
+.recordatorio-titulo .descripcion {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Información de fecha */
+.fecha-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fecha-principal {
+  font-weight: 600;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fecha-hora {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.minutos-antes {
+  color: var(--warning-color);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+/* Información de lugar */
+.lugar-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+}
+
+.text-muted {
+  color: var(--text-color-muted);
+  font-style: italic;
+}
+
+/* Acciones */
+.acciones-container {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Vista de galería */
+.gallery-container {
+  padding: 1.5rem;
+}
+
+.gallery-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.gallery-header h3 {
+  color: var(--text-color);
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.gallery-description {
+  color: var(--text-color-secondary);
+  margin: 0;
+}
+
+.recordatorios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.recordatorio-card {
+  background: var(--surface-section);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid var(--surface-border);
+}
+
+.recordatorio-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.recordatorio-card.recordatorio-proximo {
+  border-left: 4px solid var(--primary-color);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.recordatorio-card.recordatorio-vencido {
+  border-left: 4px solid var(--danger-color);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card-content {
+  margin-bottom: 1.5rem;
+}
+
+.card-title {
+  color: var(--text-color);
+  margin: 0 0 0.75rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card-description {
+  color: var(--text-color-secondary);
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+}
+
+.card-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.card-footer {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Estados vacíos */
+.empty-state, .empty-gallery {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-color-muted);
+}
+
+.empty-state h3, .empty-gallery h3 {
+  margin: 1rem 0 0.5rem 0;
+  color: var(--text-color);
+}
+
+.empty-state p, .empty-gallery p {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-color-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .recordatorio-list-container {
+    padding: 1rem;
+  }
+
+  .list-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .filters-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-item {
+    min-width: auto;
+  }
+
+  .recordatorios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones-container {
+    flex-direction: column;
+  }
+}
+
+/* Paginación */
+.p-paginator {
+  background: var(--surface-section);
+  border-top: 1px solid var(--surface-border);
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page:hover {
+  background: var(--surface-hover);
+}
+
+/* Dropdowns y inputs */
+.p-dropdown, .p-inputtext {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+}
+
+.p-dropdown:hover, .p-inputtext:hover {
+  border-color: var(--primary-color);
+}
+
+.p-dropdown:focus, .p-inputtext:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Botones */
+.p-button.p-button-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.p-button.p-button-text {
+  background: transparent;
+  border: none;
+}
+
+.p-button.p-button-text:hover {
+  background: var(--surface-hover);
+}

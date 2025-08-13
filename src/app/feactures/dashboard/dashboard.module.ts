@@ -7,6 +7,7 @@ import { DashboardHomeComponent } from './components/dashboard-home/dashboard-ho
 import { StatsWidgetComponent } from './components/stats-widget/stats-widget.component';
 import { UpcomingEventsComponent } from './components/upcoming-events/upcoming-events.component';
 import { RecentActivityComponent } from './components/recent-activity/recent-activity.component';
+import { RecordatoriosModule } from '../recordatorios/recordatorios.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { RecentActivityComponent } from './components/recent-activity/recent-act
   imports: [
     CommonModule,
     PrimeNgModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    RecordatoriosModule
   ],
   exports: [
     DashboardHomeComponent,

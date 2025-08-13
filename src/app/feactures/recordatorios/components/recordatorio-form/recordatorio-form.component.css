@@ -1,0 +1,359 @@
+/* Contenedor principal */
+.recordatorio-form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Header del formulario */
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--surface-border);
+}
+
+.form-title {
+  color: var(--text-color);
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.form-title i {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+.form-subtitle {
+  color: var(--text-color-secondary);
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+}
+
+.loading-text {
+  color: var(--text-color-secondary);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Wrapper del formulario */
+.form-wrapper {
+  background: var(--surface-card);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--surface-border);
+}
+
+/* Secciones del formulario */
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  color: var(--text-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.section-title i {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+/* Campos del formulario */
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.field-label {
+  display: block;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.required {
+  color: var(--danger-color);
+  font-weight: 600;
+}
+
+.field-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: var(--surface-ground);
+  color: var(--text-color);
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.field-input.field-error {
+  border-color: var(--danger-color);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.field-input:disabled {
+  background: var(--surface-section);
+  color: var(--text-color-muted);
+  cursor: not-allowed;
+}
+
+/* Mensajes de error */
+.error-message {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.error-message i {
+  font-size: 0.8rem;
+}
+
+/* Dropdown items */
+.dropdown-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.dropdown-icon {
+  color: var(--primary-color);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.dropdown-content {
+  flex: 1;
+}
+
+.dropdown-name {
+  font-weight: 500;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.dropdown-details {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color-secondary);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.dropdown-details i {
+  font-size: 0.75rem;
+  width: 12px;
+  text-align: center;
+}
+
+/* Checkbox field */
+.checkbox-field {
+  margin-bottom: 1rem;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.checkbox-label {
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.field-help {
+  color: var(--text-color-muted);
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Campo deshabilitado */
+.form-field.disabled {
+  opacity: 0.6;
+}
+
+.form-field.disabled .field-label {
+  color: var(--text-color-muted);
+}
+
+/* Información adicional */
+.form-info {
+  margin: 2rem 0;
+}
+
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.info-icon {
+  color: var(--primary-color);
+  font-size: 1.25rem;
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-title {
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.info-text {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Botones de acción */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--surface-border);
+}
+
+.cancel-btn {
+  min-width: 120px;
+}
+
+.submit-btn {
+  min-width: 180px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .recordatorio-form-container {
+    padding: 1rem;
+  }
+  
+  .form-wrapper {
+    padding: 1.5rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .cancel-btn,
+  .submit-btn {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+/* Estilos específicos para PrimeNG */
+:host ::ng-deep .p-select {
+  width: 100%;
+}
+
+:host ::ng-deep .p-select .p-select-trigger {
+  border: none;
+  background: transparent;
+}
+
+:host ::ng-deep .p-select .p-select-label {
+  padding: 0.75rem;
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box {
+  border-color: var(--surface-border);
+  background: var(--surface-ground);
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box.p-highlight {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+:host ::ng-deep .p-checkbox .p-checkbox-box:hover {
+  border-color: var(--primary-color);
+}
+
+:host ::ng-deep .p-toast {
+  z-index: 1000;
+}
+
+/* Animaciones */
+.form-section {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estados de hover */
+.field-input:hover:not(:disabled) {
+  border-color: var(--primary-color);
+}
+
+.info-card:hover {
+  background: rgba(59, 130, 246, 0.15);
+  transition: background-color 0.2s ease;
+}

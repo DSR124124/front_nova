@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { RecordatoriosRoutingModule } from './recordatorios-routing.module';
 import { RecordatorioListComponent } from './components/recordatorio-list/recordatorio-list.component';
@@ -23,6 +24,13 @@ import { RecordatorioNotificationsComponent } from './components/recordatorio-no
     ReactiveFormsModule,
     PrimeNgModule,
     RecordatoriosRoutingModule
+  ],
+  exports: [
+    RecordatorioNotificationsComponent
+  ],
+  providers: [
+    MessageService,
+    ConfirmationService
   ]
 })
 export class RecordatoriosModule { }
