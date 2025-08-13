@@ -33,6 +33,7 @@
     <div class="view-selector">
       <p-button
         icon="pi pi-calendar"
+        label="Mensual"
         [outlined]="view === 'month'"
         [text]="view !== 'month'"
         size="small"
@@ -40,12 +41,13 @@
         pTooltip="Vista Mensual"
       />
       <p-button
-        icon="pi pi-calendar-week"
+        icon="pi pi-calendar"
         [outlined]="view === 'week'"
         [text]="view !== 'week'"
         size="small"
         (onClick)="view = 'week'"
         pTooltip="Vista Semanal"
+        label="Semanal"
       />
       <p-button
         icon="pi pi-calendar-times"
@@ -54,6 +56,7 @@
         size="small"
         (onClick)="view = 'day'"
         pTooltip="Vista Diaria"
+        label="Diaria"
       />
     </div>
 
@@ -145,10 +148,10 @@
       <!-- Vista semanal -->
       <div *ngIf="view === 'week' && events.length > 0" class="week-view">
         <div class="week-grid">
-          <div class="weekdays">
-            <div class="weekday" *ngFor="let day of getWeekDays()">{{ day.name }}</div>
+          <div class="week-header">
+            <div class="week-header-day" *ngFor="let day of getWeekDays()">{{ day.name }}</div>
           </div>
-          <div class="week-days">
+          <div class="week-content">
             <div
               *ngFor="let day of getWeekDays()"
               class="week-day"

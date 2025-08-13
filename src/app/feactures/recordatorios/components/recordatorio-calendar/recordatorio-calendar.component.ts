@@ -114,12 +114,12 @@ export class RecordatorioCalendarComponent implements OnInit, OnDestroy {
   }
 
   private getEventColor(tipo: TipoRecordatorio, estado: EstadoRecordatorio): string {
-    if (estado === EstadoRecordatorio.COMPLETADO) return '#6c757d';
-    if (estado === EstadoRecordatorio.CANCELADO) return '#dc3545';
+    if (estado === EstadoRecordatorio.COMPLETADO) return '#495057';
+    if (estado === EstadoRecordatorio.CANCELADO) return '#6c757d';
 
     switch (tipo) {
       case TipoRecordatorio.PERSONAL: return '#0d6efd';
-      case TipoRecordatorio.PAREJA: return '#e83e8c';
+      case TipoRecordatorio.PAREJA: return '#dc3545';
       case TipoRecordatorio.OTRO: return '#fd7e14';
       default: return '#6c757d';
     }
