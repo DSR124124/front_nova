@@ -7,10 +7,10 @@
   padding: 1rem;
   background: var(--surface-card);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Header minimalista estilo Google Calendar */
+/* Header minimalista */
 .calendar-header {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
@@ -49,7 +49,7 @@
   flex-wrap: wrap;
 }
 
-/* Controles de navegación estilo Google Calendar */
+/* Controles de navegación */
 .calendar-controls {
   display: flex;
   justify-content: space-between;
@@ -137,7 +137,7 @@
   font-size: 1rem;
 }
 
-/* Vista mensual estilo Google Calendar */
+/* Vista mensual */
 .month-view {
   padding: 1rem;
 }
@@ -145,7 +145,6 @@
 .calendar-grid {
   width: 100%;
   min-height: 600px;
-  table-layout: fixed;
 }
 
 .weekdays {
@@ -188,7 +187,7 @@
   background: var(--surface-card);
   padding: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -246,7 +245,7 @@
   color: white;
   font-size: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -260,7 +259,6 @@
 
 .day-event:hover {
   transform: scale(1.02);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .event-time {
@@ -285,7 +283,7 @@
   background: var(--surface-section);
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
   height: 24px;
   display: flex;
   align-items: center;
@@ -308,7 +306,6 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--surface-border);
-  table-layout: fixed;
 }
 
 .week-header {
@@ -352,7 +349,7 @@
   background: var(--surface-card);
   padding: 0.75rem;
   border-right: 1px solid var(--surface-border);
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -417,7 +414,7 @@
   color: white;
   margin-bottom: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
   font-weight: 500;
   font-size: 0.8rem;
   overflow: hidden;
@@ -432,7 +429,6 @@
 
 .week-event:hover {
   transform: scale(1.02);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .week-event .event-time {
@@ -455,89 +451,232 @@
 
 .day-timeline {
   width: 100%;
+  background: var(--surface-card);
+  border-radius: 8px;
+  border: 1px solid var(--surface-border);
+  overflow: hidden;
+}
+
+.day-header {
+  padding: 1.5rem;
+  background: var(--surface-section);
+  border-bottom: 1px solid var(--surface-border);
+  text-align: center;
 }
 
 .day-header h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1.25rem;
-  font-weight: 500;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
   color: var(--text-color);
-  text-align: center;
+  text-transform: capitalize;
+}
+
+.day-header .date-info {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-color-secondary);
+  font-weight: 500;
 }
 
 .timeline {
   border-left: 2px solid var(--surface-border);
-  margin-left: 4rem;
+  margin-left: 6rem;
+  padding: 1rem 0;
+  position: relative;
+  background: var(--surface-card);
 }
 
 .timeline-hour {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   position: relative;
+  min-height: 60px;
 }
 
 .timeline-hour::before {
   content: '';
   position: absolute;
   left: -0.5rem;
-  top: 0.5rem;
+  top: 0.75rem;
   width: 0.5rem;
   height: 0.5rem;
   background: var(--surface-border);
   border-radius: 50%;
 }
 
+.timeline-hour.has-events::before {
+  background: var(--primary-color);
+}
+
+.timeline-hour.empty-hour {
+  min-height: 40px;
+}
+
+.timeline-hour.empty-hour .hour-events {
+  min-height: 20px;
+}
+
+.timeline-hour.empty-hour::before {
+  background: var(--surface-border);
+  opacity: 0.5;
+}
+
+.timeline-hour.current-hour {
+  position: relative;
+}
+
+.timeline-hour.current-hour::after {
+  content: '';
+  position: absolute;
+  left: -0.25rem;
+  top: 0;
+  bottom: 0;
+  width: 0.5rem;
+  background: var(--primary-color);
+  border-radius: 0.25rem;
+}
+
+.timeline-hour.current-hour .hour-label {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
 .hour-label {
   position: absolute;
-  left: -4rem;
-  top: 0.25rem;
-  font-size: 0.875rem;
-  color: var(--text-color-secondary);
-  font-weight: 500;
-  min-width: 3rem;
+  left: -6rem;
+  top: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
+  font-weight: 600;
+  min-width: 4rem;
+  text-align: right;
+  padding-right: 1rem;
 }
 
 .hour-events {
   flex: 1;
-  margin-left: 1rem;
+  margin-left: 1.5rem;
+  min-height: 50px;
 }
 
 .timeline-event {
-  padding: 0.75rem;
-  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
   color: white;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
+  position: relative;
+  border-left: 4px solid transparent;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .timeline-event:hover {
   transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-.event-time {
+.timeline-event.urgent {
+  border-left-color: var(--danger-color);
+}
+
+.timeline-event .event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-event .event-time {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.timeline-event .event-status {
+  font-size: 0.75rem;
   font-weight: 600;
-  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.timeline-event .event-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.timeline-event .event-description {
   font-size: 0.875rem;
+  opacity: 0.9;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
 }
 
-.event-content {
+.timeline-event .event-meta {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.event-title {
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
-.event-meta {
-  display: flex;
-  gap: 0.25rem;
+  gap: 1rem;
   flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-event .event-location {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.timeline-event .event-location i {
+  font-size: 0.75rem;
+}
+
+.timeline-event .event-type {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.timeline-event .event-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.timeline-event .event-actions button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.timeline-event .event-actions button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.timeline-event .event-actions button i {
+  font-size: 0.7rem;
 }
 
 /* Lista de eventos del día seleccionado */
@@ -588,14 +727,12 @@
   border-radius: 8px;
   border: 1px solid var(--surface-border);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .event-item:hover {
   background: var(--surface-hover);
   border-color: var(--primary-color);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .event-item.urgent {
@@ -787,12 +924,30 @@
   }
 
   .timeline {
-    margin-left: 2rem;
+    margin-left: 4rem;
   }
 
   .hour-label {
-    left: -2rem;
-    min-width: 2rem;
+    left: -4rem;
+    min-width: 3rem;
+    font-size: 0.875rem;
+  }
+
+  .timeline-event {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-event .event-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .timeline-event .event-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
   }
 
   .legend-items {
@@ -821,6 +976,28 @@
   .day-event {
     font-size: 0.65rem;
     padding: 0.15rem 0.3rem;
+  }
+
+  .timeline {
+    margin-left: 3rem;
+  }
+
+  .hour-label {
+    left: -3rem;
+    min-width: 2.5rem;
+    font-size: 0.8rem;
+  }
+
+  .timeline-event {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .timeline-event .event-title {
+    font-size: 0.9rem;
+  }
+
+  .timeline-event .event-description {
+    font-size: 0.8rem;
   }
 
   .event-actions {

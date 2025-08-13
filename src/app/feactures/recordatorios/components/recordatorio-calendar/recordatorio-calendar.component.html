@@ -181,28 +181,50 @@
       <div *ngIf="view === 'day' && events.length > 0" class="day-view">
         <div class="day-timeline">
           <div class="day-header">
-            <h3>{{ selectedDate | date:'EEEE, d MMMM yyyy' }}</h3>
+            <h3>{{ selectedDate | date:'EEEE' }}</h3>
+            <div class="date-info">{{ selectedDate | date:'d MMMM yyyy' }}</div>
           </div>
           <div class="timeline">
             <div
               *ngFor="let hour of getDayHours()"
               class="timeline-hour"
+              [class.has-events]="getRecordatoriosPorHora(hour).length > 0"
+              [class.empty-hour]="getRecordatoriosPorHora(hour).length === 0"
+              [class.current-hour]="isCurrentHour(hour)"
             >
               <div class="hour-label">{{ hour }}:00</div>
               <div class="hour-events">
-                                 <div
-                   *ngFor="let event of getRecordatoriosPorHora(hour)"
-                   class="timeline-event"
-                   [style.background-color]="event.color"
-                   (click)="onEventSelect(event)"
-                 >
-                  <div class="event-time">{{ event.date | date:'HH:mm' }}</div>
-                  <div class="event-content">
-                    <div class="event-title">{{ event.title }}</div>
-                    <div class="event-meta">
-                      <p-tag [value]="getTipoLabel(event.type)" severity="info" size="small" />
-                      <p-tag [value]="getEstadoLabel(event.status)" [severity]="getEstadoSeverity(event.status)" size="small" />
+                <div
+                  *ngFor="let event of getRecordatoriosPorHora(hour)"
+                  class="timeline-event"
+                  [style.background-color]="event.color"
+                  [class.urgent]="event.urgent"
+                  (click)="onEventSelect(event)"
+                >
+                  <div class="event-header">
+                    <div class="event-time">{{ event.date | date:'HH:mm' }}</div>
+                    <div class="event-status">{{ getEstadoLabel(event.status) }}</div>
+                  </div>
+
+                  <div class="event-title">{{ event.title }}</div>
+
+                  <div class="event-description" *ngIf="event.description">
+                    {{ event.description }}
+                  </div>
+
+                  <div class="event-meta">
+                    <div class="event-location" *ngIf="event.location">
+                      <i class="pi pi-map-marker"></i>
+                      {{ event.location }}
                     </div>
+                    <div class="event-type">{{ getTipoLabel(event.type) }}</div>
+                  </div>
+
+                  <div class="event-actions">
+                    <button (click)="editarRecordatorio(event); $event.stopPropagation()">
+                      <i class="pi pi-pencil"></i> Editar
+                    </button>
+
                   </div>
                 </div>
               </div>

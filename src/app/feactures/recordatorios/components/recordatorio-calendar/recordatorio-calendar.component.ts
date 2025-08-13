@@ -254,34 +254,35 @@ export class RecordatorioCalendarComponent implements OnInit, OnDestroy {
     }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }
 
+  // Métodos para Google Calendar-like views
   getDaysInMonth(): DayInfo[] {
     const year = this.selectedDate.getFullYear();
     const month = this.selectedDate.getMonth();
-
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-
     const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - (firstDay.getDay() + 6) % 7);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
 
     const days: DayInfo[] = [];
-    const currentDate = new Date(startDate);
+    const currentDate = new Date();
 
     for (let i = 0; i < 42; i++) {
-      const isCurrentMonth = currentDate.getMonth() === month;
-      const isToday = this.isSameDay(currentDate, new Date());
-      const dayEvents = this.getRecordatoriosDelDia(currentDate);
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+
+      const isCurrentMonth = date.getMonth() === month;
+      const isToday = this.isSameDay(date, currentDate);
+      const dayEvents = this.getRecordatoriosDelDia(date);
+      const hasEvents = dayEvents.length > 0;
 
       days.push({
-        date: new Date(currentDate),
-        dayNumber: currentDate.getDate(),
+        date,
+        dayNumber: date.getDate(),
         isCurrentMonth,
         isToday,
-        hasEvents: dayEvents.length > 0,
+        hasEvents,
         events: dayEvents
       });
-
-      currentDate.setDate(currentDate.getDate() + 1);
     }
 
     return days;
@@ -289,23 +290,19 @@ export class RecordatorioCalendarComponent implements OnInit, OnDestroy {
 
   getWeekDays(): WeekDayInfo[] {
     const weekDays: WeekDayInfo[] = [];
-    const currentDate = new Date(this.selectedDate);
-
-    // Ajustar al lunes de la semana
-    const dayOfWeek = currentDate.getDay();
-    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    const monday = new Date(currentDate);
-    monday.setDate(currentDate.getDate() + mondayOffset);
+    const currentDate = new Date();
 
     for (let i = 0; i < 7; i++) {
-      const day = new Date(monday);
-      day.setDate(monday.getDate() + i);
+      const date = new Date(this.selectedDate);
+      date.setDate(this.selectedDate.getDate() - this.selectedDate.getDay() + i);
+
+      const isToday = this.isSameDay(date, currentDate);
 
       weekDays.push({
-        date: day,
+        date,
+        dayNumber: date.getDate(),
         name: this.weekDays[i],
-        dayNumber: day.getDate(),
-        isToday: this.isSameDay(day, new Date())
+        isToday
       });
     }
 
@@ -317,17 +314,15 @@ export class RecordatorioCalendarComponent implements OnInit, OnDestroy {
   }
 
   getRecordatoriosPorHora(hour: number): CalendarEvent[] {
-    const fechaSeleccionada = this.selectedDate;
-    const inicioHora = new Date(fechaSeleccionada);
-    inicioHora.setHours(hour, 0, 0, 0);
-
-    const finHora = new Date(fechaSeleccionada);
-    finHora.setHours(hour, 59, 59, 999);
-
     return this.events.filter(event => {
-      const eventDate = new Date(event.date);
-      return eventDate >= inicioHora && eventDate <= finHora;
-    }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      const eventHour = new Date(event.date).getHours();
+      return eventHour === hour && this.isSameDay(new Date(event.date), this.selectedDate);
+    });
+  }
+
+  isCurrentHour(hour: number): boolean {
+    const now = new Date();
+    return now.getHours() === hour && this.isSameDay(now, this.selectedDate);
   }
 
   private isSameDay(date1: Date, date2: Date): boolean {
