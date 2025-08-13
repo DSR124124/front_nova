@@ -1,22 +1,31 @@
-<div class="perfil-container">
+<div class="perfil-container p-4 max-w-4xl mx-auto">
 
   <!-- Estado de carga -->
   <div *ngIf="loading" class="loading-state">
-    <i class="pi pi-spin pi-spinner loading-icon"></i>
-    <p>Cargando perfil...</p>
+    <div class="loading-spinner mb-4">
+      <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+    </div>
+    <h3 class="text-2xl font-bold text-900 mb-2">Cargando perfil...</h3>
+    <p class="text-500">Estamos preparando tu información personal</p>
   </div>
 
   <!-- Estado de error -->
-  <div *ngIf="error && !loading" class="error-state">
-    <p-card header="Error" styleClass="error-card">
-      <i class="pi pi-exclamation-triangle error-icon"></i>
-      <p>{{ error }}</p>
-      <p-button
-        label="Reintentar"
-        icon="pi pi-refresh"
-        (onClick)="cargarPerfilUsuario()"
-        size="small"
-      />
+  <div *ngIf="error && !loading" class="error-state mb-4">
+    <p-card styleClass="error-card">
+      <div class="error-content text-center p-4">
+        <div class="error-icon mb-4">
+          <i class="pi pi-exclamation-triangle text-4xl text-danger"></i>
+        </div>
+        <h3 class="text-xl font-bold text-900 mb-3">Error al cargar perfil</h3>
+        <p class="text-500 mb-4">{{ error }}</p>
+        <p-button
+          label="Reintentar"
+          icon="pi pi-refresh"
+          (onClick)="cargarPerfilUsuario()"
+          severity="secondary"
+          size="large">
+        </p-button>
+      </div>
     </p-card>
   </div>
 
@@ -24,8 +33,14 @@
   <div *ngIf="!loading && !error" class="perfil-content">
 
     <!-- Información del usuario -->
-    <p-card header="Mi Perfil" styleClass="perfil-card">
-      <div class="usuario-info">
+    <p-card styleClass="perfil-card mb-4">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <h2 class="text-xl font-semibold"><i class="pi pi-user mr-2"></i> Mi Perfil</h2>
+        </div>
+      </ng-template>
+
+      <div class="usuario-info p-4">
         <div class="avatar-section">
           <p-avatar
             [label]="getNombreCompleto().charAt(0)"
@@ -33,83 +48,133 @@
             shape="circle"
             styleClass="usuario-avatar">
           </p-avatar>
+          <div class="avatar-actions">
+            <p-button
+              icon="pi pi-camera"
+              [text]="true"
+              size="small"
+              pTooltip="Cambiar foto">
+            </p-button>
+          </div>
         </div>
 
         <div class="datos-usuario">
-          <h2>{{ getNombreCompleto() }}</h2>
-          <p class="username">{{ '@' + (usuario?.username || '') }}</p>
-          <p class="email">{{ usuario?.correo }}</p>
+          <div class="nombre-section mb-4">
+            <h2 class="text-3xl font-bold text-900 mb-2">{{ getNombreCompleto() }}</h2>
+            <p class="username text-lg font-semibold text-primary mb-2">{{ '@' + (usuario?.username || '') }}</p>
+            <p class="email text-500">{{ usuario?.correo }}</p>
+          </div>
 
-          <div class="detalles-adicionales">
+          <div class="detalles-adicionales grid gap-3 mb-4">
             <div class="detalle-item" *ngIf="usuario?.fechaNacimiento">
-              <i class="pi pi-calendar"></i>
+              <i class="pi pi-calendar text-primary"></i>
               <span>{{ usuario?.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
+              <span class="edad text-600 ml-2" *ngIf="getEdad() > 0">({{ getEdad() }} años)</span>
             </div>
             <div class="detalle-item" *ngIf="usuario?.genero">
-              <i class="pi pi-user"></i>
+              <i class="pi pi-user text-primary"></i>
               <span>{{ getGeneroTexto() }}</span>
+            </div>
+            <div class="detalle-item">
+              <i class="pi pi-shield text-primary"></i>
+              <span><strong>Rol:</strong> {{ getRoleTexto() }}</span>
+            </div>
+            <div class="detalle-item">
+              <i class="pi pi-check-circle text-primary"></i>
+              <span><strong>Estado:</strong> {{ usuario?.enabled ? 'Activo' : 'Inactivo' }}</span>
+            </div>
+            <div class="detalle-item" *ngIf="usuario?.parejaId">
+              <i class="pi pi-heart text-primary"></i>
+              <span><strong>Pareja ID:</strong> {{ usuario?.parejaId }}</span>
             </div>
           </div>
 
           <!-- Acciones del perfil -->
-          <div class="acciones-perfil">
+          <div class="acciones-perfil flex gap-3">
             <p-button
               label="Editar Perfil"
               icon="pi pi-pencil"
               [outlined]="true"
-              size="small"
-            />
+              size="large"
+              styleClass="edit-btn">
+            </p-button>
+            <p-button
+              label="Cambiar Contraseña"
+              icon="pi pi-key"
+              [outlined]="true"
+              size="large"
+              styleClass="password-btn">
+            </p-button>
           </div>
         </div>
       </div>
     </p-card>
 
     <!-- Estado de pareja -->
-    <p-card header="Estado de Pareja" styleClass="pareja-card">
-      <div class="pareja-info">
+    <p-card styleClass="pareja-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <h2 class="text-xl font-semibold"><i class="pi pi-heart mr-2"></i> Estado de Pareja</h2>
+        </div>
+      </ng-template>
 
+      <div class="pareja-info p-4">
         <!-- Con pareja -->
-        <div *ngIf="tienePareja()" class="pareja-activa">
-          <div class="status-section">
+        <div *ngIf="tienePareja()" class="pareja-activa text-center">
+          <div class="status-section mb-4">
             <div class="status-badge activa">
               <i class="pi pi-heart-fill"></i>
               <span>Pareja Activa</span>
             </div>
-            <div class="pareja-details">
+            <div class="pareja-details max-w-md mx-auto">
               <div class="detalle-item">
                 <strong>Estado:</strong> {{ getEstadoPareja() }}
               </div>
               <div class="detalle-item" *ngIf="pareja?.fechaCreacion">
                 <strong>Desde:</strong> {{ pareja?.fechaCreacion | date:'dd/MM/yyyy' }}
               </div>
+              <div class="detalle-item" *ngIf="pareja?.usuario1Nombre && pareja?.usuario2Nombre">
+                <strong>Integrantes:</strong> {{ pareja?.usuario1Nombre }} & {{ pareja?.usuario2Nombre }}
+              </div>
             </div>
+          </div>
+
+          <div class="pareja-actions">
+            <p-button
+              label="Ver Perfil de Pareja"
+              icon="pi pi-eye"
+              [outlined]="true"
+              size="large">
+            </p-button>
           </div>
         </div>
 
         <!-- Sin pareja -->
-        <div *ngIf="!tienePareja()" class="sin-pareja">
-          <div class="status-section">
+        <div *ngIf="!tienePareja()" class="sin-pareja text-center">
+          <div class="status-section mb-4">
             <div class="status-badge inactiva">
               <i class="pi pi-heart"></i>
               <span>Sin Pareja</span>
             </div>
-            <p class="mensaje-sin-pareja">
-              No tienes una pareja vinculada actualmente.
+            <p class="mensaje-sin-pareja text-500 text-lg mb-4">
+              No tienes una pareja vinculada actualmente. ¡Conecta con alguien especial!
             </p>
           </div>
 
-          <div class="acciones-pareja">
+          <div class="acciones-pareja flex gap-3 justify-center flex-wrap">
             <p-button
               label="Buscar Pareja"
               icon="pi pi-search"
-              styleClass="action-btn"
-            />
+              styleClass="search-btn"
+              size="large">
+            </p-button>
             <p-button
               label="Invitar por Username"
               icon="pi pi-user-plus"
               [outlined]="true"
-              styleClass="action-btn"
-            />
+              styleClass="invite-btn"
+              size="large">
+            </p-button>
           </div>
         </div>
       </div>

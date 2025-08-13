@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UsuarioService } from '../../../../core/services/usuario.service';
 import { ParejaService } from '../../../../core/services/pareja.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -16,15 +17,27 @@ export class PerfilUsuarioComponent implements OnInit {
   pareja: Pareja | null = null;
   loading = true;
   error = '';
+  isAuthenticated = false;
 
   constructor(
     private usuarioService: UsuarioService,
     private parejaService: ParejaService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.cargarPerfilUsuario();
+    this.checkAuthentication();
+  }
+
+  checkAuthentication() {
+    this.isAuthenticated = this.authService.isLoggedIn();
+
+    if (this.isAuthenticated) {
+      this.cargarPerfilUsuario();
+    } else {
+      this.loading = false;
+    }
   }
 
   cargarPerfilUsuario() {
@@ -67,6 +80,14 @@ export class PerfilUsuarioComponent implements OnInit {
     });
   }
 
+  goToLogin() {
+    this.router.navigate(['/auth/login']);
+  }
+
+  goToRegister() {
+    this.router.navigate(['/auth/register']);
+  }
+
   getNombreCompleto(): string {
     if (!this.usuario) return '';
     return `${this.usuario.nombre} ${this.usuario.apellido}`;
@@ -94,5 +115,26 @@ export class PerfilUsuarioComponent implements OnInit {
       case 'F': return 'Femenino';
       default: return 'Otro';
     }
+  }
+
+  getRoleTexto(): string {
+    if (!this.usuario?.role) return '';
+    switch (this.usuario.role) {
+      case 'ADMIN': return 'Administrador';
+      case 'USER': return 'Usuario';
+      default: return 'Desconocido';
+    }
+  }
+
+  getEdad(): number {
+    if (!this.usuario?.fechaNacimiento) return 0;
+    const fechaNac = new Date(this.usuario.fechaNacimiento);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+    return edad;
   }
 }
