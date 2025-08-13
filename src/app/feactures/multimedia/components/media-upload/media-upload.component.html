@@ -1,1 +1,264 @@
-<p>media-upload works!</p>
+<div class="media-upload-container">
+  <!-- Header -->
+  <div class="upload-header">
+    <div class="header-content">
+      <div class="header-title">
+        <i class="pi pi-cloud-upload"></i>
+        <h2>Subir Multimedia</h2>
+      </div>
+      <div class="header-actions">
+        <p-button
+          label="Limpiar"
+          icon="pi pi-trash"
+          severity="secondary"
+          [outlined]="true"
+          [rounded]="true"
+          (onClick)="resetForm()"
+          [disabled]="selectedFiles.length === 0 && !uploading"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario de Metadatos -->
+  <div class="metadata-form">
+    <h3>Información del Archivo</h3>
+    <form [formGroup]="uploadForm" class="form-grid">
+      <div class="form-group">
+        <label for="citaId">Cita Asociada *</label>
+        <p-dropdown
+          id="citaId"
+          [options]="availableCitas"
+          formControlName="citaId"
+          optionLabel="titulo"
+          optionValue="id"
+          placeholder="Selecciona una cita"
+          [showClear]="true"
+          [class.ng-invalid]="citaId?.invalid && citaId?.touched"
+          [class.ng-dirty]="citaId?.dirty"
+        >
+          <ng-template pTemplate="selectedItem" let-cita>
+            <div class="cita-item">
+              <span class="cita-title">{{ cita.titulo }}</span>
+              <span class="cita-date">{{ cita.fecha | date:'shortDate' }}</span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-cita>
+            <div class="cita-item">
+              <span class="cita-title">{{ cita.titulo }}</span>
+              <span class="cita-date">{{ cita.fecha | date:'shortDate' }}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <small class="error-message" *ngIf="citaId?.invalid && citaId?.touched">
+          La cita es requerida
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="tipo">Tipo de Multimedia *</label>
+        <p-dropdown
+          id="tipo"
+          [options]="mediaTypes"
+          formControlName="tipo"
+          placeholder="Selecciona el tipo"
+          [class.ng-invalid]="tipo?.invalid && tipo?.touched"
+          [class.ng-dirty]="tipo?.dirty"
+        />
+        <small class="error-message" *ngIf="tipo?.invalid && tipo?.touched">
+          El tipo es requerido
+        </small>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          pInputTextarea
+          formControlName="descripcion"
+          rows="3"
+          placeholder="Describe el contenido del archivo..."
+          [class.ng-invalid]="descripcion?.invalid && descripcion?.touched"
+          [class.ng-dirty]="descripcion?.dirty"
+        ></textarea>
+        <small class="char-count" *ngIf="descripcion?.value">
+          {{ descripcion?.value?.length }}/500 caracteres
+        </small>
+        <small class="error-message" *ngIf="descripcion?.invalid && descripcion?.touched">
+          La descripción no puede exceder 500 caracteres
+        </small>
+      </div>
+
+             <div class="form-group">
+         <label>Opciones del Archivo</label>
+         <div class="checkbox-group">
+           <div class="checkbox-item">
+             <p-checkbox
+               formControlName="isPublic"
+               [binary]="true"
+             />
+             <div class="checkbox-label">
+               <span class="label-text">Marcar como público</span>
+               <span class="label-description">El archivo será visible para otros usuarios</span>
+             </div>
+           </div>
+           <div class="checkbox-item">
+             <p-checkbox
+               formControlName="isFavorite"
+               [binary]="true"
+             />
+             <div class="checkbox-label">
+               <span class="label-text">Marcar como favorito</span>
+               <span class="label-description">Agregar a tu lista de favoritos</span>
+             </div>
+           </div>
+         </div>
+       </div>
+    </form>
+  </div>
+
+  <!-- Área de Subida de Archivos -->
+  <div class="upload-area">
+    <h3>Archivos a Subir</h3>
+
+    <!-- Drag & Drop Zone -->
+    <div
+      class="drop-zone"
+      [class.drag-over]="dragOver"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+    >
+      <div class="drop-content">
+        <i class="pi pi-cloud-upload drop-icon"></i>
+        <h4>Arrastra archivos aquí o haz clic para seleccionar</h4>
+        <p>Tipos soportados: Imágenes, Videos, Audio, Documentos</p>
+        <p>Tamaño máximo: {{ formatFileSize(maxFileSize) }}</p>
+
+        <input
+          type="file"
+          multiple
+          [accept]="allowedTypes.join(',')"
+          (change)="onFileSelect($event)"
+          class="file-input"
+          #fileInput
+        />
+
+        <p-button
+          label="Seleccionar Archivos"
+          icon="pi pi-folder-open"
+          severity="primary"
+          [rounded]="true"
+          (onClick)="fileInput.click()"
+        />
+      </div>
+    </div>
+
+    <!-- Lista de Archivos Seleccionados -->
+    <div class="selected-files" *ngIf="selectedFiles.length > 0">
+      <h4>Archivos Seleccionados ({{ selectedFiles.length }})</h4>
+
+      <div class="file-list">
+        <div
+          *ngFor="let file of selectedFiles; let i = index"
+          class="file-item"
+          [class.uploading]="file.status === 'uploading'"
+          [class.success]="file.status === 'success'"
+          [class.error]="file.status === 'error'"
+        >
+          <!-- Preview/Icon -->
+          <div class="file-preview">
+            <img
+              *ngIf="file.preview"
+              [src]="file.preview"
+              [alt]="file.file.name"
+              class="preview-image"
+            />
+            <i
+              *ngIf="!file.preview"
+              [class]="getFileIcon(file.file.type)"
+              class="file-icon"
+            ></i>
+          </div>
+
+          <!-- File Info -->
+          <div class="file-info">
+            <div class="file-name">{{ file.file.name }}</div>
+            <div class="file-details">
+              <span class="file-type">{{ getFileTypeLabel(file.file.type) }}</span>
+              <span class="file-size">{{ formatFileSize(file.file.size) }}</span>
+            </div>
+          </div>
+
+                     <!-- Progress Bar -->
+           <div class="file-progress" *ngIf="file.status === 'uploading'">
+             <div class="progress-bar">
+               <div class="progress-fill" [style.width.%]="file.progress"></div>
+             </div>
+             <span class="progress-text">{{ file.progress | number:'1.0-0' }}%</span>
+           </div>
+
+          <!-- Status Icon -->
+          <div class="file-status">
+            <i
+              *ngIf="file.status === 'pending'"
+              class="pi pi-clock status-icon pending"
+              title="Pendiente"
+            ></i>
+            <i
+              *ngIf="file.status === 'uploading'"
+              class="pi pi-spin pi-spinner status-icon uploading"
+              title="Subiendo..."
+            ></i>
+            <i
+              *ngIf="file.status === 'success'"
+              class="pi pi-check status-icon success"
+              title="Completado"
+            ></i>
+            <i
+              *ngIf="file.status === 'error'"
+              class="pi pi-times status-icon error"
+              title="Error"
+            ></i>
+          </div>
+
+          <!-- Actions -->
+          <div class="file-actions">
+            <button
+              *ngIf="file.status === 'pending'"
+              class="action-btn remove-btn"
+              (click)="removeFile(i)"
+              title="Eliminar archivo"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+         <!-- Progress General -->
+     <div class="upload-progress" *ngIf="uploading">
+       <div class="progress-header">
+         <h4>Progreso General</h4>
+         <span class="progress-percentage">{{ uploadProgress | number:'1.0-0' }}%</span>
+       </div>
+       <div class="progress-bar overall">
+         <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+       </div>
+     </div>
+
+    <!-- Botón de Subida -->
+    <div class="upload-actions">
+      <p-button
+        label="Subir Archivos"
+        icon="pi pi-upload"
+        severity="success"
+        [rounded]="true"
+        [loading]="uploading"
+        [disabled]="uploadForm.invalid || selectedFiles.length === 0 || uploading"
+        (onClick)="uploadFiles()"
+      />
+    </div>
+  </div>
+</div>
