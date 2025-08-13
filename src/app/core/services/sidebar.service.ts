@@ -98,7 +98,6 @@ export class SidebarService {
       items: [
         { label: 'Galería', icon: 'pi pi-images', routerLink: '/app/multimedia/galeria' },
         { label: 'Subir Archivos', icon: 'pi pi-upload', routerLink: '/app/multimedia/subir' },
-        { label: 'Filtros', icon: 'pi pi-filter', routerLink: '/app/multimedia/filtros' }
       ]
     },
     {

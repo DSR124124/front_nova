@@ -1,1 +1,286 @@
-<p>media-gallery works!</p>
+<div class="media-gallery-container">
+  <!-- Header -->
+  <div class="gallery-header">
+    <div class="header-content">
+      <div class="header-title">
+        <i class="pi pi-images"></i>
+        <h2>Galería Multimedia</h2>
+      </div>
+      <div class="header-actions">
+        <p-button
+          label="Subir Archivo"
+          icon="pi pi-plus"
+          severity="primary"
+          [rounded]="true"
+        />
+        <p-button
+          label="Nueva Carpeta"
+          icon="pi pi-folder-plus"
+          severity="secondary"
+          [outlined]="true"
+          [rounded]="true"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros y Controles -->
+  <div class="gallery-controls">
+    <div class="search-section">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          placeholder="Buscar en multimedia..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          class="search-input"
+        />
+      </span>
+    </div>
+
+
+
+    <div class="view-controls">
+      <p-button
+        [icon]="viewMode === 'grid' ? 'pi pi-list' : 'pi pi-th-large'"
+        [text]="true"
+        [rounded]="true"
+        (onClick)="toggleViewMode()"
+        [title]="viewMode === 'grid' ? 'Vista de lista' : 'Vista de cuadrícula'"
+      />
+    </div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <div class="gallery-main">
+    <div *ngIf="loading" class="loading-container">
+      <p-progressSpinner strokeWidth="3" />
+      <p class="loading-text">Cargando galería multimedia...</p>
+    </div>
+
+    <div *ngIf="!loading && filteredItems.length === 0" class="no-media">
+      <i class="pi pi-images"></i>
+      <h3>No se encontraron archivos</h3>
+      <p>Sube nuevos archivos para comenzar</p>
+    </div>
+
+    <div *ngIf="!loading && filteredItems.length > 0" class="gallery-content">
+      <!-- Vista de Cuadrícula -->
+      <div *ngIf="viewMode === 'grid'" class="grid-view">
+        <div class="media-grid">
+          <div
+            *ngFor="let item of filteredItems"
+            class="media-card"
+            [class.selected]="selectedItems.includes(item)"
+            (click)="toggleItemSelection(item)"
+          >
+            <div class="card-header">
+                             <div class="media-type">
+                 <p-tag
+                   [value]="getTypeLabel(item.tipo)"
+                   [severity]="getTypeSeverity(item.tipo)"
+                   size="small"
+                 />
+               </div>
+              <div class="card-actions">
+                <button
+                  class="action-btn favorite-btn"
+                  [class.active]="item.isFavorite"
+                  (click)="toggleFavorite(item); $event.stopPropagation()"
+                  [title]="item.isFavorite ? 'Remover de favoritos' : 'Agregar a favoritos'"
+                >
+                  <i class="pi pi-heart"></i>
+                </button>
+                <button
+                  class="action-btn public-btn"
+                  [class.active]="item.isPublic"
+                  (click)="togglePublic(item); $event.stopPropagation()"
+                  [title]="item.isPublic ? 'Marcar como privado' : 'Marcar como público'"
+                >
+                  <i class="pi pi-globe"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="media-preview">
+                             <div class="preview-placeholder">
+                 <i [class]="getFileIcon(item.tipo)"></i>
+               </div>
+              <div class="preview-overlay">
+                <div class="overlay-actions">
+                  <button
+                    class="overlay-btn"
+                    (click)="downloadItem(item); $event.stopPropagation()"
+                    title="Descargar"
+                  >
+                    <i class="pi pi-download"></i>
+                  </button>
+                  <button
+                    class="overlay-btn"
+                    (click)="shareItem(item); $event.stopPropagation()"
+                    title="Compartir"
+                  >
+                    <i class="pi pi-share-alt"></i>
+                  </button>
+                  <button
+                    class="overlay-btn delete-btn"
+                    (click)="deleteItem(item); $event.stopPropagation()"
+                    title="Eliminar"
+                  >
+                    <i class="pi pi-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-content">
+              <h4 class="media-title" [title]="item.title">{{ item.title }}</h4>
+                             <p class="media-description" *ngIf="item.descripcion">{{ item.descripcion }}</p>
+
+              <div class="media-meta">
+                <span class="file-size">{{ getFileSize(item.size) }}</span>
+                <span class="file-format">{{ item.format }}</span>
+                <span class="upload-date">{{ item.uploadDate | date:'shortDate' }}</span>
+              </div>
+
+              <div class="media-tags">
+                <p-chip
+                  *ngFor="let tag of item.tags.slice(0, 3)"
+                  [label]="tag"
+                  size="small"
+                  class="tag-chip"
+                />
+                <span *ngIf="item.tags.length > 3" class="more-tags">
+                  +{{ item.tags.length - 3 }} más
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista de Lista -->
+      <div *ngIf="viewMode === 'list'" class="list-view">
+        <p-table
+          [value]="filteredItems"
+          [paginator]="true"
+          [rows]="itemsPerPage"
+          [showCurrentPageReport]="true"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          [rowsPerPageOptions]="[10, 20, 50]"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} elementos"
+          (onPageChange)="onPageChange($event)"
+          [loading]="loading"
+          [(selection)]="selectedItems"
+          dataKey="id"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th>Archivo</th>
+              <th>Tipo</th>
+              <th>Tamaño</th>
+              <th>Tags</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th style="width: 8rem">Acciones</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-item>
+            <tr>
+              <td>
+                <p-tableCheckbox [value]="item"></p-tableCheckbox>
+              </td>
+              <td>
+                <div class="file-info">
+                  <i [class]="getFileIcon(item.type)" class="file-icon"></i>
+                  <div class="file-details">
+                    <div class="file-name">{{ item.title }}</div>
+                    <div class="file-description" *ngIf="item.description">{{ item.description }}</div>
+                  </div>
+                </div>
+              </td>
+                             <td>
+                 <p-tag
+                   [value]="getTypeLabel(item.tipo)"
+                   [severity]="getTypeSeverity(item.tipo)"
+                   size="small"
+                 />
+               </td>
+              <td>{{ getFileSize(item.size) }}</td>
+              <td>
+                <div class="tags-list">
+                  <p-chip
+                    *ngFor="let tag of item.tags.slice(0, 2)"
+                    [label]="tag"
+                    size="small"
+                  />
+                  <span *ngIf="item.tags.length > 2" class="more-tags">
+                    +{{ item.tags.length - 2 }}
+                  </span>
+                </div>
+              </td>
+              <td>{{ item.uploadDate | date:'shortDate' }}</td>
+              <td>
+                <div class="status-indicators">
+                  <i
+                    *ngIf="item.isFavorite"
+                    class="pi pi-heart-fill favorite-indicator"
+                    title="Favorito"
+                  ></i>
+                  <i
+                    *ngIf="item.isPublic"
+                    class="pi pi-globe public-indicator"
+                    title="Público"
+                  ></i>
+                </div>
+              </td>
+              <td>
+                <div class="row-actions">
+                  <button
+                    class="action-btn"
+                    (click)="toggleFavorite(item)"
+                    [title]="item.isFavorite ? 'Remover de favoritos' : 'Agregar a favoritos'"
+                  >
+                    <i class="pi pi-heart" [class.filled]="item.isFavorite"></i>
+                  </button>
+                  <button
+                    class="action-btn"
+                    (click)="downloadItem(item)"
+                    title="Descargar"
+                  >
+                    <i class="pi pi-download"></i>
+                  </button>
+                  <button
+                    class="action-btn delete-btn"
+                    (click)="deleteItem(item)"
+                    title="Eliminar"
+                  >
+                    <i class="pi pi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginación para vista de cuadrícula -->
+  <div *ngIf="!loading && viewMode === 'grid' && filteredItems.length > 0" class="pagination-container">
+    <p-paginator
+      [rows]="itemsPerPage"
+      [totalRecords]="totalItems"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[12, 24, 48]"
+      (onPageChange)="onPageChange($event)"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} elementos"
+    />
+  </div>
+</div>

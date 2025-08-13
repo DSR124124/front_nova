@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
+import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 import { MultimediaRoutingModule } from './multimedia-routing.module';
 import { MediaGalleryComponent } from './components/media-gallery/media-gallery.component';
@@ -23,6 +25,10 @@ import { MediaFilterComponent } from './components/media-filter/media-filter.com
     ReactiveFormsModule,
     PrimeNgModule,
     MultimediaRoutingModule
+  ],
+  providers: [
+    MessageService,
+    ConfirmationService
   ]
 })
 export class MultimediaModule { }
