@@ -1,4 +1,333 @@
 <div class="calendar-container">
-  <h2><i class="pi pi-calendar"></i> Calendario de Recordatorios</h2>
-  <p>Vista de calendario en desarrollo</p>
+  <!-- Header minimalista estilo Google Calendar -->
+  <div class="calendar-header">
+    <div class="header-content">
+      <div class="header-title">
+        <i class="pi pi-calendar"></i>
+        <h2>Calendario</h2>
+      </div>
+      <div class="header-actions">
+        <p-button
+          icon="pi pi-refresh"
+          [text]="true"
+          [rounded]="true"
+          size="small"
+          (onClick)="refreshCalendar()"
+          [loading]="loading"
+          pTooltip="Actualizar"
+        />
+        <p-button
+          icon="pi pi-plus"
+          [text]="true"
+          [rounded]="true"
+          size="small"
+          (onClick)="crearNuevoRecordatorio()"
+          pTooltip="Nuevo recordatorio"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Controles de navegación estilo Google Calendar -->
+  <div class="calendar-controls">
+    <div class="view-selector">
+      <p-button
+        icon="pi pi-calendar"
+        [outlined]="view === 'month'"
+        [text]="view !== 'month'"
+        size="small"
+        (onClick)="view = 'month'"
+        pTooltip="Vista Mensual"
+      />
+      <p-button
+        icon="pi pi-calendar-week"
+        [outlined]="view === 'week'"
+        [text]="view !== 'week'"
+        size="small"
+        (onClick)="view = 'week'"
+        pTooltip="Vista Semanal"
+      />
+      <p-button
+        icon="pi pi-calendar-times"
+        [outlined]="view === 'day'"
+        [text]="view !== 'day'"
+        size="small"
+        (onClick)="view = 'day'"
+        pTooltip="Vista Diaria"
+      />
+    </div>
+
+    <div class="date-navigation">
+      <p-button
+        icon="pi pi-chevron-left"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        (onClick)="navegarDiaAnterior()"
+        pTooltip="Día anterior"
+      />
+      <span class="current-date">{{ selectedDate | date:'MMMM yyyy' }}</span>
+      <p-button
+        icon="pi pi-chevron-right"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        (onClick)="navegarDiaSiguiente()"
+        pTooltip="Día siguiente"
+      />
+    </div>
+  </div>
+
+  <!-- Calendario principal con estilo Google Calendar -->
+  <div class="calendar-main">
+    <div *ngIf="loading" class="loading-container">
+      <p-progressSpinner strokeWidth="3" />
+      <p class="loading-text">Cargando calendario...</p>
+    </div>
+
+    <div *ngIf="!loading" class="calendar-content">
+      <!-- Mensaje cuando no hay recordatorios -->
+      <div *ngIf="events.length === 0" class="no-events-calendar">
+        <i class="pi pi-calendar-times"></i>
+        <h3>No hay recordatorios</h3>
+        <p>Crea tu primer recordatorio para comenzar</p>
+        <p-button
+          label="Crear Recordatorio"
+          icon="pi pi-plus"
+          severity="primary"
+          (onClick)="crearNuevoRecordatorio()"
+        />
+      </div>
+
+      <!-- Vista mensual con eventos integrados -->
+      <div *ngIf="view === 'month' && events.length > 0" class="month-view">
+        <div class="calendar-grid">
+          <!-- Días de la semana -->
+          <div class="weekdays">
+            <div class="weekday" *ngFor="let day of weekDays">{{ day }}</div>
+          </div>
+
+          <!-- Días del mes -->
+          <div class="days-grid">
+            <div
+              *ngFor="let day of getDaysInMonth()"
+              class="day-cell"
+              [class.other-month]="!day.isCurrentMonth"
+              [class.today]="day.isToday"
+              [class.has-events]="day.hasEvents"
+              (click)="onDateSelect(day.date)"
+            >
+              <div class="day-number">{{ day.dayNumber }}</div>
+
+              <!-- Eventos del día -->
+              <div class="day-events" *ngIf="day.events && day.events.length > 0">
+                <div
+                  *ngFor="let event of day.events.slice(0, 3)"
+                  class="day-event"
+                  [style.background-color]="event.color"
+                  (click)="onEventSelect(event); $event.stopPropagation()"
+                  [title]="event.title"
+                >
+                  <span class="event-time">{{ event.date | date:'HH:mm' }}</span>
+                  <span class="event-title">{{ event.title }}</span>
+                </div>
+
+                <!-- Indicador de más eventos -->
+                <div *ngIf="day.events.length > 3" class="more-events">
+                  +{{ day.events.length - 3 }} más
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista semanal -->
+      <div *ngIf="view === 'week' && events.length > 0" class="week-view">
+        <div class="week-grid">
+          <div class="weekdays">
+            <div class="weekday" *ngFor="let day of getWeekDays()">{{ day.name }}</div>
+          </div>
+          <div class="week-days">
+            <div
+              *ngFor="let day of getWeekDays()"
+              class="week-day"
+              [class.today]="day.isToday"
+            >
+              <div class="day-header">
+                <span class="day-number">{{ day.dayNumber }}</span>
+                <span class="day-name">{{ day.name }}</span>
+              </div>
+              <div class="day-events">
+                <div
+                  *ngFor="let event of getRecordatoriosDelDia(day.date)"
+                  class="week-event"
+                  [style.background-color]="event.color"
+                  (click)="onEventSelect(event)"
+                >
+                  <span class="event-time">{{ event.date | date:'HH:mm' }}</span>
+                  <span class="event-title">{{ event.title }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista diaria -->
+      <div *ngIf="view === 'day' && events.length > 0" class="day-view">
+        <div class="day-timeline">
+          <div class="day-header">
+            <h3>{{ selectedDate | date:'EEEE, d MMMM yyyy' }}</h3>
+          </div>
+          <div class="timeline">
+            <div
+              *ngFor="let hour of getDayHours()"
+              class="timeline-hour"
+            >
+              <div class="hour-label">{{ hour }}:00</div>
+              <div class="hour-events">
+                                 <div
+                   *ngFor="let event of getRecordatoriosPorHora(hour)"
+                   class="timeline-event"
+                   [style.background-color]="event.color"
+                   (click)="onEventSelect(event)"
+                 >
+                  <div class="event-time">{{ event.date | date:'HH:mm' }}</div>
+                  <div class="event-content">
+                    <div class="event-title">{{ event.title }}</div>
+                    <div class="event-meta">
+                      <p-tag [value]="getTipoLabel(event.type)" severity="info" size="small" />
+                      <p-tag [value]="getEstadoLabel(event.status)" [severity]="getEstadoSeverity(event.status)" size="small" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de eventos del día seleccionado -->
+  <div class="day-events-summary" *ngIf="!loading && getRecordatoriosDelDia().length > 0">
+    <div class="summary-header">
+      <h4>Recordatorios del {{ selectedDate | date:'EEEE, d MMMM yyyy' }}</h4>
+      <span class="event-count">{{ getRecordatoriosDelDia().length }} recordatorio(s)</span>
+    </div>
+
+    <div class="events-list">
+      <div
+        *ngFor="let event of getRecordatoriosDelDia()"
+        class="event-item"
+        [class.urgent]="event.urgent"
+        (click)="onEventSelect(event)"
+      >
+        <div class="event-time">{{ event.date | date:'HH:mm' }}</div>
+        <div class="event-content">
+          <div class="event-title">{{ event.title }}</div>
+          <div class="event-meta">
+            <p-tag [value]="getTipoLabel(event.type)" severity="info" size="small" />
+            <p-tag [value]="getEstadoLabel(event.status)" [severity]="getEstadoSeverity(event.status)" size="small" />
+            <p-tag *ngIf="event.urgent" value="Urgente" severity="danger" size="small" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leyenda simplificada -->
+  <div class="calendar-legend">
+    <div class="legend-items">
+      <div class="legend-item">
+        <div class="legend-color personal"></div>
+        <span>Personal</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color pareja"></div>
+        <span>Pareja</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color otro"></div>
+        <span>Otro</span>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Modal de detalles del evento -->
+<p-dialog
+  [(visible)]="eventModalVisible"
+  [modal]="true"
+  [style]="{width: '500px'}"
+  header="Detalles del Recordatorio"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div *ngIf="selectedEvent" class="event-details">
+    <div class="event-header">
+      <h3>{{ selectedEvent.title }}</h3>
+      <div class="event-badges">
+        <p-tag [value]="getTipoLabel(selectedEvent.type)" severity="info" size="small" />
+        <p-tag [value]="getEstadoLabel(selectedEvent.status)" [severity]="getEstadoSeverity(selectedEvent.status)" size="small" />
+        <p-tag *ngIf="selectedEvent.urgent" value="Urgente" severity="danger" size="small" />
+      </div>
+    </div>
+
+    <div class="event-info">
+      <div class="info-row">
+        <i class="pi pi-calendar text-500"></i>
+        <span>{{ formatearFecha(selectedEvent.date) }}</span>
+      </div>
+      <div *ngIf="selectedEvent.description" class="info-row">
+        <i class="pi pi-file-edit text-500"></i>
+        <span>{{ selectedEvent.description }}</span>
+      </div>
+      <div *ngIf="selectedEvent.location" class="info-row">
+        <i class="pi pi-map-marker text-500"></i>
+        <span>{{ selectedEvent.location }}</span>
+      </div>
+    </div>
+
+    <div class="event-actions">
+      <p-button
+        *ngIf="selectedEvent.status === EstadoRecordatorio.ACTIVO"
+        label="Completar"
+        icon="pi pi-check"
+        severity="success"
+        size="small"
+        (onClick)="cambiarEstado(selectedEvent, EstadoRecordatorio.COMPLETADO)"
+      />
+      <p-button
+        *ngIf="selectedEvent.status === EstadoRecordatorio.ACTIVO"
+        label="Cancelar"
+        icon="pi pi-times"
+        severity="danger"
+        size="small"
+        [outlined]="true"
+        (onClick)="cambiarEstado(selectedEvent, EstadoRecordatorio.CANCELADO)"
+      />
+      <p-button
+        *ngIf="selectedEvent.status === EstadoRecordatorio.COMPLETADO"
+        label="Reactivar"
+        icon="pi pi-refresh"
+        severity="info"
+        size="small"
+        [outlined]="true"
+        (onClick)="cambiarEstado(selectedEvent, EstadoRecordatorio.ACTIVO)"
+      />
+      <p-button
+        label="Editar"
+        icon="pi pi-pencil"
+        severity="secondary"
+        size="small"
+        [outlined]="true"
+        (onClick)="editarRecordatorio(selectedEvent)"
+      />
+    </div>
+  </div>
+</p-dialog>
+
+<!-- Toast para mensajes -->
+<p-toast />

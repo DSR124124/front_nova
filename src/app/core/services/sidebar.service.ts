@@ -79,7 +79,6 @@ export class SidebarService {
         { label: 'Lista de Recordatorios', icon: 'pi pi-list', routerLink: '/app/recordatorios/lista' },
         { label: 'Crear Recordatorio', icon: 'pi pi-plus', routerLink: '/app/recordatorios/nuevo' },
         { label: 'Calendario', icon: 'pi pi-calendar', routerLink: '/app/recordatorios/calendario' },
-        { label: 'Filtros', icon: 'pi pi-filter', routerLink: '/app/recordatorios/filtros' }
       ]
     },
     {
