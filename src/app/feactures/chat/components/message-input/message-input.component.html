@@ -53,44 +53,29 @@
         pTooltip="Emojis">
       </p-button>
 
+      <!-- Botón limpiar -->
+      <p-button
+        *ngIf="messageText.trim()"
+        icon="pi pi-times"
+        (onClick)="clearInput()"
+        size="small"
+        severity="secondary"
+        [text]="true"
+        pTooltip="Limpiar mensaje">
+      </p-button>
+
+      <!-- Botón enviar -->
+      <p-button
+        icon="pi pi-send"
+        (onClick)="sendMessage()"
+        [disabled]="!canSendMessage()"
+        [loading]="disabled"
+        size="small"
+        severity="primary"
+        pTooltip="Enviar mensaje">
+      </p-button>
+
     </div>
-  </div>
-
-  <!-- Información adicional -->
-  <div class="input-info" *ngIf="showCharacterCount || messageText.length > 0">
-
-    <!-- Contador de caracteres -->
-    <div *ngIf="showCharacterCount" class="character-count">
-      <small
-        [class]="isNearLimit() ? 'text-warning' : isOverLimit() ? 'text-danger' : 'text-secondary'">
-        {{ messageText.length }} / {{ maxLength }}
-      </small>
-    </div>
-
-    <!-- Botón limpiar -->
-    <p-button
-      *ngIf="messageText.trim()"
-      icon="pi pi-times"
-      (onClick)="clearInput()"
-      size="small"
-      severity="secondary"
-      [text]="true"
-      pTooltip="Limpiar mensaje">
-    </p-button>
-  </div>
-
-  <!-- Botón enviar -->
-  <div class="send-section">
-    <p-button
-      label="Enviar"
-      icon="pi pi-send"
-      (onClick)="sendMessage()"
-      [disabled]="!canSendMessage()"
-      [loading]="disabled"
-      size="small"
-      severity="success"
-      styleClass="send-button">
-    </p-button>
   </div>
 
   <!-- Input oculto para archivos -->
@@ -102,30 +87,11 @@
     style="display: none;">
 
   <!-- Picker de emojis -->
-  <div *ngIf="showEmojiPicker" class="emoji-picker">
-    <p-card styleClass="emoji-card">
-      <div class="emoji-header">
-        <h6>Emojis frecuentes</h6>
-        <p-button
-          icon="pi pi-times"
-          (onClick)="closeEmojiPicker()"
-          size="small"
-          severity="secondary"
-          [text]="true">
-        </p-button>
-      </div>
-
-      <div class="emoji-grid">
-        <button
-          *ngFor="let emoji of frequentEmojis"
-          class="emoji-btn"
-          (click)="selectEmoji(emoji)"
-          type="button">
-          {{ emoji }}
-        </button>
-      </div>
-    </p-card>
-  </div>
+  <app-emoji-selector
+    [visible]="showEmojiPicker"
+    (emojiSelected)="selectEmoji($event)"
+    (selectorClosed)="closeEmojiPicker()">
+  </app-emoji-selector>
 
   <!-- Toast para notificaciones -->
   <p-toast position="top-right" />

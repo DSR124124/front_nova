@@ -41,6 +41,9 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     name: 'Tú'
   };
 
+  // ID del usuario actual para el componente de mensajes
+  currentUserId: string = 'user1';
+
   constructor(private messageService: MessageService) {}
 
   ngOnInit(): void {
@@ -280,5 +283,50 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         life: 2000
       });
     }
+  }
+
+  onMessageRead(messageId: string): void {
+    // Marcar mensaje como leído
+    const message = this.messages.find(msg => msg.id === messageId);
+    if (message) {
+      // Aquí se implementaría la lógica para marcar como leído
+      console.log('Mensaje marcado como leído:', messageId);
+    }
+  }
+
+  // Métodos para el componente message-input
+  onMessageSent(messageData: any): void {
+    if (!this.currentContact) return;
+
+    const message: ChatMessage = {
+      id: Date.now().toString(),
+      senderId: this.currentUser.id,
+      senderName: this.currentUser.name,
+      content: messageData.content,
+      timestamp: new Date(),
+      messageType: messageData.type || 'TEXT',
+      isOwn: true
+    };
+
+    this.messages.push(message);
+
+    // Simular respuesta automática después de un momento
+    this.simulateResponse();
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Mensaje enviado',
+      life: 2000
+    });
+  }
+
+  onTypingStarted(): void {
+    // Aquí se implementaría la lógica para indicar que el usuario está escribiendo
+    console.log('Usuario empezó a escribir');
+  }
+
+  onTypingStopped(): void {
+    // Aquí se implementaría la lógica para indicar que el usuario dejó de escribir
+    console.log('Usuario dejó de escribir');
   }
 }

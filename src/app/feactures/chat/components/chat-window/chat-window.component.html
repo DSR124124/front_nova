@@ -1,184 +1,107 @@
 <div class="chat-container">
-
   <!-- Header del chat -->
-  <p-card header="Chat" styleClass="chat-header-card">
-    <div class="chat-header-content">
-      <div class="chat-title">
-        <i class="pi pi-comments"></i>
-        <span>Conversaciones</span>
-      </div>
-      <p-chip
-        [label]="contacts.length + ' contactos'"
-        icon="pi pi-users">
-      </p-chip>
-    </div>
-  </p-card>
+  <div class="chat-header">
+    <h2 class="chat-title">
+      <i class="pi pi-comments"></i>
+      Chat
+    </h2>
+    <p class="chat-subtitle">Conversa con tus contactos</p>
+  </div>
 
   <!-- Contenido principal del chat -->
   <div class="chat-content">
-
     <!-- Panel izquierdo - Lista de contactos -->
     <div class="chat-sidebar">
-      <p-card header="Contactos" styleClass="contacts-card">
+      <div class="sidebar-header">
+        <h4>Contactos</h4>
+        <span class="contact-count">{{ contacts.length }} contactos</span>
+      </div>
 
-        <div class="contacts-list">
-          <div
-            *ngFor="let contact of contacts"
-            class="contact-item"
-            [class.active]="currentContact?.id === contact.id"
-            (click)="selectContact(contact)">
+      <div class="contacts-list">
+        <div
+          *ngFor="let contact of contacts"
+          class="contact-item"
+          [class.active]="currentContact?.id === contact.id"
+          (click)="selectContact(contact)">
 
-            <div class="contact-avatar">
-              <p-avatar
-                [label]="getContactInitials(contact.name)"
-                size="normal"
-                shape="circle">
-              </p-avatar>
+          <div class="contact-avatar">
+            <i class="pi pi-user"></i>
+            <span
+              class="status-indicator"
+              [class]="'status-' + contact.status">
+            </span>
+          </div>
 
-              <!-- Indicador de estado -->
-              <span
-                class="status-indicator"
-                [class]="'status-' + contact.status"
-                [style.color]="getStatusColor(contact.status)">
-                <i [class]="getStatusIcon(contact.status)"></i>
-              </span>
-            </div>
-
-            <div class="contact-info">
-              <div class="contact-name">{{ contact.name }}</div>
-              <div class="contact-status">
-                <span *ngIf="contact.status === 'online'">En línea</span>
-                <span *ngIf="contact.status === 'away'">Ausente</span>
-                <span *ngIf="contact.status === 'offline' && contact.lastSeen">
-                  {{ formatLastSeen(contact.lastSeen) }}
-                </span>
-              </div>
-            </div>
-
-            <div class="contact-meta">
-              <p-badge
-                *ngIf="contact.unreadCount > 0"
-                [value]="contact.unreadCount.toString()"
-                severity="danger">
-              </p-badge>
+          <div class="contact-info">
+            <div class="contact-name">{{ contact.name }}</div>
+            <div class="contact-status">
+              <span *ngIf="contact.status === 'online'">En línea</span>
+              <span *ngIf="contact.status === 'away'">Ausente</span>
+              <span *ngIf="contact.status === 'offline'">Desconectado</span>
             </div>
           </div>
-        </div>
 
-      </p-card>
+          <div class="contact-meta" *ngIf="contact.unreadCount > 0">
+            <span class="unread-badge">{{ contact.unreadCount }}</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Panel derecho - Área de mensajes -->
     <div class="chat-main">
-
       <!-- Header del contacto actual -->
       <div *ngIf="currentContact" class="contact-header">
-        <p-card styleClass="contact-header-card">
-          <div class="contact-header-content">
-            <p-avatar
-              [label]="getContactInitials(currentContact.name)"
-              size="normal"
-              shape="circle">
-            </p-avatar>
-
-            <div class="contact-header-info">
-              <h4>{{ currentContact.name }}</h4>
-              <p-tag
-                [value]="currentContact.status === 'online' ? 'En línea' :
-                        currentContact.status === 'away' ? 'Ausente' : 'Desconectado'"
-                [severity]="currentContact.status === 'online' ? 'success' :
-                           currentContact.status === 'away' ? 'warning' : 'secondary'">
-              </p-tag>
-            </div>
+        <div class="contact-header-content">
+          <i class="pi pi-user"></i>
+          <div class="contact-header-info">
+            <h4>{{ currentContact.name }}</h4>
+            <span class="status-tag" [class]="'status-' + currentContact.status">
+              {{ currentContact.status === 'online' ? 'En línea' : 'Desconectado' }}
+            </span>
           </div>
-        </p-card>
+        </div>
       </div>
 
       <!-- Área de mensajes -->
-      <div class="messages-area" #messageContainer>
-
+      <div class="messages-area">
         <!-- Estado sin contacto seleccionado -->
         <div *ngIf="!currentContact" class="no-contact-selected">
           <i class="pi pi-comment"></i>
           <h3>Selecciona un contacto</h3>
-          <p>Elige un contacto de la lista para comenzar a chatear</p>
+          <p>Elige un contacto para comenzar a chatear</p>
         </div>
 
-        <!-- Estado sin mensajes -->
-        <div *ngIf="currentContact && messages.length === 0" class="no-messages">
-          <i class="pi pi-comment-slash"></i>
-          <h4>Sin mensajes</h4>
-          <p>Inicia la conversación con {{ currentContact.name }}</p>
-        </div>
-
-        <!-- Lista de mensajes -->
-        <div *ngIf="currentContact && messages.length > 0" class="messages-list">
-          <div
-            *ngFor="let message of messages"
-            class="message-item"
-            [class.own-message]="message.isOwn">
-
-            <div class="message-bubble">
-              <div class="message-content">
-                <p>{{ message.content }}</p>
-              </div>
-
-              <div class="message-meta">
-                <small>{{ message.timestamp | date:'shortTime' }}</small>
-
-                <!-- Botón eliminar solo para mensajes propios -->
-                <p-button
-                  *ngIf="message.isOwn"
-                  icon="pi pi-trash"
-                  (onClick)="deleteMessage(message.id)"
-                  size="small"
-                  severity="danger"
-                  [text]="true"
-                  styleClass="delete-btn">
-                </p-button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Componente de lista de mensajes -->
+        <app-message-list
+          *ngIf="currentContact"
+          [messages]="messages"
+          [currentUserId]="currentUserId"
+          [loading]="loading"
+          [emptyStateMessage]="'Sin mensajes'"
+          [emptyStateSubMessage]="'Inicia la conversación con ' + currentContact.name"
+          (messageDeleted)="deleteMessage($event)"
+          (messageRead)="onMessageRead($event)">
+        </app-message-list>
       </div>
 
       <!-- Input para enviar mensajes -->
       <div class="message-input-area" *ngIf="currentContact">
-        <p-card styleClass="input-card">
-          <div class="message-input-container">
-
-            <textarea
-              pInputTextarea
-              [(ngModel)]="newMessage"
-              placeholder="Escribe un mensaje..."
-              rows="2"
-              (keydown)="onMessageKeyDown($event)"
-              class="message-input">
-            </textarea>
-
-            <div class="input-actions">
-              <p-button
-                icon="pi pi-paperclip"
-                severity="secondary"
-                [text]="true"
-                pTooltip="Adjuntar archivo">
-              </p-button>
-
-              <p-button
-                icon="pi pi-send"
-                (onClick)="sendMessage()"
-                [disabled]="!newMessage.trim()"
-                severity="success"
-                pTooltip="Enviar mensaje">
-              </p-button>
-            </div>
-          </div>
-        </p-card>
+        <app-message-input
+          [placeholder]="'Escribe un mensaje...'"
+          [maxLength]="500"
+          [allowAttachments]="true"
+          [allowEmojis]="true"
+          [showCharacterCount]="true"
+          [disabled]="loading"
+          (messageSent)="onMessageSent($event)"
+          (typingStarted)="onTypingStarted()"
+          (typingStopped)="onTypingStopped()">
+        </app-message-input>
       </div>
     </div>
   </div>
 
   <!-- Toast para notificaciones -->
   <p-toast position="top-right" />
-
 </div>

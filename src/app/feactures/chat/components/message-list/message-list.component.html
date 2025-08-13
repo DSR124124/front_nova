@@ -1,5 +1,4 @@
 <div class="message-list-container" #messageContainer>
-
   <!-- Estado de carga -->
   <div *ngIf="loading" class="loading-state">
     <p-progressSpinner size="small" />
@@ -15,9 +14,7 @@
 
   <!-- Lista de mensajes -->
   <div *ngIf="!loading && messages.length > 0" class="messages-wrapper">
-
     <ng-container *ngFor="let message of messages; let i = index; trackBy: trackByMessageId">
-
       <!-- Separador de fecha -->
       <div *ngIf="shouldShowDateSeparator(message, i)" class="date-separator">
         <p-divider align="center">
@@ -27,7 +24,6 @@
 
       <!-- Mensaje -->
       <div class="message-item" [class.own-message]="isOwnMessage(message)">
-
         <!-- Avatar (solo para mensajes de otros) -->
         <div *ngIf="!isOwnMessage(message)" class="message-avatar">
           <p-avatar
@@ -40,7 +36,6 @@
 
         <!-- Burbuja del mensaje -->
         <div class="message-bubble" [class.own-bubble]="isOwnMessage(message)">
-
           <!-- Header del mensaje (solo para mensajes de otros) -->
           <div *ngIf="!isOwnMessage(message)" class="message-header">
             <span class="sender-name">{{ message.senderName }}</span>
@@ -48,7 +43,6 @@
 
           <!-- Contenido del mensaje -->
           <div class="message-body">
-
             <!-- Mensaje de texto -->
             <div *ngIf="message.messageType === 'TEXT'" class="text-content">
               <p>{{ message.content }}</p>
@@ -61,21 +55,19 @@
 
             <!-- Mensaje con archivo -->
             <div *ngIf="message.messageType === 'FILE'" class="file-content">
-              <p-card styleClass="file-card">
-                <div class="file-info">
-                  <i class="pi pi-file file-icon"></i>
-                  <div class="file-details">
-                    <span class="file-name">{{ message.content }}</span>
-                    <small class="file-size">Archivo</small>
-                  </div>
-                  <p-button
-                    icon="pi pi-download"
-                    size="small"
-                    severity="secondary"
-                    [text]="true">
-                  </p-button>
+              <div class="file-info">
+                <i class="pi pi-file file-icon"></i>
+                <div class="file-details">
+                  <span class="file-name">{{ message.content }}</span>
+                  <small class="file-size">Archivo</small>
                 </div>
-              </p-card>
+                <p-button
+                  icon="pi pi-download"
+                  size="small"
+                  severity="secondary"
+                  [text]="true">
+                </p-button>
+              </div>
             </div>
           </div>
 
@@ -101,8 +93,7 @@
                 size="small"
                 severity="secondary"
                 [text]="true"
-                (click)="messageMenu.toggle($event)"
-                styleClass="action-btn">
+                (click)="messageMenu.toggle($event)">
               </p-button>
             </div>
           </div>
@@ -118,9 +109,7 @@
       (onClick)="scrollToTop()"
       size="small"
       severity="secondary"
-      [rounded]="true"
-      styleClass="scroll-to-top">
+      [rounded]="true">
     </p-button>
   </div>
-
 </div>

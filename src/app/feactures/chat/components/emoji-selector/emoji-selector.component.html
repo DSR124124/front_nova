@@ -1,13 +1,13 @@
-<div class="emoji-selector" *ngIf="visible">
+<div class="emoji-selector" *ngIf="visible" [class.closing]="isClosing">
 
-  <!-- Overlay de fondo -->
+  <!-- Overlay de fondo con efecto glassmorphism -->
   <div class="emoji-overlay" (click)="closeSelector()"></div>
 
   <!-- Panel principal -->
   <div class="emoji-panel">
     <p-card styleClass="emoji-card">
 
-      <!-- Header con búsqueda -->
+      <!-- Header con búsqueda mejorada -->
       <div class="emoji-header">
         <div class="search-container">
           <span class="p-input-icon-left">
@@ -17,10 +17,14 @@
               pInputText
               [(ngModel)]="searchTerm"
               (input)="searchEmojis()"
+              (keydown.escape)="clearSearch()"
               placeholder="Buscar emojis..."
-              class="search-input">
+              class="search-input"
+              autocomplete="off"
+              spellcheck="false">
           </span>
 
+          <!-- Botón de limpiar búsqueda con animación -->
           <p-button
             *ngIf="searchTerm"
             icon="pi pi-times"
@@ -28,10 +32,12 @@
             size="small"
             severity="secondary"
             [text]="true"
-            pTooltip="Limpiar búsqueda">
+            pTooltip="Limpiar búsqueda"
+            styleClass="clear-search-btn">
           </p-button>
         </div>
 
+        <!-- Botón de cerrar con efecto de rotación -->
         <p-button
           icon="pi pi-times"
           (onClick)="closeSelector()"
@@ -39,63 +45,122 @@
           severity="secondary"
           [text]="true"
           styleClass="close-btn"
-          pTooltip="Cerrar">
+          pTooltip="Cerrar selector">
         </p-button>
       </div>
 
-      <!-- Categorías -->
+      <!-- Categorías con scroll horizontal mejorado -->
       <div class="categories-container">
-        <div class="categories-scroll">
+        <div class="categories-scroll" #categoriesScroll>
           <button
-            *ngFor="let category of emojiCategories"
+            *ngFor="let category of emojiCategories; trackBy: trackByCategory"
             class="category-btn"
             [class.active]="selectedCategory === category.name"
             (click)="selectCategory(category.name)"
             [pTooltip]="getCategoryDisplayName(category.name)"
-            type="button">
-            {{ getCategoryIcon(category.name) }}
+            type="button"
+            [attr.aria-label]="'Categoría ' + getCategoryDisplayName(category.name)">
+            <span class="category-icon">{{ getCategoryIcon(category.name) }}</span>
+            <span class="category-indicator" *ngIf="selectedCategory === category.name"></span>
           </button>
         </div>
       </div>
 
-      <!-- Título de categoría actual -->
+      <!-- Título de categoría con información adicional -->
       <div class="category-title">
-        <h6>{{ getCategoryDisplayName(selectedCategory) }}</h6>
-        <p-chip
-          [label]="getCurrentEmojis().length.toString()"
-          size="small">
-        </p-chip>
+        <div class="category-info">
+          <h6>{{ getCategoryDisplayName(selectedCategory) }}</h6>
+          <small class="category-description" *ngIf="getCategoryDescription(selectedCategory)">
+            {{ getCategoryDescription(selectedCategory) }}
+          </small>
+        </div>
+        <div class="category-stats">
+          <p-chip
+            [label]="getCurrentEmojis().length.toString()"
+            size="small"
+            styleClass="emoji-count-chip">
+          </p-chip>
+        </div>
       </div>
 
-      <!-- Grid de emojis -->
-      <div class="emoji-content">
+      <!-- Contenido de emojis con estados mejorados -->
+      <div class="emoji-content" #emojiContent>
 
-        <!-- Estado sin emojis -->
-        <div *ngIf="!hasEmojis()" class="no-emojis">
-          <i class="pi pi-face-smile" style="font-size: 2rem; opacity: 0.5;"></i>
-          <p>No se encontraron emojis</p>
-          <small *ngIf="searchTerm">Intenta con otro término de búsqueda</small>
+        <!-- Estado de carga -->
+        <div *ngIf="isLoading" class="loading-emojis">
+          <div class="loading-spinner">
+            <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: var(--primary-400);"></i>
+          </div>
+          <p>Cargando emojis...</p>
         </div>
 
-        <!-- Grid de emojis -->
-        <div *ngIf="hasEmojis()" class="emoji-grid">
+        <!-- Estado sin emojis con sugerencias -->
+        <div *ngIf="!hasEmojis() && !isLoading" class="no-emojis">
+          <div class="no-emojis-icon">
+            <i class="pi pi-face-smile"></i>
+          </div>
+          <h6>No se encontraron emojis</h6>
+          <p *ngIf="searchTerm">Intenta con otro término de búsqueda</p>
+          <p *ngIf="!searchTerm">Selecciona una categoría diferente</p>
+          <div class="no-emojis-suggestions" *ngIf="searchTerm">
+            <small>Sugerencias:</small>
+            <div class="suggestion-tags">
+              <span class="suggestion-tag" (click)="searchTerm = 'feliz'; searchEmojis()">feliz</span>
+              <span class="suggestion-tag" (click)="searchTerm = 'amor'; searchEmojis()">amor</span>
+              <span class="suggestion-tag" (click)="searchTerm = 'risa'; searchEmojis()">risa</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid de emojis con efectos mejorados -->
+        <div *ngIf="hasEmojis() && !isLoading" class="emoji-grid">
           <button
-            *ngFor="let emoji of getCurrentEmojis()"
+            *ngFor="let emoji of getCurrentEmojis(); trackBy: trackByEmoji"
             class="emoji-btn"
+            [class.selected]="isEmojiSelected(emoji)"
             (click)="selectEmoji(emoji)"
             [pTooltip]="emoji"
-            type="button">
-            {{ emoji }}
+            type="button"
+            [attr.aria-label]="'Seleccionar emoji ' + emoji">
+            <span class="emoji-char">{{ emoji }}</span>
+            <span class="emoji-selection-indicator" *ngIf="isEmojiSelected(emoji)">
+              <i class="pi pi-check"></i>
+            </span>
           </button>
         </div>
       </div>
 
-      <!-- Footer informativo -->
+      <!-- Footer informativo con acciones adicionales -->
       <div class="emoji-footer">
-        <small class="emoji-info">
+        <div class="emoji-info">
           <i class="pi pi-info-circle"></i>
-          Haz clic en un emoji para agregarlo al mensaje
-        </small>
+          <span>Haz clic en un emoji para agregarlo al mensaje</span>
+        </div>
+
+        <!-- Acciones rápidas -->
+        <div class="emoji-actions" *ngIf="recentEmojis.length > 0">
+          <small class="actions-label">Acciones rápidas:</small>
+          <div class="action-buttons">
+            <p-button
+              label="Limpiar recientes"
+              icon="pi pi-trash"
+              size="small"
+              severity="secondary"
+              [text]="true"
+              (onClick)="clearRecentEmojis()"
+              pTooltip="Limpiar emojis recientes">
+            </p-button>
+            <p-button
+              label="Ver todos"
+              icon="pi pi-th-large"
+              size="small"
+              severity="secondary"
+              [text]="true"
+              (onClick)="selectCategory('recientes')"
+              pTooltip="Ver todos los emojis recientes">
+            </p-button>
+          </div>
+        </div>
       </div>
 
     </p-card>
