@@ -1,1 +1,349 @@
-<p>media-viewer works!</p>
+<p-dialog
+  [(visible)]="dialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '90vw', height: '90vh' }"
+  [maximizable]="true"
+  (onHide)="close()"
+  class="media-viewer-dialog">
+
+  <!-- Header del diálogo -->
+  <ng-template pTemplate="header">
+    <div class="dialog-header">
+      <div class="header-title">
+        <i [class]="getTypeIcon(currentMedia?.tipo || 'FOTO')"></i>
+        <span>{{ currentMedia?.title || 'Visor Multimedia' }}</span>
+      </div>
+      <div class="header-actions">
+        <p-button
+          [icon]="currentMedia?.isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+          [text]="true"
+          [severity]="currentMedia?.isFavorite ? 'danger' : 'secondary'"
+          (onClick)="toggleFavorite()"
+          [title]="currentMedia?.isFavorite ? 'Remover de favoritos' : 'Agregar a favoritos'"
+          class="action-btn" />
+
+        <p-button
+          [icon]="currentMedia?.isPublic ? 'pi pi-globe' : 'pi pi-lock'"
+          [text]="true"
+          [severity]="currentMedia?.isPublic ? 'success' : 'secondary'"
+          (onClick)="togglePublic()"
+          [title]="currentMedia?.isPublic ? 'Marcar como privado' : 'Marcar como público'"
+          class="action-btn" />
+
+        <p-button
+          icon="pi pi-download"
+          [text]="true"
+          severity="info"
+          (onClick)="downloadMedia()"
+          title="Descargar"
+          class="action-btn" />
+
+                <p-button
+          icon="pi pi-share-alt"
+          [text]="true"
+          severity="warn"
+          (onClick)="shareMedia()"
+          title="Compartir"
+          class="action-btn" />
+
+        <p-button
+          icon="pi pi-trash"
+          [text]="true"
+          severity="danger"
+          (onClick)="deleteMedia()"
+          title="Eliminar"
+          class="action-btn" />
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Contenido del diálogo -->
+  <div class="media-viewer-content">
+    <!-- Navegación entre archivos -->
+    <div class="media-navigation" *ngIf="relatedMedia.length > 0">
+      <p-button
+        icon="pi pi-chevron-left"
+        [text]="true"
+        [disabled]="relatedMedia.length <= 1"
+        (onClick)="navigateToMedia('prev')"
+        class="nav-btn" />
+
+      <span class="nav-info">{{ relatedMedia.length + 1 }} archivos</span>
+
+      <p-button
+        icon="pi pi-chevron-right"
+        [text]="true"
+        [disabled]="relatedMedia.length <= 1"
+        (onClick)="navigateToMedia('next')"
+        class="nav-btn" />
+    </div>
+
+    <!-- Área principal del media -->
+    <div class="media-main" *ngIf="currentMedia">
+      <!-- Visor de imagen -->
+      <div *ngIf="currentMedia.tipo === 'FOTO'" class="image-viewer">
+        <div class="image-container"
+             [style.transform]="'scale(' + zoomLevel + ') rotate(' + rotation + 'deg)'">
+          <img [src]="currentMedia.url"
+               [alt]="currentMedia.title"
+               (load)="onImageLoad()"
+               (error)="onMediaError()"
+               class="media-image" />
+        </div>
+
+        <!-- Controles de imagen -->
+        <div class="image-controls">
+          <p-button
+            icon="pi pi-search-minus"
+            [text]="true"
+            (onClick)="zoomOut()"
+            title="Reducir zoom"
+            class="control-btn" />
+
+          <p-button
+            icon="pi pi-refresh"
+            [text]="true"
+            (onClick)="resetZoom()"
+            title="Zoom original"
+            class="control-btn" />
+
+          <p-button
+            icon="pi pi-search-plus"
+            [text]="true"
+            (onClick)="zoomIn()"
+            title="Aumentar zoom"
+            class="control-btn" />
+
+          <p-button
+            icon="pi pi-undo"
+            [text]="true"
+            (onClick)="rotateCounterClockwise()"
+            title="Rotar izquierda"
+            class="control-btn" />
+
+          <p-button
+            icon="pi pi-redo"
+            [text]="true"
+            (onClick)="rotateClockwise()"
+            title="Rotar derecha"
+            class="control-btn" />
+        </div>
+      </div>
+
+      <!-- Visor de video -->
+      <div *ngIf="currentMedia.tipo === 'VIDEO'" class="video-viewer">
+        <video [src]="currentMedia.url"
+               [controls]="false"
+               (loadedmetadata)="onVideoLoad()"
+               (error)="onMediaError()"
+               class="media-video">
+          Tu navegador no soporta el elemento video.
+        </video>
+
+        <!-- Controles personalizados de video -->
+        <div class="video-controls">
+          <div class="progress-bar">
+            <input
+              type="range"
+              [value]="currentTime"
+              [min]="0"
+              [max]="duration"
+              (input)="seekTo($event)"
+              class="progress-slider" />
+            <span class="time-display">{{ currentTime | number:'1.0-0' }} / {{ duration | number:'1.0-0' }}</span>
+          </div>
+
+          <div class="control-buttons">
+            <p-button
+              [icon]="isPlaying ? 'pi pi-pause' : 'pi pi-play'"
+              [text]="true"
+              (onClick)="togglePlayPause()"
+              title="Reproducir/Pausar"
+              class="control-btn" />
+
+            <p-button
+              [icon]="isMuted ? 'pi pi-volume-off' : 'pi pi-volume-up'"
+              [text]="true"
+              (onClick)="toggleMuted()"
+              title="Silenciar"
+              class="control-btn" />
+
+            <div class="volume-control">
+              <input
+                type="range"
+                [value]="volume"
+                [min]="0"
+                [max]="1"
+                [step]="0.1"
+                (input)="setVolume($event)"
+                class="volume-slider" />
+            </div>
+
+            <div class="playback-rate">
+              <p-button
+                label="0.5x"
+                [text]="true"
+                [severity]="playbackRate === 0.5 ? 'primary' : 'secondary'"
+                (onClick)="setPlaybackRate(0.5)"
+                class="rate-btn" />
+              <p-button
+                label="1x"
+                [text]="true"
+                [severity]="playbackRate === 1 ? 'primary' : 'secondary'"
+                (onClick)="setPlaybackRate(1)"
+                class="rate-btn" />
+              <p-button
+                label="1.5x"
+                [text]="true"
+                [severity]="playbackRate === 1.5 ? 'primary' : 'secondary'"
+                (onClick)="setPlaybackRate(1.5)"
+                class="rate-btn" />
+              <p-button
+                label="2x"
+                [text]="true"
+                [severity]="playbackRate === 2 ? 'primary' : 'secondary'"
+                (onClick)="setPlaybackRate(2)"
+                class="rate-btn" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visor de audio -->
+      <div *ngIf="currentMedia.tipo === 'AUDIO'" class="audio-viewer">
+        <div class="audio-cover">
+          <i class="pi pi-music"></i>
+        </div>
+
+        <audio [src]="currentMedia.url"
+               [controls]="false"
+               (loadedmetadata)="onAudioLoad()"
+               (error)="onMediaError()"
+               class="media-audio">
+          Tu navegador no soporta el elemento audio.
+        </audio>
+
+        <!-- Controles de audio -->
+        <div class="audio-controls">
+          <div class="progress-bar">
+            <input
+              type="range"
+              [value]="currentTime"
+              [min]="0"
+              [max]="duration"
+              (input)="seekTo($event)"
+              class="progress-slider" />
+            <span class="time-display">{{ currentTime | number:'1.0-0' }} / {{ duration | number:'1.0-0' }}</span>
+          </div>
+
+          <div class="control-buttons">
+            <p-button
+              [icon]="isPlaying ? 'pi pi-pause' : 'pi pi-play'"
+              [text]="true"
+              (onClick)="togglePlayPause()"
+              title="Reproducir/Pausar"
+              class="control-btn" />
+
+            <p-button
+              [icon]="isMuted ? 'pi pi-volume-off' : 'pi pi-volume-up'"
+              [text]="true"
+              (onClick)="toggleMuted()"
+              title="Silenciar"
+              class="control-btn" />
+
+            <div class="volume-control">
+              <input
+                type="range"
+                [value]="volume"
+                [min]="0"
+                [max]="1"
+                [step]="0.1"
+                (input)="setVolume($event)"
+                class="volume-slider" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visor de documento -->
+      <div *ngIf="currentMedia.tipo === 'DOCUMENTO'" class="document-viewer">
+        <div class="document-info">
+          <i class="pi pi-file-pdf"></i>
+          <h3>{{ currentMedia.title }}</h3>
+          <p>{{ currentMedia.descripcion }}</p>
+          <div class="document-meta">
+            <span><i class="pi pi-calendar"></i> {{ currentMedia.uploadDate | date:'shortDate' }}</span>
+            <span><i class="pi pi-user"></i> {{ currentMedia.autorNombre }}</span>
+            <span><i class="pi pi-file"></i> {{ getFileSize(currentMedia.size) }}</span>
+          </div>
+          <p-button
+            label="Abrir Documento"
+            icon="pi pi-external-link"
+            (onClick)="downloadMedia()" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de información y media relacionado en el footer del diálogo -->
+  <ng-template pTemplate="footer">
+    <div class="media-info-panel">
+      <div class="info-section">
+        <h4>Información del Archivo</h4>
+        <div class="info-grid" *ngIf="currentMedia">
+          <div class="info-item">
+            <span class="info-label">Título:</span>
+            <span class="info-value">{{ currentMedia.title }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Tipo:</span>
+            <span class="info-value">{{ getTypeLabel(currentMedia.tipo) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Tamaño:</span>
+            <span class="info-value">{{ getFileSize(currentMedia.size) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Formato:</span>
+            <span class="info-value">{{ currentMedia.format }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Autor:</span>
+            <span class="info-value">{{ currentMedia.autorNombre }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Cita:</span>
+            <span class="info-value">{{ currentMedia.citaTitulo }}</span>
+          </div>
+          <div class="info-item" *ngIf="currentMedia.descripcion">
+            <span class="info-label">Descripción:</span>
+            <span class="info-value">{{ currentMedia.descripcion }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Media relacionado -->
+      <div class="related-media" *ngIf="relatedMedia.length > 0">
+        <h4>Media Relacionado</h4>
+        <div class="related-grid">
+          <div *ngFor="let media of relatedMedia"
+               class="related-item"
+               (click)="navigateToMediaById(media.id!)"
+               [class.active]="media.id === currentMedia?.id">
+            <div class="related-thumbnail">
+              <i [class]="getTypeIcon(media.tipo)"></i>
+            </div>
+            <div class="related-info">
+              <span class="related-title">{{ media.title }}</span>
+              <span class="related-type">{{ getTypeLabel(media.tipo) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</p-dialog>

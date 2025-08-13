@@ -3,6 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { Multimedia, TipoMultimedia } from '../../../../core/models/multimedia';
+import { MediaFilters } from '../media-filter/media-filter.component';
 
 // Interfaz extendida para la galería que incluye propiedades adicionales
 interface MediaItem extends Multimedia {
@@ -32,16 +33,23 @@ export class MediaGalleryComponent implements OnInit, OnDestroy {
   selectedItems: MediaItem[] = [];
 
   // Filtros
-  searchTerm = '';
-  selectedType: string = '';
-  selectedTags: string[] = [];
-  showFavoritesOnly = false;
-  showPublicOnly = false;
+  currentFilters: MediaFilters = {
+    searchTerm: '',
+    tipo: '',
+    autorId: null,
+    citaId: null,
+    fechaDesde: null,
+    fechaHasta: null,
+    ordenarPor: 'fechaSubida',
+    orden: 'desc'
+  };
 
   // Vista
   viewMode: 'grid' | 'list' = 'grid';
-  sortBy: string = 'uploadDate';
-  sortOrder: 'asc' | 'desc' = 'desc';
+
+  // Visor
+  showViewer = false;
+  selectedMediaItem: MediaItem | null = null;
 
   // Paginación
   currentPage = 1;
@@ -78,7 +86,7 @@ export class MediaGalleryComponent implements OnInit, OnDestroy {
 
   loadMediaItems(): void {
     this.loading = true;
-    
+
     // Simulación de carga de datos
     setTimeout(() => {
       this.mediaItems = this.getMockMediaItems();
@@ -91,57 +99,66 @@ export class MediaGalleryComponent implements OnInit, OnDestroy {
     let filtered = [...this.mediaItems];
 
     // Filtro por búsqueda
-    if (this.searchTerm) {
-      filtered = filtered.filter(item => 
-        item.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        item.descripcion?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        item.tags.some(tag => tag.toLowerCase().includes(this.searchTerm.toLowerCase()))
+    if (this.currentFilters.searchTerm) {
+      filtered = filtered.filter(item =>
+        item.title.toLowerCase().includes(this.currentFilters.searchTerm.toLowerCase()) ||
+        item.descripcion?.toLowerCase().includes(this.currentFilters.searchTerm.toLowerCase()) ||
+        item.tags.some(tag => tag.toLowerCase().includes(this.currentFilters.searchTerm.toLowerCase()))
       );
     }
 
     // Filtro por tipo
-    if (this.selectedType) {
-      filtered = filtered.filter(item => item.tipo === this.selectedType);
+    if (this.currentFilters.tipo) {
+      filtered = filtered.filter(item => item.tipo === this.currentFilters.tipo);
     }
 
-    // Filtro por tags
-    if (this.selectedTags.length > 0) {
-      filtered = filtered.filter(item => 
-        this.selectedTags.some(tag => item.tags.includes(tag))
-      );
+    // Filtro por autor
+    if (this.currentFilters.autorId) {
+      filtered = filtered.filter(item => item.autorId === this.currentFilters.autorId);
     }
 
-    // Filtro por favoritos
-    if (this.showFavoritesOnly) {
-      filtered = filtered.filter(item => item.isFavorite);
+    // Filtro por cita
+    if (this.currentFilters.citaId) {
+      filtered = filtered.filter(item => item.citaId === this.currentFilters.citaId);
     }
 
-    // Filtro por público
-    if (this.showPublicOnly) {
-      filtered = filtered.filter(item => item.isPublic);
+    // Filtro por fecha desde
+    if (this.currentFilters.fechaDesde) {
+      const fechaDesde = new Date(this.currentFilters.fechaDesde);
+      filtered = filtered.filter(item => new Date(item.fechaSubida || '') >= fechaDesde);
+    }
+
+    // Filtro por fecha hasta
+    if (this.currentFilters.fechaHasta) {
+      const fechaHasta = new Date(this.currentFilters.fechaHasta);
+      filtered = filtered.filter(item => new Date(item.fechaSubida || '') <= fechaHasta);
     }
 
     // Ordenamiento
     filtered.sort((a, b) => {
       let aValue: any, bValue: any;
-      
-      switch (this.sortBy) {
-        case 'title':
+
+      switch (this.currentFilters.ordenarPor) {
+        case 'nombre':
           aValue = a.title.toLowerCase();
           bValue = b.title.toLowerCase();
           break;
-        case 'size':
-          aValue = a.size;
-          bValue = b.size;
+        case 'tipo':
+          aValue = a.tipo.toLowerCase();
+          bValue = b.tipo.toLowerCase();
           break;
-        case 'uploadDate':
+        case 'citaTitulo':
+          aValue = (a.citaTitulo || '').toLowerCase();
+          bValue = (b.citaTitulo || '').toLowerCase();
+          break;
+        case 'fechaSubida':
         default:
-          aValue = a.uploadDate;
-          bValue = b.uploadDate;
+          aValue = new Date(a.fechaSubida || '');
+          bValue = new Date(b.fechaSubida || '');
           break;
       }
 
-      if (this.sortOrder === 'asc') {
+      if (this.currentFilters.orden === 'asc') {
         return aValue > bValue ? 1 : -1;
       } else {
         return aValue < bValue ? 1 : -1;
@@ -153,17 +170,47 @@ export class MediaGalleryComponent implements OnInit, OnDestroy {
     this.currentPage = 1;
   }
 
-  onSearch(): void {
+  onFiltersChanged(filters: MediaFilters): void {
+    this.currentFilters = filters;
     this.applyFilters();
   }
 
-  onFilterChange(): void {
-    this.applyFilters();
+  // Métodos del visor
+  openViewer(mediaItem: MediaItem): void {
+    this.selectedMediaItem = mediaItem;
+    this.showViewer = true;
   }
 
-  onSortChange(): void {
-    this.applyFilters();
+  closeViewer(): void {
+    this.showViewer = false;
+    this.selectedMediaItem = null;
   }
+
+  onMediaAction(action: string, mediaItem: MediaItem): void {
+    switch (action) {
+      case 'view':
+        this.openViewer(mediaItem);
+        break;
+      case 'edit':
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Editar',
+          detail: `Editando ${mediaItem.title}`
+        });
+        break;
+      case 'delete':
+        this.deleteItem(mediaItem);
+        break;
+      case 'favorite':
+        this.toggleFavorite(mediaItem);
+        break;
+      case 'public':
+        this.togglePublic(mediaItem);
+        break;
+    }
+  }
+
+
 
   toggleViewMode(): void {
     this.viewMode = this.viewMode === 'grid' ? 'list' : 'grid';

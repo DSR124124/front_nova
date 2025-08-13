@@ -1,1 +1,208 @@
-<p>media-filter works!</p>
+<div class="media-filter-container">
+  <!-- Header de Filtros -->
+  <div class="filter-header">
+    <div class="header-content">
+      <div class="header-title">
+        <i class="pi pi-filter"></i>
+        <h3>Filtros de Multimedia</h3>
+      </div>
+      <div class="header-actions">
+        <p-button
+          *ngIf="hasActiveFilters"
+          label="Limpiar Filtros"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          [rounded]="true"
+          size="small"
+          (onClick)="clearFilters()"
+        />
+        <p-button
+          [label]="isExpanded ? 'Ocultar Filtros' : 'Mostrar Filtros'"
+          [icon]="isExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+          severity="primary"
+          [outlined]="true"
+          [rounded]="true"
+          size="small"
+          (onClick)="toggleFilters()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido de Filtros -->
+  <div class="filter-content" [class.expanded]="isExpanded">
+    <form [formGroup]="filterForm" class="filter-form">
+
+      <!-- Filtros Principales -->
+      <div class="filter-section">
+        <h4>Filtros Principales</h4>
+        <div class="filter-grid">
+
+          <!-- Búsqueda por texto -->
+          <div class="filter-group">
+            <label for="searchTerm">Buscar</label>
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                id="searchTerm"
+                pInputText
+                formControlName="searchTerm"
+                placeholder="Buscar por nombre, descripción..."
+                class="w-full"
+              />
+            </span>
+          </div>
+
+          <!-- Tipo de multimedia -->
+          <div class="filter-group">
+            <label for="tipo">Tipo de Archivo</label>
+            <p-dropdown
+              id="tipo"
+              [options]="mediaTypes"
+              formControlName="tipo"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccionar tipo"
+              [showClear]="true"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Autor -->
+          <div class="filter-group">
+            <label for="autorId">Autor</label>
+            <p-dropdown
+              id="autorId"
+              [options]="availableAutores"
+              formControlName="autorId"
+              optionLabel="nombre"
+              optionValue="id"
+              placeholder="Seleccionar autor"
+              [showClear]="true"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Cita asociada -->
+          <div class="filter-group">
+            <label for="citaId">Cita Asociada</label>
+            <p-dropdown
+              id="citaId"
+              [options]="availableCitas"
+              formControlName="citaId"
+              optionLabel="titulo"
+              optionValue="id"
+              placeholder="Seleccionar cita"
+              [showClear]="true"
+              class="w-full"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros de Fecha -->
+      <div class="filter-section">
+        <h4>Filtros de Fecha</h4>
+        <div class="filter-grid">
+
+          <!-- Fecha desde -->
+          <div class="filter-group">
+            <label for="fechaDesde">Desde</label>
+            <p-calendar
+              id="fechaDesde"
+              formControlName="fechaDesde"
+              placeholder="Seleccionar fecha"
+              [showIcon]="true"
+              dateFormat="dd/mm/yy"
+              [showClear]="true"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Fecha hasta -->
+          <div class="filter-group">
+            <label for="fechaHasta">Hasta</label>
+            <p-calendar
+              id="fechaHasta"
+              formControlName="fechaHasta"
+              placeholder="Seleccionar fecha"
+              [showIcon]="true"
+              dateFormat="dd/mm/yy"
+              [showClear]="true"
+              class="w-full"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Ordenamiento -->
+      <div class="filter-section">
+        <h4>Ordenamiento</h4>
+        <div class="filter-grid">
+
+          <!-- Ordenar por -->
+          <div class="filter-group">
+            <label for="ordenarPor">Ordenar por</label>
+            <p-dropdown
+              id="ordenarPor"
+              [options]="sortOptions"
+              formControlName="ordenarPor"
+              optionLabel="label"
+              optionValue="value"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Orden -->
+          <div class="filter-group">
+            <label for="orden">Orden</label>
+            <p-dropdown
+              id="orden"
+              [options]="orderOptions"
+              formControlName="orden"
+              optionLabel="label"
+              optionValue="value"
+              class="w-full"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="filter-actions">
+        <p-button
+          label="Aplicar Filtros"
+          icon="pi pi-check"
+          severity="success"
+          [rounded]="true"
+          (onClick)="applyFilters()"
+        />
+        <p-button
+          label="Limpiar Todo"
+          icon="pi pi-refresh"
+          severity="secondary"
+          [outlined]="true"
+          [rounded]="true"
+          (onClick)="clearFilters()"
+        />
+      </div>
+    </form>
+  </div>
+
+  <!-- Indicador de Filtros Activos -->
+  <div class="active-filters" *ngIf="hasActiveFilters && !isExpanded">
+    <div class="active-filters-content">
+      <i class="pi pi-filter-fill"></i>
+      <span>Filtros activos</span>
+      <p-button
+        label="Ver Filtros"
+        icon="pi pi-eye"
+        severity="primary"
+        [text]="true"
+        size="small"
+        (onClick)="toggleFilters()"
+      />
+    </div>
+  </div>
+</div>
