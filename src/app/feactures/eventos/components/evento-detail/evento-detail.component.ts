@@ -83,13 +83,13 @@ export class EventoDetailComponent implements OnInit, OnDestroy {
   }
 
   private cargarLugar(lugarId: number) {
-    this.lugarService.listarPorId(lugarId)
+    this.lugarService.getLugarById(lugarId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (lugar) => {
+        next: (lugar: any) => {
           this.lugar = lugar;
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al cargar lugar:', error);
         }
       });

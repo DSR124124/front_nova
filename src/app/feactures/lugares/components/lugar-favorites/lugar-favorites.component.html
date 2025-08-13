@@ -1,1 +1,168 @@
-<p>lugar-favorites works!</p>
+<div class="favorites-container">
+  <!-- Header -->
+  <div class="favorites-header">
+    <h2 class="favorites-title">
+      <i class="pi pi-heart"></i>
+      Mis Lugares Favoritos
+    </h2>
+    <p class="favorites-subtitle">Gestiona y organiza tus lugares preferidos</p>
+  </div>
+
+  <!-- Componente de búsqueda avanzada integrado -->
+  <app-lugar-search
+    (searchResults)="onSearchResults($event)"
+    (searchCleared)="onSearchCleared()"
+  />
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-overlay">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">Cargando favoritos...</p>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="favorites-content">
+    <!-- Estadísticas -->
+    <div class="stats-section">
+      <p-card styleClass="stats-card">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="pi pi-heart"></i>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{ lugaresFavoritos.length }}</h3>
+              <p class="stat-label">Total Favoritos</p>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="pi pi-map-marker"></i>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{ lugares.length }}</h3>
+              <p class="stat-label">Total Lugares</p>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon">
+              <i class="pi pi-percentage"></i>
+            </div>
+            <div class="stat-info">
+              <h3 class="stat-number">{{ lugares.length > 0 ? ((lugaresFavoritos.length / lugares.length) * 100).toFixed(1) : 0 }}%</h3>
+              <p class="stat-label">Porcentaje Favoritos</p>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Lista de favoritos -->
+    <div class="favorites-list-section">
+      <div class="section-header">
+        <h3>Lugares Favoritos</h3>
+        <span class="favorites-count">{{ lugaresFavoritos.length }} lugares</span>
+      </div>
+
+      <!-- Mensaje cuando no hay favoritos -->
+      <div *ngIf="lugaresFavoritos.length === 0 && !loading" class="no-favorites">
+        <p-card styleClass="empty-card">
+          <div class="empty-content">
+            <i class="pi pi-heart empty-icon"></i>
+            <h4>No tienes lugares favoritos</h4>
+            <p>Agrega lugares a tus favoritos para verlos aquí</p>
+            <p-button
+              label="Explorar Lugares"
+              icon="pi pi-map"
+              severity="primary"
+              (onClick)="navegarALugares()"
+            />
+          </div>
+        </p-card>
+      </div>
+
+      <!-- Grid de lugares favoritos -->
+      <div *ngIf="lugaresFavoritos.length > 0" class="favorites-grid">
+        <p-card
+          *ngFor="let lugar of lugaresFavoritos; trackBy: trackByLugar"
+          styleClass="lugar-card"
+        >
+          <div class="lugar-card-header">
+            <div class="lugar-icon">
+              <i class="pi" [class]="getIconClass(lugar.categoria)"></i>
+            </div>
+            <div class="lugar-actions">
+              <p-button
+                icon="pi pi-heart-fill"
+                severity="danger"
+                [outlined]="true"
+                size="small"
+                (onClick)="quitarDeFavoritos(lugar)"
+                pTooltip="Quitar de favoritos"
+              />
+            </div>
+          </div>
+
+          <div class="lugar-card-content">
+            <h4 class="lugar-nombre">{{ lugar.nombre }}</h4>
+
+            <p class="lugar-direccion" *ngIf="lugar.direccion">
+              <i class="pi pi-map-marker"></i> {{ lugar.direccion }}
+            </p>
+
+            <p class="lugar-descripcion" *ngIf="lugar.descripcion">
+              {{ lugar.descripcion }}
+            </p>
+
+            <div class="lugar-details">
+              <p-tag
+                *ngIf="lugar.categoria"
+                [value]="lugar.categoria"
+                severity="info"
+                styleClass="categoria-tag"
+              />
+
+              <app-rating-stars
+                *ngIf="lugar.rating"
+                [stars]="5"
+                [readonly]="true"
+                [showCancel]="false"
+                size="small"
+                [(ngModel)]="lugar.rating"
+              />
+
+              <p-tag
+                *ngIf="lugar.precio"
+                [value]="lugar.precio"
+                severity="success"
+                styleClass="precio-tag"
+              />
+            </div>
+          </div>
+
+          <div class="lugar-card-footer">
+            <p-button
+              label="Ver Detalle"
+              icon="pi pi-eye"
+              severity="primary"
+              [outlined]="true"
+              size="small"
+              (onClick)="verDetalle(lugar)"
+            />
+
+            <p-button
+              label="Editar"
+              icon="pi pi-pencil"
+              severity="secondary"
+              [outlined]="true"
+              size="small"
+              (onClick)="editarLugar(lugar)"
+            />
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>

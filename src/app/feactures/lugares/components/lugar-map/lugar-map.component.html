@@ -1,1 +1,251 @@
-<p>lugar-map works!</p>
+<div class="mapa-container">
+  <!-- Header del mapa -->
+  <div class="map-header">
+    <h2 class="map-title">
+      <i class="pi pi-map"></i>
+      Mapa de Lugares
+    </h2>
+    <p class="map-subtitle">Explora y descubre lugares especiales en el mapa</p>
+  </div>
+
+  <!-- Componente de búsqueda avanzada integrado -->
+  <app-lugar-search
+    (searchResults)="onSearchResults($event)"
+    (searchCleared)="onSearchCleared()"
+  />
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-overlay">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">Cargando lugares...</p>
+  </div>
+
+  <!-- Contenedor principal del mapa y lista -->
+  <div class="map-content-wrapper">
+    <!-- Contenedor del mapa -->
+    <div class="map-wrapper">
+      <div #mapContainer class="map-container leaflet-map"></div>
+
+      <!-- Leyenda del mapa -->
+      <div class="map-legend">
+        <h5>Leyenda</h5>
+        <div class="legend-items">
+          <div class="legend-item">
+            <i class="pi pi-user legend-icon user-icon"></i>
+            <span>Tu ubicación</span>
+          </div>
+          <div class="legend-item">
+            <i class="pi pi-utensils legend-icon restaurant-icon"></i>
+            <span>Restaurantes</span>
+          </div>
+          <div class="legend-item">
+            <i class="pi pi-tree legend-icon park-icon"></i>
+            <span>Parques</span>
+          </div>
+          <div class="legend-item">
+            <i class="pi pi-video legend-icon cinema-icon"></i>
+            <span>Cines</span>
+          </div>
+          <div class="legend-item">
+            <i class="pi pi-gamepad legend-icon entertainment-icon"></i>
+            <span>Entretenimiento</span>
+          </div>
+          <div class="legend-item">
+            <i class="pi pi-home legend-icon home-icon"></i>
+            <span>Casas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel de lista de lugares -->
+    <div class="lugares-panel" [class.detail-mode]="mostrarDetalle">
+      <!-- Vista de lista normal -->
+      <div *ngIf="!mostrarDetalle" class="list-view">
+        <div class="panel-header">
+          <h4>Lugares ({{ lugaresFiltrados.length }})</h4>
+          <div class="panel-actions">
+            <p-button
+              label="Nuevo Lugar"
+              icon="pi pi-plus"
+              size="small"
+              (onClick)="agregarLugar()"
+              styleClass="p-button-primary"
+            />
+          </div>
+        </div>
+
+        <!-- Lista de lugares -->
+        <div class="lugares-list-container">
+          <div *ngIf="lugaresFiltrados.length > 0" class="lugares-list">
+            <div
+              *ngFor="let lugar of lugaresFiltrados; let i = index; trackBy: trackByLugar"
+              class="lugar-item"
+              [class.active]="lugarSeleccionado?.id === lugar.id"
+              (click)="seleccionarLugar(lugar)"
+            >
+              <div class="lugar-header">
+                <div class="lugar-icon">
+                  <i class="pi" [class]="getIconClass(lugar.categoria)"></i>
+                </div>
+                <div class="lugar-info">
+                  <h5 class="lugar-nombre">{{ lugar.nombre }}</h5>
+                  <p class="lugar-categoria" *ngIf="lugar.categoria">
+                    <i class="pi pi-tag"></i> {{ lugar.categoria }}
+                  </p>
+                </div>
+                <div class="lugar-actions">
+                  <p-button
+                    [icon]="lugar.esFavorito ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                    [severity]="lugar.esFavorito ? 'danger' : 'secondary'"
+                    size="small"
+                    [text]="true"
+                    [rounded]="true"
+                    (onClick)="toggleFavorito(lugar)"
+                    pTooltip="Toggle favorito"
+                  />
+                </div>
+              </div>
+
+              <div class="lugar-content">
+                <p class="lugar-direccion" *ngIf="lugar.direccion">
+                  <i class="pi pi-map-marker"></i> {{ lugar.direccion }}
+                </p>
+
+                <p class="lugar-descripcion" *ngIf="lugar.descripcion">
+                  {{ lugar.descripcion }}
+                </p>
+
+                <div class="lugar-details">
+                  <div class="detail-row">
+                    <div class="detail-item" *ngIf="lugar.rating">
+                      <i class="pi pi-star"></i>
+                      <span>{{ lugar.rating }} estrellas</span>
+                    </div>
+
+                    <div class="detail-item" *ngIf="lugar.precio">
+                      <i class="pi pi-dollar"></i>
+                      <span>{{ lugar.precio }}</span>
+                    </div>
+
+                    <div class="detail-item" *ngIf="lugar.horario">
+                      <i class="pi pi-clock"></i>
+                      <span>{{ lugar.horario }}</span>
+                    </div>
+                  </div>
+
+                  <div class="lugar-tags">
+                    <p-tag
+                      *ngIf="lugar.categoria"
+                      [value]="lugar.categoria"
+                      severity="info"
+                      styleClass="categoria-tag"
+                    />
+
+                    <p-tag
+                      *ngIf="lugar.precio"
+                      [value]="lugar.precio"
+                      [severity]="getPrecioColor(lugar.precio)"
+                      styleClass="precio-tag"
+                    />
+
+                    <span class="estado-badge" [class]="lugar.esFavorito ? 'favorito' : 'normal'">
+                      <i class="pi" [class]="lugar.esFavorito ? 'pi-heart-fill' : 'pi-heart'"></i>
+                      {{ lugar.esFavorito ? 'Favorito' : 'Normal' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lugar-footer">
+                <div class="action-buttons">
+                  <p-button
+                    icon="pi pi-map-marker"
+                    severity="info"
+                    size="small"
+                    [outlined]="true"
+                    (onClick)="centrarEnLugar(lugar)"
+                    pTooltip="Centrar en mapa"
+                  />
+
+                  <p-button
+                    icon="pi pi-eye"
+                    severity="info"
+                    size="small"
+                    [outlined]="true"
+                    (onClick)="verDetalle(lugar)"
+                    pTooltip="Ver detalle"
+                  />
+
+                  <p-button
+                    icon="pi pi-pencil"
+                    severity="secondary"
+                    size="small"
+                    [outlined]="true"
+                    (onClick)="editarLugar(lugar)"
+                    pTooltip="Editar"
+                  />
+
+                  <p-button
+                    icon="pi pi-trash"
+                    severity="danger"
+                    size="small"
+                    [outlined]="true"
+                    (onClick)="eliminarLugar(lugar)"
+                    pTooltip="Eliminar"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estado vacío -->
+          <div *ngIf="lugaresFiltrados.length === 0 && !loading" class="empty-state">
+            <div class="empty-content">
+              <i class="pi pi-map-marker empty-icon"></i>
+              <h3>No se encontraron lugares</h3>
+              <p>
+                No se encontraron lugares con los criterios de búsqueda aplicados
+              </p>
+              <p-button
+                label="Nuevo Lugar"
+                icon="pi pi-plus"
+                (onClick)="agregarLugar()"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista de detalle -->
+      <div *ngIf="mostrarDetalle" class="detail-view">
+        <div class="detail-header">
+          <div class="detail-back">
+            <p-button
+              icon="pi pi-arrow-left"
+              severity="secondary"
+              size="small"
+              [outlined]="true"
+              (onClick)="volverALista()"
+              pTooltip="Volver a la lista"
+            />
+            <h4>Detalle del Lugar</h4>
+          </div>
+        </div>
+
+        <div class="detail-content">
+          <app-lugar-detail
+            [lugarId]="lugarSeleccionado?.id"
+            (lugarActualizado)="onLugarActualizado($event)"
+          ></app-lugar-detail>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast para mensajes -->
+<p-toast position="top-right" />
+
+<!-- Diálogo de confirmación -->
+<p-confirmDialog />

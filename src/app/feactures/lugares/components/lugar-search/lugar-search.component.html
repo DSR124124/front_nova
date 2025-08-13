@@ -1,1 +1,170 @@
-<p>lugar-search works!</p>
+<div class="search-container">
+  <!-- Formulario de búsqueda -->
+  <form [formGroup]="searchForm" class="search-form">
+    <!-- Búsqueda básica -->
+    <div class="search-basic">
+      <div class="search-input-group">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            type="text"
+            pInputText
+            formControlName="searchTerm"
+            placeholder="Buscar por nombre, dirección o descripción..."
+            class="search-input"
+          />
+        </span>
+
+        <div class="search-actions">
+          <p-button
+            [icon]="isAdvancedSearch ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+            [label]="isAdvancedSearch ? 'Ocultar Filtros' : 'Mostrar Filtros'"
+            severity="secondary"
+            [outlined]="true"
+            size="small"
+            (onClick)="toggleAdvancedSearch()"
+            styleClass="toggle-filters-btn"
+          />
+
+          <p-button
+            icon="pi pi-times"
+            label="Limpiar"
+            severity="secondary"
+            [outlined]="true"
+            size="small"
+            (onClick)="clearSearch()"
+            styleClass="clear-btn"
+            [disabled]="!hasActiveFilters() && !searchForm.get('searchTerm')?.value"
+          />
+        </div>
+      </div>
+
+      <!-- Indicador de filtros activos -->
+      <div *ngIf="getActiveFiltersCount() > 0" class="active-filters">
+        <span class="filters-badge">
+          <i class="pi pi-filter"></i>
+          {{ getActiveFiltersCount() }} filtro{{ getActiveFiltersCount() !== 1 ? 's' : '' }} activo{{ getActiveFiltersCount() !== 1 ? 's' : '' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Búsqueda avanzada -->
+    <div *ngIf="isAdvancedSearch" class="search-advanced">
+      <div class="filters-grid">
+        <!-- Filtros principales -->
+        <div class="filter-group">
+          <label class="filter-label">Categoría</label>
+          <p-select
+            [options]="categoriaOptions"
+            formControlName="categoria"
+            placeholder="Seleccionar categoría"
+            styleClass="filter-select"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Precio</label>
+          <p-select
+            [options]="precioOptions"
+            formControlName="precio"
+            placeholder="Seleccionar precio"
+            styleClass="filter-select"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Calificación mínima</label>
+          <p-select
+            [options]="ratingOptions"
+            formControlName="rating"
+            placeholder="Seleccionar rating"
+            styleClass="filter-select"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Horario</label>
+          <p-select
+            [options]="horarioOptions"
+            formControlName="horario"
+            placeholder="Seleccionar horario"
+            styleClass="filter-select"
+          />
+        </div>
+
+        <!-- Filtros de estado -->
+        <div class="filter-group">
+          <label class="filter-label">Estado</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <p-checkbox
+                formControlName="esFavorito"
+                [binary]="true"
+                inputId="favorito"
+              />
+              <label for="favorito" class="checkbox-label">
+                <i class="pi pi-heart"></i>
+                Solo favoritos
+              </label>
+            </div>
+
+            <div class="checkbox-item">
+              <p-checkbox
+                formControlName="esVerificado"
+                [binary]="true"
+                inputId="verificado"
+              />
+              <label for="verificado" class="checkbox-label">
+                <i class="pi pi-check-circle"></i>
+                Solo verificados
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtro de distancia -->
+        <div class="filter-group">
+          <label class="filter-label">Distancia máxima (km)</label>
+          <p-inputNumber
+            formControlName="distancia"
+            placeholder="0"
+            [min]="0"
+            [max]="100"
+            [showButtons]="true"
+            buttonLayout="horizontal"
+            spinnerMode="horizontal"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="1"
+            styleClass="distance-input"
+          />
+        </div>
+      </div>
+
+      <!-- Filtros de servicios -->
+      <div class="services-section">
+        <label class="filter-label">Servicios disponibles</label>
+        <div class="services-grid">
+          <div
+            *ngFor="let servicio of serviciosOptions"
+            class="service-checkbox"
+          >
+            <p-checkbox
+              [value]="servicio.value"
+              [inputId]="'servicio-' + servicio.value"
+              (onChange)="onServicioChange($event)"
+            />
+            <label [for]="'servicio-' + servicio.value" class="service-label">
+              {{ servicio.label }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-state">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">Buscando lugares...</p>
+  </div>
+</div>

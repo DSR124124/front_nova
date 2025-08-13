@@ -25,10 +25,49 @@ export class LugarService {
       telefono: '+51 123 456 789',
       email: 'info@laterraza.com',
       sitioWeb: 'www.laterraza.com',
-      coordenadas: { lat: -12.0464, lng: -77.0428 },
+      latitud: -12.0464,
+      longitud: -77.0428,
       imagenes: ['terraza1.jpg', 'terraza2.jpg'],
       servicios: ['WiFi', 'Estacionamiento', 'Terraza'],
       esFavorito: true,
+      esVerificado: true
+    },
+    {
+      id: 4,
+      nombre: 'Café Romántico',
+      descripcion: 'Café acogedor para citas románticas',
+      direccion: 'Jr. de la Unión 321',
+      categoria: CategoriaLugar.RESTAURANTE,
+      rating: 4.3,
+      precio: '$',
+      horario: '08:00 - 20:00',
+      telefono: '+51 123 456 792',
+      email: 'info@caferomantico.com',
+      sitioWeb: 'www.caferomantico.com',
+      latitud: -12.0470,
+      longitud: -77.0430,
+      imagenes: ['cafe1.jpg', 'cafe2.jpg'],
+      servicios: ['WiFi', 'Música en vivo', 'Terraza'],
+      esFavorito: true,
+      esVerificado: true
+    },
+    {
+      id: 5,
+      nombre: 'Mirador del Amor',
+      descripcion: 'Vista panorámica perfecta para momentos románticos',
+      direccion: 'Cerro San Cristóbal',
+      categoria: CategoriaLugar.PARQUE,
+      rating: 4.7,
+      precio: 'Gratis',
+      horario: '24 horas',
+      telefono: '+51 123 456 793',
+      email: 'mirador@municipio.com',
+      sitioWeb: 'www.miradordelamor.com',
+      latitud: -12.0450,
+      longitud: -77.0410,
+      imagenes: ['mirador1.jpg', 'mirador2.jpg'],
+      servicios: ['Vista panorámica', 'Áreas de descanso', 'Seguridad'],
+      esFavorito: false,
       esVerificado: true
     },
     {
@@ -43,7 +82,8 @@ export class LugarService {
       telefono: '+51 123 456 790',
       email: 'parque@municipio.com',
       sitioWeb: 'www.parquecentral.com',
-      coordenadas: { lat: -12.0464, lng: -77.0428 },
+      latitud: -12.0480,
+      longitud: -77.0440,
       imagenes: ['parque1.jpg', 'parque2.jpg'],
       servicios: ['Áreas verdes', 'Bancas', 'Fuentes'],
       esFavorito: false,
@@ -61,7 +101,8 @@ export class LugarService {
       telefono: '+51 123 456 791',
       email: 'info@cinemultiplex.com',
       sitioWeb: 'www.cinemultiplex.com',
-      coordenadas: { lat: -12.0464, lng: -77.0428 },
+      latitud: -12.0490,
+      longitud: -77.0460,
       imagenes: ['cine1.jpg', 'cine2.jpg'],
       servicios: ['Sala VIP', 'Comida', 'Estacionamiento'],
       esFavorito: false,
@@ -76,7 +117,7 @@ export class LugarService {
     return of([...this.lugaresMock]).pipe(delay(500));
   }
 
-  listarPorId(id: number): Observable<Lugar> {
+  getLugarById(id: number): Observable<Lugar> {
     const lugar = this.lugaresMock.find(l => l.id === id);
     if (lugar) {
       return of(lugar).pipe(delay(300));
@@ -84,16 +125,16 @@ export class LugarService {
     throw new Error('Lugar no encontrado');
   }
 
-  registrar(lugar: Lugar): Observable<void> {
+  createLugar(lugar: Lugar): Observable<void> {
     const nuevoLugar = { ...lugar, id: this.lugaresMock.length + 1 };
     this.lugaresMock.push(nuevoLugar);
     return of(void 0).pipe(delay(500));
   }
 
-  modificar(lugar: Lugar): Observable<void> {
-    const index = this.lugaresMock.findIndex(l => l.id === lugar.id);
+  updateLugar(id: number, lugar: Lugar): Observable<void> {
+    const index = this.lugaresMock.findIndex(l => l.id === id);
     if (index !== -1) {
-      this.lugaresMock[index] = { ...lugar };
+      this.lugaresMock[index] = { ...lugar, id };
       return of(void 0).pipe(delay(500));
     }
     throw new Error('Lugar no encontrado');
@@ -109,7 +150,7 @@ export class LugarService {
   }
 
   buscarPorNombre(nombre: string): Observable<Lugar[]> {
-    const lugares = this.lugaresMock.filter(l => 
+    const lugares = this.lugaresMock.filter(l =>
       l.nombre.toLowerCase().includes(nombre.toLowerCase())
     );
     return of(lugares).pipe(delay(300));

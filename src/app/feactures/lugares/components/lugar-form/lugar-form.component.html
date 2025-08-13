@@ -1,1 +1,334 @@
-<p>lugar-form works!</p>
+<div class="lugar-form-container">
+  <!-- Header -->
+  <div class="form-header">
+    <h2 class="form-title">
+      <i class="pi pi-map-marker"></i>
+      {{ editMode ? 'Editar Lugar' : 'Crear Nuevo Lugar' }}
+    </h2>
+    <p class="form-subtitle">
+      {{ editMode ? 'Actualiza la información del lugar' : 'Agrega un nuevo lugar especial para visitar' }}
+    </p>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">{{ editMode ? 'Cargando lugar...' : 'Guardando lugar...' }}</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="form-wrapper" *ngIf="!loading">
+    <form [formGroup]="lugarForm" (ngSubmit)="onSubmit()" class="lugar-form">
+
+      <!-- Información Básica -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-info-circle"></i>
+          Información Básica
+        </h3>
+
+        <!-- Nombre -->
+        <div class="form-field">
+          <label for="nombre" class="field-label">
+            Nombre del Lugar <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            pInputText
+            id="nombre"
+            formControlName="nombre"
+            placeholder="Ej: Restaurante El Buen Sabor"
+            class="field-input"
+            [class.field-error]="getFieldError('nombre')"
+          />
+          <small *ngIf="getFieldError('nombre')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('nombre') }}
+          </small>
+        </div>
+
+        <!-- Categoría -->
+        <div class="form-field">
+          <label for="categoria" class="field-label">
+            Categoría <span class="required">*</span>
+          </label>
+          <p-select
+            id="categoria"
+            [options]="categoriaOptions"
+            formControlName="categoria"
+            placeholder="Selecciona una categoría"
+            styleClass="field-input"
+            [class.field-error]="getFieldError('categoria')"
+            [filter]="true"
+          >
+            <ng-template pTemplate="selectedItem" let-option>
+              <div class="dropdown-item" *ngIf="option">
+                <i [class]="option.icon"></i>
+                <span>{{ option.label }}</span>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="item" let-option>
+              <div class="dropdown-item">
+                <i [class]="option.icon"></i>
+                <span>{{ option.label }}</span>
+              </div>
+            </ng-template>
+          </p-select>
+          <small *ngIf="getFieldError('categoria')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('categoria') }}
+          </small>
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-field">
+          <label for="descripcion" class="field-label">Descripción</label>
+          <textarea
+            pInputTextarea
+            id="descripcion"
+            formControlName="descripcion"
+            placeholder="Describe el lugar, ambiente, especialidades..."
+            rows="3"
+            class="field-input"
+          ></textarea>
+        </div>
+
+        <!-- Dirección -->
+        <div class="form-field">
+          <label for="direccion" class="field-label">
+            Dirección <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            pInputText
+            id="direccion"
+            formControlName="direccion"
+            placeholder="Dirección completa del lugar"
+            class="field-input"
+            [class.field-error]="getFieldError('direccion')"
+          />
+          <small *ngIf="getFieldError('direccion')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('direccion') }}
+          </small>
+        </div>
+      </div>
+
+      <!-- Detalles del Lugar -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-star"></i>
+          Detalles del Lugar
+        </h3>
+
+        <!-- Rating -->
+        <div class="form-field">
+          <label for="rating" class="field-label">Calificación</label>
+          <p-rating
+            id="rating"
+            formControlName="rating"
+            [stars]="5"
+            [readonly]="false"
+            styleClass="field-input"
+          ></p-rating>
+          <small class="field-help">Califica del 1 al 5 estrellas</small>
+        </div>
+
+        <!-- Precio -->
+        <div class="form-field">
+          <label for="precio" class="field-label">
+            Nivel de Precio <span class="required">*</span>
+          </label>
+          <p-select
+            id="precio"
+            [options]="precioOptions"
+            formControlName="precio"
+            placeholder="Selecciona el nivel de precio"
+            styleClass="field-input"
+            [class.field-error]="getFieldError('precio')"
+          ></p-select>
+          <small *ngIf="getFieldError('precio')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('precio') }}
+          </small>
+        </div>
+
+        <!-- Horario -->
+        <div class="form-field">
+          <label for="horario" class="field-label">Horario de Atención</label>
+          <input
+            type="text"
+            pInputText
+            id="horario"
+            formControlName="horario"
+            placeholder="Ej: Lunes a Viernes 9:00 - 18:00"
+            class="field-input"
+          />
+        </div>
+      </div>
+
+      <!-- Información de Contacto -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-phone"></i>
+          Información de Contacto
+        </h3>
+
+        <!-- Teléfono -->
+        <div class="form-field">
+          <label for="telefono" class="field-label">Teléfono</label>
+          <input
+            type="tel"
+            pInputText
+            id="telefono"
+            formControlName="telefono"
+            placeholder="+1 234 567 8900"
+            class="field-input"
+            [class.field-error]="getFieldError('telefono')"
+          />
+          <small *ngIf="getFieldError('telefono')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('telefono') }}
+          </small>
+        </div>
+
+        <!-- Email -->
+        <div class="form-field">
+          <label for="email" class="field-label">Email</label>
+          <input
+            type="email"
+            pInputText
+            id="email"
+            formControlName="email"
+            placeholder="info@lugar.com"
+            class="field-input"
+            [class.field-error]="getFieldError('email')"
+          />
+          <small *ngIf="getFieldError('email')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('email') }}
+          </small>
+        </div>
+
+        <!-- Sitio Web -->
+        <div class="form-field">
+          <label for="sitioWeb" class="field-label">Sitio Web</label>
+          <input
+            type="url"
+            pInputText
+            id="sitioWeb"
+            formControlName="sitioWeb"
+            placeholder="https://www.lugar.com"
+            class="field-input"
+            [class.field-error]="getFieldError('sitioWeb')"
+          />
+          <small *ngIf="getFieldError('sitioWeb')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('sitioWeb') }}
+          </small>
+        </div>
+      </div>
+
+      <!-- Ubicación -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-map"></i>
+          Ubicación
+        </h3>
+
+        <!-- Coordenadas -->
+        <div class="form-field">
+          <label for="latitud" class="field-label">Latitud</label>
+          <input
+            type="number"
+            pInputText
+            id="latitud"
+            formControlName="latitud"
+            placeholder="0.000000"
+            step="0.000001"
+            class="field-input"
+            [class.field-error]="getFieldError('latitud')"
+          />
+          <small *ngIf="getFieldError('latitud')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('latitud') }}
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="longitud" class="field-label">Longitud</label>
+          <input
+            type="number"
+            pInputText
+            id="longitud"
+            formControlName="longitud"
+            placeholder="0.000000"
+            step="0.000001"
+            class="field-input"
+            [class.field-error]="getFieldError('longitud')"
+          />
+          <small *ngIf="getFieldError('longitud')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('longitud') }}
+          </small>
+        </div>
+
+        <!-- Botón para obtener coordenadas -->
+        <div class="form-field">
+          <p-button
+            type="button"
+            label="Obtener Coordenadas"
+            icon="pi pi-location-arrow"
+            severity="info"
+            [outlined]="true"
+            (onClick)="obtenerCoordenadas()"
+            styleClass="coordinate-btn"
+          />
+          <small class="field-help">Obtiene automáticamente tu ubicación actual</small>
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="form-info">
+        <div class="info-card">
+          <i class="pi pi-lightbulb info-icon"></i>
+          <div class="info-content">
+            <h4 class="info-title">¿Sabías que...?</h4>
+            <p class="info-text">
+              Los lugares especiales crean recuerdos únicos en tu relación.
+              Agregar detalles como horarios, precios y ubicación exacta ayuda
+              a planificar mejor tus visitas y compartir experiencias memorables.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          icon="pi pi-times"
+          [outlined]="true"
+          (onClick)="cancelar()"
+          styleClass="cancel-btn"
+        />
+
+        <p-button
+          type="submit"
+          [label]="editMode ? 'Actualizar Lugar' : 'Crear Lugar'"
+          [icon]="editMode ? 'pi pi-check' : 'pi pi-plus'"
+          [loading]="loading"
+          [disabled]="lugarForm.invalid"
+          styleClass="submit-btn"
+        />
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<!-- Toast para mensajes -->
+<p-toast />

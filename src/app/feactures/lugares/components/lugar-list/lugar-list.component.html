@@ -1,1 +1,223 @@
-<p>lugar-list works!</p>
+<div class="lugar-list-container">
+
+  <!-- Header -->
+  <div class="list-header">
+    <div class="header-title">
+      <h2>
+        <i class="pi pi-map-marker"></i>
+        Lugares
+      </h2>
+      <p class="subtitle">Administra y organiza todos tus lugares favoritos</p>
+    </div>
+    <div class="header-actions">
+      <p-button
+        label="Nuevo Lugar"
+        icon="pi pi-plus"
+        (onClick)="agregarLugar()"
+        styleClass="p-button-primary"
+      />
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters-section">
+    <div class="search-field">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          pInputText
+          placeholder="Buscar lugares..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+        />
+      </span>
+    </div>
+
+    <div class="filter-fields">
+      <p-select
+        [options]="categoriaOptions"
+        [(ngModel)]="selectedCategoria"
+        (onChange)="onCategoriaChange()"
+        placeholder="Filtrar por categoría"
+      />
+
+      <p-select
+        [options]="precioOptions"
+        [(ngModel)]="selectedPrecio"
+        (onChange)="onPrecioChange()"
+        placeholder="Filtrar por precio"
+      />
+
+      <p-select
+        [options]="ratingOptions"
+        [(ngModel)]="selectedRating"
+        (onChange)="onRatingChange()"
+        placeholder="Filtrar por calificación"
+      />
+
+      <p-button
+        icon="pi pi-refresh"
+        severity="secondary"
+        (onClick)="limpiarFiltros()"
+        pTooltip="Limpiar filtros"
+      />
+    </div>
+  </div>
+
+  <!-- Sección de lugares con lista personalizada -->
+  <div class="lugares-section">
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-container">
+      <p-progressSpinner />
+      <p>Cargando lugares...</p>
+    </div>
+
+    <!-- Lista personalizada de lugares -->
+    <div *ngIf="!loading" class="lugares-list-container">
+      <div class="list-header-info">
+        <h3>Lugares ({{ lugaresFiltrados.length }})</h3>
+        <p class="list-description">Arrastra y organiza tus lugares favoritos</p>
+      </div>
+
+      <div class="lugares-list">
+        <div
+          *ngFor="let lugar of lugaresFiltrados; let i = index; trackBy: trackByLugar"
+          class="lugar-item"
+          [attr.data-index]="i"
+        >
+          <div class="lugar-header">
+            <div class="lugar-icon">
+              <i class="pi" [class]="getIconClass(lugar.categoria)"></i>
+            </div>
+            <div class="lugar-info">
+              <h4 class="lugar-nombre">{{ lugar.nombre }}</h4>
+              <p class="lugar-categoria" *ngIf="lugar.categoria">
+                <i class="pi pi-tag"></i> {{ lugar.categoria }}
+              </p>
+            </div>
+            <div class="lugar-actions">
+              <p-button
+                [icon]="lugar.esFavorito ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                [severity]="lugar.esFavorito ? 'danger' : 'secondary'"
+                size="small"
+                [text]="true"
+                [rounded]="true"
+                (onClick)="toggleFavorito(lugar)"
+                pTooltip="Toggle favorito"
+              />
+            </div>
+          </div>
+
+          <div class="lugar-content">
+            <p class="lugar-direccion" *ngIf="lugar.direccion">
+              <i class="pi pi-map-marker"></i> {{ lugar.direccion }}
+            </p>
+
+            <p class="lugar-descripcion" *ngIf="lugar.descripcion">
+              {{ lugar.descripcion }}
+            </p>
+
+            <div class="lugar-details">
+              <div class="detail-row">
+                <div class="detail-item" *ngIf="lugar.rating">
+                  <i class="pi pi-star"></i>
+                  <span>{{ lugar.rating }} estrellas</span>
+                </div>
+
+                <div class="detail-item" *ngIf="lugar.precio">
+                  <i class="pi pi-dollar"></i>
+                  <span>{{ lugar.precio }}</span>
+                </div>
+
+                <div class="detail-item" *ngIf="lugar.horario">
+                  <i class="pi pi-clock"></i>
+                  <span>{{ lugar.horario }}</span>
+                </div>
+              </div>
+
+              <div class="lugar-tags">
+                <p-tag
+                  *ngIf="lugar.categoria"
+                  [value]="lugar.categoria"
+                  severity="info"
+                  styleClass="categoria-tag"
+                />
+
+                <p-tag
+                  *ngIf="lugar.precio"
+                  [value]="lugar.precio"
+                  [severity]="getPrecioColor(lugar.precio)"
+                  styleClass="precio-tag"
+                />
+
+                <span class="estado-badge" [class]="lugar.esFavorito ? 'favorito' : 'normal'">
+                  <i class="pi" [class]="lugar.esFavorito ? 'pi-heart-fill' : 'pi-heart'"></i>
+                  {{ lugar.esFavorito ? 'Favorito' : 'Normal' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lugar-footer">
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-eye"
+                severity="info"
+                size="small"
+                [outlined]="true"
+                (onClick)="verDetalle(lugar)"
+                pTooltip="Ver detalle"
+              />
+
+              <p-button
+                icon="pi pi-pencil"
+                severity="secondary"
+                size="small"
+                [outlined]="true"
+                (onClick)="editarLugar(lugar)"
+                pTooltip="Editar"
+              />
+
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                size="small"
+                [outlined]="true"
+                (onClick)="eliminarLugar(lugar)"
+                pTooltip="Eliminar"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado vacío -->
+      <div *ngIf="lugaresFiltrados.length === 0" class="empty-state">
+        <div class="empty-content">
+          <i class="pi pi-map-marker empty-icon"></i>
+          <h3>No se encontraron lugares</h3>
+          <p *ngIf="searchTerm || selectedCategoria || selectedPrecio || selectedRating !== null">
+            No se encontraron lugares con los filtros aplicados
+          </p>
+          <p *ngIf="!searchTerm && !selectedCategoria && !selectedPrecio && selectedRating === null">
+            ¡Crea tu primer lugar!
+          </p>
+          <p-button
+            label="Nuevo Lugar"
+            icon="pi pi-plus"
+            (onClick)="agregarLugar()"
+            *ngIf="!searchTerm && !selectedCategoria && !selectedPrecio && selectedRating === null"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast para mensajes -->
+<p-toast position="top-right" />
+
+<!-- Diálogo de confirmación -->
+<p-confirmDialog />

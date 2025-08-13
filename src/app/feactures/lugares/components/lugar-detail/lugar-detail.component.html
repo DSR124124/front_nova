@@ -1,0 +1,292 @@
+<div class="detail-container">
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-overlay">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">Cargando lugar...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="error-overlay">
+    <p-card styleClass="error-card">
+      <div class="error-content">
+        <i class="pi pi-exclamation-triangle error-icon"></i>
+        <h3>Error al cargar el lugar</h3>
+        <p>{{ errorMessage }}</p>
+        <div class="error-actions">
+          <p-button
+            label="Volver"
+            icon="pi pi-arrow-left"
+            severity="secondary"
+            (onClick)="volverALista()"
+          />
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Contenido del lugar -->
+  <div *ngIf="lugar && !loading && !error" class="lugar-detail">
+    <!-- Header del lugar -->
+    <div class="detail-header">
+      <div class="header-content">
+        <div class="lugar-icon">
+          <i class="pi" [class]="getIconClass(lugar.categoria)"></i>
+        </div>
+        <div class="lugar-info">
+                     <h1 class="lugar-nombre">{{ lugar.nombre }}</h1>
+          <div class="lugar-meta">
+            <p-tag
+              *ngIf="lugar?.categoria"
+              [value]="lugar.categoria"
+              severity="info"
+              styleClass="categoria-tag"
+            />
+            <p-tag
+              *ngIf="lugar?.precio"
+              [value]="lugar.precio"
+              [severity]="getPrecioColor(lugar.precio || '')"
+              styleClass="precio-tag"
+            />
+                         <span class="estado-badge" [class]="lugar.esFavorito ? 'favorito' : 'normal'">
+               <i class="pi" [class]="lugar.esFavorito ? 'pi-heart-fill' : 'pi-heart'"></i>
+               {{ lugar.esFavorito ? 'Favorito' : 'Normal' }}
+             </span>
+          </div>
+        </div>
+      </div>
+
+              <div class="header-actions">
+                     <p-button
+             [icon]="lugar.esFavorito ? 'pi pi-heart-fill' : 'pi pi-heart'"
+             [severity]="lugar.esFavorito ? 'danger' : 'secondary'"
+            [outlined]="true"
+            size="large"
+            (onClick)="toggleFavorito()"
+            pTooltip="Toggle favorito"
+          />
+          <p-button
+            icon="pi pi-pencil"
+            severity="secondary"
+            [outlined]="true"
+            size="large"
+            (onClick)="editarLugar()"
+            pTooltip="Editar lugar"
+          />
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [outlined]="true"
+            size="large"
+            (onClick)="eliminarLugar()"
+            pTooltip="Eliminar lugar"
+          />
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="detail-content">
+      <div class="content-grid">
+        <!-- Información del lugar -->
+        <div class="info-section">
+          <p-card styleClass="info-card">
+            <ng-template pTemplate="header">
+              <h3>Información del Lugar</h3>
+            </ng-template>
+
+            <div class="info-content">
+              <!-- Dirección -->
+              <div class="info-item" *ngIf="lugar?.direccion">
+                <div class="info-label">
+                  <i class="pi pi-map-marker"></i>
+                  <span>Dirección</span>
+                </div>
+                <div class="info-value">{{ lugar.direccion }}</div>
+              </div>
+
+              <!-- Descripción -->
+              <div class="info-item" *ngIf="lugar?.descripcion">
+                <div class="info-label">
+                  <i class="pi pi-info-circle"></i>
+                  <span>Descripción</span>
+                </div>
+                <div class="info-value">{{ lugar.descripcion }}</div>
+              </div>
+
+              <!-- Horario -->
+              <div class="info-item" *ngIf="lugar?.horario">
+                <div class="info-label">
+                  <i class="pi pi-clock"></i>
+                  <span>Horario</span>
+                </div>
+                <div class="info-value">{{ lugar.horario }}</div>
+              </div>
+
+              <!-- Teléfono -->
+              <div class="info-item" *ngIf="lugar?.telefono">
+                <div class="info-label">
+                  <i class="pi pi-phone"></i>
+                  <span>Teléfono</span>
+                </div>
+                <div class="info-value">
+                  <a [href]="'tel:' + lugar.telefono" class="phone-link">{{ lugar.telefono }}</a>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="info-item" *ngIf="lugar?.email">
+                <div class="info-label">
+                  <i class="pi pi-envelope"></i>
+                  <span>Email</span>
+                </div>
+                <div class="info-value">
+                  <a [href]="'mailto:' + lugar.email" class="email-link">{{ lugar.email }}</a>
+                </div>
+              </div>
+
+              <!-- Sitio web -->
+              <div class="info-item" *ngIf="lugar?.sitioWeb">
+                <div class="info-label">
+                  <i class="pi pi-globe"></i>
+                  <span>Sitio Web</span>
+                </div>
+                <div class="info-value">
+                  <a [href]="lugar.sitioWeb" target="_blank" class="website-link">{{ lugar.sitioWeb }}</a>
+                </div>
+              </div>
+            </div>
+          </p-card>
+        </div>
+
+        <!-- Calificaciones y detalles -->
+        <div class="details-section">
+          <p-card styleClass="details-card">
+            <ng-template pTemplate="header">
+              <h3>Calificaciones y Detalles</h3>
+            </ng-template>
+
+            <div class="details-content">
+              <!-- Rating -->
+              <div class="detail-item" *ngIf="lugar.rating">
+                <div class="detail-label">Calificación</div>
+                <div class="detail-value">
+                  <app-rating-stars
+                    [stars]="5"
+                    [readonly]="true"
+                    [showCancel]="false"
+                    size="large"
+                    [(ngModel)]="lugar.rating"
+                  />
+                  <span class="rating-text">{{ lugar.rating }}/5 estrellas</span>
+                </div>
+              </div>
+
+              <!-- Precio -->
+              <div class="detail-item" *ngIf="lugar.precio">
+                <div class="detail-label">Precio</div>
+                <div class="detail-value">
+                  <p-tag
+                    [value]="lugar.precio"
+                    [severity]="getPrecioColor(lugar.precio)"
+                    styleClass="precio-tag-large"
+                  />
+                </div>
+              </div>
+
+                             <!-- Verificado -->
+               <div class="detail-item" *ngIf="lugar.esVerificado !== undefined">
+                 <div class="detail-label">Verificado</div>
+                 <div class="detail-value">
+                   <p-tag
+                     [value]="lugar.esVerificado ? 'Sí' : 'No'"
+                     [severity]="lugar.esVerificado ? 'success' : 'warning'"
+                     styleClass="verificado-tag"
+                   />
+                 </div>
+               </div>
+
+               <!-- Coordenadas -->
+               <div class="detail-item" *ngIf="lugar.latitud && lugar.longitud">
+                 <div class="detail-label">Coordenadas</div>
+                 <div class="detail-value">
+                   <span class="coordinates">{{ lugar.latitud }}, {{ lugar.longitud }}</span>
+                 </div>
+               </div>
+            </div>
+          </p-card>
+        </div>
+
+        <!-- Mapa -->
+        <div class="map-section" *ngIf="lugar.latitud && lugar.longitud">
+          <p-card styleClass="map-card">
+            <ng-template pTemplate="header">
+              <h3>Ubicación</h3>
+            </ng-template>
+
+            <div class="map-container">
+              <div #mapContainer class="leaflet-map"></div>
+              <div class="map-actions">
+                <p-button
+                  label="Abrir en Google Maps"
+                  icon="pi pi-external-link"
+                  severity="info"
+                  [outlined]="true"
+                  size="small"
+                  (onClick)="abrirEnGoogleMaps()"
+                />
+              </div>
+            </div>
+          </p-card>
+        </div>
+
+        <!-- Servicios -->
+        <div class="services-section" *ngIf="lugar.servicios && lugar.servicios.length > 0">
+          <p-card styleClass="services-card">
+            <ng-template pTemplate="header">
+              <h3>Servicios Disponibles</h3>
+            </ng-template>
+
+            <div class="services-grid">
+              <div *ngFor="let servicio of lugar.servicios" class="service-item">
+                <i class="pi pi-check-circle service-icon"></i>
+                <span>{{ servicio }}</span>
+              </div>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acciones del pie -->
+    <div class="detail-footer">
+      <div class="footer-actions">
+        <p-button
+          label="Volver al Mapa"
+          icon="pi pi-map"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="volverALista()"
+        />
+        <p-button
+          label="Volver a Favoritos"
+          icon="pi pi-heart"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="volverAFavoritos()"
+        />
+        <p-button
+          label="Compartir"
+          icon="pi pi-share-alt"
+          severity="info"
+          [outlined]="true"
+          (onClick)="compartirLugar()"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast para mensajes -->
+<p-toast position="top-right" />
+
+<!-- Diálogo de confirmación -->
+<p-confirmDialog />

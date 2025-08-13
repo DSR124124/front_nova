@@ -51,9 +51,9 @@ export class SidebarService {
       icon: 'pi pi-map-marker',
       routerLink: '',
       items: [
-        { label: 'Explorar Lugares', icon: 'pi pi-search', routerLink: '/app/lugares/explorar' },
-        { label: 'Mis Favoritos', icon: 'pi pi-heart', routerLink: '/app/lugares/favoritos' },
-        { label: 'Agregar Lugar', icon: 'pi pi-plus', routerLink: '/app/lugares/agregar' }
+        { label: 'Crear Lugar', icon: 'pi pi-plus', routerLink: '/app/lugares/crear' },
+        { label: 'Mapa', icon: 'pi pi-map', routerLink: '/app/lugares/mapa' },
+        { label: 'Favoritos', icon: 'pi pi-heart', routerLink: '/app/lugares/favoritos' }
       ]
     },
     {
