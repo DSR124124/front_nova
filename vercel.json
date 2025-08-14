@@ -1,31 +1,9 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "dist/front_nova/browser/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/assets/(.*)",
-      "dest": "/dist/front_nova/browser/assets/$1"
-    },
-    {
-      "src": "/media/(.*)",
-      "dest": "/dist/front_nova/browser/media/$1"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/dist/front_nova/browser/favicon.ico"
-    },
-    {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot))",
-      "dest": "/dist/front_nova/browser/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/front_nova/browser/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
