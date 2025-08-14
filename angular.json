@@ -78,6 +78,25 @@
               "outputHashing": "all",
               "baseHref": "/front_nova/"
             },
+            "vercel": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2.5MB",
+                  "maximumError": "4MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "20kB",
+                  "maximumError": "30kB"
+                }
+              ],
+              "outputHashing": "all",
+              "baseHref": "/",
+              "optimization": true,
+              "extractLicenses": true,
+              "sourceMap": false
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
