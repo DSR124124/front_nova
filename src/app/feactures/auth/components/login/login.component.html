@@ -1,49 +1,66 @@
-<p-card>
-  <ng-template pTemplate="header">
-    <div class="login-header">
-      <h2>Iniciar Sesión</h2>
-    </div>
-  </ng-template>
+<div class="login-form-container">
+  <!-- Header -->
+  <div class="form-header">
+    <h2 class="form-title">
+      <i class="pi pi-user"></i>
+      Iniciar Sesión
+    </h2>
+    <p class="form-subtitle">
+      Accede a tu cuenta para disfrutar de todos los momentos especiales
+    </p>
+  </div>
 
-  <ng-template pTemplate="content">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">Iniciando sesión...</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="form-wrapper" *ngIf="!loading">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+      <!-- Usuario -->
       <div class="form-field">
-        <p-floatlabel>
-          <input
-            pInputText
-            id="username"
-            formControlName="username"
-            [class.ng-invalid]="isFieldInvalid('username')"
-          />
-          <label for="username">Usuario</label>
-        </p-floatlabel>
-        <small
-          *ngIf="isFieldInvalid('username')"
-          class="p-error"
-        >
+        <label for="username" class="field-label">
+          Usuario <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          pInputText
+          id="username"
+          formControlName="username"
+          placeholder="Ingresa tu nombre de usuario"
+          [class.field-error]="isFieldInvalid('username')"
+          class="field-input"
+        />
+        <small *ngIf="isFieldInvalid('username')" class="error-message">
+          <i class="pi pi-exclamation-circle"></i>
           {{ getFieldError('username') }}
         </small>
       </div>
 
+      <!-- Contraseña -->
       <div class="form-field">
-        <p-floatlabel>
-          <p-password
-            id="password"
-            formControlName="password"
-            [toggleMask]="true"
-            [feedback]="false"
-            [class.ng-invalid]="isFieldInvalid('password')"
-          />
-          <label for="password">Contraseña</label>
-        </p-floatlabel>
-        <small
-          *ngIf="isFieldInvalid('password')"
-          class="p-error"
-        >
+        <label for="password" class="field-label">
+          Contraseña <span class="required">*</span>
+        </label>
+        <p-password
+          id="password"
+          formControlName="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Ingresa tu contraseña"
+          [class.field-error]="isFieldInvalid('password')"
+          styleClass="field-input"
+        />
+        <small *ngIf="isFieldInvalid('password')" class="error-message">
+          <i class="pi pi-exclamation-circle"></i>
           {{ getFieldError('password') }}
         </small>
       </div>
 
+      <!-- Recordarme -->
       <div class="form-field">
         <div class="checkbox-container">
           <p-checkbox
@@ -58,40 +75,43 @@
         </div>
       </div>
 
+      <!-- Botones de acción -->
       <div class="form-actions">
+        <p-button
+          type="button"
+          label="¿Olvidaste tu contraseña?"
+          severity="secondary"
+          icon="pi pi-question-circle"
+          [outlined]="true"
+          (onClick)="onForgotPassword()"
+          styleClass="cancel-btn"
+        />
+
         <p-button
           type="submit"
           label="Iniciar Sesión"
+          icon="pi pi-sign-in"
           [loading]="loading"
           [disabled]="loginForm.invalid"
-          styleClass="w-full"
+          styleClass="submit-btn"
         />
       </div>
+
     </form>
-  </ng-template>
+  </div>
 
-  <ng-template pTemplate="footer">
-    <div class="login-footer">
-      <p-button
-        label="¿Olvidaste tu contraseña?"
-        link="true"
-        (onClick)="onForgotPassword()"
-      />
-      <p-divider />
-      <p-button
-        label="Crear cuenta nueva"
-        link="true"
-        (onClick)="onRegister()"
-      />
-      <p-divider />
-      <p-button
-        label="🧪 Probar ruta completa (con parejaGuard)"
-        link="true"
-        (onClick)="testUserCompleteRoute()"
-        styleClass="p-button-text p-button-sm"
-      />
-    </div>
-  </ng-template>
-</p-card>
+  <!-- Enlaces adicionales -->
+  <div class="additional-links">
+    <p-button
+      label="Crear cuenta nueva"
+      link="true"
+      icon="pi pi-user-plus"
+      (onClick)="onRegister()"
+      styleClass="link-btn"
+    />
+  </div>
 
+</div>
+
+<!-- Toast para mensajes -->
 <p-toast />

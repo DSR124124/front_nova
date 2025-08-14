@@ -290,9 +290,5 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/auth/register']);
   }
 
-  // Método temporal para probar ruta con parejaGuard
-  testUserCompleteRoute(): void {
-    console.log('🧪 Probando ruta /user-complete con parejaGuard');
-    this.router.navigate(['/user-complete']);
-  }
+
 }
