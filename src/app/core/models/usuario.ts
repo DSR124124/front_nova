@@ -1,4 +1,16 @@
-import { Role } from './enums/role.enum';
+// Interfaz para el RolDTO del backend
+export interface RolDTO {
+  id?: number;
+  rol: string; // "ADMIN" o "USER"
+}
+
+// Constantes para los roles válidos
+export const ROLES = {
+  ADMIN: 'ADMIN',
+  USER: 'USER'
+} as const;
+
+export type RoleType = typeof ROLES[keyof typeof ROLES];
 
 export interface Usuario {
   idUsuario?: number;
@@ -6,11 +18,61 @@ export interface Usuario {
   apellido: string;
   correo: string;
   username: string;
-  password: string;
+  password?: string;
   enabled: boolean;
   fotoPerfil?: string;
-  fechaNacimiento?: string; // ISO string, para interoperabilidad con LocalDate
-  genero?: 'M' | 'F' | 'O';
-  role: Role;
+  fechaNacimiento?: Date;
+  genero?: string;
+  role: string; // Cambiado de Role enum a string para coincidir con tu backend
+  // Campos adicionales que podrías necesitar
+  fechaCreacion?: Date;
+  fechaUltimoAcceso?: Date;
   parejaId?: number;
+  pareja?: Usuario;
+  preferencias?: PreferenciasUsuario;
+}
+
+export interface PreferenciasUsuario {
+  id?: number;
+  usuarioId: number;
+  notificacionesEmail: boolean;
+  notificacionesPush: boolean;
+  notificacionesSMS: boolean;
+  idioma: string;
+  zonaHoraria: string;
+  tema: string;
+  privacidad: string;
+}
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  nombre: string;
+  apellido: string;
+  fechaNacimiento?: Date;
+  genero?: string;
+  telefono?: string;
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+  confirmNewPassword: string;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Pareja, EstadoPareja } from '../../../../core/models/pareja';
 import { Usuario } from '../../../../core/models/usuario';
-import { Role } from '../../../../core/models/enums/role.enum';
+// Role enum removido - ahora usamos string directamente
 import { AuthService } from '../../../../core/services/auth.service';
 import { UsuarioService } from '../../../../core/services/usuario.service';
 
@@ -74,9 +74,9 @@ export class PerfilParejaComponent implements OnInit {
       username: 'maria_g',
       password: '',
       enabled: true,
-      fechaNacimiento: '1995-03-20',
+      fechaNacimiento: new Date('1995-03-20'),
       genero: 'F',
-      role: Role.USER,
+      role: 'USER',
       parejaId: 1
     };
   }

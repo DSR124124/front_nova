@@ -83,12 +83,10 @@ export class RecordatorioCalendarComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (recordatorios) => {
-          console.log('✅ Recordatorios cargados para calendario:', recordatorios);
           this.events = this.convertirRecordatoriosAEventos(recordatorios || []);
           this.loading = false;
         },
         error: (error) => {
-          console.error('❌ Error al cargar recordatorios:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -168,7 +166,6 @@ export class RecordatorioCalendarComponent implements OnInit, OnDestroy {
                   this.eventModalVisible = false;
                 },
                 error: (error) => {
-                  console.error('Error al actualizar estado:', error);
                   this.messageService.add({
                     severity: 'error',
                     summary: 'Error',

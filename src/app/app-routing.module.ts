@@ -8,7 +8,7 @@ import { roleGuard } from './core/guards/role.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'app',
+    redirectTo: 'auth',
     pathMatch: 'full'
   },
   {
@@ -16,9 +16,10 @@ const routes: Routes = [
     loadChildren: () => import('./feactures/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: 'app',
-    loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
-    // canActivate: [authGuard, parejaGuard] // Comentado temporalmente
+    path: 'user',
+    loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['USER'] }
   },
   {
     path: 'admin',
@@ -26,7 +27,19 @@ const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { roles: ['ADMIN'] }
   },
-  { path: '**', redirectTo: 'app' }
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./feactures/dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['USER', 'ADMIN'] }
+  },
+  {
+    path: 'user-complete',
+    loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule),
+    canActivate: [authGuard, parejaGuard, roleGuard],
+    data: { roles: ['USER'] }
+  },
+  { path: '**', redirectTo: 'auth' }
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Usuario } from '../../../../core/models/usuario';
-import { Role } from '../../../../core/models/enums/role.enum';
+// Role enum removido - ahora usamos string directamente
 
 @Component({
   selector: 'app-register',
@@ -83,11 +83,11 @@ export class RegisterComponent implements OnInit {
         correo: userData.correo,
         username: userData.username,
         password: userData.password,
-        fechaNacimiento: userData.fechaNacimiento ? this.formatDateToISO(userData.fechaNacimiento) : undefined,
+        fechaNacimiento: userData.fechaNacimiento ? new Date(userData.fechaNacimiento) : undefined,
         genero: userData.genero,
         fotoPerfil: userData.fotoPerfil || undefined,
         enabled: true,
-        role: Role.USER // Por defecto asignamos USER
+        role: 'USER' // Por defecto asignamos USER (coincide con ROLES.USER)
       };
 
       this.authService.register(usuario).subscribe({

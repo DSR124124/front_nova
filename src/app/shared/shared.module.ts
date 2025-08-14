@@ -22,7 +22,6 @@ import { RatingStarsComponent } from './components/rating-stars/rating-stars.com
     ImageUploadComponent,
     LocationPickerComponent,
     RatingStarsComponent
-
   ],
   imports: [
     CommonModule,

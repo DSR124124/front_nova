@@ -52,12 +52,10 @@ export class RecordatorioNotificationsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (recordatorios) => {
-          console.log('✅ Recordatorios cargados:', recordatorios);
           this.recordatorios = recordatorios || [];
           this.loading = false;
         },
         error: (error) => {
-          console.error('❌ Error al cargar recordatorios:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -139,7 +137,6 @@ export class RecordatorioNotificationsComponent implements OnInit, OnDestroy {
           this.cargarRecordatorios();
         },
         error: (error) => {
-          console.error('Error al actualizar estado:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

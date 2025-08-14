@@ -16,18 +16,15 @@ export class LayoutMainComponent implements OnInit {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        console.log('🔄 LayoutMainComponent - Navegación detectada:', event.url);
-        console.log('📍 Ruta actual:', this.router.url);
+        // Silencioso
       });
   }
 
   ngOnInit() {
-    console.log('🚀 LayoutMainComponent ngOnInit ejecutado');
-    console.log('📍 Ruta inicial:', this.router.url);
+    // Silencioso
   }
 
   toggleSidebar() {
-    console.log('📱 LayoutMainComponent - Toggle sidebar');
     this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 }
