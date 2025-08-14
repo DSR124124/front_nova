@@ -59,6 +59,22 @@
               ],
               "outputHashing": "all"
             },
+            "github": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2MB",
+                  "maximumError": "3MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kB",
+                  "maximumError": "15kB"
+                }
+              ],
+              "outputHashing": "all",
+              "baseHref": "/front_nova/"
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -81,6 +97,12 @@
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/front_nova/"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",

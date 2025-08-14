@@ -1,59 +1,181 @@
-# FrontNova
+# 🚀 Front Nova - Aplicación de Gestión de Parejas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+## 📋 Descripción
 
-## Development server
+Front Nova es una aplicación web moderna desarrollada en Angular para la gestión integral de parejas, incluyendo citas, eventos, lugares, chat, regalos, recordatorios y más.
 
-To start a local development server, run:
+## ✨ Características Principales
 
+- 🔐 **Autenticación JWT** con roles de usuario
+- 📅 **Gestión de Citas** con calendario integrado
+- ⭐ **Eventos y Lugares** con mapa interactivo
+- 💬 **Chat en tiempo real** entre parejas
+- 🎁 **Sistema de Regalos** con lista de deseos
+- 🔔 **Recordatorios** y notificaciones
+- 📝 **Notas personales** y multimedia
+- 👥 **Perfiles de usuario** y pareja
+- 📱 **Diseño responsive** para todos los dispositivos
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Frontend**: Angular 17
+- **UI Components**: PrimeNG
+- **Estilos**: CSS Variables + Responsive Design
+- **Autenticación**: JWT + Guards
+- **Routing**: Angular Router con Lazy Loading
+- **Estado**: RxJS + BehaviorSubject
+
+## 🚀 Instalación y Configuración
+
+### Prerrequisitos
+- Node.js 18+ 
+- npm 9+
+
+### Instalación
 ```bash
-ng serve
+# Clonar el repositorio
+git clone https://github.com/tu-usuario/front_nova.git
+
+# Navegar al directorio
+cd front_nova
+
+# Instalar dependencias
+npm install
+
+# Ejecutar en desarrollo
+npm start
+
+# Construir para producción
+npm run build
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 📁 Estructura del Proyecto
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+src/
+├── app/
+│   ├── core/           # Servicios, guards, interceptors
+│   ├── feactures/      # Módulos de funcionalidad
+│   ├── layout/         # Componentes de layout
+│   ├── shared/         # Componentes compartidos
+│   └── prime-ng/       # Configuración PrimeNG
+├── assets/             # Imágenes, estilos, fuentes
+└── environments/       # Configuraciones por ambiente
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🔧 Scripts Disponibles
 
-```bash
-ng generate --help
-```
+- `npm start` - Servidor de desarrollo
+- `npm run build` - Construcción para producción
+- `npm run test` - Ejecutar tests
+- `npm run deploy` - Desplegar en GitHub Pages
 
-## Building
+## 🌐 Despliegue en GitHub Pages
 
-To build the project run:
+La aplicación está configurada para desplegarse automáticamente en GitHub Pages:
 
-```bash
-ng build
-```
+1. **Configuración automática** mediante GitHub Actions
+2. **Despliegue automático** en cada push a main
+3. **URL**: `https://tu-usuario.github.io/front_nova/`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📱 Funcionalidades por Módulo
 
-## Running unit tests
+### 🏠 Dashboard
+- Vista general de actividades
+- Estadísticas de la pareja
+- Eventos próximos
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### 📅 Citas
+- Crear y gestionar citas
+- Calendario visual
+- Filtros y búsqueda
 
-```bash
-ng test
-```
+### ⭐ Eventos
+- Crear eventos especiales
+- Galería de fotos
+- Línea de tiempo
 
-## Running end-to-end tests
+### 🗺️ Lugares
+- Mapa interactivo
+- Lugares favoritos
+- Crear nuevos lugares
 
-For end-to-end (e2e) testing, run:
+### 💬 Chat
+- Mensajería en tiempo real
+- Selector de emojis
+- Historial de conversaciones
 
-```bash
-ng e2e
-```
+### 🎁 Regalos
+- Lista de deseos
+- Historial de regalos
+- Estadísticas
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 🔔 Recordatorios
+- Crear recordatorios
+- Calendario de recordatorios
+- Notificaciones
 
-## Additional Resources
+### 📝 Notas
+- Notas personales
+- Búsqueda y filtros
+- Organización por categorías
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### 🖼️ Multimedia
+- Galería de fotos
+- Subir archivos
+- Visualizador de medios
+
+### 👤 Perfil
+- Perfil de usuario
+- Perfil de pareja
+- Configuraciones
+- Cambio de contraseña
+
+## 🔐 Autenticación y Autorización
+
+- **JWT Token** para sesiones seguras
+- **Guards** para proteger rutas
+- **Roles** de usuario (USER, ADMIN)
+- **Interceptors** para manejo automático de tokens
+
+## 🎨 Temas y Estilos
+
+- **Tema Aura** de PrimeNG
+- **Variables CSS** para personalización
+- **Diseño responsive** para móviles y desktop
+- **Iconos PrimeIcons** para interfaz moderna
+
+## 🚀 Roadmap
+
+- [ ] Implementación de refresh tokens
+- [ ] Notificaciones push
+- [ ] Modo offline
+- [ ] PWA (Progressive Web App)
+- [ ] Tests unitarios y e2e
+- [ ] Internacionalización (i18n)
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+
+## 👨‍💻 Autor
+
+**Tu Nombre** - [@tu-twitter](https://twitter.com/tu-twitter)
+
+## 🙏 Agradecimientos
+
+- **PrimeNG** por los componentes de UI
+- **Angular Team** por el framework
+- **Comunidad Angular** por el soporte
+
+---
+
+⭐ **Si te gusta este proyecto, dale una estrella en GitHub!**

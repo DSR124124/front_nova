@@ -1,0 +1,118 @@
+/* Contenedor principal del sidebar */
+.sidebar-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 280px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.sidebar-container.collapsed {
+  width: 70px;
+}
+
+/* Header del sidebar */
+.sidebar-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--sidebar-border);
+  background: var(--surface-section);
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--sidebar-text);
+}
+
+.sidebar-title i {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
+/* Navegación del sidebar */
+.sidebar-nav {
+  flex: 1;
+  padding: 0;
+  overflow-y: auto;
+  background: var(--sidebar-bg);
+}
+
+/* Footer del sidebar */
+.sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--sidebar-border);
+  background: var(--surface-section);
+}
+
+.sidebar-footer-collapsed {
+  padding: 1rem;
+  border-top: 1px solid var(--sidebar-border);
+  display: flex;
+  justify-content: center;
+  background: var(--surface-section);
+}
+
+/* Información del usuario */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--sidebar-text);
+}
+
+.user-status {
+  font-size: 0.75rem;
+  color: var(--sidebar-text-secondary);
+}
+
+/* Estados colapsados */
+.sidebar-container.collapsed .sidebar-title {
+  display: none;
+}
+
+.sidebar-container.collapsed .sidebar-header {
+  justify-content: center;
+  padding: 1rem 0.5rem;
+}
+
+.sidebar-container.collapsed .submenu {
+  display: none;
+}
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar-container {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-container:not(.collapsed) {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-container:not(.collapsed) {
+    width: 100vw;
+  }
+}
