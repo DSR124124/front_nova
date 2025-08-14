@@ -57,29 +57,10 @@ export class AuthInterceptor implements HttpInterceptor {
            url.includes('/refresh-token');
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.isRefreshing) {
-      this.isRefreshing = true;
-      this.refreshTokenSubject.next(null);
+    private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Como el refresh token no está implementado, simplemente hacemos logout
+    this.authService.logout();
 
-      return this.authService.refreshToken().pipe(
-        switchMap((token: string) => {
-          this.isRefreshing = false;
-          this.refreshTokenSubject.next(token);
-          return next.handle(this.addToken(request, token));
-        }),
-        catchError((err) => {
-          this.isRefreshing = false;
-          this.authService.logout();
-          return throwError(() => err);
-        })
-      );
-    } else {
-      return this.refreshTokenSubject.pipe(
-        filter(token => token != null),
-        take(1),
-        switchMap(token => next.handle(this.addToken(request, token)))
-      );
-    }
+    return throwError(() => new Error('Unauthorized - Token expired'));
   }
 }

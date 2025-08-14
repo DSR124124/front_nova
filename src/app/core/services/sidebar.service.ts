@@ -24,16 +24,16 @@ export class SidebarService {
     {
       label: 'Dashboard',
       icon: 'pi pi-home',
-      routerLink: '/app/dashboard'
+      routerLink: '/user/dashboard'
     },
     {
       label: 'Citas',
       icon: 'pi pi-calendar',
       routerLink: '',
       items: [
-        { label: 'Lista de Citas', icon: 'pi pi-list', routerLink: '/app/citas/listar' },
-        { label: 'Calendario', icon: 'pi pi-calendar', routerLink: '/app/citas/calendario' },
-        { label: 'Nueva Cita', icon: 'pi pi-plus', routerLink: '/app/citas/nueva' }
+        { label: 'Lista de Citas', icon: 'pi pi-list', routerLink: '/user/citas/listar' },
+        { label: 'Calendario', icon: 'pi pi-calendar', routerLink: '/user/citas/calendario' },
+        { label: 'Nueva Cita', icon: 'pi pi-plus', routerLink: '/user/citas/nueva' }
       ]
     },
     {
@@ -41,9 +41,9 @@ export class SidebarService {
       icon: 'pi pi-star',
       routerLink: '',
       items: [
-        { label: 'Lista de Eventos', icon: 'pi pi-list', routerLink: '/app/eventos/listar' },
-        { label: 'Crear Evento', icon: 'pi pi-plus', routerLink: '/app/eventos/crear' },
-        { label: 'Línea de Tiempo', icon: 'pi pi-clock', routerLink: '/app/eventos/timeline' }
+        { label: 'Lista de Eventos', icon: 'pi pi-list', routerLink: '/user/eventos/listar' },
+        { label: 'Crear Evento', icon: 'pi pi-plus', routerLink: '/user/eventos/crear' },
+        { label: 'Línea de Tiempo', icon: 'pi pi-clock', routerLink: '/user/eventos/timeline' }
       ]
     },
     {
@@ -51,24 +51,24 @@ export class SidebarService {
       icon: 'pi pi-map-marker',
       routerLink: '',
       items: [
-        { label: 'Crear Lugar', icon: 'pi pi-plus', routerLink: '/app/lugares/crear' },
-        { label: 'Mapa', icon: 'pi pi-map', routerLink: '/app/lugares/mapa' },
-        { label: 'Favoritos', icon: 'pi pi-heart', routerLink: '/app/lugares/favoritos' }
+        { label: 'Crear Lugar', icon: 'pi pi-plus', routerLink: '/user/lugares/crear' },
+        { label: 'Mapa', icon: 'pi pi-map', routerLink: '/user/lugares/mapa' },
+        { label: 'Favoritos', icon: 'pi pi-heart', routerLink: '/user/lugares/favoritos' }
       ]
     },
     {
       label: 'Chat',
       icon: 'pi pi-comments',
-      routerLink: '/app/chat'
+      routerLink: '/user/chat'
     },
     {
       label: 'Regalos',
       icon: 'pi pi-gift',
       routerLink: '',
       items: [
-        { label: 'Lista de Deseos', icon: 'pi pi-heart', routerLink: '/app/regalos/deseos' },
-        { label: 'Historial', icon: 'pi pi-history', routerLink: '/app/regalos/historial' },
-        { label: 'Estadísticas', icon: 'pi pi-chart-bar', routerLink: '/app/regalos/estadisticas' }
+        { label: 'Lista de Deseos', icon: 'pi pi-heart', routerLink: '/user/regalos/deseos' },
+        { label: 'Historial', icon: 'pi pi-history', routerLink: '/user/regalos/historial' },
+        { label: 'Estadísticas', icon: 'pi pi-chart-bar', routerLink: '/user/regalos/estadisticas' }
       ]
     },
     {
@@ -76,9 +76,9 @@ export class SidebarService {
       icon: 'pi pi-bell',
       routerLink: '',
       items: [
-        { label: 'Lista de Recordatorios', icon: 'pi pi-list', routerLink: '/app/recordatorios/lista' },
-        { label: 'Crear Recordatorio', icon: 'pi pi-plus', routerLink: '/app/recordatorios/nuevo' },
-        { label: 'Calendario', icon: 'pi pi-calendar', routerLink: '/app/recordatorios/calendario' },
+        { label: 'Lista de Recordatorios', icon: 'pi pi-list', routerLink: '/user/recordatorios/lista' },
+        { label: 'Crear Recordatorio', icon: 'pi pi-plus', routerLink: '/user/recordatorios/nuevo' },
+        { label: 'Calendario', icon: 'pi pi-calendar', routerLink: '/user/recordatorios/calendario' },
       ]
     },
     {
@@ -86,9 +86,9 @@ export class SidebarService {
       icon: 'pi pi-file',
       routerLink: '',
       items: [
-        { label: 'Mis Notas', icon: 'pi pi-list', routerLink: '/app/notas/listar' },
-        { label: 'Nueva Nota', icon: 'pi pi-plus', routerLink: '/app/notas/crear' },
-        { label: 'Buscar Notas', icon: 'pi pi-search', routerLink: '/app/notas/buscar' }
+        { label: 'Mis Notas', icon: 'pi pi-list', routerLink: '/user/notas/listar' },
+        { label: 'Nueva Nota', icon: 'pi pi-plus', routerLink: '/user/notas/crear' },
+        { label: 'Buscar Notas', icon: 'pi pi-search', routerLink: '/user/notas/buscar' }
       ]
     },
     {
@@ -96,8 +96,8 @@ export class SidebarService {
       icon: 'pi pi-images',
       routerLink: '',
       items: [
-        { label: 'Galería', icon: 'pi pi-images', routerLink: '/app/multimedia/galeria' },
-        { label: 'Subir Archivos', icon: 'pi pi-upload', routerLink: '/app/multimedia/subir' },
+        { label: 'Galería', icon: 'pi pi-images', routerLink: '/user/multimedia/galeria' },
+        { label: 'Subir Archivos', icon: 'pi pi-upload', routerLink: '/user/multimedia/subir' },
       ]
     },
     {
@@ -105,10 +105,10 @@ export class SidebarService {
       icon: 'pi pi-user',
       routerLink: '',
       items: [
-        { label: 'Mi Perfil', icon: 'pi pi-user', routerLink: '/app/perfil/usuario' },
-        { label: 'Perfil de Pareja', icon: 'pi pi-users', routerLink: '/app/perfil/pareja' },
-        { label: 'Configuración', icon: 'pi pi-cog', routerLink: '/app/perfil/configuracion' },
-        { label: 'Cambiar Contraseña', icon: 'pi pi-key', routerLink: '/app/perfil/password' }
+        { label: 'Mi Perfil', icon: 'pi pi-user', routerLink: '/user/perfil/usuario' },
+        { label: 'Perfil de Pareja', icon: 'pi pi-users', routerLink: '/user/perfil/pareja' },
+        { label: 'Configuración', icon: 'pi pi-cog', routerLink: '/user/perfil/configuracion' },
+        { label: 'Cambiar Contraseña', icon: 'pi pi-key', routerLink: '/user/perfil/password' }
       ]
     }
   ];
@@ -126,9 +126,12 @@ export class SidebarService {
    * Obtiene un elemento específico del menú por su ruta
    */
   getMenuItemByRoute(route: string): SidebarItem | undefined {
+    // Normalizar la ruta para comparar correctamente
+    const normalizedRoute = route.startsWith('/') ? route : `/${route}`;
+
     return this.menuItems.find(item =>
-      item.routerLink === route ||
-      item.items?.some(subItem => subItem.routerLink === route)
+      item.routerLink === normalizedRoute ||
+      item.items?.some(subItem => subItem.routerLink === normalizedRoute)
     );
   }
 
