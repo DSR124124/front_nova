@@ -1,24 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import * as bcrypt from 'bcryptjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { Usuario } from '../models/usuario';
-
-/**
- * IMPORTANTE:
- * - REGISTRO: Las contraseñas se hashean en el frontend con bcrypt antes de enviarlas al backend
- * - LOGIN: Las contraseñas se envían en texto plano para que el backend las compare con el hash almacenado
- * - Esto es necesario porque bcrypt genera hashes diferentes cada vez (salt aleatorio)
- */
-
-export interface AuthResponse {
-  token: string;
-  refreshToken?: string;
-}
 
 export interface DecodedToken {
   sub: string;
@@ -45,33 +33,25 @@ export class AuthService {
     this.loadUserFromToken();
   }
 
-  // Login con contraseña en texto plano (el backend la compara con el hash almacenado)
+  // Login
   login(credentials: { username: string; password: string }): Observable<any> {
-    // NO hashear la contraseña aquí
-    // El backend debe recibir la contraseña en texto plano para compararla
-    // con el hash bcrypt almacenado usando bcrypt.compare()
-
     return this.http.post<any>(API_ENDPOINTS.LOGIN, {
       username: credentials.username,
-      password: credentials.password // Contraseña en texto plano
+      password: credentials.password
     }).pipe(
-      tap(response => this.handleAuthentication(response)),
-      catchError(error => this.handleError(error))
+      tap(response => this.handleAuthentication(response))
     );
   }
 
-  // Registro con contraseña hasheada en frontend
+  // Registro
   register(usuario: Usuario): Observable<void> {
-    // Hashear la contraseña en el frontend con bcrypt
     if (usuario.password) {
       usuario.password = bcrypt.hashSync(usuario.password, 12);
     }
 
     return this.http.post<void>(API_ENDPOINTS.REGISTER, usuario, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    }).pipe(
-      catchError(error => this.handleError(error))
-    );
+    });
   }
 
   // Logout
@@ -110,39 +90,27 @@ export class AuthService {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.http.post<any>(API_ENDPOINTS.REFRESH_TOKEN, { refreshToken }).pipe(
-      tap(response => this.handleAuthentication(response)),
-      catchError(error => {
-        this.logout();
-        return throwError(() => error);
-      })
+    return this.http.post<any>(API_ENDPOINTS.REFRESH_TOKEN, {
+      refreshToken: refreshToken
+    }).pipe(
+      tap(response => this.handleAuthentication(response))
     );
   }
 
   // Recuperación de contraseña
   forgotPassword(email: string): Observable<any> {
-    return this.http.post(API_ENDPOINTS.FORGOT_PASSWORD, { email }).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post(API_ENDPOINTS.FORGOT_PASSWORD, { email });
   }
 
   validateResetToken(token: string): Observable<any> {
-    return this.http.post(API_ENDPOINTS.VALIDATE_RESET_TOKEN, { token }).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post(API_ENDPOINTS.VALIDATE_RESET_TOKEN, { token });
   }
 
   resetPassword(token: string, password: string): Observable<any> {
-    // NO hashear la contraseña aquí
-    // El backend debe recibir la contraseña en texto plano para hashearla
-    // y almacenarla correctamente
-
     return this.http.post(API_ENDPOINTS.RESET_PASSWORD, {
       token,
-      password: password // Contraseña en texto plano
-    }).pipe(
-      catchError(this.handleError)
-    );
+      password: password
+    });
   }
 
   // Información del usuario desde token
@@ -184,17 +152,6 @@ export class AuthService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-  }
-
-  // Métodos bcrypt para hashear contraseñas en el frontend (solo para registro)
-  hashPassword(password: string): string {
-    // Para hashear contraseñas antes de enviarlas al servidor en el registro
-    return bcrypt.hashSync(password, 12);
-  }
-
-  verifyPassword(password: string, hash: string): boolean {
-    // Para verificar contraseñas hasheadas (uso interno/local)
-    return bcrypt.compareSync(password, hash);
   }
 
   // Métodos privados
@@ -239,27 +196,5 @@ export class AuthService {
     } catch (error) {
       return null;
     }
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = 'Ha ocurrido un error inesperado';
-
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Error del cliente: ${error.error.message}`;
-    } else {
-      switch (error.status) {
-        case 400: errorMessage = 'Datos inválidos'; break;
-        case 401: errorMessage = 'No autorizado'; break;
-        case 403: errorMessage = 'Acceso prohibido'; break;
-        case 404: errorMessage = 'Endpoint no encontrado'; break;
-        case 409: errorMessage = 'Usuario o email ya existe'; break;
-        case 422: errorMessage = 'Datos de validación incorrectos'; break;
-        case 500: errorMessage = 'Error interno del servidor'; break;
-        case 0: errorMessage = 'Error de conexión'; break;
-        default: errorMessage = error.error?.message || error.statusText || `Error ${error.status}`;
-      }
-    }
-
-    return throwError(() => new Error(errorMessage));
   }
 }

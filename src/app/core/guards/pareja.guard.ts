@@ -10,14 +10,12 @@ export const parejaGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  // Verificar si el usuario está autenticado
   if (!authService.isAuthenticated()) {
     router.navigate(['/auth/login']);
     return false;
   }
 
   const user = authService.getUser();
-
   if (!user || !user.username) {
     router.navigate(['/auth/login']);
     return false;
@@ -28,12 +26,11 @@ export const parejaGuard: CanActivateFn = (route, state) => {
       if (usuario && usuario.parejaId) {
         return true;
       } else {
-        // Redirigir a crear pareja si no tiene una
         router.navigate(['/pareja/crear']);
         return false;
       }
     }),
-    catchError((error) => {
+    catchError(() => {
       router.navigate(['/auth/login']);
       return of(false);
     })
