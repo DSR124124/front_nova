@@ -10,6 +10,38 @@
   min-height: 100vh;
 }
 
+/* Logo del Sistema */
+.system-logo {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos específicos para el componente p-image de PrimeNG */
+:host ::ng-deep .system-logo .p-image {
+  display: block;
+  margin: 0 auto;
+  width: 200px;
+  height: auto;
+}
+
+:host ::ng-deep .system-logo .p-image img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+:host ::ng-deep .system-logo .p-image .p-image-preview-indicator {
+  display: none;
+}
+
+:host ::ng-deep .system-logo .p-image .p-image-mask {
+  display: none;
+}
+
 /* Header del formulario */
 .form-header {
   text-align: center;
@@ -18,28 +50,7 @@
   border-bottom: 1px solid var(--surface-border);
 }
 
-.form-title {
-  color: var(--text-color);
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
 
-.form-title i {
-  color: var(--primary-color);
-  font-size: 1.25rem;
-}
-
-.form-subtitle {
-  color: var(--text-color-secondary);
-  font-size: 0.9rem;
-  margin: 0;
-  line-height: 1.4;
-}
 
 /* Loading */
 .loading-container {
@@ -298,5 +309,21 @@
   .form-actions p-button {
     width: 100%;
     max-width: 200px;
+  }
+
+  /* Logo responsive */
+  .system-logo {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  /* Logo responsive para p-image */
+  :host ::ng-deep .system-logo .p-image {
+    width: 150px !important;
+  }
+
+  :host ::ng-deep .system-logo .p-image img {
+    width: 100%;
+    height: auto;
   }
 }
