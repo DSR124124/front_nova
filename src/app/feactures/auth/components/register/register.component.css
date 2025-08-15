@@ -8,18 +8,6 @@
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
-  animation: fadeIn 0.6s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Header del formulario */
@@ -27,32 +15,7 @@
   text-align: center;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid var(--surface-border);
-  position: relative;
-  animation: slideInDown 0.6s ease-out;
-}
-
-.form-header::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-600));
-  border-radius: 1px;
-}
-
-@keyframes slideInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  border-bottom: 1px solid var(--surface-border);
 }
 
 .form-title {
@@ -64,18 +27,11 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .form-title i {
   color: var(--primary-color);
   font-size: 1.5rem;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
 }
 
 .form-subtitle {
@@ -95,134 +51,29 @@
   padding: 3rem;
   gap: 1.5rem;
   background: var(--surface-card);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
   border: 1px solid var(--surface-border);
-  animation: fadeIn 0.5s ease-out;
 }
 
 .loading-text {
   color: var(--text-color-secondary);
   font-size: 1rem;
   margin: 0;
-  font-weight: 500;
-  animation: pulse 2s infinite;
-}
-
-:host ::ng-deep .loading-container .p-progressspinner {
-  width: 3rem;
-  height: 3rem;
-}
-
-:host ::ng-deep .loading-container .p-progressspinner .p-progressspinner-circle {
-  stroke: var(--primary-color);
-  stroke-width: 3;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  text-align: center;
 }
 
 /* Wrapper del formulario */
 .form-wrapper {
   background: var(--surface-card);
-  border-radius: 12px;
-  padding: 2.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 2rem;
   border: 1px solid var(--surface-border);
   width: 100%;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 1;
-}
-
-.form-wrapper:hover {
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Asegurar que los campos del formulario no interfieran con overlays */
-.form-field {
-  margin-bottom: 1.75rem;
-  position: relative;
-  animation: fadeInUp 0.5s ease-out;
-  z-index: 1;
-}
-
-/* Prioridad especial para el campo de género */
-.form-field:has(.p-select) {
-  z-index: 1;
-}
-
-/* Estructura del formulario */
-.form-row {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1.75rem;
-  align-items: flex-start;
-  position: relative;
-  z-index: 1;
-}
-
-.form-row .form-field {
-  flex: 1;
-  margin-bottom: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.form-row .form-field:first-child {
-  animation: slideInLeft 0.5s ease-out;
-}
-
-.form-row .form-field:last-child {
-  animation: slideInRight 0.5s ease-out 0.1s both;
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 /* Campos del formulario */
-.form-field:nth-child(1) { animation-delay: 0.1s; }
-.form-field:nth-child(2) { animation-delay: 0.2s; }
-.form-field:nth-child(3) { animation-delay: 0.3s; }
-.form-field:nth-child(4) { animation-delay: 0.4s; }
-.form-field:nth-child(5) { animation-delay: 0.5s; }
-.form-field:nth-child(6) { animation-delay: 0.6s; }
-.form-field:nth-child(7) { animation-delay: 0.7s; }
-.form-field:nth-child(8) { animation-delay: 0.8s; }
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.form-field {
+  margin-bottom: 1.5rem;
 }
 
 .field-label {
@@ -231,83 +82,51 @@
   font-weight: 500;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
-  transition: color 0.2s ease;
-}
-
-.field-label:hover {
-  color: var(--primary-color);
 }
 
 .required {
-  color: var(--red-500);
+  color: var(--danger-color);
   font-weight: 600;
-}
-
-.optional {
-  color: var(--text-color-secondary);
-  font-weight: 400;
-  font-size: 0.8rem;
 }
 
 .field-input {
   width: 100%;
+}
+
+/* Estilos específicos para inputs de fecha */
+input[type="date"].field-input {
   padding: 0.75rem;
   border: 1px solid var(--surface-border);
   border-radius: 6px;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
   background: var(--surface-ground);
   color: var(--text-color);
-  position: relative;
   min-height: 2.5rem;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
 }
 
-.field-input:hover {
+input[type="date"].field-input:focus {
+  outline: none;
   border-color: var(--primary-color);
-  background: var(--surface-0);
+}
+
+input[type="date"].field-input.field-error {
+  border-color: var(--danger-color);
 }
 
 .field-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
-  background: var(--surface-0);
-  transform: translateY(-1px);
 }
 
 .field-input.field-error {
-  border-color: var(--red-500);
-  background: var(--red-50);
-  animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  border-color: var(--danger-color);
 }
 
 /* Mensajes de error */
 .error-message {
-  color: var(--red-500);
+  color: var(--danger-color);
   font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
   margin-top: 0.25rem;
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.error-message i {
-  font-size: 0.75rem;
 }
 
 /* Checkbox container */
@@ -315,13 +134,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-}
-
-.checkbox-container:hover {
-  background: var(--surface-ground);
+  margin-bottom: 1rem;
 }
 
 .checkbox-label {
@@ -329,23 +142,81 @@
   user-select: none;
   color: var(--text-color);
   font-size: 0.85rem;
-  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.checkbox-label:hover {
-  color: var(--primary-color);
+/* Estilos específicos para el checkbox de términos y condiciones */
+.terms-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
+.terms-checkbox .p-checkbox {
+  margin: 0;
+}
+
+.terms-checkbox .p-checkbox .p-checkbox-box {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--surface-border);
+  border-radius: 4px;
+  background: var(--surface-ground);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.terms-checkbox .p-checkbox .p-checkbox-box:hover {
+  border-color: var(--primary-color);
+}
+
+.terms-checkbox .p-checkbox .p-checkbox-box.p-highlight {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+}
+
+.terms-checkbox .p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon {
+  color: var(--primary-color-text);
+  font-size: 12px;
+}
+
+.terms-checkbox .p-checkbox .p-checkbox-box:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.terms-checkbox .p-checkbox-label {
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Estado de error para el checkbox */
+.terms-checkbox.field-error .p-checkbox .p-checkbox-box {
+  border-color: var(--danger-color);
+}
+
+.terms-checkbox.field-error .p-checkbox-label {
+  color: var(--danger-color);
+}
+
+/* Enlace de términos */
 .terms-link {
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
-  transition: all 0.2s ease;
 }
 
 .terms-link:hover {
   text-decoration: underline;
-  color: var(--primary-600);
 }
 
 /* Botones de acción */
@@ -361,12 +232,10 @@
 
 .cancel-btn {
   min-width: 140px;
-  white-space: nowrap;
 }
 
 .submit-btn {
   min-width: 160px;
-  white-space: nowrap;
 }
 
 /* Enlaces adicionales */
@@ -379,72 +248,9 @@
 
 .link-btn {
   margin: 0.25rem;
-  transition: all 0.2s ease;
 }
 
-.link-btn:hover {
-  transform: translateY(-1px);
-}
-
-/* Campo de foto */
-.file-preview {
-  margin-top: 1rem;
-  text-align: center;
-  padding: 1rem;
-  background: var(--surface-ground);
-  border-radius: 8px;
-  border: 1px solid var(--surface-border);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.preview-image {
-  border-radius: 8px;
-  border: 2px solid var(--surface-border);
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
-}
-
-.preview-image:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
-.remove-photo-btn {
-  min-width: 100px;
-  font-size: 0.8rem;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.remove-photo-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-}
-
-.form-help {
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: var(--text-color-secondary);
-  font-style: italic;
-}
-
-.form-help i {
-  color: var(--primary-color);
-  font-size: 0.75rem;
-}
-
-/* Estilos específicos para componentes PrimeNG */
-
-/* Estilos para p-password */
+/* Estilos para componentes PrimeNG */
 :host ::ng-deep .field-input.p-password {
   width: 100%;
   display: block;
@@ -456,7 +262,6 @@
   border: 1px solid var(--surface-border);
   border-radius: 6px;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
   background: var(--surface-ground);
   color: var(--text-color);
 }
@@ -464,7 +269,6 @@
 :host ::ng-deep .field-input.p-password .p-password-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
 }
 
 :host ::ng-deep .field-input.p-password .p-password-toggle {
@@ -473,166 +277,10 @@
   cursor: pointer;
 }
 
-:host ::ng-deep .field-input.p-password .p-password-toggle:hover {
-  color: var(--primary-color);
-}
-
 :host ::ng-deep .field-input.p-password.field-error .p-password-input {
-  border-color: var(--red-500);
-  background: var(--red-50);
+  border-color: var(--danger-color);
 }
 
-/* Estilos para p-datepicker */
-:host ::ng-deep .field-input.p-datepicker {
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-:host ::ng-deep .field-input.p-datepicker .p-datepicker {
-  width: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-:host ::ng-deep .field-input.p-datepicker .p-inputtext {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--surface-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  background: var(--surface-ground);
-  color: var(--text-color);
-  min-height: 2.5rem;
-  display: flex;
-  align-items: center;
-}
-
-:host ::ng-deep .field-input.p-datepicker .p-inputtext:hover {
-  border-color: var(--primary-color);
-  background: var(--surface-0);
-}
-
-:host ::ng-deep .field-input.p-datepicker .p-inputtext:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
-  background: var(--surface-0);
-}
-
-:host ::ng-deep .field-input.p-datepicker.field-error .p-inputtext {
-  border-color: var(--red-500);
-  background: var(--red-50);
-}
-
-:host ::ng-deep .field-input.p-datepicker .p-datepicker-trigger {
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-color-secondary);
-  transition: color 0.2s ease;
-}
-
-:host ::ng-deep .field-input.p-datepicker .p-datepicker-trigger:hover {
-  color: var(--primary-color);
-}
-
-/* Asegurar que el calendario se superponga */
-:host ::ng-deep .p-datepicker-panel {
-  z-index: 9999 !important;
-  position: fixed !important;
-}
-
-/* Estilos para p-fileupload */
-:host ::ng-deep .field-input.p-fileupload {
-  width: 100%;
-}
-
-:host ::ng-deep .field-input.p-fileupload .p-fileupload-buttonbar {
-  padding: 0;
-  background: transparent;
-  border: none;
-}
-
-:host ::ng-deep .field-input.p-fileupload .p-fileupload-content {
-  padding: 0;
-  border: none;
-  background: transparent;
-  display: none;
-}
-
-:host ::ng-deep .field-input.p-fileupload .p-fileupload-row {
-  display: none;
-}
-
-:host ::ng-deep .field-input.p-fileupload .p-button {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--surface-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  background: var(--surface-ground);
-  color: var(--text-color);
-  justify-content: center;
-  font-weight: 500;
-}
-
-:host ::ng-deep .field-input.p-fileupload .p-button:hover {
-  border-color: var(--primary-color);
-  background: var(--primary-color);
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3);
-}
-
-:host ::ng-deep .field-input.p-fileupload .p-button:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 4px rgba(var(--primary-color-rgb), 0.3);
-}
-
-/* Estilos para el preview de imagen */
-.file-preview {
-  margin-top: 1rem;
-  text-align: center;
-  padding: 1rem;
-  background: var(--surface-ground);
-  border-radius: 8px;
-  border: 1px solid var(--surface-border);
-}
-
-.preview-image {
-  border-radius: 8px;
-  border: 2px solid var(--surface-border);
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
-}
-
-.preview-image:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
-.form-help {
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: var(--text-color-secondary);
-  font-style: italic;
-}
-
-.form-help i {
-  color: var(--primary-color);
-  font-size: 0.75rem;
-}
-
-/* Estilos para checkbox */
 :host ::ng-deep .checkbox-container .p-checkbox {
   margin: 0;
 }
@@ -642,122 +290,34 @@
   background: var(--surface-ground);
 }
 
-:host ::ng-deep .checkbox-container .p-checkbox .p-checkbox-box:hover {
-  border-color: var(--primary-color);
-}
-
 :host ::ng-deep .checkbox-container .p-checkbox .p-checkbox-box.p-highlight {
   border-color: var(--primary-color);
   background: var(--primary-color);
 }
 
-/* Estilos para botones */
 :host ::ng-deep .form-actions .p-button {
   min-height: 2.5rem;
   font-weight: 500;
   font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-:host ::ng-deep .form-actions .p-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-:host ::ng-deep .form-actions .p-button:hover::before {
-  left: 100%;
-}
-
-:host ::ng-deep .form-actions .p-button .p-button-icon {
-  margin-right: 0.5rem;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-}
-
-:host ::ng-deep .form-actions .p-button:hover .p-button-icon {
-  transform: scale(1.1);
-}
-
-:host ::ng-deep .form-actions .p-button:active {
-  transform: translateY(1px);
 }
 
 :host ::ng-deep .additional-links .p-button {
   margin: 0.25rem;
   font-size: 0.85rem;
-  transition: all 0.2s ease;
-}
-
-:host ::ng-deep .additional-links .p-button:hover {
-  transform: translateY(-1px);
-  color: var(--primary-color);
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .register-form-container {
     padding: 1rem;
-    max-width: 100%;
   }
 
   .form-wrapper {
     padding: 1.5rem;
-    margin: 0 0.5rem;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .form-row .form-field {
-    margin-bottom: 1.75rem;
   }
 
   .form-title {
     font-size: 1.5rem;
-  }
-
-  .form-subtitle {
-    font-size: 0.9rem;
-  }
-
-  .loading-container {
-    padding: 2rem;
-    margin: 0 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .register-form-container {
-    padding: 0.75rem;
-  }
-
-  .form-wrapper {
-    padding: 1rem;
-    margin: 0 0.25rem;
-  }
-
-  .form-title {
-    font-size: 1.25rem;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .form-subtitle {
-    font-size: 0.85rem;
   }
 
   .form-actions {
@@ -769,274 +329,5 @@
   .form-actions p-button {
     width: 100%;
     max-width: 200px;
-  }
-
-  .loading-container {
-    padding: 1.5rem;
-    margin: 0 0.25rem;
-  }
-
-  .loading-text {
-    font-size: 0.9rem;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .form-wrapper {
-    border-width: 2px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  .field-input {
-    border-width: 2px;
-  }
-
-  .field-input:focus {
-    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .form-wrapper,
-  .field-input,
-  .checkbox-container,
-  .form-actions .p-button,
-  .additional-links .p-button {
-    transition: none;
-  }
-
-  .form-wrapper:hover,
-  .field-input:focus,
-  .field-input:hover {
-    transform: none;
-  }
-
-  .form-title i {
-    animation: none;
-  }
-
-  .loading-text {
-    animation: none;
-  }
-
-  .form-field,
-  .form-row .form-field,
-  .form-header,
-  .register-form-container,
-  .loading-container {
-    animation: none;
-  }
-}
-
-
-
-/* Estilos para inputs de texto */
-:host ::ng-deep .field-input.p-inputtext {
-  min-height: 2.5rem;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-:host ::ng-deep .field-input.p-inputtext:not([type="file"]) {
-  height: 2.5rem;
-}
-
-/* Estilos para p-password */
-:host ::ng-deep .field-input.p-password {
-  width: 100%;
-  display: block;
-  min-height: 2.5rem;
-}
-
-/* Estilos globales para overlays de PrimeNG */
-:host ::ng-deep .p-component-overlay {
-  z-index: 9998 !important;
-}
-
-:host ::ng-deep .p-select-panel,
-:host ::ng-deep .p-datepicker-panel,
-:host ::ng-deep .p-multiselect-panel,
-:host ::ng-deep .p-overlaypanel,
-:host ::ng-deep .p-tooltip,
-:host ::ng-deep .p-confirm-popup {
-  z-index: 99999 !important;
-}
-
-:host ::ng-deep .p-dialog {
-  z-index: 100000 !important;
-}
-
-/* Prioridad máxima para p-select-panel */
-:host ::ng-deep .p-select-panel {
-  z-index: 999999 !important;
-  position: fixed !important;
-  pointer-events: auto !important;
-}
-
-/* Estilos para p-select */
-:host ::ng-deep .field-input.p-select {
-  width: 100%;
-  position: relative;
-  z-index: 10;
-}
-
-:host ::ng-deep .field-input.p-select .p-select {
-  width: 100%;
-  height: auto;
-  position: relative;
-  z-index: 10;
-}
-
-:host ::ng-deep .field-input.p-select .p-select-trigger {
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-color-secondary);
-  transition: color 0.2s ease;
-}
-
-:host ::ng-deep .field-input.p-select .p-select-trigger:hover {
-  color: var(--primary-color);
-}
-
-:host ::ng-deep .field-input.p-select .p-select-label {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--surface-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  background: var(--surface-ground);
-  color: var(--text-color);
-  min-height: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-:host ::ng-deep .field-input.p-select .p-select-label:hover {
-  border-color: var(--primary-color);
-  background: var(--surface-0);
-}
-
-:host ::ng-deep .field-input.p-select .p-select-label:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
-  background: var(--surface-0);
-  transform: translateY(-1px);
-}
-
-:host ::ng-deep .field-input.p-select.field-error .p-select-label {
-  border-color: var(--red-500);
-  background: var(--red-50);
-  animation: shake 0.5s ease-in-out;
-}
-
-:host ::ng-deep .field-input.p-select .p-select-panel {
-  border: 1px solid var(--surface-border);
-  border-radius: 6px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  background: var(--surface-card);
-  z-index: 99999 !important;
-  position: fixed !important;
-  top: auto !important;
-  left: auto !important;
-  right: auto !important;
-  margin-top: 0;
-  min-width: 100%;
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--surface-border);
-}
-
-:host ::ng-deep .field-input.p-select .p-select-items {
-  padding: 0;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-:host ::ng-deep .field-input.p-select .p-select-item {
-  padding: 0.75rem;
-  font-size: 0.9rem;
-  color: var(--text-color);
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-:host ::ng-deep .field-input.p-select .p-select-item:hover {
-  background: var(--primary-50);
-  color: var(--primary-color);
-}
-
-:host ::ng-deep .field-input.p-select .p-select-item.p-highlight {
-  background: var(--primary-color);
-  color: white;
-}
-
-/* Asegurar que el select se superponga sobre otros elementos */
-:host ::ng-deep .p-select-panel {
-  z-index: 99999 !important;
-  position: fixed !important;
-  pointer-events: auto !important;
-}
-
-:host ::ng-deep .p-select-panel .p-select-items-wrapper {
-  z-index: 100000 !important;
-  pointer-events: auto !important;
-}
-
-/* Overlay para asegurar que el select esté por encima de todo */
-:host ::ng-deep .p-select-overlay {
-  z-index: 99998 !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  pointer-events: none !important;
-}
-
-/* Estilos para app-image-upload - Integración con el tema global */
-:host ::ng-deep .field-input.app-image-upload {
-  width: 100%;
-  border: none;
-  padding: 0;
-  background: transparent;
-  min-height: auto;
-}
-
-:host ::ng-deep .field-input.app-image-upload .image-upload-container {
-  width: 100%;
-}
-
-:host ::ng-deep .field-input.app-image-upload .custom-file-upload {
-  width: 100%;
-}
-
-/* Asegurar que el componente se integre bien con el formulario */
-:host ::ng-deep .field-input.app-image-upload .upload-area {
-  min-height: 120px;
-}
-
-:host ::ng-deep .field-input.app-image-upload .file-item {
-  margin-bottom: 0.5rem;
-}
-
-/* Responsive para image upload */
-@media (max-width: 768px) {
-  :host ::ng-deep .field-input.app-image-upload .file-item {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
-  }
-
-  :host ::ng-deep .field-input.app-image-upload .file-details {
-    justify-content: center;
   }
 }

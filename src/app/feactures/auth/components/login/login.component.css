@@ -60,16 +60,15 @@
 /* Wrapper del formulario */
 .form-wrapper {
   background: var(--surface-card);
-  border-radius: 12px;
-  padding: 2.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 2rem;
   border: 1px solid var(--surface-border);
   width: 100%;
 }
 
 /* Campos del formulario */
 .form-field {
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .field-label {
@@ -81,7 +80,7 @@
 }
 
 .required {
-  color: var(--red-500);
+  color: var(--danger-color);
   font-weight: 600;
 }
 
@@ -91,7 +90,6 @@
   border: 1px solid var(--surface-border);
   border-radius: 6px;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
   background: var(--surface-ground);
   color: var(--text-color);
 }
@@ -99,26 +97,17 @@
 .field-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
 }
 
 .field-input.field-error {
-  border-color: var(--red-500);
-  background: var(--red-50);
+  border-color: var(--danger-color);
 }
 
 /* Mensajes de error */
 .error-message {
-  color: var(--red-500);
+  color: var(--danger-color);
   font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
   margin-top: 0.25rem;
-}
-
-.error-message i {
-  font-size: 0.75rem;
 }
 
 /* Checkbox container */
@@ -126,6 +115,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .checkbox-label {
@@ -133,10 +123,69 @@
   user-select: none;
   color: var(--text-color);
   font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.checkbox-label:hover {
-  color: var(--primary-color);
+/* Estilos específicos para el checkbox Recordarme */
+.remember-me-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.remember-me-checkbox .p-checkbox {
+  margin: 0;
+}
+
+.remember-me-checkbox .p-checkbox .p-checkbox-box {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--surface-border);
+  border-radius: 4px;
+  background: var(--surface-ground);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remember-me-checkbox .p-checkbox .p-checkbox-box:hover {
+  border-color: var(--primary-color);
+}
+
+.remember-me-checkbox .p-checkbox .p-checkbox-box.p-highlight {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+}
+
+.remember-me-checkbox .p-checkbox .p-checkbox-box.p-highlight .p-checkbox-icon {
+  color: var(--primary-color-text);
+  font-size: 12px;
+}
+
+.remember-me-checkbox .p-checkbox .p-checkbox-box:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.remember-me-checkbox .p-checkbox-label {
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Estado de error para el checkbox */
+.remember-me-checkbox.field-error .p-checkbox .p-checkbox-box {
+  border-color: var(--danger-color);
+}
+
+.remember-me-checkbox.field-error .p-checkbox-label {
+  color: var(--danger-color);
 }
 
 /* Botones de acción */
@@ -152,12 +201,10 @@
 
 .cancel-btn {
   min-width: 140px;
-  white-space: nowrap;
 }
 
 .submit-btn {
   min-width: 160px;
-  white-space: nowrap;
 }
 
 /* Enlaces adicionales */
@@ -172,9 +219,7 @@
   margin: 0.25rem;
 }
 
-/* Estilos específicos para componentes PrimeNG */
-
-/* Estilos para p-password */
+/* Estilos para componentes PrimeNG */
 :host ::ng-deep .field-input.p-password {
   width: 100%;
   display: block;
@@ -186,7 +231,6 @@
   border: 1px solid var(--surface-border);
   border-radius: 6px;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
   background: var(--surface-ground);
   color: var(--text-color);
 }
@@ -194,7 +238,6 @@
 :host ::ng-deep .field-input.p-password .p-password-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
 }
 
 :host ::ng-deep .field-input.p-password .p-password-toggle {
@@ -203,13 +246,8 @@
   cursor: pointer;
 }
 
-:host ::ng-deep .field-input.p-password .p-password-toggle:hover {
-  color: var(--primary-color);
-}
-
 :host ::ng-deep .field-input.p-password.field-error .p-password-input {
-  border-color: var(--red-500);
-  background: var(--red-50);
+  border-color: var(--danger-color);
 }
 
 :host ::ng-deep .checkbox-container .p-checkbox {
@@ -221,10 +259,6 @@
   background: var(--surface-ground);
 }
 
-:host ::ng-deep .checkbox-container .p-checkbox .p-checkbox-box:hover {
-  border-color: var(--primary-color);
-}
-
 :host ::ng-deep .checkbox-container .p-checkbox .p-checkbox-box.p-highlight {
   border-color: var(--primary-color);
   background: var(--primary-color);
@@ -234,14 +268,6 @@
   min-height: 2.5rem;
   font-weight: 500;
   font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-:host ::ng-deep .form-actions .p-button .p-button-icon {
-  margin-right: 0.5rem;
-  flex-shrink: 0;
 }
 
 :host ::ng-deep .additional-links .p-button {
@@ -252,19 +278,15 @@
 /* Responsive */
 @media (max-width: 480px) {
   .login-form-container {
-    padding: 0.75rem;
+    padding: 1rem;
   }
 
   .form-wrapper {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   .form-title {
     font-size: 1.25rem;
-  }
-
-  .form-subtitle {
-    font-size: 0.85rem;
   }
 
   .form-actions {

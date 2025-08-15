@@ -156,7 +156,6 @@
           Foto de Perfil <span class="optional">(Opcional)</span>
         </label>
         <app-image-upload
-          formControlName="fotoPerfil"
           [multiple]="false"
           [maxFileSize]="2097152"
           accept="image/*"
@@ -170,10 +169,6 @@
           (filesSelected)="onFilesSelected($event)"
           class="field-input"
         />
-        <small class="form-help">
-          <i class="pi pi-info-circle"></i>
-          Formatos aceptados: JPG, PNG, GIF. Máximo 2MB
-        </small>
       </div>
 
       <!-- Contraseñas -->
@@ -221,18 +216,17 @@
 
       <!-- Términos y Condiciones -->
       <div class="form-field">
-        <div class="checkbox-container">
+        <div class="terms-checkbox" [class.field-error]="isFieldInvalid('acceptTerms')">
           <p-checkbox
             formControlName="acceptTerms"
             inputId="acceptTerms"
             [binary]="true"
           />
-          <label for="acceptTerms" class="checkbox-label">
+          <label for="acceptTerms" class="p-checkbox-label">
             Acepto los <a href="#" class="terms-link">términos y condiciones</a>
           </label>
         </div>
         <small *ngIf="isFieldInvalid('acceptTerms')" class="error-message">
-          <i class="pi pi-exclamation-circle"></i>
           {{ getFieldError('acceptTerms') }}
         </small>
       </div>
