@@ -30,6 +30,62 @@
   display: none;
 }
 
+/* Ocultar completamente la vista previa por defecto de PrimeNG */
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-files {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-preview {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-image {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-details {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-actions {
+  display: none !important;
+}
+
+/* Ocultar cualquier otro elemento de vista previa que pueda aparecer */
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-preview img {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-preview canvas {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-preview video {
+  display: none !important;
+}
+
+/* Ocultar elementos de archivo que puedan aparecer por defecto */
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-name {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-size {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-type {
+  display: none !important;
+}
+
+/* Asegurar que solo se muestre nuestro template personalizado */
+:host ::ng-deep .custom-file-upload .p-fileupload-content > *:not(.upload-area) {
+  display: none !important;
+}
+
 /* Área de upload */
 .upload-area {
   min-height: 200px;
@@ -304,4 +360,19 @@
   .upload-info small {
     font-size: 0.75rem;
   }
+}
+
+/* Regla final para ocultar cualquier elemento de archivo por defecto */
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file,
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file * {
+  display: none !important;
+}
+
+/* Regla adicional para ocultar cualquier contenido de archivo por defecto */
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-content {
+  display: none !important;
+}
+
+:host ::ng-deep .custom-file-upload .p-fileupload-content .p-fileupload-file-content * {
+  display: none !important;
 }

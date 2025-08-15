@@ -93,6 +93,29 @@
   width: 100%;
 }
 
+/* Estilos específicos para inputs de texto */
+input[type="text"].field-input,
+input[type="email"].field-input {
+  padding: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: var(--surface-ground);
+  color: var(--text-color);
+  min-height: 2.5rem;
+}
+
+input[type="text"].field-input:focus,
+input[type="email"].field-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+input[type="text"].field-input.field-error,
+input[type="email"].field-input.field-error {
+  border-color: var(--danger-color);
+}
+
 /* Estilos específicos para inputs de fecha */
 input[type="date"].field-input {
   padding: 0.75rem;
@@ -111,6 +134,112 @@ input[type="date"].field-input:focus {
 
 input[type="date"].field-input.field-error {
   border-color: var(--danger-color);
+}
+
+/* Estilos específicos para el selector de género */
+:host ::ng-deep .field-input.p-select {
+  width: 100%;
+}
+
+:host ::ng-deep .field-input.p-select .p-select {
+  width: 100%;
+}
+
+:host ::ng-deep .field-input.p-select .p-select-label {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: var(--surface-ground);
+  color: var(--text-color);
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep .field-input.p-select .p-select-label:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+:host ::ng-deep .field-input.p-select.field-error .p-select-label {
+  border-color: var(--danger-color);
+}
+
+:host ::ng-deep .field-input.p-select .p-select-trigger {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color-secondary);
+}
+
+/* Estilos para el campo de foto de perfil */
+:host ::ng-deep .field-input.app-image-upload {
+  width: 100%;
+  border: none;
+  padding: 0;
+  background: transparent;
+  min-height: auto;
+}
+
+:host ::ng-deep .field-input.app-image-upload .image-upload-container {
+  width: 100%;
+}
+
+:host ::ng-deep .field-input.app-image-upload .custom-file-upload {
+  border: 2px dashed var(--surface-border);
+  border-radius: 8px;
+  background: var(--surface-ground);
+}
+
+:host ::ng-deep .field-input.app-image-upload .custom-file-upload:hover {
+  border-color: var(--primary-color);
+  background: var(--surface-section);
+}
+
+:host ::ng-deep .field-input.app-image-upload .upload-area {
+  min-height: 120px;
+  padding: 1.5rem;
+}
+
+:host ::ng-deep .field-input.app-image-upload .upload-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+}
+
+:host ::ng-deep .field-input.app-image-upload .upload-text p {
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+:host ::ng-deep .field-input.app-image-upload .upload-text small {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+}
+
+:host ::ng-deep .field-input.app-image-upload .upload-info small {
+  color: var(--text-color-muted);
+  font-size: 0.8rem;
+}
+
+/* Estilos para el texto de ayuda de la foto */
+.form-help {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-color-secondary);
+  font-style: italic;
+}
+
+.form-help i {
+  color: var(--primary-color);
+  font-size: 0.75rem;
 }
 
 .field-input:focus {

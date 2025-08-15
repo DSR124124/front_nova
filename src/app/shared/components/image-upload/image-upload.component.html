@@ -8,8 +8,8 @@
     [disabled]="disabled"
     [auto]="auto"
     [url]="url"
-    [showUploadButton]="showUploadButton"
-    [showCancelButton]="showCancelButton"
+    [showUploadButton]="false"
+    [showCancelButton]="false"
     [chooseLabel]="chooseLabel"
     [uploadLabel]="uploadLabel"
     [cancelLabel]="cancelLabel"
@@ -92,26 +92,6 @@
             [disabled]="disabled"
           />
         </div>
-      </div>
-    </ng-template>
-
-    <!-- Template para la barra de herramientas (si se muestran botones) -->
-    <ng-template pTemplate="toolbar" *ngIf="showUploadButton || showCancelButton">
-      <div class="upload-toolbar">
-        <p-button
-          *ngIf="showUploadButton"
-          [label]="uploadLabel"
-          icon="pi pi-upload"
-          severity="success"
-          [disabled]="files.length === 0 || disabled"
-        />
-        <p-button
-          *ngIf="showCancelButton"
-          [label]="cancelLabel"
-          icon="pi pi-times"
-          severity="secondary"
-          [disabled]="files.length === 0 || disabled"
-        />
       </div>
     </ng-template>
   </p-fileUpload>
