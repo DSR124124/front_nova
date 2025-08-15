@@ -48,25 +48,9 @@ export class ForgotPasswordComponent implements OnInit {
             life: 5000
           });
         },
-        error: (error) => {
+        error: () => {
           this.loading = false;
-          console.error('Error al enviar email:', error);
-
-          let errorMessage = 'Error al enviar el email de recuperación';
-          if (error.status === 404) {
-            errorMessage = 'El email no está registrado en nuestro sistema';
-          } else if (error.status === 0) {
-            errorMessage = 'Error de conexión. Verifica tu internet';
-          } else if (error.error?.message) {
-            errorMessage = error.error.message;
-          }
-
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: errorMessage,
-            life: 5000
-          });
+          // ErrorInterceptor ya maneja los errores HTTP automáticamente
         }
       });
     } else {

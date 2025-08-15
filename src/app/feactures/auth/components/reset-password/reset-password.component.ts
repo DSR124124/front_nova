@@ -78,23 +78,10 @@ export class ResetPasswordComponent implements OnInit {
           life: 3000
         });
       },
-      error: (error) => {
+      error: () => {
         this.loading = false;
         this.tokenValid = false;
-
-        let errorMessage = 'Token inválido o expirado';
-        if (error.status === 404) {
-          errorMessage = 'Token no encontrado o expirado';
-        } else if (error.error?.message) {
-          errorMessage = error.error.message;
-        }
-
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Token Inválido',
-          detail: errorMessage,
-          life: 5000
-        });
+        // ErrorInterceptor ya maneja los errores HTTP automáticamente
       }
     });
   }
@@ -121,27 +108,9 @@ export class ResetPasswordComponent implements OnInit {
             this.router.navigate(['/auth/login']);
           }, 3000);
         },
-        error: (error) => {
+        error: () => {
           this.loading = false;
-          console.error('Error al resetear contraseña:', error);
-
-          let errorMessage = 'Error al cambiar la contraseña';
-          if (error.status === 400) {
-            errorMessage = 'Datos inválidos o token expirado';
-          } else if (error.status === 404) {
-            errorMessage = 'Token no encontrado o expirado';
-          } else if (error.status === 0) {
-            errorMessage = 'Error de conexión. Verifica tu internet';
-          } else if (error.error?.message) {
-            errorMessage = error.error.message;
-          }
-
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: errorMessage,
-            life: 5000
-          });
+          // ErrorInterceptor ya maneja los errores HTTP automáticamente
         }
       });
     } else {
