@@ -4,14 +4,12 @@
 
 
   <!-- Loading Spinner -->
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner strokeWidth="3" />
-    <p class="loading-text">Iniciando sesión...</p>
-  </div>
+  <app-loading-spinner
+    *ngIf="loading"
+    label="Iniciando sesión..."
+    size="medium"
+    [overlay]="false" />
 
-  <!-- Formulario -->
-  <div class="form-wrapper" *ngIf="!loading">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
 
       <!-- Header -->
       <div class="form-header">
@@ -24,7 +22,9 @@
         </span>
       </div>
 
-
+  <!-- Formulario -->
+  <div class="form-wrapper" *ngIf="!loading">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
 
       <!-- Usuario -->
       <div class="form-field">

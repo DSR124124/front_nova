@@ -11,10 +11,11 @@
   </div>
 
   <!-- Loading Spinner -->
-  <div *ngIf="loading" class="loading-container">
-    <p-progressSpinner strokeWidth="3" />
-    <p class="loading-text">Creando cuenta...</p>
-  </div>
+  <app-loading-spinner
+    *ngIf="loading"
+    label="Creando cuenta..."
+    size="medium"
+    [overlay]="false" />
 
   <!-- Formulario -->
   <div class="form-wrapper" *ngIf="!loading">
