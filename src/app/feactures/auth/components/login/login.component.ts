@@ -175,7 +175,11 @@ export class LoginComponent implements OnInit {
             return;
           }
 
-          this.authService.setToken(cleanToken);
+          // En lugar de setToken, usar el método del servicio
+          // this.authService.setToken(cleanToken);
+
+          // El token ya se maneja automáticamente en el servicio de login
+          // Solo necesitamos verificar que el usuario esté autenticado
 
           // Mostrar información del token
           this.showTokenInfo(cleanToken);

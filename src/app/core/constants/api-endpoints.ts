@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 export const API_ENDPOINTS = {
   // Auth endpoints
   LOGIN: `${environment.base}/login`,
-  REGISTER: `${environment.base}/register`,
+  REGISTER: `${environment.base}/usuarios/registrar`, // Corregido para coincidir con el backend
   REFRESH_TOKEN: `${environment.base}/refresh-token`,
   FORGOT_PASSWORD: `${environment.base}/forgot-password`,
   VALIDATE_RESET_TOKEN: `${environment.base}/validate-reset-token`,

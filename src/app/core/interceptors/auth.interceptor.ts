@@ -51,16 +51,40 @@ export class AuthInterceptor implements HttpInterceptor {
   private isAuthRequest(url: string): boolean {
     // Verificar si es una petición de autenticación (login, register, etc.)
     return url.includes('/login') ||
-           url.includes('/register') ||
+           url.includes('/registrar') || // Incluye tanto /registrar como /usuarios/registrar
            url.includes('/forgot-password') ||
            url.includes('/reset-password') ||
            url.includes('/refresh-token');
   }
 
-    private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Como el refresh token no está implementado, simplemente hacemos logout
-    this.authService.logout();
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!this.isRefreshing) {
+      this.isRefreshing = true;
+      this.refreshTokenSubject.next(null);
 
-    return throwError(() => new Error('Unauthorized - Token expired'));
+      return this.authService.refreshToken().pipe(
+        switchMap((response: any) => {
+          this.isRefreshing = false;
+          this.refreshTokenSubject.next(response.token);
+
+          // Reintentar la petición original con el nuevo token
+          return next.handle(this.addToken(request, response.token));
+        }),
+        catchError((err) => {
+          this.isRefreshing = false;
+          this.authService.logout();
+          return throwError(() => err);
+        })
+      );
+    } else {
+      // Si ya se está refrescando, esperar y reintentar
+      return this.refreshTokenSubject.pipe(
+        filter(token => token !== null),
+        take(1),
+        switchMap(token => {
+          return next.handle(this.addToken(request, token));
+        })
+      );
+    }
   }
 }

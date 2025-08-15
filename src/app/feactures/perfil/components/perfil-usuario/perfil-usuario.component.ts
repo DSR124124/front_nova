@@ -31,7 +31,7 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   checkAuthentication() {
-    this.isAuthenticated = this.authService.isLoggedIn();
+    this.isAuthenticated = this.authService.isAuthenticated();
 
     if (this.isAuthenticated) {
       this.cargarPerfilUsuario();
@@ -119,7 +119,7 @@ export class PerfilUsuarioComponent implements OnInit {
 
   getRoleTexto(): string {
     if (!this.usuario?.role) return '';
-    switch (this.usuario.role) {
+    switch (this.usuario.role.rol) { // Acceder a la propiedad 'rol' del objeto
       case 'ADMIN': return 'Administrador';
       case 'USER': return 'Usuario';
       default: return 'Desconocido';
@@ -128,7 +128,7 @@ export class PerfilUsuarioComponent implements OnInit {
 
   getEdad(): number {
     if (!this.usuario?.fechaNacimiento) return 0;
-    const fechaNac = new Date(this.usuario.fechaNacimiento);
+    const fechaNac = new Date(this.usuario.fechaNacimiento); // fechaNacimiento ya es string
     const hoy = new Date();
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const mes = hoy.getMonth() - fechaNac.getMonth();

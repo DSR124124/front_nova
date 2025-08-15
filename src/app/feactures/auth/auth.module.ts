@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { MessageService } from 'primeng/api';
 
@@ -25,7 +26,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     ReactiveFormsModule,
     HttpClientModule,
     PrimeNgModule,
-
+    SharedModule,
     AuthRoutingModule
   ],
   providers: [MessageService]

@@ -5,15 +5,18 @@
 
 /* Personalización del FileUpload de PrimeNG */
 :host ::ng-deep .custom-file-upload {
-  border: 2px dashed var(--p-surface-border);
+  border: 2px dashed var(--surface-border);
   border-radius: 8px;
-  background: var(--p-surface-0);
+  background: var(--surface-ground);
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 :host ::ng-deep .custom-file-upload:hover {
-  border-color: var(--p-primary-color);
-  background: var(--p-surface-50);
+  border-color: var(--primary-color);
+  background: var(--surface-section);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 :host ::ng-deep .custom-file-upload .p-fileupload-content {
@@ -39,12 +42,14 @@
   justify-content: center;
   gap: 1rem;
   transition: all 0.3s ease;
+  padding: 1.5rem;
 }
 
 .upload-area.has-files {
   min-height: auto;
   align-items: stretch;
   justify-content: flex-start;
+  padding: 1rem;
 }
 
 /* Estado vacío */
@@ -54,25 +59,28 @@
   align-items: center;
   gap: 1rem;
   text-align: center;
-  color: var(--p-text-muted-color);
+  color: var(--text-color-secondary);
 }
 
 .upload-icon {
   font-size: 3rem;
-  color: var(--p-primary-color);
-  opacity: 0.6;
+  color: var(--primary-color);
+  opacity: 0.8;
+  transition: all 0.3s ease;
 }
 
 .upload-text p {
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
-  font-weight: 500;
-  color: var(--p-text-color);
+  font-weight: 600;
+  color: var(--text-color);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .upload-text small {
-  color: var(--p-text-muted-color);
+  color: var(--text-color-secondary);
   font-size: 0.9rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .upload-info {
@@ -80,8 +88,9 @@
 }
 
 .upload-info small {
-  color: var(--p-text-muted-color);
+  color: var(--text-color-muted);
   font-size: 0.8rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Lista de archivos */
@@ -97,15 +106,18 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  border: 1px solid var(--p-surface-border);
-  border-radius: 6px;
-  background: var(--p-surface-0);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  background: var(--surface-card);
   transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .file-item:hover {
-  background: var(--p-surface-50);
-  border-color: var(--p-primary-color);
+  background: var(--surface-hover);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Vista previa */
@@ -115,9 +127,17 @@
 
 .preview-image {
   height: 80px;
+  width: 80px;
   object-fit: cover;
-  border-radius: 4px;
-  border: 1px solid var(--p-surface-border);
+  border-radius: 6px;
+  border: 2px solid var(--surface-border);
+  transition: all 0.2s ease;
+}
+
+.preview-image:hover {
+  transform: scale(1.05);
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 /* Información del archivo */
@@ -127,30 +147,35 @@
 }
 
 .file-name {
-  font-weight: 500;
-  color: var(--p-text-color);
+  font-weight: 600;
+  color: var(--text-color);
   margin-bottom: 0.25rem;
   word-break: break-word;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .file-details {
   display: flex;
   gap: 1rem;
   font-size: 0.875rem;
-  color: var(--p-text-muted-color);
+  color: var(--text-color-secondary);
+  align-items: center;
 }
 
 .file-size {
   font-weight: 500;
+  color: var(--text-color-muted);
 }
 
 .file-type {
-  color: var(--p-primary-color);
-  background: var(--p-primary-50);
-  padding: 0.125rem 0.375rem;
+  color: var(--primary-color);
+  background: var(--primary-50);
+  padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Acciones del archivo */
@@ -163,9 +188,15 @@
   display: flex;
   justify-content: center;
   padding: 1rem;
-  border: 1px dashed var(--p-surface-border);
+  border: 1px dashed var(--surface-border);
   border-radius: 6px;
-  background: var(--p-surface-50);
+  background: var(--surface-section);
+  transition: all 0.2s ease;
+}
+
+.add-more:hover {
+  border-color: var(--primary-color);
+  background: var(--surface-hover);
 }
 
 /* Barra de herramientas */
@@ -174,7 +205,8 @@
   gap: 0.5rem;
   justify-content: center;
   padding: 1rem;
-  border-top: 1px solid var(--p-surface-border);
+  border-top: 1px solid var(--surface-border);
+  background: var(--surface-section);
 }
 
 /* Resumen de carga */
@@ -184,18 +216,20 @@
 }
 
 .summary-text {
-  color: var(--p-text-muted-color);
+  color: var(--text-color-muted);
   font-size: 0.875rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Estados de drag & drop */
 :host ::ng-deep .custom-file-upload.p-fileupload-highlight {
-  border-color: var(--p-primary-color) !important;
-  background: var(--p-primary-50) !important;
+  border-color: var(--primary-color) !important;
+  background: var(--primary-50) !important;
+  transform: scale(1.02);
 }
 
 :host ::ng-deep .custom-file-upload.p-fileupload-highlight .upload-icon {
-  color: var(--p-primary-color) !important;
+  color: var(--primary-color) !important;
   opacity: 1 !important;
   transform: scale(1.1);
 }
@@ -204,8 +238,26 @@
 :host ::ng-deep .custom-file-upload.p-disabled {
   opacity: 0.6;
   pointer-events: none;
-  background: var(--p-surface-100) !important;
-  border-color: var(--p-surface-300) !important;
+  background: var(--surface-ground) !important;
+  border-color: var(--surface-border) !important;
+}
+
+/* Estilos para botones PrimeNG dentro del componente */
+:host ::ng-deep .p-button {
+  border-radius: 4px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .p-button.p-button-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+:host ::ng-deep .p-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsive */
@@ -228,6 +280,7 @@
 
   .preview-image {
     height: 60px;
+    width: 60px;
   }
 
   .file-details {
@@ -265,6 +318,7 @@
 
   .preview-image {
     height: 50px;
+    width: 50px;
   }
 
   .upload-icon {
@@ -325,6 +379,25 @@
   }
 
   .file-type {
-    border: 1px solid var(--p-primary-color);
+    border: 1px solid var(--primary-color);
   }
+}
+
+/* Scrollbar personalizada para el componente */
+.image-upload-container ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.image-upload-container ::-webkit-scrollbar-track {
+  background: var(--surface-ground);
+}
+
+.image-upload-container ::-webkit-scrollbar-thumb {
+  background: var(--surface-border);
+  border-radius: 4px;
+}
+
+.image-upload-container ::-webkit-scrollbar-thumb:hover {
+  background: var(--text-color-secondary);
 }

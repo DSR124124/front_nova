@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtModule } from '@auth0/angular-jwt';
 import Aura from '@primeuix/themes/aura';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +24,11 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
   imports: [
     BrowserModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('accessToken')
+      }
+    }),
     AppRoutingModule,
     PrimeNgModule,
     AuthModule,

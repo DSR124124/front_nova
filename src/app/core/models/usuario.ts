@@ -21,9 +21,9 @@ export interface Usuario {
   password?: string;
   enabled: boolean;
   fotoPerfil?: string;
-  fechaNacimiento?: Date;
+  fechaNacimiento?: string; // Cambiado a string para coincidir con el backend
   genero?: string;
-  role: string; // Cambiado de Role enum a string para coincidir con tu backend
+  role: { id: number; rol: string }; // Cambiado a objeto para coincidir con el backend
   // Campos adicionales que podrías necesitar
   fechaCreacion?: Date;
   fechaUltimoAcceso?: Date;

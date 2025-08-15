@@ -49,7 +49,7 @@
             <div *ngIf="showPreview && file.preview" class="file-preview">
               <img
                 [src]="file.preview"
-                [alt]="file.name"
+                [alt]="file.name || 'Archivo'"
                 [style.width.px]="previewWidth"
                 class="preview-image"
               />
@@ -57,10 +57,10 @@
 
             <!-- Información del archivo -->
             <div class="file-info">
-              <div class="file-name">{{ file.name }}</div>
+              <div class="file-name">{{ file.name || 'Archivo sin nombre' }}</div>
               <div class="file-details">
                 <span class="file-size">{{ formatSize(file.size) }}</span>
-                <span class="file-type">{{ file.type }}</span>
+                <span class="file-type">{{ file.type || 'Tipo desconocido' }}</span>
               </div>
             </div>
 

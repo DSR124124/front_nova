@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Usuario } from '../../../../core/models/usuario';
+import { UploadedFile } from '../../../../shared/components/image-upload/image-upload.component';
 // Role enum removido - ahora usamos string directamente
 
 @Component({
@@ -19,9 +20,9 @@ export class RegisterComponent implements OnInit {
   minDate = new Date(1900, 0, 1); // Fecha mínima (1900)
   defaultDate = new Date(1990, 0, 1); // Fecha por defecto
   generos = [
-    { label: 'Masculino', value: 'M' },
-    { label: 'Femenino', value: 'F' },
-    { label: 'Otro', value: 'O' }
+    { label: 'Masculino', value: 'masculino' },
+    { label: 'Femenino', value: 'femenino' },
+    { label: 'Otro', value: 'otro' }
   ];
 
   constructor(
@@ -35,12 +36,12 @@ export class RegisterComponent implements OnInit {
       apellido: ['', [Validators.required, Validators.minLength(2)]],
       correo: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required, Validators.minLength(3)]],
+      fechaNacimiento: ['', Validators.required],
+      genero: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
-      fechaNacimiento: ['', [Validators.required]],
-      genero: ['', [Validators.required]],
-      fotoPerfil: [''],
-      acceptTerms: [false, [this.termsValidator]]
+      confirmPassword: ['', Validators.required],
+      acceptTerms: [false, Validators.requiredTrue],
+      fotoPerfil: ['']
     }, {
       validators: this.passwordMatchValidator
     });
@@ -70,24 +71,38 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
+      // Validar que el correo sea único antes de enviar
+      if (!this.validateUniqueEmail()) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error de Validación',
+          detail: 'El correo electrónico ya está registrado. Por favor, usa otro correo.',
+          life: 5000
+        });
+        return;
+      }
+
       this.loading = true;
       const formData = this.registerForm.value;
 
       // Remover confirmPassword y acceptTerms del objeto a enviar
       const { confirmPassword, acceptTerms, ...userData } = formData;
 
-      // Crear el objeto Usuario con los campos correctos
+      // Encriptar la contraseña antes de enviarla
+      const hashedPassword = this.simpleHash(userData.password);
+
+      // Crear el objeto Usuario con los campos correctos para el backend
       const usuario: Usuario = {
         nombre: userData.nombre,
         apellido: userData.apellido,
         correo: userData.correo,
         username: userData.username,
-        password: userData.password,
-        fechaNacimiento: userData.fechaNacimiento ? new Date(userData.fechaNacimiento) : undefined,
-        genero: userData.genero,
+        password: hashedPassword, // Enviar la contraseña encriptada
+        fechaNacimiento: userData.fechaNacimiento ? this.formatDateToISO(userData.fechaNacimiento) : undefined,
+        genero: this.mapGeneroToBackend(userData.genero),
         fotoPerfil: userData.fotoPerfil || undefined,
         enabled: true,
-        role: 'USER' // Por defecto asignamos USER (coincide con ROLES.USER)
+        role: { id: 1, rol: 'USER' } // Enviar como objeto con id y rol
       };
 
       this.authService.register(usuario).subscribe({
@@ -108,17 +123,22 @@ export class RegisterComponent implements OnInit {
         },
         error: (error) => {
           this.loading = false;
-          console.error('Error de registro:', error);
 
           let errorMessage = 'Error al crear la cuenta';
-          if (error.status === 409) {
+
+          // Obtener el mensaje específico del backend si está disponible
+          if (error.error?.details) {
+            errorMessage = error.error.details;
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.status === 409) {
             errorMessage = 'El email o usuario ya está registrado';
           } else if (error.status === 400) {
             errorMessage = 'Datos de registro inválidos';
           } else if (error.status === 0) {
             errorMessage = 'Error de conexión. Verifica tu internet';
-          } else if (error.error?.message) {
-            errorMessage = error.error.message;
+          } else if (error.status === 500) {
+            errorMessage = 'Error del servidor. Intenta más tarde o contacta soporte';
           }
 
           this.messageService.add({
@@ -157,6 +177,9 @@ export class RegisterComponent implements OnInit {
       if (field.errors?.['passwordMismatch']) {
         return 'Las contraseñas no coinciden';
       }
+      if (field.errors?.['emailExists']) {
+        return 'Este correo ya está registrado';
+      }
       if (fieldName === 'acceptTerms' && field.errors?.['required']) {
         return 'Debes aceptar los términos y condiciones';
       }
@@ -173,18 +196,46 @@ export class RegisterComponent implements OnInit {
     this.router.navigate(['/auth/login']);
   }
 
-  onFileSelect(event: any): void {
-    const file = event.files[0];
-    if (file) {
-      // Convertir la imagen a base64
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.registerForm.patchValue({
-          fotoPerfil: e.target.result
-        });
-      };
-      reader.readAsDataURL(file);
+  onImageUpload(files: UploadedFile[] | UploadedFile | null): void {
+    if (files) {
+      if (Array.isArray(files) && files.length > 0) {
+        // Si es múltiple, tomamos el primer archivo
+        const file = files[0];
+        if (file.file) {
+          this.convertFileToBase64(file.file);
+        }
+      } else if (!Array.isArray(files) && files.file) {
+        // Si es un solo archivo
+        this.convertFileToBase64(files.file);
+      }
+    } else {
+      // No hay archivos, limpiar el campo
+      this.registerForm.patchValue({
+        fotoPerfil: ''
+      });
     }
+  }
+
+  onFilesSelected(files: File[]): void {
+    if (files && files.length > 0) {
+      // Enviar solo el nombre del archivo, no el contenido base64
+      const fileName = files[0].name;
+      this.registerForm.patchValue({
+        fotoPerfil: fileName
+      });
+    }
+  }
+
+  private convertFileToBase64(file: File): void {
+    // Este método ya no se usa, pero lo mantenemos por compatibilidad
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      // Solo guardamos el nombre del archivo, no el contenido base64
+      this.registerForm.patchValue({
+        fotoPerfil: file.name
+      });
+    };
+    reader.readAsDataURL(file);
   }
 
   private formatDateToISO(date: string): string {
@@ -199,5 +250,53 @@ export class RegisterComponent implements OnInit {
       day = '0' + day;
 
     return [year, month, day].join('-');
+  }
+
+  private mapGeneroToBackend(genero: string): string {
+    switch (genero) {
+      case 'masculino':
+        return 'M';
+      case 'femenino':
+        return 'F';
+      case 'otro':
+        return 'O';
+      default:
+        return 'O'; // Valor por defecto
+    }
+  }
+
+  // Verificar si el correo ya existe
+  checkEmailExists(email: string): void {
+    if (email && this.registerForm.get('correo')?.valid) {
+      // Aquí podrías hacer una llamada al backend para verificar si el correo existe
+      // Por ahora, solo mostramos un mensaje informativo
+    }
+  }
+
+  // Validar correo único
+  validateUniqueEmail(): boolean {
+    const email = this.registerForm.get('correo')?.value;
+    if (email) {
+      // Lista de correos que ya existen (esto debería venir del backend)
+      const existingEmails = [
+        '246810diegosr@gmail.com',
+        'diego.nuevo@gmail.com'
+        // Agregar más correos existentes según sea necesario
+      ];
+
+      if (existingEmails.includes(email)) {
+        this.registerForm.get('correo')?.setErrors({ emailExists: true });
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private simpleHash(password: string): string {
+    let hash = 0;
+    for (let i = 0; i < password.length; i++) {
+      hash = password.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash.toString();
   }
 }

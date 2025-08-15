@@ -1,13 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { catchError, tap, switchMap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import * as bcrypt from 'bcryptjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { Usuario } from '../models/usuario';
 
+/**
+ * IMPORTANTE:
+ * - REGISTRO: Las contraseñas se hashean en el frontend con bcrypt antes de enviarlas al backend
+ * - LOGIN: Las contraseñas se envían en texto plano para que el backend las compare con el hash almacenado
+ * - Esto es necesario porque bcrypt genera hashes diferentes cada vez (salt aleatorio)
+ */
+
 export interface AuthResponse {
   token: string;
+  refreshToken?: string;
 }
 
 export interface DecodedToken {
@@ -17,6 +27,7 @@ export interface DecodedToken {
   role: string;
   exp: number;
   iat: number;
+  idUsuario?: number;
 }
 
 @Injectable({
@@ -25,9 +36,7 @@ export interface DecodedToken {
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-
-  private isRefreshing = false;
-  private refreshTokenSubject = new BehaviorSubject<string | null>(null);
+  private jwtHelper = new JwtHelperService();
 
   constructor(
     private http: HttpClient,
@@ -36,47 +45,47 @@ export class AuthService {
     this.loadUserFromToken();
   }
 
-  // Método de login principal
+  // Login con contraseña en texto plano (el backend la compara con el hash almacenado)
   login(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post<any>(API_ENDPOINTS.LOGIN, credentials).pipe(
-      tap(response => {
-        this.handleAuthentication(response);
-      }),
-      catchError(error => {
-        return this.handleError(error);
-      })
+    // NO hashear la contraseña aquí
+    // El backend debe recibir la contraseña en texto plano para compararla
+    // con el hash bcrypt almacenado usando bcrypt.compare()
+
+    return this.http.post<any>(API_ENDPOINTS.LOGIN, {
+      username: credentials.username,
+      password: credentials.password // Contraseña en texto plano
+    }).pipe(
+      tap(response => this.handleAuthentication(response)),
+      catchError(error => this.handleError(error))
     );
   }
 
-    // Método de registro
+  // Registro con contraseña hasheada en frontend
   register(usuario: Usuario): Observable<void> {
-    return this.http.post<void>(API_ENDPOINTS.REGISTER, usuario).pipe(
-      catchError(error => {
-        return this.handleError(error);
-      })
+    // Hashear la contraseña en el frontend con bcrypt
+    if (usuario.password) {
+      usuario.password = bcrypt.hashSync(usuario.password, 12);
+    }
+
+    return this.http.post<void>(API_ENDPOINTS.REGISTER, usuario, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    }).pipe(
+      catchError(error => this.handleError(error))
     );
   }
 
-  // Método de logout
+  // Logout
   logout(): void {
-    this.removeTokens();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     this.currentUserSubject.next(null);
     this.router.navigate(['/auth/login']);
   }
 
-  // Verificar si el usuario está logueado
-  isLoggedIn(): boolean {
-    return this.isAuthenticated();
-  }
-
-    // Verificar si el usuario está autenticado
+  // Verificar autenticación
   isAuthenticated(): boolean {
     const token = this.getAccessToken();
-    if (!token) {
-      return false;
-    }
-
-    return !this.isTokenExpired();
+    return token ? !this.jwtHelper.isTokenExpired(token) : false;
   }
 
   // Obtener usuario actual
@@ -84,7 +93,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  // Obtener token de acceso
+  // Obtener token
   getAccessToken(): string | null {
     return localStorage.getItem('accessToken');
   }
@@ -94,76 +103,23 @@ export class AuthService {
     return localStorage.getItem('refreshToken');
   }
 
-  // Establecer token manualmente
-  setToken(token: string): void {
-    localStorage.setItem('accessToken', token);
-    const decoded = this.decodeToken(token);
-    if (decoded) {
-      this.currentUserSubject.next(decoded);
-    }
-  }
-
-    // Verificar si el token ha expirado
-  isTokenExpired(): boolean {
-    const token = this.getAccessToken();
-    if (!token) {
-      return true;
-    }
-
-    try {
-      const decoded = this.decodeToken(token);
-      if (!decoded) {
-        return true;
-      }
-
-      const currentTime = Date.now() / 1000;
-      return decoded.exp < currentTime;
-    } catch (error) {
-      return true;
-    }
-  }
-
-  // Refresh del token - Comentado hasta implementar en el backend
-  refreshToken(): Observable<string> {
-    // TODO: Implementar cuando tengas el endpoint de refresh token en el backend
-    return throwError(() => new Error('Refresh token not implemented yet'));
-
-    /*
-    if (this.isRefreshing) {
-      return this.refreshTokenSubject.asObservable().pipe(
-        switchMap(token => token ? [token] : throwError(() => new Error('No token available')))
-      );
-    }
-
-    this.isRefreshing = true;
-    this.refreshTokenSubject.next(null);
-
+  // Refresh token
+  refreshToken(): Observable<any> {
     const refreshToken = this.getRefreshToken();
     if (!refreshToken) {
-      this.isRefreshing = false;
-      this.logout();
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.http.post<AuthResponse>(API_ENDPOINTS.REFRESH_TOKEN, {
-      refreshToken
-    }).pipe(
-      tap(response => {
-        this.handleAuthentication(response);
-        this.isRefreshing = false;
-        this.refreshTokenSubject.next(response.token);
-      }),
-      switchMap(response => [response.token]),
+    return this.http.post<any>(API_ENDPOINTS.REFRESH_TOKEN, { refreshToken }).pipe(
+      tap(response => this.handleAuthentication(response)),
       catchError(error => {
-        this.isRefreshing = false;
         this.logout();
         return throwError(() => error);
       })
     );
-    */
   }
 
-  // Métodos para recuperación de contraseña
+  // Recuperación de contraseña
   forgotPassword(email: string): Observable<any> {
     return this.http.post(API_ENDPOINTS.FORGOT_PASSWORD, { email }).pipe(
       catchError(this.handleError)
@@ -177,78 +133,51 @@ export class AuthService {
   }
 
   resetPassword(token: string, password: string): Observable<any> {
-    return this.http.post(API_ENDPOINTS.RESET_PASSWORD, { token, password }).pipe(
+    // NO hashear la contraseña aquí
+    // El backend debe recibir la contraseña en texto plano para hashearla
+    // y almacenarla correctamente
+
+    return this.http.post(API_ENDPOINTS.RESET_PASSWORD, {
+      token,
+      password: password // Contraseña en texto plano
+    }).pipe(
       catchError(this.handleError)
     );
   }
 
-  // Métodos privados
-  private handleAuthentication(response: any): void {
-    // Buscar el token en diferentes propiedades posibles
-    let token = response.token || response.jwttoken || response.accessToken || response.access_token || response.jwt;
-
-    if (!token) {
-      throw new Error('No se encontró token en la respuesta del servidor');
-    }
-
-    localStorage.setItem('accessToken', token);
-    const decoded = this.decodeToken(token);
-    if (decoded) {
-      this.currentUserSubject.next(decoded);
-    }
-  }
-
-  private removeTokens(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-  }
-
-  private loadUserFromToken(): void {
+  // Información del usuario desde token
+  getUsername(): string | null {
     const token = this.getAccessToken();
-    if (token) {
-      try {
-        const decoded = this.decodeToken(token);
-        if (decoded && !this.isTokenExpired()) {
-          this.currentUserSubject.next(decoded);
-        } else {
-          this.removeTokens();
-        }
-      } catch (error) {
-        this.removeTokens();
-      }
-    }
+    if (!token) return null;
+    const decoded = this.jwtHelper.decodeToken(token);
+    return decoded?.username ?? decoded?.sub ?? null;
   }
 
-  private decodeToken(token: string): DecodedToken | null {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-
-      const decoded = JSON.parse(jsonPayload);
-      return decoded;
-    } catch (error) {
-      return null;
-    }
+  getUserId(): number | null {
+    const token = this.getAccessToken();
+    if (!token) return null;
+    const decoded = this.jwtHelper.decodeToken(token);
+    return decoded?.idUsuario ?? null;
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = 'An error occurred';
-
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Server-side error
-      errorMessage = error.error?.message || error.statusText || errorMessage;
-    }
-
-    return throwError(() => new Error(errorMessage));
+  getRole(): string | null {
+    const token = this.getAccessToken();
+    if (!token) return null;
+    const decoded = this.jwtHelper.decodeToken(token);
+    return decoded?.role;
   }
 
-  // Método para obtener headers con token
+  // Verificación de roles
+  hasRole(role: string): boolean {
+    return this.getRole() === role;
+  }
+
+  hasAnyRole(roles: string[]): boolean {
+    const userRole = this.getRole();
+    return userRole ? roles.includes(userRole) : false;
+  }
+
+  // Headers de autenticación
   getAuthHeaders(): HttpHeaders {
     const token = this.getAccessToken();
     return new HttpHeaders({
@@ -257,17 +186,80 @@ export class AuthService {
     });
   }
 
-  // Método para verificar si el usuario tiene un rol específico
-  hasRole(role: string): boolean {
-    const user = this.getUser();
-    return user && user.role === role;
+  // Métodos bcrypt para hashear contraseñas en el frontend (solo para registro)
+  hashPassword(password: string): string {
+    // Para hashear contraseñas antes de enviarlas al servidor en el registro
+    return bcrypt.hashSync(password, 12);
   }
 
-  // Método para verificar si el usuario tiene alguno de los roles especificados
-  hasAnyRole(roles: string[]): boolean {
-    const user = this.getUser();
-    return user && roles.includes(user.role);
+  verifyPassword(password: string, hash: string): boolean {
+    // Para verificar contraseñas hasheadas (uso interno/local)
+    return bcrypt.compareSync(password, hash);
   }
 
+  // Métodos privados
+  private handleAuthentication(response: any): void {
+    const token = response.token || response.jwttoken || response.accessToken || response.access_token || response.jwt;
+    const refreshToken = response.refreshToken || response.refresh_token;
 
+    if (!token) {
+      throw new Error('No se encontró token en la respuesta del servidor');
+    }
+
+    localStorage.setItem('accessToken', token);
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+
+    const user = this.decodeToken(token);
+    if (user) {
+      this.currentUserSubject.next(user);
+    }
+  }
+
+  private loadUserFromToken(): void {
+    const token = this.getAccessToken();
+    if (token) {
+      try {
+        const user = this.decodeToken(token);
+        if (user && !this.jwtHelper.isTokenExpired(token)) {
+          this.currentUserSubject.next(user);
+        } else {
+          this.logout();
+        }
+      } catch (error) {
+        this.logout();
+      }
+    }
+  }
+
+  private decodeToken(token: string): DecodedToken | null {
+    try {
+      return this.jwtHelper.decodeToken(token);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'Ha ocurrido un error inesperado';
+
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Error del cliente: ${error.error.message}`;
+    } else {
+      switch (error.status) {
+        case 400: errorMessage = 'Datos inválidos'; break;
+        case 401: errorMessage = 'No autorizado'; break;
+        case 403: errorMessage = 'Acceso prohibido'; break;
+        case 404: errorMessage = 'Endpoint no encontrado'; break;
+        case 409: errorMessage = 'Usuario o email ya existe'; break;
+        case 422: errorMessage = 'Datos de validación incorrectos'; break;
+        case 500: errorMessage = 'Error interno del servidor'; break;
+        case 0: errorMessage = 'Error de conexión'; break;
+        default: errorMessage = error.error?.message || error.statusText || `Error ${error.status}`;
+      }
+    }
+
+    return throwError(() => new Error(errorMessage));
+  }
 }

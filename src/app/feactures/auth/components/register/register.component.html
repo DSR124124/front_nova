@@ -1,45 +1,63 @@
-<p-card>
-  <ng-template pTemplate="header">
-    <div class="register-header">
-      <h2>Crear Cuenta</h2>
-      <p>Completa el formulario para registrarte</p>
-    </div>
-  </ng-template>
+<div class="register-form-container">
+  <!-- Header -->
+  <div class="form-header">
+    <h2 class="form-title">
+      <i class="pi pi-user-plus"></i>
+      Crear Cuenta
+    </h2>
+    <p class="form-subtitle">
+      Completa el formulario para crear tu cuenta y disfrutar de todos los momentos especiales
+    </p>
+  </div>
 
-  <ng-template pTemplate="content">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Nombres -->
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">Creando cuenta...</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="form-wrapper" *ngIf="!loading">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+
+      <!-- Nombres y Apellidos -->
       <div class="form-row">
         <div class="form-field">
-          <p-floatlabel>
-            <input
-              pInputText
-              id="nombre"
-              formControlName="nombre"
-            />
-            <label for="nombre">Nombre</label>
-          </p-floatlabel>
-          <small
-            *ngIf="isFieldInvalid('nombre')"
-            class="simplified-error"
-          >
+          <label for="nombre" class="field-label">
+            Nombre <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            pInputText
+            id="nombre"
+            formControlName="nombre"
+            placeholder="Ingresa tu nombre"
+            [class.field-error]="isFieldInvalid('nombre')"
+            class="field-input"
+            autocomplete="given-name"
+          />
+          <small *ngIf="isFieldInvalid('nombre')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
             {{ getFieldError('nombre') }}
           </small>
         </div>
 
         <div class="form-field">
-          <p-floatlabel>
-            <input
-              pInputText
-              id="apellido"
-              formControlName="apellido"
-            />
-            <label for="apellido">Apellido</label>
-          </p-floatlabel>
-          <small
-            *ngIf="isFieldInvalid('apellido')"
-            class="simplified-error"
-          >
+          <label for="apellido" class="field-label">
+            Apellido <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            pInputText
+            id="apellido"
+            formControlName="apellido"
+            placeholder="Ingresa tu apellido"
+            [class.field-error]="isFieldInvalid('apellido')"
+            class="field-input"
+            autocomplete="family-name"
+          />
+          <small *ngIf="isFieldInvalid('apellido')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
             {{ getFieldError('apellido') }}
           </small>
         </div>
@@ -47,144 +65,158 @@
 
       <!-- Email -->
       <div class="form-field">
-                <p-floatlabel>
-          <input
-            pInputText
-            id="correo"
-            formControlName="correo"
-            type="email"
-          />
-          <label for="correo">Correo Electrónico</label>
-        </p-floatlabel>
-        <small
-          *ngIf="isFieldInvalid('correo')"
-          class="simplified-error"
-        >
+        <label for="correo" class="field-label">
+          Correo Electrónico <span class="required">*</span>
+        </label>
+        <input
+          type="email"
+          pInputText
+          id="correo"
+          formControlName="correo"
+          placeholder="Ingresa tu correo electrónico"
+          [class.field-error]="isFieldInvalid('correo')"
+          class="field-input"
+          autocomplete="email"
+        />
+        <small *ngIf="isFieldInvalid('correo')" class="error-message">
+          <i class="pi pi-exclamation-circle"></i>
           {{ getFieldError('correo') }}
         </small>
       </div>
 
       <!-- Usuario -->
       <div class="form-field">
-                <p-floatlabel>
-          <input
-            pInputText
-            id="username"
-            formControlName="username"
-          />
-          <label for="username">Nombre de Usuario</label>
-        </p-floatlabel>
-        <small
-          *ngIf="isFieldInvalid('username')"
-          class="simplified-error"
-        >
+        <label for="username" class="field-label">
+          Nombre de Usuario <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          pInputText
+          id="username"
+          formControlName="username"
+          placeholder="Elige un nombre de usuario"
+          [class.field-error]="isFieldInvalid('username')"
+          class="field-input"
+          autocomplete="username"
+        />
+        <small *ngIf="isFieldInvalid('username')" class="error-message">
+          <i class="pi pi-exclamation-circle"></i>
           {{ getFieldError('username') }}
         </small>
       </div>
 
-      <!-- Fecha de Nacimiento -->
-      <div class="form-field">
-        <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento *</label>
-        <p-datepicker
-          id="fechaNacimiento"
-          formControlName="fechaNacimiento"
-          [showIcon]="true"
-          dateFormat="dd/mm/yy"
-          [maxDate]="maxDate"
-          [minDate]="minDate"
-          placeholder="dd/mm/aaaa"
-        />
-        <small
-          *ngIf="isFieldInvalid('fechaNacimiento')"
-          class="simplified-error"
-        >
-          {{ getFieldError('fechaNacimiento') }}
-        </small>
-      </div>
+      <!-- Fecha de Nacimiento y Género -->
+      <div class="form-row">
+        <div class="form-field">
+          <label for="fechaNacimiento" class="field-label">
+            Fecha de Nacimiento <span class="required">*</span>
+          </label>
+          <input
+            type="date"
+            id="fechaNacimiento"
+            formControlName="fechaNacimiento"
+            class="field-input"
+            [class.field-error]="isFieldInvalid('fechaNacimiento')"
+            [max]="maxDate.toISOString().split('T')[0]"
+            [min]="minDate.toISOString().split('T')[0]"
+            placeholder="dd/mm/aaaa"
+          />
+          <small *ngIf="isFieldInvalid('fechaNacimiento')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('fechaNacimiento') }}
+          </small>
+        </div>
 
-      <!-- Género -->
-      <div class="form-field">
-        <label for="genero" class="form-label">Género *</label>
-        <p-select
-          id="genero"
-          formControlName="genero"
-          [options]="generos"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="Selecciona tu género"
-        />
-        <small
-          *ngIf="isFieldInvalid('genero')"
-          class="simplified-error"
-        >
-          {{ getFieldError('genero') }}
-        </small>
+        <div class="form-field">
+          <label for="genero" class="field-label">
+            Género <span class="required">*</span>
+          </label>
+          <p-select
+            [options]="generos"
+            formControlName="genero"
+            optionLabel="label"
+            optionValue="value"
+            [showClear]="true"
+            placeholder="Selecciona tu género"
+            class="field-input"
+            [class.field-error]="isFieldInvalid('genero')"
+            [filter]="false"
+            appendTo="body"
+          />
+          <small *ngIf="isFieldInvalid('genero')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('genero') }}
+          </small>
+        </div>
       </div>
 
       <!-- Foto de Perfil -->
       <div class="form-field">
-        <label for="fotoPerfil" class="form-label">Foto de Perfil (Opcional)</label>
-        <p-fileUpload
-          id="fotoPerfil"
-          [customUpload]="true"
-          [auto]="true"
+        <label for="fotoPerfil" class="field-label">
+          Foto de Perfil <span class="optional">(Opcional)</span>
+        </label>
+        <app-image-upload
+          formControlName="fotoPerfil"
+          [multiple]="false"
           [maxFileSize]="2097152"
           accept="image/*"
-          [showCancelButton]="false"
+          [showPreview]="true"
+          [previewWidth]="100"
           [showUploadButton]="false"
-          (onSelect)="onFileSelect($event)"
+          [showCancelButton]="false"
+          [auto]="true"
+          dragDropText="Arrastra tu foto de perfil aquí"
           chooseLabel="Seleccionar Foto"
-          [fileLimit]="1"
+          (filesSelected)="onFilesSelected($event)"
+          class="field-input"
         />
-        <div class="file-preview" *ngIf="registerForm.get('fotoPerfil')?.value">
-          <p-image
-            [src]="registerForm.get('fotoPerfil')?.value"
-            alt="Vista previa"
-            width="100"
-            height="100"
-            [preview]="true"
-            imageClass="preview-image"
-          />
-        </div>
-        <small class="form-help">Formatos aceptados: JPG, PNG, GIF. Máximo 2MB</small>
+        <small class="form-help">
+          <i class="pi pi-info-circle"></i>
+          Formatos aceptados: JPG, PNG, GIF. Máximo 2MB
+        </small>
       </div>
 
-      <!-- Contraseña -->
-      <div class="form-field">
-        <p-floatlabel>
+      <!-- Contraseñas -->
+      <div class="form-row">
+        <div class="form-field">
+          <label for="password" class="field-label">
+            Contraseña <span class="required">*</span>
+          </label>
           <p-password
             id="password"
             formControlName="password"
             [toggleMask]="true"
             [feedback]="true"
+            placeholder="Crea una contraseña segura"
+            [class.field-error]="isFieldInvalid('password')"
+            styleClass="field-input"
+            autocomplete="new-password"
           />
-          <label for="password">Contraseña</label>
-        </p-floatlabel>
-        <small
-          *ngIf="isFieldInvalid('password')"
-          class="simplified-error"
-        >
-          {{ getFieldError('password') }}
-        </small>
-      </div>
+          <small *ngIf="isFieldInvalid('password')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('password') }}
+          </small>
+        </div>
 
-      <!-- Confirmar Contraseña -->
-      <div class="form-field">
-        <p-floatlabel>
+        <div class="form-field">
+          <label for="confirmPassword" class="field-label">
+            Confirmar Contraseña <span class="required">*</span>
+          </label>
           <p-password
             id="confirmPassword"
             formControlName="confirmPassword"
             [toggleMask]="true"
             [feedback]="false"
+            placeholder="Confirma tu contraseña"
+            [class.field-error]="isFieldInvalid('confirmPassword')"
+            styleClass="field-input"
+            autocomplete="new-password"
           />
-          <label for="confirmPassword">Confirmar Contraseña</label>
-        </p-floatlabel>
-        <small
-          *ngIf="isFieldInvalid('confirmPassword')"
-          class="simplified-error"
-        >
-          {{ getFieldError('confirmPassword') }}
-        </small>
+          <small *ngIf="isFieldInvalid('confirmPassword')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('confirmPassword') }}
+          </small>
+        </div>
       </div>
 
       <!-- Términos y Condiciones -->
@@ -196,41 +228,52 @@
             [binary]="true"
           />
           <label for="acceptTerms" class="checkbox-label">
-            Acepto los términos y condiciones
+            Acepto los <a href="#" class="terms-link">términos y condiciones</a>
           </label>
         </div>
-        <small
-          *ngIf="isFieldInvalid('acceptTerms')"
-          class="simplified-error"
-        >
+        <small *ngIf="isFieldInvalid('acceptTerms')" class="error-message">
+          <i class="pi pi-exclamation-circle"></i>
           {{ getFieldError('acceptTerms') }}
         </small>
       </div>
 
-      <!-- Botón de Registro -->
+      <!-- Botones de acción -->
       <div class="form-actions">
+        <p-button
+          type="button"
+          label="Cancelar"
+          severity="secondary"
+          icon="pi pi-times"
+          [outlined]="true"
+          (onClick)="onBackToLogin()"
+          styleClass="cancel-btn"
+        />
+
         <p-button
           type="submit"
           label="Crear Cuenta"
+          icon="pi pi-user-plus"
           [loading]="loading"
           [disabled]="registerForm.invalid"
-          styleClass="w-full"
+          styleClass="submit-btn"
         />
       </div>
+
     </form>
-  </ng-template>
+  </div>
 
-  <ng-template pTemplate="footer">
-    <div class="register-footer">
-      <p-divider />
-      <p-button
-        label="¿Ya tienes cuenta? Inicia Sesión"
-        link="true"
-        (onClick)="onBackToLogin()"
-        icon="pi pi-arrow-left"
-      />
-    </div>
-  </ng-template>
-</p-card>
+  <!-- Enlaces adicionales -->
+  <div class="additional-links">
+    <p-button
+      label="¿Ya tienes cuenta? Inicia Sesión"
+      link="true"
+      icon="pi pi-sign-in"
+      (onClick)="onBackToLogin()"
+      styleClass="link-btn"
+    />
+  </div>
 
+</div>
+
+<!-- Toast para mensajes -->
 <p-toast />

@@ -8,7 +8,7 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   const router = inject(Router);
 
   // Verificar si el usuario está autenticado
-  if (!authService.isLoggedIn()) {
+  if (!authService.isAuthenticated()) {
     router.navigate(['/auth/login']);
     return false;
   }

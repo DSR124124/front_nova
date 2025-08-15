@@ -74,9 +74,9 @@ export class PerfilParejaComponent implements OnInit {
       username: 'maria_g',
       password: '',
       enabled: true,
-      fechaNacimiento: new Date('1995-03-20'),
+      fechaNacimiento: '1995-03-20', // Cambiado a string para coincidir con el modelo
       genero: 'F',
-      role: 'USER',
+      role: { id: 1, rol: 'USER' }, // Cambiado a objeto para coincidir con el modelo
       parejaId: 1
     };
   }
