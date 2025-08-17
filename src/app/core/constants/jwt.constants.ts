@@ -19,16 +19,6 @@ export const JWT_CONSTANTS = {
 
   // Tipos de contenido
   CONTENT_TYPE: 'application/json',
-
-  // Endpoints de autenticación
-  AUTH_ENDPOINTS: {
-    LOGIN: '/login',
-    REGISTER: '/register',
-    REFRESH: '/refresh-token',
-    LOGOUT: '/logout',
-    FORGOT_PASSWORD: '/forgot-password',
-    RESET_PASSWORD: '/api/auth/reset-password'
-  }
 };
 
 export const JWT_ERROR_MESSAGES = {

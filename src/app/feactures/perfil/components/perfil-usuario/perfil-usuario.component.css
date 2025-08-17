@@ -2,84 +2,95 @@
 
 /* Contenedor principal */
 .perfil-container {
-  padding: 1.5rem;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-  background: var(--surface-ground);
-  min-height: 100vh;
+  padding: 1.5rem;
 }
 
+/* Header del perfil */
+.perfil-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--surface-border);
+}
 
+.perfil-title {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.perfil-title i {
+  color: var(--primary-color);
+  font-size: 1.25rem;
+}
+
+.perfil-subtitle {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Loading */
 .loading-message {
   text-align: center;
 }
 
 .loading-message h3 {
   color: var(--text-color);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 0.5rem 0;
-  letter-spacing: -0.025em;
 }
 
 .loading-message p {
   color: var(--text-color-secondary);
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
-/* Estilos específicos para el spinner del perfil */
-:host ::ng-deep .profile-spinner .custom-spinner {
-  width: 4rem;
-  height: 4rem;
-}
-
-:host ::ng-deep .profile-spinner .spinner-label {
-  color: var(--primary-color);
-  font-weight: 600;
-  font-size: 1.1rem;
-  margin-top: 1rem;
-}
-
-/* Tarjetas con estilo Nova */
-.perfil-card,
-.pareja-card {
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid var(--surface-border);
+/* Wrapper del contenido */
+.perfil-content {
   background: var(--surface-card);
-  margin-bottom: 2rem;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid var(--surface-border);
 }
 
-/* Headers de tarjetas */
-.card-header {
-  background: var(--surface-section);
+/* Secciones del perfil */
+.perfil-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
   color: var(--text-color);
-  padding: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--surface-border);
 }
 
-.card-header h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  letter-spacing: -0.025em;
-}
-
-.card-header i {
+.section-title i {
   color: var(--primary-color);
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 /* Información del usuario */
 .usuario-info {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: flex-start;
-  padding: 1.5rem;
+  padding: 0;
 }
 
 .avatar-section {
@@ -87,37 +98,45 @@
   position: relative;
 }
 
-.usuario-avatar {
+:host ::ng-deep .usuario-avatar {
   background: var(--primary-color) !important;
   color: white !important;
   font-weight: 600;
-  font-size: 2rem;
-  width: 6rem !important;
-  height: 6rem !important;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  transition: all 0.2s ease;
+  font-size: 1.5rem;
 }
 
-.usuario-avatar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+:host ::ng-deep .usuario-avatar .p-avatar-text {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .avatar-actions {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: -8px;
+  right: -8px;
   background: var(--surface-card);
   border-radius: 50%;
-  padding: 0.25rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  border: 2px solid var(--surface-border);
-  transition: all 0.2s ease;
+  padding: 0.2rem;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.avatar-actions:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+/* Estilos específicos para el botón de la cámara */
+:host ::ng-deep .avatar-camera-btn {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+}
+
+:host ::ng-deep .avatar-camera-btn .p-button-icon {
+  font-size: 0.75rem !important;
 }
 
 .datos-usuario {
@@ -126,55 +145,47 @@
 
 .nombre-section h2 {
   color: var(--text-color);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  letter-spacing: -0.025em;
   margin: 0 0 0.5rem 0;
 }
 
 .username {
   color: var(--primary-color);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
   margin: 0 0 0.5rem 0;
 }
 
 .email {
   color: var(--text-color-secondary);
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin: 0;
 }
 
 /* Detalles adicionales */
 .detalles-adicionales {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
 }
 
 .detalle-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
+  gap: 0.5rem;
+  padding: 0.75rem;
   background: var(--surface-section);
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid var(--surface-border);
-  transition: all 0.2s ease;
-}
-
-.detalle-item:hover {
-  background: var(--surface-hover);
-  border-color: var(--primary-color);
-  transform: translateY(-1px);
 }
 
 .detalle-item i {
-  width: 20px;
+  width: 16px;
   text-align: center;
   color: var(--primary-color);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .detalle-item strong {
@@ -185,50 +196,74 @@
 
 .detalle-item span {
   color: var(--text-color);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .edad {
   color: var(--text-color-muted);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+}
+
+/* Campos del perfil */
+.perfil-field {
+  margin-bottom: 1rem;
+}
+
+.field-label {
+  display: block;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.field-value {
+  color: var(--text-color);
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  background: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  border-radius: 4px;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
 }
 
 /* Estado de pareja */
 .status-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 2rem;
-  border-radius: 25px;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
   font-weight: 600;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  transition: all 0.2s ease;
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
 .status-badge.activa {
   background: var(--surface-section);
   color: var(--text-color);
-  border: 2px solid var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .status-badge.inactiva {
   background: var(--surface-section);
   color: var(--text-color-secondary);
-  border: 2px solid var(--surface-border);
+  border: 1px solid var(--surface-border);
 }
 
 .status-badge i {
   color: var(--primary-color);
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 /* Detalles de pareja */
 .pareja-details {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  max-width: 400px;
+  gap: 0.5rem;
+  max-width: 350px;
   margin: 0 auto;
 }
 
@@ -248,35 +283,59 @@
 
 .mensaje-sin-pareja {
   color: var(--text-color-secondary);
-  font-size: 1.1rem;
-  margin: 1.5rem 0 2rem 0;
-  line-height: 1.6;
-  max-width: 500px;
+  font-size: 1rem;
+  margin: 1rem 0 1.5rem 0;
+  line-height: 1.5;
+  max-width: 400px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .acciones-pareja {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .pareja-actions {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 /* Acciones del perfil */
 .acciones-perfil {
   display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--surface-border);
 }
 
 .acciones-perfil .p-button {
-  min-width: 180px;
+  min-width: 150px;
+}
+
+/* Estilos para botones de edición */
+.save-btn {
+  background: var(--success-color) !important;
+  border-color: var(--success-color) !important;
+}
+
+.save-btn:hover {
+  background: var(--success-color) !important;
+  filter: brightness(1.1);
+}
+
+.cancel-btn {
+  background: var(--surface-section) !important;
+  border-color: var(--surface-border) !important;
+  color: var(--text-color) !important;
+}
+
+.cancel-btn:hover {
+  background: var(--surface-hover) !important;
 }
 
 /* Responsive design */
@@ -285,22 +344,30 @@
     padding: 1rem;
   }
 
-  .usuario-info {
-    flex-direction: column;
-    text-align: center;
-    gap: 2rem;
+  .perfil-content {
     padding: 1rem;
   }
 
-  .usuario-avatar {
-    width: 5rem !important;
-    height: 5rem !important;
-    font-size: 1.5rem !important;
+  .perfil-title {
+    font-size: 1.25rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .usuario-info {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 0.75rem;
+  }
+
+  :host ::ng-deep .usuario-avatar .p-avatar-text {
+    font-size: 1.25rem !important;
   }
 
   .detalles-adicionales {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .acciones-perfil {
@@ -311,7 +378,7 @@
 
   .acciones-perfil .p-button {
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
   }
 
   .acciones-pareja {
@@ -322,15 +389,11 @@
   .search-btn,
   .invite-btn {
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
   }
 
-  .card-header {
-    padding: 1rem;
-  }
-
-  .card-header h2 {
-    font-size: 1.1rem;
+  :host ::ng-deep .usuario-avatar .p-avatar-text {
+    font-size: 1.25rem !important;
   }
 }
 
@@ -339,65 +402,74 @@
     padding: 0.75rem;
   }
 
-  .card-header {
+  .perfil-content {
     padding: 0.75rem;
+  }
+
+  .perfil-header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .perfil-title {
+    font-size: 1.1rem;
+  }
+
+  .perfil-subtitle {
+    font-size: 0.8rem;
   }
 
   .usuario-info {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
 
   .pareja-info {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
 
   .status-badge {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
 
   .detalle-item {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
 
   .nombre-section h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .username {
+    font-size: 0.9rem;
+  }
+
+  .section-title {
     font-size: 1rem;
+  }
+
+  :host ::ng-deep .usuario-avatar .p-avatar-text {
+    font-size: 1rem !important;
   }
 }
 
 /* ===== ANIMACIONES NOVA ===== */
-.perfil-card,
-.pareja-card {
+.perfil-content {
   animation: fadeIn 0.3s ease-in;
-}
-
-.loading-state,
-.error-state {
-  animation: fadeIn 0.3s ease-in;
-}
-
-.loading-message {
-  animation: fadeIn 0.5s ease-in 0.3s both;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
 /* Estados de error */
 .error-state {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .error-content {
@@ -406,18 +478,189 @@
 
 .error-icon {
   color: var(--danger-color);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .error-content h3 {
   color: var(--text-color);
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
 }
 
 .error-content p {
   color: var(--text-color-secondary);
-  margin: 0 0 1.5rem 0;
-  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+}
+
+/* ===== FORMULARIO DE EDICIÓN ===== */
+.edit-form-wrapper {
+  margin-bottom: 1.5rem;
+  background: var(--surface-card);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid var(--surface-border);
+}
+
+.edit-form {
+  width: 100%;
+}
+
+/* Campos del formulario */
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.field-label {
+  display: block;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.required {
+  color: var(--danger-color);
+  font-weight: 600;
+}
+
+.field-input {
+  width: 100%;
+}
+
+/* Estilos específicos para inputs de texto */
+input[type="text"].field-input,
+input[type="email"].field-input,
+input[type="date"].field-input {
+  padding: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: var(--surface-ground);
+  color: var(--text-color);
+  min-height: 2.5rem;
+}
+
+input[type="text"].field-input:focus,
+input[type="email"].field-input:focus,
+input[type="date"].field-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+input[type="text"].field-input.field-error,
+input[type="email"].field-input.field-error,
+input[type="date"].field-input.field-error {
+  border-color: var(--danger-color);
+}
+
+/* Mensajes de error */
+.error-message {
+  color: var(--danger-color);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.error-message i {
+  font-size: 0.75rem;
+}
+
+/* Responsive del formulario */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .edit-form-wrapper {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-form-wrapper {
+    padding: 0.75rem;
+  }
+
+  .field-label {
+    font-size: 0.85rem;
+  }
+}
+
+/* ===== DIALOG DE CAMBIO DE CONTRASEÑA ===== */
+.password-dialog {
+  max-width: 500px;
+}
+
+.password-form {
+  padding: 1rem 0;
+}
+
+.dialog-footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid var(--surface-border);
+}
+
+.change-password-btn {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.change-password-btn:hover {
+  background: var(--primary-color) !important;
+  filter: brightness(1.1);
+}
+
+/* Estilos específicos para campos de contraseña */
+:host ::ng-deep .field-input.p-password {
+  width: 100%;
+}
+
+:host ::ng-deep .field-input.p-password .p-password-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: var(--surface-ground);
+  color: var(--text-color);
+  min-height: 2.5rem;
+}
+
+:host ::ng-deep .field-input.p-password .p-password-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+:host ::ng-deep .field-input.p-password.field-error .p-password-input {
+  border-color: var(--danger-color);
+}
+
+/* Responsive del diálogo */
+@media (max-width: 768px) {
+  .password-dialog {
+    max-width: 90vw;
+  }
+
+  .dialog-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .dialog-footer .p-button {
+    width: 100%;
+  }
 }

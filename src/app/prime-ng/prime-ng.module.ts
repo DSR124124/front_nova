@@ -44,6 +44,9 @@ import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { ChipModule } from 'primeng/chip';
 import { TimelineModule } from 'primeng/timeline';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+
 
 @NgModule({
   exports: [
@@ -90,6 +93,8 @@ import { TimelineModule } from 'primeng/timeline';
     TagModule,
     ChipModule,
     TimelineModule,
+    OverlayBadgeModule,
+    AvatarGroupModule
   ]
 })
 export class PrimeNgModule { }

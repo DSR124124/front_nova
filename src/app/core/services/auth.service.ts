@@ -7,6 +7,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import * as bcrypt from 'bcryptjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { Usuario } from '../models/usuario';
+import { CambiarPasswordRequest, CambiarPasswordResponse, CambiarPasswordError } from '../models/cambiar-password.model';
 
 export interface DecodedToken {
   sub: string;
@@ -110,6 +111,13 @@ export class AuthService {
     return this.http.post(API_ENDPOINTS.RESET_PASSWORD, {
       token,
       password: password
+    });
+  }
+
+  // Cambiar contraseña del usuario autenticado
+  changePassword(passwordData: CambiarPasswordRequest): Observable<CambiarPasswordResponse | CambiarPasswordError> {
+    return this.http.put<CambiarPasswordResponse | CambiarPasswordError>(API_ENDPOINTS.CHANGE_PASSWORD, passwordData, {
+      headers: this.getAuthHeaders()
     });
   }
 

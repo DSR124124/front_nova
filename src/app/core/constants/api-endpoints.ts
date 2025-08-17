@@ -1,32 +1,63 @@
 import { environment } from '../../../environments/environment';
 
+// Función helper para construir URLs
+const buildUrl = (path: string): string => `${environment.base}${path}`;
+
 export const API_ENDPOINTS = {
-  // Auth endpoints
-  LOGIN: `${environment.base}/login`,
-  REGISTER: `${environment.base}/usuarios/registrar`, // Corregido para coincidir con el backend
-  REFRESH_TOKEN: `${environment.base}/refresh-token`,
-  FORGOT_PASSWORD: `${environment.base}/forgot-password`,
-  VALIDATE_RESET_TOKEN: `${environment.base}/validate-reset-token`,
-  RESET_PASSWORD: `${environment.base}/reset-password`,
-  LOGOUT: `${environment.base}/logout`,
+  // ===== AUTENTICACIÓN =====
+  LOGIN: buildUrl('/login'),
+  REGISTER: buildUrl('/usuarios/registrar'),
+  REFRESH_TOKEN: buildUrl('/refresh-token'),
+  FORGOT_PASSWORD: buildUrl('/forgot-password'),
+  VALIDATE_RESET_TOKEN: buildUrl('/validate-reset-token'),
+  RESET_PASSWORD: buildUrl('/reset-password'),
+  CHANGE_PASSWORD: buildUrl('/usuarios/cambiar-password'),
+  LOGOUT: buildUrl('/logout'),
 
-  // User management
-  USUARIOS: `${environment.base}/usuarios`,
-  PAREJAS: `${environment.base}/parejas`,
+  // ===== GESTIÓN DE USUARIOS =====
+  USUARIOS: buildUrl('/usuarios'),
 
-  // Core features
-  CITAS: `${environment.base}/citas`,
-  EVENTOS: `${environment.base}/eventos`,
-  REGALOS: `${environment.base}/regalos`,
-  RECORDATORIOS: `${environment.base}/recordatorios`,
-  NOTAS: `${environment.base}/notas`,
-  MENSAJES: `${environment.base}/mensajes`,
-  MULTIMEDIA: `${environment.base}/multimedia`,
-  LUGARES: `${environment.base}/lugares`,
+  // ===== RELACIONES Y PAREJAS =====
+  PAREJAS: buildUrl('/parejas'),
 
-  // Admin endpoints
-  ADMIN_USERS: `${environment.base}/admin/usuarios`,
-  ADMIN_STATS: `${environment.base}/admin/estadisticas`,
+  // ===== FUNCIONALIDADES PRINCIPALES =====
+  CITAS: buildUrl('/citas'),
+  EVENTOS: buildUrl('/eventos'),
+  REGALOS: buildUrl('/regalos'),
+  RECORDATORIOS: buildUrl('/recordatorios'),
+  NOTAS: buildUrl('/notas'),
+  MENSAJES: buildUrl('/mensajes'),
+  MULTIMEDIA: buildUrl('/multimedia'),
+  LUGARES: buildUrl('/lugares'),
 
-  // Agrega más endpoints según tu backend
+  // ===== ADMINISTRACIÓN =====
+  ADMIN_USERS: buildUrl('/admin/usuarios'),
+  ADMIN_STATS: buildUrl('/admin/estadisticas'),
+};
+
+// ===== FUNCIONES UTILITARIAS =====
+export const ApiUtils = {
+  // Construir URL con parámetros de consulta
+  buildQueryUrl: (baseUrl: string, params: Record<string, any>): string => {
+    const url = new URL(baseUrl, environment.base);
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        url.searchParams.append(key, String(value));
+      }
+    });
+    return url.toString();
+  },
+
+  // Construir URL con parámetros de ruta
+  buildPathUrl: (baseUrl: string, ...pathParams: (string | number)[]): string => {
+    return `${baseUrl}/${pathParams.join('/')}`;
+  },
+
+  // Validar si un endpoint está disponible
+  isEndpointAvailable: (endpoint: string): boolean => {
+    return Boolean(endpoint && endpoint !== 'undefined' && endpoint !== 'null');
+  },
+
+  // Obtener URL base de la API
+  getBaseUrl: (): string => environment.base,
 };

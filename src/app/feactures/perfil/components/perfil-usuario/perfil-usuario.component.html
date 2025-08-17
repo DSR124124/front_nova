@@ -1,4 +1,17 @@
-<div class="perfil-container p-4 max-w-4xl mx-auto">
+<div class="perfil-container">
+  <!-- Toast para notificaciones -->
+  <p-toast></p-toast>
+
+  <!-- Header del perfil -->
+  <div class="perfil-header">
+    <h2 class="perfil-title">
+      <i class="pi pi-user"></i>
+      Mi Perfil
+    </h2>
+    <p class="perfil-subtitle">
+      Gestiona tu información personal y estado de pareja
+    </p>
+  </div>
 
   <!-- Estado de carga -->
   <div *ngIf="loading" class="loading-state">
@@ -38,12 +51,11 @@
   <div *ngIf="!loading && !error" class="perfil-content">
 
     <!-- Información del usuario -->
-    <p-card styleClass="perfil-card mb-4">
-      <ng-template pTemplate="header">
-        <div class="card-header">
-          <h2 class="text-xl font-semibold"><i class="pi pi-user mr-2"></i> Mi Perfil</h2>
-        </div>
-      </ng-template>
+    <div class="perfil-section">
+      <h3 class="section-title">
+        <i class="pi pi-user"></i>
+        Información Personal
+      </h3>
 
       <div class="usuario-info p-4">
         <div class="avatar-section">
@@ -53,14 +65,15 @@
             shape="circle"
             styleClass="usuario-avatar">
           </p-avatar>
-          <div class="avatar-actions">
-            <p-button
-              icon="pi pi-camera"
-              [text]="true"
-              size="small"
-              pTooltip="Cambiar foto">
-            </p-button>
-          </div>
+                     <div class="avatar-actions">
+             <p-button
+               icon="pi pi-camera"
+               [text]="true"
+               size="small"
+               styleClass="avatar-camera-btn"
+               pTooltip="Cambiar foto">
+             </p-button>
+           </div>
         </div>
 
         <div class="datos-usuario">
@@ -69,6 +82,139 @@
             <p class="username text-lg font-semibold text-primary mb-2">{{ '@' + (usuario?.username || '') }}</p>
             <p class="email text-500">{{ usuario?.correo }}</p>
           </div>
+
+                     <!-- Formulario de edición -->
+           <div *ngIf="editMode" class="edit-form-wrapper">
+             <form [formGroup]="editForm" class="edit-form">
+               <!-- Nombres y Apellidos -->
+               <div class="form-row">
+                 <div class="form-field">
+                   <label for="nombre" class="field-label">
+                     Nombre <span class="required">*</span>
+                   </label>
+                   <input
+                     type="text"
+                     pInputText
+                     id="nombre"
+                     formControlName="nombre"
+                     placeholder="Tu nombre"
+                     [class.field-error]="isFieldInvalid('nombre')"
+                     class="field-input"
+                     autocomplete="given-name"
+                   />
+                   <small *ngIf="isFieldInvalid('nombre')" class="error-message">
+                     <i class="pi pi-exclamation-circle"></i>
+                     {{ getFieldError('nombre') }}
+                   </small>
+                 </div>
+
+                 <div class="form-field">
+                   <label for="apellido" class="field-label">
+                     Apellido <span class="required">*</span>
+                   </label>
+                   <input
+                     type="text"
+                     pInputText
+                     id="apellido"
+                     formControlName="apellido"
+                     placeholder="Tu apellido"
+                     [class.field-error]="isFieldInvalid('apellido')"
+                     class="field-input"
+                     autocomplete="family-name"
+                   />
+                   <small *ngIf="isFieldInvalid('apellido')" class="error-message">
+                     <i class="pi pi-exclamation-circle"></i>
+                     {{ getFieldError('apellido') }}
+                   </small>
+                 </div>
+               </div>
+
+               <!-- Email -->
+               <div class="form-field">
+                 <label for="correo" class="field-label">
+                   Correo Electrónico <span class="required">*</span>
+                 </label>
+                 <input
+                   type="email"
+                   pInputText
+                   id="correo"
+                   formControlName="correo"
+                   placeholder="tu@email.com"
+                   [class.field-error]="isFieldInvalid('correo')"
+                   class="field-input"
+                   autocomplete="email"
+                 />
+                 <small *ngIf="isFieldInvalid('correo')" class="error-message">
+                   <i class="pi pi-exclamation-circle"></i>
+                   {{ getFieldError('correo') }}
+                 </small>
+               </div>
+
+               <!-- Usuario -->
+               <div class="form-field">
+                 <label for="username" class="field-label">
+                   Nombre de Usuario <span class="required">*</span>
+                 </label>
+                 <input
+                   type="text"
+                   pInputText
+                   id="username"
+                   formControlName="username"
+                   placeholder="Tu nombre de usuario"
+                   [class.field-error]="isFieldInvalid('username')"
+                   class="field-input"
+                   autocomplete="username"
+                 />
+                 <small *ngIf="isFieldInvalid('username')" class="error-message">
+                   <i class="pi pi-exclamation-circle"></i>
+                   {{ getFieldError('username') }}
+                 </small>
+               </div>
+
+               <!-- Fecha de Nacimiento y Género -->
+               <div class="form-row">
+                 <div class="form-field">
+                   <label for="fechaNacimiento" class="field-label">
+                     Fecha de Nacimiento <span class="required">*</span>
+                   </label>
+                   <input
+                     type="date"
+                     id="fechaNacimiento"
+                     formControlName="fechaNacimiento"
+                     class="field-input"
+                     [class.field-error]="isFieldInvalid('fechaNacimiento')"
+                     placeholder="dd/mm/aaaa"
+                   />
+                   <small *ngIf="isFieldInvalid('fechaNacimiento')" class="error-message">
+                     <i class="pi pi-exclamation-circle"></i>
+                     {{ getFieldError('fechaNacimiento') }}
+                   </small>
+                 </div>
+
+                 <div class="form-field">
+                   <label for="genero" class="field-label">
+                     Género <span class="required">*</span>
+                   </label>
+                   <p-select
+                     [options]="generos"
+                     formControlName="genero"
+                     optionLabel="label"
+                     optionValue="value"
+                     [showClear]="true"
+                     placeholder="Selecciona tu género"
+                     class="field-input"
+                     [class.field-error]="isFieldInvalid('genero')"
+                     [filter]="false"
+                     appendTo="body"
+                   />
+                   <small *ngIf="isFieldInvalid('genero')" class="error-message">
+                     <i class="pi pi-exclamation-circle"></i>
+                     {{ getFieldError('genero') }}
+                   </small>
+                 </div>
+               </div>
+             </form>
+           </div>
 
           <div class="detalles-adicionales grid gap-3 mb-4">
             <div class="detalle-item" *ngIf="usuario?.fechaNacimiento">
@@ -94,34 +240,55 @@
             </div>
           </div>
 
-          <!-- Acciones del perfil -->
-          <div class="acciones-perfil flex gap-3">
-            <p-button
-              label="Editar Perfil"
-              icon="pi pi-pencil"
-              [outlined]="true"
-              size="large"
-              styleClass="edit-btn">
-            </p-button>
-            <p-button
-              label="Cambiar Contraseña"
-              icon="pi pi-key"
-              [outlined]="true"
-              size="large"
-              styleClass="password-btn">
-            </p-button>
-          </div>
+                     <!-- Acciones del perfil -->
+           <div class="acciones-perfil flex gap-3">
+             <p-button
+               *ngIf="!editMode"
+               label="Editar Perfil"
+               icon="pi pi-pencil"
+               [outlined]="true"
+               size="large"
+               styleClass="edit-btn"
+               (onClick)="activarEdicion()">
+             </p-button>
+             <p-button
+               *ngIf="editMode"
+               label="Guardar"
+               icon="pi pi-check"
+               [loading]="saving"
+               size="large"
+               styleClass="save-btn"
+               (onClick)="guardarPerfil()">
+             </p-button>
+             <p-button
+               *ngIf="editMode"
+               label="Cancelar"
+               icon="pi pi-times"
+               [outlined]="true"
+               severity="secondary"
+               size="large"
+               styleClass="cancel-btn"
+               (onClick)="cancelarEdicion()">
+             </p-button>
+                              <p-button
+                   label="Cambiar Contraseña"
+                   icon="pi pi-key"
+                   [outlined]="true"
+                   size="large"
+                   styleClass="password-btn"
+                   (onClick)="showPasswordDialog()">
+                 </p-button>
+           </div>
         </div>
       </div>
-    </p-card>
+    </div>
 
     <!-- Estado de pareja -->
-    <p-card styleClass="pareja-card">
-      <ng-template pTemplate="header">
-        <div class="card-header">
-          <h2 class="text-xl font-semibold"><i class="pi pi-heart mr-2"></i> Estado de Pareja</h2>
-        </div>
-      </ng-template>
+    <div class="perfil-section">
+      <h3 class="section-title">
+        <i class="pi pi-heart"></i>
+        Estado de Pareja
+      </h3>
 
       <div class="pareja-info p-4">
         <!-- Con pareja -->
@@ -183,7 +350,104 @@
           </div>
         </div>
       </div>
-    </p-card>
+    </div>
 
   </div>
 </div>
+
+<!-- Dialog de cambio de contraseña -->
+<p-dialog
+  header="Cambiar Contraseña"
+  [(visible)]="passwordDialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="password-dialog"
+  (onHide)="hidePasswordDialog()"
+>
+  <form [formGroup]="passwordForm" class="password-form">
+    <!-- Contraseña actual -->
+    <div class="form-field">
+      <label for="currentPassword" class="field-label">
+        Contraseña Actual <span class="required">*</span>
+      </label>
+      <p-password
+        id="currentPassword"
+        formControlName="currentPassword"
+        [toggleMask]="true"
+        [feedback]="false"
+        placeholder="Ingresa tu contraseña actual"
+        [class.field-error]="isPasswordFieldInvalid('currentPassword')"
+        styleClass="field-input"
+        autocomplete="current-password"
+      />
+      <small *ngIf="isPasswordFieldInvalid('currentPassword')" class="error-message">
+        <i class="pi pi-exclamation-circle"></i>
+        {{ getPasswordFieldError('currentPassword') }}
+      </small>
+    </div>
+
+    <!-- Nueva contraseña -->
+    <div class="form-field">
+      <label for="newPassword" class="field-label">
+        Nueva Contraseña <span class="required">*</span>
+      </label>
+      <p-password
+        id="newPassword"
+        formControlName="newPassword"
+        [toggleMask]="true"
+        [feedback]="true"
+        placeholder="Ingresa tu nueva contraseña"
+        [class.field-error]="isPasswordFieldInvalid('newPassword')"
+        styleClass="field-input"
+        autocomplete="new-password"
+      />
+      <small *ngIf="isPasswordFieldInvalid('newPassword')" class="error-message">
+        <i class="pi pi-exclamation-circle"></i>
+        {{ getPasswordFieldError('newPassword') }}
+      </small>
+    </div>
+
+    <!-- Confirmar nueva contraseña -->
+    <div class="form-field">
+      <label for="Password" class="field-label">
+        Confirmar Nueva Contraseña <span class="required">*</span>
+      </label>
+      <p-password
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        [toggleMask]="true"
+        [feedback]="false"
+        placeholder="Confirma tu nueva contraseña"
+        [class.field-error]="isPasswordFieldInvalid('confirmPassword')"
+        styleClass="field-input"
+        autocomplete="new-password"
+      />
+      <small *ngIf="isPasswordFieldInvalid('confirmPassword')" class="error-message">
+        <i class="pi pi-exclamation-circle"></i>
+        {{ getPasswordFieldError('confirmPassword') }}
+      </small>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        [outlined]="true"
+        severity="secondary"
+        (onClick)="hidePasswordDialog()"
+      />
+      <p-button
+        label="Cambiar Contraseña"
+        icon="pi pi-key"
+        [loading]="changingPassword"
+        [disabled]="passwordForm.invalid"
+        (onClick)="cambiarContrasena()"
+        styleClass="change-password-btn"
+      />
+    </div>
+  </ng-template>
+</p-dialog>
