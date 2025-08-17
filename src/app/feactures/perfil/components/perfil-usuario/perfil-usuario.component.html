@@ -2,11 +2,16 @@
 
   <!-- Estado de carga -->
   <div *ngIf="loading" class="loading-state">
-    <div class="loading-spinner mb-4">
-      <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+    <app-loading-spinner
+      size="large"
+      label="Cargando perfil..."
+      [overlay]="false"
+      styleClass="profile-spinner"
+    />
+    <div class="loading-message">
+      <h3>Estamos preparando tu información personal</h3>
+      <p>Un momento por favor...</p>
     </div>
-    <h3 class="text-2xl font-bold text-900 mb-2">Cargando perfil...</h3>
-    <p class="text-500">Estamos preparando tu información personal</p>
   </div>
 
   <!-- Estado de error -->

@@ -10,15 +10,8 @@
         class="toggle-button"
         (onClick)="toggleSidebar()"
       />
-      <div class="sidebar-title" *ngIf="!collapsed">
-        <p-image
-          src="assets/images/logo_blanco.png"
-          alt="Nova Logo"
-          class="logo-image"
-          [preview]="false"
-          [showTransitionOptions]="'0ms'"
-          [hideTransitionOptions]="'0ms'"
-        />
+      <div class="system-logo">
+        <p-image src="/assets/images/logo_blanco.png" alt="Nova Logo" width="120" [preview]="false" />
       </div>
     </div>
   </div>

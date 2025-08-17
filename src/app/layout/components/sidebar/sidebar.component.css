@@ -18,7 +18,7 @@
 
 /* Header del sidebar */
 .sidebar-header {
-  padding: 1rem;
+  padding: 0.45rem;
   border-bottom: 1px solid var(--sidebar-border);
   background: var(--surface-section);
   min-height: 60px;
@@ -29,7 +29,7 @@
 .header-content {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   width: 100%;
 }
 
@@ -46,46 +46,25 @@
   transform: scale(0.95);
 }
 
-.sidebar-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Logo del sistema */
+.system-logo {
   flex: 1;
-  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.logo-image {
-  width: 50%;
+/* Estilos específicos para el componente p-image de PrimeNG */
+:host ::ng-deep .system-logo .p-image {
+  display: block;
+  width: 120px;
   height: auto;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  filter: brightness(1);
+  transition: all 0.2s ease;
 }
 
-.logo-image:hover {
+:host ::ng-deep .system-logo .p-image:hover {
   transform: scale(1.05);
   filter: brightness(1.1);
-}
-
-/* Estilos específicos para p-image de PrimeNG */
-:host ::ng-deep .logo-image .p-image {
-  width: 100%;
-  height: 100%;
-}
-
-:host ::ng-deep .logo-image .p-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.title-text {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--sidebar-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Navegación del sidebar */
@@ -136,20 +115,16 @@
 }
 
 /* Estados colapsados */
-.sidebar-container.collapsed .sidebar-title {
-  display: none;
-}
-
 .sidebar-container.collapsed .sidebar-header {
   justify-content: center;
-  padding: 1rem 0.5rem;
+  padding: 0.75rem;
 }
 
 .sidebar-container.collapsed .header-content {
   justify-content: center;
 }
 
-.sidebar-container.collapsed .submenu {
+.sidebar-container.collapsed .system-logo {
   display: none;
 }
 
@@ -170,18 +145,8 @@
     padding: 0.875rem;
   }
 
-  .title-text {
-    font-size: 1.1rem;
-  }
-
-  .logo-image {
-    width: 42px;
-    height: 42px;
-  }
-
-  :host ::ng-deep .logo-image .p-image {
-    width: 100%;
-    height: 100%;
+  :host ::ng-deep .system-logo .p-image {
+    width: 100px;
   }
 }
 
@@ -195,22 +160,12 @@
     padding: 0.75rem;
   }
 
-  .title-text {
-    font-size: 1rem;
-  }
-
-  .logo-image {
-    width: 36px;
-    height: 36px;
-  }
-
-  :host ::ng-deep .logo-image .p-image {
-    width: 100%;
-    height: 100%;
+  :host ::ng-deep .system-logo .p-image {
+    width: 80px;
   }
 
   .header-content {
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 }
 
@@ -251,7 +206,6 @@
 :host ::ng-deep .logout-dialog .p-dialog-footer {
   background: var(--surface-section);
   border-top: 1px solid var(--surface-border);
-  background: var(--surface-section);
   padding: 1rem 1.5rem 1.5rem 1.5rem;
 }
 

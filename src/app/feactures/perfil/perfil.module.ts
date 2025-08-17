@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { PerfilRoutingModule } from './perfil-routing.module';
 import { PerfilUsuarioComponent } from './components/perfil-usuario/perfil-usuario.component';
@@ -23,6 +24,7 @@ import { CambiarPasswordComponent } from './components/cambiar-password/cambiar-
     FormsModule,
     ReactiveFormsModule,
     PrimeNgModule,
+    SharedModule,
     PerfilRoutingModule
   ],
   providers: [

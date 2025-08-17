@@ -2,21 +2,43 @@
 
 /* Contenedor principal */
 .perfil-container {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
   background: var(--surface-ground);
   min-height: 100vh;
 }
 
-/* Estado de carga */
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem;
+
+.loading-message {
   text-align: center;
-  background: var(--surface-card);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.loading-message h3 {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+.loading-message p {
+  color: var(--text-color-secondary);
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Estilos específicos para el spinner del perfil */
+:host ::ng-deep .profile-spinner .custom-spinner {
+  width: 4rem;
+  height: 4rem;
+}
+
+:host ::ng-deep .profile-spinner .spinner-label {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 1rem;
 }
 
 /* Tarjetas con estilo Nova */
@@ -24,32 +46,32 @@
 .pareja-card {
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--surface-border);
   background: var(--surface-card);
+  margin-bottom: 2rem;
 }
 
 /* Headers de tarjetas */
 .card-header {
-  background: var(--surface-50);
+  background: var(--surface-section);
   color: var(--text-color);
-  padding: 1rem;
+  padding: 1.5rem;
   border-bottom: 1px solid var(--surface-border);
 }
 
 .card-header h2 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 600;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.75rem;
+  letter-spacing: -0.025em;
 }
 
 .card-header i {
   color: var(--primary-color);
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 /* Información del usuario */
@@ -57,6 +79,7 @@
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+  padding: 1.5rem;
 }
 
 .avatar-section {
@@ -71,6 +94,13 @@
   font-size: 2rem;
   width: 6rem !important;
   height: 6rem !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.2s ease;
+}
+
+.usuario-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
 
 .avatar-actions {
@@ -80,11 +110,39 @@
   background: var(--surface-card);
   border-radius: 50%;
   padding: 0.25rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--surface-border);
+  transition: all 0.2s ease;
+}
+
+.avatar-actions:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .datos-usuario {
   flex: 1;
+}
+
+.nombre-section h2 {
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.5rem 0;
+}
+
+.username {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+}
+
+.email {
+  color: var(--text-color-secondary);
+  font-size: 1rem;
+  margin: 0;
 }
 
 /* Detalles adicionales */
@@ -92,38 +150,42 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
+  margin: 1.5rem 0;
 }
 
 .detalle-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem;
-  background: var(--surface-50);
+  padding: 1rem;
+  background: var(--surface-section);
   border-radius: 8px;
   border: 1px solid var(--surface-border);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .detalle-item:hover {
-  background: var(--surface-200);
+  background: var(--surface-hover);
   border-color: var(--primary-color);
+  transform: translateY(-1px);
 }
 
 .detalle-item i {
-  width: 16px;
+  width: 20px;
   text-align: center;
   color: var(--primary-color);
+  font-size: 1rem;
 }
 
 .detalle-item strong {
   margin-right: 0.5rem;
   color: var(--text-color);
+  font-weight: 600;
 }
 
 .detalle-item span {
   color: var(--text-color);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .edad {
@@ -136,27 +198,29 @@
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 20px;
+  padding: 1rem 2rem;
+  border-radius: 25px;
   font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.2s ease;
 }
 
 .status-badge.activa {
-  background: var(--surface-200);
+  background: var(--surface-section);
   color: var(--text-color);
-  border: 1px solid var(--surface-400);
+  border: 2px solid var(--primary-color);
 }
 
 .status-badge.inactiva {
-  background: var(--surface-50);
+  background: var(--surface-section);
   color: var(--text-color-secondary);
-  border: 1px solid var(--surface-border);
+  border: 2px solid var(--surface-border);
 }
 
 .status-badge i {
   color: var(--primary-color);
+  font-size: 1.2rem;
 }
 
 /* Detalles de pareja */
@@ -184,9 +248,12 @@
 
 .mensaje-sin-pareja {
   color: var(--text-color-secondary);
-  font-size: 1rem;
-  margin: 1rem 0 1.5rem 0;
-  line-height: 1.5;
+  font-size: 1.1rem;
+  margin: 1.5rem 0 2rem 0;
+  line-height: 1.6;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .acciones-pareja {
@@ -198,15 +265,31 @@
 
 .pareja-actions {
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Acciones del perfil */
+.acciones-perfil {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.acciones-perfil .p-button {
+  min-width: 180px;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .perfil-container {
+    padding: 1rem;
+  }
+
   .usuario-info {
     flex-direction: column;
     text-align: center;
     gap: 2rem;
+    padding: 1rem;
   }
 
   .usuario-avatar {
@@ -217,16 +300,18 @@
 
   .detalles-adicionales {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 
   .acciones-perfil {
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .edit-btn,
-  .password-btn {
+  .acciones-perfil .p-button {
     width: 100%;
-    max-width: 250px;
+    max-width: 300px;
   }
 
   .acciones-pareja {
@@ -237,30 +322,50 @@
   .search-btn,
   .invite-btn {
     width: 100%;
-    max-width: 250px;
+    max-width: 300px;
+  }
+
+  .card-header {
+    padding: 1rem;
+  }
+
+  .card-header h2 {
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
+  .perfil-container {
+    padding: 0.75rem;
+  }
+
   .card-header {
     padding: 0.75rem;
   }
 
   .usuario-info {
-    padding: 1rem;
+    padding: 0.75rem;
   }
 
   .pareja-info {
-    padding: 1rem;
+    padding: 0.75rem;
   }
 
   .status-badge {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
   }
 
   .detalle-item {
-    padding: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .nombre-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .username {
+    font-size: 1rem;
   }
 }
 
@@ -270,11 +375,49 @@
   animation: fadeIn 0.3s ease-in;
 }
 
+.loading-state,
+.error-state {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.loading-message {
+  animation: fadeIn 0.5s ease-in 0.3s both;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
+}
+
+/* Estados de error */
+.error-state {
+  margin-bottom: 2rem;
+}
+
+.error-content {
+  text-align: center;
+}
+
+.error-icon {
+  color: var(--danger-color);
+  margin-bottom: 1rem;
+}
+
+.error-content h3 {
+  color: var(--text-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.error-content p {
+  color: var(--text-color-secondary);
+  margin: 0 0 1.5rem 0;
+  font-size: 1rem;
 }
