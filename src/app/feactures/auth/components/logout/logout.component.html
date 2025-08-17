@@ -1,0 +1,54 @@
+<!-- Botón para abrir el diálogo -->
+<button
+  pButton
+  type="button"
+  label="Cerrar Sesión"
+  icon="pi pi-sign-out"
+  class="p-button-danger p-button-text"
+  (click)="showDialog()"
+  [disabled]="loading"
+></button>
+
+<!-- Diálogo de confirmación -->
+<p-dialog
+  header="Confirmar Cierre de Sesión"
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="logout-dialog"
+  (onHide)="hideDialog()"
+>
+  <div class="logout-content">
+    <div class="logout-icon">
+      <i class="pi pi-exclamation-triangle" style="font-size: 3rem; color: var(--warning-color);"></i>
+    </div>
+
+    <div class="logout-message">
+      <h3>¿Estás seguro de que quieres cerrar sesión?</h3>
+      <p>Se cerrará tu sesión actual y serás redirigido a la página de inicio de sesión.</p>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        (onClick)="cancelLogout()"
+        [disabled]="loading"
+      ></p-button>
+
+      <p-button
+        label="Cerrar Sesión"
+        icon="pi pi-sign-out"
+        class="p-button-danger"
+        (onClick)="confirmLogout()"
+        [loading]="loading"
+        [disabled]="loading"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>

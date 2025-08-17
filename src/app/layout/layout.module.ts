@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
+import { AuthModule } from '../feactures/auth/auth.module';
 
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -24,6 +25,7 @@ import { LayoutRoutingModule } from './layout-routing.module';
     CommonModule,
     RouterModule,
     PrimeNgModule,
+    AuthModule,
     LayoutRoutingModule
   ],
   exports: [

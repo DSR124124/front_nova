@@ -7,8 +7,12 @@
       [text]="true"
       [routerLink]="item.routerLink || undefined"
       styleClass="w-full justify-content-start sidebar-menu-item"
-      [ngClass]="{'active': isActive(), 'no-route': !item.routerLink}"
-      (onClick)="hasSubmenu() ? toggleSubmenu() : null"
+      [ngClass]="{
+        'active': isActive(),
+        'no-route': !item.routerLink,
+        'logout-item': item.label === 'Cerrar Sesión'
+      }"
+      (onClick)="hasSubmenu() ? toggleSubmenu() : navigateTo(item.routerLink || '')"
     >
       <!-- Badge si existe -->
       <span
@@ -36,11 +40,11 @@
       *ngFor="let subItem of item.items"
       class="submenu-item"
       [class.active]="isSubItemActive(subItem)"
-      (click)="navigateTo(subItem.routerLink)"
+      (click)="onSubItemClick(subItem)"
       role="button"
       tabindex="0"
-      (keydown.enter)="navigateTo(subItem.routerLink)"
-      (keydown.space)="navigateTo(subItem.routerLink)"
+      (keydown.enter)="onSubItemClick(subItem)"
+      (keydown.space)="onSubItemClick(subItem)"
     >
       <i [class]="subItem.icon"></i>
       <span>{{ subItem.label }}</span>

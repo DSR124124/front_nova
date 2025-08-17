@@ -1,8 +1,9 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { SidebarItem, SidebarSubItem } from '../../../core/services/sidebar.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-sidebar-item',
@@ -13,11 +14,16 @@ import { SidebarItem, SidebarSubItem } from '../../../core/services/sidebar.serv
 export class SidebarItemComponent implements OnInit, OnDestroy {
   @Input() item!: SidebarItem;
   @Input() sidebarCollapsed: boolean = false;
+  @Output() itemClick = new EventEmitter<SidebarItem>();
+  @Output() logoutRequested = new EventEmitter<void>();
 
   expanded = false;
   private destroy$ = new Subject<void>();
 
-  constructor(public router: Router) {
+  constructor(
+    public router: Router,
+    private authService: AuthService
+  ) {
     // Suscribirse a los eventos de navegación para actualizar el estado activo
     this.router.events
       .pipe(
@@ -98,6 +104,17 @@ export class SidebarItemComponent implements OnInit, OnDestroy {
         this.updateActiveState();
       }
     });
+  }
+
+  onSubItemClick(subItem: SidebarSubItem): void {
+    // Si es "Cerrar Sesión", emitir evento en lugar de navegar
+    if (subItem.label === 'Cerrar Sesión') {
+      this.logoutRequested.emit();
+      return;
+    }
+
+    // Para otros subitems, navegar normalmente
+    this.navigateTo(subItem.routerLink);
   }
 
   private updateActiveState(): void {

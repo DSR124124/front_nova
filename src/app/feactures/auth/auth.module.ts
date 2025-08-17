@@ -12,13 +12,15 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    LogoutComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
     SharedModule,
     AuthRoutingModule
   ],
-  providers: [MessageService]
+  providers: [MessageService],
+  exports: [LogoutComponent]
 })
 export class AuthModule { }

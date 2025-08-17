@@ -108,7 +108,7 @@ export class SidebarService {
         { label: 'Mi Perfil', icon: 'pi pi-user', routerLink: '/user/perfil/usuario' },
         { label: 'Perfil de Pareja', icon: 'pi pi-users', routerLink: '/user/perfil/pareja' },
         { label: 'Configuración', icon: 'pi pi-cog', routerLink: '/user/perfil/configuracion' },
-        { label: 'Cambiar Contraseña', icon: 'pi pi-key', routerLink: '/user/perfil/password' }
+        { label: 'Cerrar Sesión', icon: 'pi pi-sign-out', routerLink: '' }
       ]
     }
   ];

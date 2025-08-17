@@ -25,9 +25,13 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   if (authService.hasAnyRole(requiredRoles)) {
     return true;
   } else {
-    if (user.role === 'ADMIN') {
+    // Solo redirigir si estamos en una ruta que no coincide con el rol del usuario
+    // y no estamos ya en una ruta válida para ese rol
+    const currentUrl = state.url;
+
+    if (user.role === 'ADMIN' && !currentUrl.startsWith('/admin')) {
       router.navigate(['/admin']);
-    } else {
+    } else if (user.role === 'USER' && !currentUrl.startsWith('/user')) {
       router.navigate(['/user']);
     }
     return false;

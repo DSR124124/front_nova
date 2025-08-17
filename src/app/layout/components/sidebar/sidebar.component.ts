@@ -1,6 +1,8 @@
 import { Component, OnInit, HostListener, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { SidebarService, SidebarItem } from '../../../core/services/sidebar.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { LogoutComponent } from '../../../feactures/auth/components/logout/logout.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,10 +16,12 @@ export class SidebarComponent implements OnInit {
 
   isMobile = false;
   menuItems: SidebarItem[] = [];
+  logoutDialogVisible = false;
 
   constructor(
     public router: Router,
-    private sidebarService: SidebarService
+    private sidebarService: SidebarService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -62,5 +66,27 @@ export class SidebarComponent implements OnInit {
     );
   }
 
+  onMenuItemClick(item: SidebarItem): void {
+    // Verificar si es el item "Cerrar Sesión" o si contiene el subitem
+    if (item.label === 'Cerrar Sesión') {
+      this.showLogoutDialog();
+    } else if (item.items && item.items.some(subItem => subItem.label === 'Cerrar Sesión')) {
+      // Si el item principal contiene "Cerrar Sesión", no hacer nada aquí
+      // Se manejará en el sidebar-item cuando se haga clic en el subitem
+      return;
+    }
+  }
 
+  showLogoutDialog(): void {
+    this.logoutDialogVisible = true;
+  }
+
+  hideLogoutDialog(): void {
+    this.logoutDialogVisible = false;
+  }
+
+  onLogoutConfirmed(): void {
+    this.hideLogoutDialog();
+    this.authService.logout();
+  }
 }

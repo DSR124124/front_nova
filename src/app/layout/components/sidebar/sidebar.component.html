@@ -1,16 +1,25 @@
 <div class="sidebar-container" [class.collapsed]="collapsed">
-  <!-- Header básico -->
+  <!-- Header del sidebar -->
   <div class="sidebar-header">
-    <p-button
-      [icon]="collapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
-      [text]="true"
-      [rounded]="true"
-      size="small"
-      (onClick)="toggleSidebar()"
-    />
-    <div class="sidebar-title" *ngIf="!collapsed">
-      <i class="pi pi-heart-fill"></i>
-      <span>Nova</span>
+    <div class="header-content">
+      <p-button
+        [icon]="collapsed ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
+        [text]="true"
+        [rounded]="true"
+        size="small"
+        class="toggle-button"
+        (onClick)="toggleSidebar()"
+      />
+      <div class="sidebar-title" *ngIf="!collapsed">
+        <p-image
+          src="assets/images/logo_blanco.png"
+          alt="Nova Logo"
+          class="logo-image"
+          [preview]="false"
+          [showTransitionOptions]="'0ms'"
+          [hideTransitionOptions]="'0ms'"
+        />
+      </div>
     </div>
   </div>
 
@@ -20,10 +29,12 @@
       *ngFor="let item of menuItems"
       [item]="item"
       [sidebarCollapsed]="collapsed"
+      (itemClick)="onMenuItemClick(item)"
+      (logoutRequested)="showLogoutDialog()"
     />
   </div>
 
-    <!-- Footer básico -->
+  <!-- Footer básico -->
   <div class="sidebar-footer" *ngIf="!collapsed">
     <div class="user-info">
       <p-avatar
@@ -54,3 +65,44 @@
   *ngIf="!collapsed && isMobile"
   (click)="toggleSidebar()"
 ></div>
+
+<!-- Dialog de logout -->
+<p-dialog
+  header="Confirmar Cierre de Sesión"
+  [(visible)]="logoutDialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="logout-dialog"
+  (onHide)="hideLogoutDialog()"
+>
+  <div class="logout-content">
+    <div class="logout-icon">
+      <i class="pi pi-exclamation-triangle" style="font-size: 3rem; color: var(--warning-color);"></i>
+    </div>
+
+    <div class="logout-message">
+      <h3>¿Estás seguro de que quieres cerrar sesión?</h3>
+      <p>Se cerrará tu sesión actual y serás redirigido a la página de inicio de sesión.</p>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        (onClick)="hideLogoutDialog()"
+      ></p-button>
+
+      <p-button
+        label="Cerrar Sesión"
+        icon="pi pi-sign-out"
+        class="p-button-danger"
+        (onClick)="onLogoutConfirmed()"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-dialog>

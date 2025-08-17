@@ -198,3 +198,24 @@
     font-size: 0.75rem;
   }
 }
+
+/* Estilos específicos para el botón de cerrar sesión */
+:host ::ng-deep .sidebar-menu-item.logout-item {
+  color: var(--danger-color);
+  border-top: 1px solid var(--sidebar-border);
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+}
+
+:host ::ng-deep .sidebar-menu-item.logout-item:hover {
+  background: var(--danger-color);
+  color: var(--primary-color-text);
+}
+
+:host ::ng-deep .sidebar-menu-item.logout-item .p-button-icon {
+  color: inherit;
+}
+
+:host ::ng-deep .sidebar-menu-item.logout-item .p-button-label {
+  color: inherit;
+}

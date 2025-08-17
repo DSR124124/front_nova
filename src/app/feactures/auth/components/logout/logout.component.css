@@ -1,0 +1,112 @@
+/* Estilos para el botón de logout */
+:host ::ng-deep .p-button-danger.p-button-text {
+  color: var(--danger-color);
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .p-button-danger.p-button-text:hover {
+  background: var(--danger-color);
+  color: var(--primary-color-text);
+  transform: translateY(-1px);
+}
+
+:host ::ng-deep .p-button-danger.p-button-text:active {
+  transform: translateY(0);
+}
+
+/* Estilos para el diálogo de logout */
+:host ::ng-deep .logout-dialog .p-dialog {
+  min-width: 400px;
+  max-width: 500px;
+}
+
+:host ::ng-deep .logout-dialog .p-dialog-header {
+  background: var(--surface-section);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
+:host ::ng-deep .logout-dialog .p-dialog-header .p-dialog-title {
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+:host ::ng-deep .logout-dialog .p-dialog-content {
+  padding: 1.5rem;
+  background: var(--surface-card);
+}
+
+:host ::ng-deep .logout-dialog .p-dialog-footer {
+  background: var(--surface-section);
+  border-top: 1px solid var(--surface-border);
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+}
+
+/* Contenido del diálogo */
+.logout-content {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.logout-icon {
+  margin-bottom: 1.5rem;
+}
+
+.logout-message h3 {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.logout-message p {
+  color: var(--text-color-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Footer del diálogo */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :host ::ng-deep .logout-dialog .p-dialog {
+    min-width: 90vw;
+    max-width: 95vw;
+    margin: 1rem;
+  }
+
+  .dialog-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  :host ::ng-deep .logout-dialog .p-dialog-footer .p-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  :host ::ng-deep .logout-dialog .p-dialog-header,
+  :host ::ng-deep .logout-dialog .p-dialog-content,
+  :host ::ng-deep .logout-dialog .p-dialog-footer {
+    padding: 1rem;
+  }
+
+  .logout-message h3 {
+    font-size: 1rem;
+  }
+
+  .logout-message p {
+    font-size: 0.9rem;
+  }
+}

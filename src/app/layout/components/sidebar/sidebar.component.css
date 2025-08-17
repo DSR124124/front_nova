@@ -21,20 +21,71 @@
   padding: 1rem;
   border-bottom: 1px solid var(--sidebar-border);
   background: var(--surface-section);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.toggle-button {
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.toggle-button:hover {
+  transform: scale(1.05);
+}
+
+.toggle-button:active {
+  transform: scale(0.95);
 }
 
 .sidebar-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--sidebar-text);
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
 }
 
-.sidebar-title i {
-  color: var(--primary-color);
-  font-size: 1.2rem;
+.logo-image {
+  width: 50%;
+  height: auto;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  filter: brightness(1);
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Estilos específicos para p-image de PrimeNG */
+:host ::ng-deep .logo-image .p-image {
+  width: 100%;
+  height: 100%;
+}
+
+:host ::ng-deep .logo-image .p-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.title-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--sidebar-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Navegación del sidebar */
@@ -94,6 +145,10 @@
   padding: 1rem 0.5rem;
 }
 
+.sidebar-container.collapsed .header-content {
+  justify-content: center;
+}
+
 .sidebar-container.collapsed .submenu {
   display: none;
 }
@@ -109,10 +164,159 @@
   .sidebar-container:not(.collapsed) {
     transform: translateX(0);
   }
+
+  .sidebar-header {
+    min-height: 56px;
+    padding: 0.875rem;
+  }
+
+  .title-text {
+    font-size: 1.1rem;
+  }
+
+  .logo-image {
+    width: 42px;
+    height: 42px;
+  }
+
+  :host ::ng-deep .logo-image .p-image {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 @media (max-width: 480px) {
   .sidebar-container:not(.collapsed) {
     width: 100vw;
+  }
+
+  .sidebar-header {
+    min-height: 52px;
+    padding: 0.75rem;
+  }
+
+  .title-text {
+    font-size: 1rem;
+  }
+
+  .logo-image {
+    width: 36px;
+    height: 36px;
+  }
+
+  :host ::ng-deep .logo-image .p-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .header-content {
+    gap: 0.5rem;
+  }
+}
+
+/* Overlay para móvil */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Estilos para el diálogo de logout */
+:host ::ng-deep .logout-dialog .p-dialog {
+  min-width: 400px;
+  max-width: 500px;
+}
+
+:host ::ng-deep .logout-dialog .p-dialog-header {
+  background: var(--surface-section);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
+:host ::ng-deep .logout-dialog .p-dialog-header .p-dialog-title {
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+:host ::ng-deep .logout-dialog .p-dialog-content {
+  padding: 1.5rem;
+  background: var(--surface-card);
+}
+
+:host ::ng-deep .logout-dialog .p-dialog-footer {
+  background: var(--surface-section);
+  border-top: 1px solid var(--surface-border);
+  background: var(--surface-section);
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+}
+
+/* Contenido del diálogo */
+.logout-content {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.logout-icon {
+  margin-bottom: 1.5rem;
+}
+
+.logout-message h3 {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.logout-message p {
+  color: var(--text-color-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Footer del diálogo */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Responsive para el diálogo */
+@media (max-width: 768px) {
+  :host ::ng-deep .logout-dialog .p-dialog {
+    min-width: 90vw;
+    max-width: 95vw;
+    margin: 1rem;
+  }
+
+  .dialog-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  :host ::ng-deep .logout-dialog .p-dialog-footer .p-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  :host ::ng-deep .logout-dialog .p-dialog-header,
+  :host ::ng-deep .logout-dialog .p-dialog-content,
+  :host ::ng-deep .logout-dialog .p-dialog-footer {
+    padding: 1rem;
+  }
+
+  .logout-message h3 {
+    font-size: 1rem;
+  }
+
+  .logout-message p {
+    font-size: 0.9rem;
   }
 }
