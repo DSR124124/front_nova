@@ -272,6 +272,40 @@
   font-size: 0.85rem;
 }
 
+/* Estilos para el campo de contraseña personalizado */
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  padding-right: 3rem; /* Espacio para el botón de toggle */
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-color-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.password-toggle-btn:hover {
+  color: var(--primary-color);
+  background: var(--surface-hover);
+}
+
+.password-toggle-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
 /* Responsive */
 @media (max-width: 480px) {
   .login-form-container {
@@ -287,7 +321,6 @@
   }
 
   .form-actions {
-    flex-direction: column;
     gap: 0.75rem;
     align-items: center;
   }
@@ -312,47 +345,52 @@
     width: 100%;
     height: auto;
   }
-}
 
-/* Estilos para el campo de contraseña personalizado */
-.password-input-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
+  /* Botones responsivos para móvil */
+  :host ::ng-deep .form-actions .p-button {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: auto !important;
+    height: 3rem !important;
+    font-size: 1rem !important;
+  }
 
-.password-input {
-  flex: 1;
-  padding-right: 3rem; /* Espacio para el botón */
-}
+  :host ::ng-deep .additional-links .p-button {
+    width: 100% !important;
+    max-width: none !important;
+    height: 2.5rem !important;
+    font-size: 0.9rem !important;
+  }
 
-.password-toggle-btn {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--text-color-secondary);
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  /* Campo de contraseña responsivo */
+  .password-input-container {
+    width: 100%;
+  }
 
-.password-toggle-btn:hover {
-  background: var(--surface-hover);
-  color: var(--text-color);
-}
+  .password-toggle-btn {
+    right: 0.5rem;
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
 
-.password-toggle-btn:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
+  /* Campos de input responsivos */
+  .field-input {
+    height: 3rem !important;
+    font-size: 1rem !important;
+  }
 
-.password-toggle-btn i {
-  font-size: 1rem;
+  /* Header responsivo */
+  .form-header span {
+    font-size: 1.5rem !important;
+  }
+
+  /* Checkbox responsivo */
+  .remember-me-checkbox {
+    margin-bottom: 1.5rem;
+  }
+
+  .remember-me-checkbox .p-checkbox-label {
+    font-size: 1rem !important;
+  }
 }

@@ -432,7 +432,6 @@ input[type="date"].field-input.field-error {
   }
 
   .form-actions {
-    flex-direction: column;
     gap: 0.75rem;
     align-items: center;
   }
