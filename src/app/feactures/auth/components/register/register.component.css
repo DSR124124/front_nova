@@ -4,6 +4,7 @@
   width: 100%;
   margin: 0 auto;
   padding: 2rem;
+  padding-top: 6rem; /* Espacio para el header fijo */
   display: flex;
   flex-direction: column;
   justify-content: center;
