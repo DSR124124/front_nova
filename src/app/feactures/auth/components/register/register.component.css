@@ -4,11 +4,25 @@
   width: 100%;
   margin: 0 auto;
   padding: 2rem;
-  padding-top: 6rem; /* Espacio para el header fijo */
+  padding-top: 10rem; /* Mucho más espacio para el header fijo */
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
+}
+
+/* Responsive para el padding superior */
+@media (max-width: 768px) {
+  .register-form-container {
+    padding-top: 9rem; /* Más espacio en tablet */
+  }
+}
+
+@media (max-width: 480px) {
+  .register-form-container {
+    padding-top: 8rem; /* Más espacio en móvil */
+    padding: 1.5rem;
+  }
 }
 
 /* Header del formulario */
