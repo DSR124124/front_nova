@@ -1,0 +1,51 @@
+<header class="header-section">
+  <nav class="header-nav">
+    <div class="header-container">
+      <div class="header-brand">
+        <p-image src="/assets/images/logo_blanco.png" alt="Nova Logo" [preview]="false" />
+      </div>
+
+      <div class="header-menu">
+        <p-button
+          label="Home"
+          [text]="true"
+          (onClick)="onHome()"
+          styleClass="header-menu-item"
+        />
+        <p-button
+          label="Características"
+          [text]="true"
+          (onClick)="scrollToFeatures()"
+          styleClass="header-menu-item"
+        />
+        <p-button
+          label="Acerca de"
+          [text]="true"
+          styleClass="header-menu-item"
+        />
+        <p-button
+          label="Contacto"
+          [text]="true"
+          styleClass="header-menu-item"
+        />
+      </div>
+
+      <div class="header-actions">
+        <p-button
+          label="Iniciar Sesión"
+          (onClick)="onLogin()"
+          styleClass="header-login-btn"
+          [outlined]="true"
+          size="small"
+        />
+
+        <p-button
+          label="Registrarse"
+          (onClick)="onRegister()"
+          styleClass="header-register-btn"
+          size="small"
+        />
+      </div>
+    </div>
+  </nav>
+</header>

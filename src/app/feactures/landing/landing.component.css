@@ -1,0 +1,33 @@
+.landing-page {
+  min-height: 100vh;
+  background: var(--surface-ground);
+}
+
+/* Estilos globales para la landing page */
+:host ::ng-deep .p-button {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+:host ::ng-deep .p-button.p-button-large {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+/* Asegurar que los botones usen las variables del tema */
+:host ::ng-deep .p-button.p-button-primary {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color-text) !important;
+}
+
+:host ::ng-deep .p-button.p-button-outlined {
+  background: transparent !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+}
+
+:host ::ng-deep .p-button.p-button-outlined:hover {
+  background: var(--primary-color) !important;
+  color: var(--primary-color-text) !important;
+}

@@ -1,0 +1,44 @@
+<section class="hero-section">
+  <div class="hero-container">
+    <div class="hero-content">
+
+      <h1 class="hero-title">
+        Gestiona tu relación de pareja de manera inteligente
+      </h1>
+
+      <p class="hero-subtitle">
+        Organiza citas, eventos, lugares favoritos y mantén viva la magia de tu relación con Nova
+      </p>
+
+      <div class="hero-actions">
+        <p-button
+          label="Comenzar Ahora"
+          icon="pi pi-rocket"
+          (onClick)="onGetStarted()"
+          styleClass="hero-primary-btn"
+          size="large"
+        />
+
+        <p-button
+          label="Iniciar Sesión"
+          icon="pi pi-sign-in"
+          (onClick)="onLogin()"
+          styleClass="hero-secondary-btn"
+          [outlined]="true"
+          size="large"
+        />
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-illustration">
+        <i class="pi pi-heart hero-heart-icon"></i>
+        <div class="floating-elements">
+          <i class="pi pi-calendar floating-icon calendar-icon"></i>
+          <i class="pi pi-map-marker floating-icon location-icon"></i>
+          <i class="pi pi-gift floating-icon gift-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

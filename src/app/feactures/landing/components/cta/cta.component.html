@@ -1,0 +1,44 @@
+<section class="cta-section">
+  <div class="cta-container">
+    <div class="cta-content">
+      <h2 class="cta-title">¿Listo para mejorar tu relación?</h2>
+      <p class="cta-subtitle">
+        Únete a miles de parejas que ya están usando Nova para crear momentos inolvidables juntos
+      </p>
+      
+      <div class="cta-actions">
+        <p-button 
+          label="Comenzar Gratis" 
+          icon="pi pi-rocket" 
+          (onClick)="onGetStarted()"
+          styleClass="cta-primary-btn"
+          size="large"
+        />
+        
+        <p-button 
+          label="Conocer Más" 
+          icon="pi pi-info-circle" 
+          (onClick)="onLearnMore()"
+          styleClass="cta-secondary-btn"
+          [outlined]="true"
+          size="large"
+        />
+      </div>
+      
+      <div class="cta-stats">
+        <div class="stat-item">
+          <div class="stat-number">10K+</div>
+          <div class="stat-label">Usuarios Activos</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">50K+</div>
+          <div class="stat-label">Momentos Creados</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">99%</div>
+          <div class="stat-label">Satisfacción</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

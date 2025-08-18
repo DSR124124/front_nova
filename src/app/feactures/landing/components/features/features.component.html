@@ -1,0 +1,32 @@
+<section class="features-section">
+  <div class="features-container">
+    <div class="features-header">
+      <h2 class="features-title">Características Principales</h2>
+      <p class="features-subtitle">
+        Todo lo que necesitas para mantener viva la magia de tu relación
+      </p>
+    </div>
+    
+    <div class="features-grid">
+      <p-card 
+        *ngFor="let feature of features"
+        styleClass="feature-card"
+        [ngStyle]="{'--feature-color': feature.color}"
+      >
+        <ng-template pTemplate="header">
+          <div class="feature-icon">
+            <i [class]="feature.icon"></i>
+          </div>
+        </ng-template>
+        
+        <ng-template pTemplate="title">
+          <h3 class="feature-title">{{ feature.title }}</h3>
+        </ng-template>
+        
+        <ng-template pTemplate="content">
+          <p class="feature-description">{{ feature.description }}</p>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</section>

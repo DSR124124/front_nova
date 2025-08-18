@@ -8,8 +8,7 @@ import { roleGuard } from './core/guards/role.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth',
-    pathMatch: 'full'
+    loadChildren: () => import('./feactures/landing/landing.module').then(m => m.LandingModule)
   },
   {
     path: 'auth',
@@ -39,7 +38,7 @@ const routes: Routes = [
     canActivate: [authGuard, parejaGuard, roleGuard],
     data: { roles: ['USER'] }
   },
-  { path: '**', redirectTo: 'auth' }
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

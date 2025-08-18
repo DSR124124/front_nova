@@ -1,0 +1,48 @@
+<footer class="footer-section">
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <p-image src="/assets/images/logo_blanco.png" alt="Nova Logo" [preview]="false" />
+        <p class="footer-tagline">
+          Gestiona tu relación de pareja de manera inteligente
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-link-group">
+          <h4>Acceso</h4>
+          <ul>
+            <li><p-button label="Iniciar Sesión" [text]="true" (onClick)="onLogin()" styleClass="footer-link" /></li>
+            <li><p-button label="Crear Cuenta" [text]="true" (onClick)="onRegister()" styleClass="footer-link" /></li>
+            <li><p-button label="Recuperar Contraseña" [text]="true" (onClick)="onForgotPassword()" styleClass="footer-link" /></li>
+          </ul>
+        </div>
+
+        <div class="footer-link-group">
+          <h4>Funcionalidades</h4>
+          <ul>
+            <li><p-button label="Citas y Eventos" [text]="true" styleClass="footer-link" /></li>
+            <li><p-button label="Chat en Tiempo Real" [text]="true" styleClass="footer-link" /></li>
+            <li><p-button label="Lugares Favoritos" [text]="true" styleClass="footer-link" /></li>
+            <li><p-button label="Sistema de Regalos" [text]="true" styleClass="footer-link" /></li>
+          </ul>
+        </div>
+
+        <div class="footer-link-group">
+          <h4>Soporte</h4>
+          <ul>
+            <li><p-button label="Centro de Ayuda" [text]="true" styleClass="footer-link" /></li>
+            <li><p-button label="Contacto" [text]="true" styleClass="footer-link" /></li>
+            <li><p-button label="Términos de Uso" [text]="true" styleClass="footer-link" /></li>
+            <li><p-button label="Privacidad" [text]="true" styleClass="footer-link" /></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024 Nova. Todos los derechos reservados.</p>
+      <p>Hecho con ❤️ para parejas que quieren crecer juntas</p>
+    </div>
+  </div>
+</footer>

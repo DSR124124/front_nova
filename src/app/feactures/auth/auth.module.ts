@@ -14,6 +14,9 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { LogoutComponent } from './components/logout/logout.component';
 
+// Importar el módulo de landing para usar header y footer
+import { LandingModule } from '../landing/landing.module';
+
 @NgModule({
   declarations: [
     LoginComponent,
@@ -29,7 +32,8 @@ import { LogoutComponent } from './components/logout/logout.component';
     HttpClientModule,
     PrimeNgModule,
     SharedModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    LandingModule
   ],
   providers: [MessageService],
   exports: [LogoutComponent]
