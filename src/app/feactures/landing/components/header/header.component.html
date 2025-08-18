@@ -5,7 +5,8 @@
         <p-image src="/assets/images/logo_blanco.png" alt="Nova Logo" [preview]="false" />
       </div>
 
-      <div class="header-menu">
+      <!-- Menú de escritorio -->
+      <div class="header-menu desktop-menu">
         <p-button
           label="Home"
           [text]="true"
@@ -30,7 +31,67 @@
         />
       </div>
 
-      <div class="header-actions">
+      <!-- Botón hamburguesa para móvil -->
+      <button
+        class="hamburger-btn"
+        (click)="toggleMobileMenu()"
+        [class.active]="isMobileMenuOpen"
+        aria-label="Toggle mobile menu"
+      >
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <!-- Menú móvil -->
+      <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+        <div class="mobile-menu-content">
+          <p-button
+            label="Home"
+            [text]="true"
+            (onClick)="onMobileMenuClick('home')"
+            styleClass="mobile-menu-item"
+          />
+          <p-button
+            label="Características"
+            [text]="true"
+            (onClick)="onMobileMenuClick('features')"
+            styleClass="mobile-menu-item"
+          />
+          <p-button
+            label="Acerca de"
+            [text]="true"
+            (onClick)="onMobileMenuClick('about')"
+            styleClass="mobile-menu-item"
+          />
+          <p-button
+            label="Contacto"
+            [text]="true"
+            (onClick)="onMobileMenuClick('contact')"
+            styleClass="mobile-menu-item"
+          />
+
+          <!-- Botones de acción en móvil -->
+          <div class="mobile-actions">
+            <p-button
+              label="Iniciar Sesión"
+              (onClick)="onMobileMenuClick('login')"
+              styleClass="mobile-login-btn"
+              [outlined]="true"
+              size="small"
+            />
+            <p-button
+              label="Registrarse"
+              (onClick)="onMobileMenuClick('register')"
+              styleClass="mobile-register-btn"
+              size="small"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones de escritorio -->
+      <div class="header-actions desktop-actions">
         <p-button
           label="Iniciar Sesión"
           (onClick)="onLogin()"

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   standalone: false
 })
 export class HeaderComponent {
+  isMobileMenuOpen = false;
+
   constructor(private router: Router) {}
 
   onHome(): void {
@@ -26,5 +28,34 @@ export class HeaderComponent {
     document.querySelector('.features-section')?.scrollIntoView({ 
       behavior: 'smooth' 
     });
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  onMobileMenuClick(action: string): void {
+    this.isMobileMenuOpen = false; // Cerrar menú al hacer clic
+    
+    switch (action) {
+      case 'home':
+        this.onHome();
+        break;
+      case 'features':
+        this.scrollToFeatures();
+        break;
+      case 'about':
+        // TODO: Implementar navegación a sección Acerca de
+        break;
+      case 'contact':
+        // TODO: Implementar navegación a sección Contacto
+        break;
+      case 'login':
+        this.onLogin();
+        break;
+      case 'register':
+        this.onRegister();
+        break;
+    }
   }
 }
