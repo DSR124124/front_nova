@@ -3,11 +3,11 @@
   <div class="events-trigger">
     <p-button
       icon="pi pi-calendar-plus"
-      label="Próximos Eventos"
       [outlined]="true"
       size="small"
       (onClick)="drawerVisible = true"
       class="events-trigger-btn"
+      pTooltip="Próximos Eventos"
     />
     <span *ngIf="events.length > 0" class="events-badge">{{ events.length }}</span>
   </div>

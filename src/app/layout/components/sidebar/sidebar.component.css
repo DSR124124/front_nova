@@ -134,29 +134,48 @@
 @media (max-width: 768px) {
   .sidebar-container {
     transform: translateX(-100%);
+    z-index: 1100; /* Por encima del contenido principal */
+    width: 280px; /* Mantener ancho fijo en tablet */
+    box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
   }
 
   .sidebar-container:not(.collapsed) {
     transform: translateX(0);
   }
 
+  .sidebar-container.collapsed {
+    transform: translateX(-100%);
+    width: 280px; /* En móvil, colapsado significa oculto */
+  }
+
   .sidebar-header {
-    min-height: 56px;
+    min-height: 60px;
     padding: 0.875rem;
+    border-bottom: 1px solid var(--sidebar-border);
   }
 
   :host ::ng-deep .system-logo .p-image {
     width: 100px;
   }
+
+  /* Mejorar el overlay para móvil */
+  .sidebar-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+  }
 }
 
 @media (max-width: 480px) {
   .sidebar-container:not(.collapsed) {
+    width: 100vw; /* Ancho completo en móviles pequeños */
+  }
+
+  .sidebar-container {
     width: 100vw;
   }
 
   .sidebar-header {
-    min-height: 52px;
+    min-height: 56px;
     padding: 0.75rem;
   }
 
@@ -166,6 +185,31 @@
 
   .header-content {
     gap: 0.75rem;
+  }
+
+  /* Ajustar espaciado en móvil */
+  .sidebar-nav {
+    padding-top: 0.5rem;
+  }
+
+  .sidebar-footer,
+  .sidebar-footer-collapsed {
+    padding: 0.75rem;
+  }
+}
+
+/* Estados de transición mejorados */
+@media (max-width: 768px) {
+  .sidebar-container {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Accesibilidad en móvil */
+@media (max-width: 768px) {
+  .sidebar-container:focus-within {
+    outline: 2px solid var(--primary-color);
+    outline-offset: -2px;
   }
 }
 

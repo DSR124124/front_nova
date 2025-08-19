@@ -3,11 +3,11 @@
   <div class="activity-trigger">
     <p-button
       icon="pi pi-list"
-      label="Actividad Reciente"
       [outlined]="true"
       size="small"
       (onClick)="showDrawer = true"
       class="activity-trigger-btn"
+      pTooltip="Actividad Reciente"
     />
     <span *ngIf="activities.length > 0" class="activity-badge">{{ activities.length }}</span>
   </div>

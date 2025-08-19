@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { AuthModule } from '../feactures/auth/auth.module';
+import { DashboardModule } from '../feactures/dashboard/dashboard.module';
+import { RecordatoriosModule } from '../feactures/recordatorios/recordatorios.module';
 
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -26,6 +28,8 @@ import { LayoutRoutingModule } from './layout-routing.module';
     RouterModule,
     PrimeNgModule,
     AuthModule,
+    DashboardModule,
+    RecordatoriosModule,
     LayoutRoutingModule
   ],
   exports: [

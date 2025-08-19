@@ -153,37 +153,69 @@
 @media (max-width: 768px) {
   .breadcrumb-container {
     padding: 0.75rem 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  :host ::ng-deep .custom-breadcrumb .p-breadcrumb-list {
+    white-space: nowrap !important;
+    min-width: max-content !important;
   }
 
   :host ::ng-deep .custom-breadcrumb .p-menuitem-link {
     padding: 0.375rem 0.5rem !important;
     font-size: 0.8rem !important;
+    white-space: nowrap !important;
   }
 
   :host ::ng-deep .custom-breadcrumb .p-breadcrumb-separator {
     margin: 0 0.375rem !important;
+    flex-shrink: 0 !important;
   }
 
   :host ::ng-deep .custom-breadcrumb .p-menuitem-icon {
     font-size: 0.875rem !important;
+  }
+
+  /* Ocultar algunos elementos en mobile para ahorrar espacio */
+  :host ::ng-deep .custom-breadcrumb .p-menuitem-link::before {
+    display: none !important;
   }
 }
 
 @media (max-width: 480px) {
   .breadcrumb-container {
     padding: 0.5rem 0.75rem;
+    background: var(--surface-card);
+    border-bottom: 1px solid var(--surface-border);
   }
 
   :host ::ng-deep .custom-breadcrumb .p-menuitem-text {
     font-size: 0.75rem !important;
+    max-width: 120px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
   :host ::ng-deep .custom-breadcrumb .p-menuitem-link {
     padding: 0.25rem 0.375rem !important;
+    border-radius: 4px !important;
   }
 
   :host ::ng-deep .custom-breadcrumb .p-breadcrumb-separator {
     margin: 0 0.25rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  :host ::ng-deep .custom-breadcrumb .p-menuitem-icon {
+    font-size: 0.8rem !important;
+  }
+
+  /* Simplificar hover effects en móvil */
+  :host ::ng-deep .custom-breadcrumb .p-menuitem-link:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background: var(--surface-hover) !important;
   }
 }
 

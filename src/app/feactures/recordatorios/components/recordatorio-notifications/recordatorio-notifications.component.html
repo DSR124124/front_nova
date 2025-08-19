@@ -3,11 +3,11 @@
   <div class="notifications-trigger">
     <p-button
       icon="pi pi-bell"
-      label="Próximas Notificaciones"
       [outlined]="true"
       size="small"
       (onClick)="drawerVisible = true"
       class="notifications-trigger-btn"
+      pTooltip="Próximas Notificaciones"
     />
     <span *ngIf="getRecordatoriosFiltrados().length > 0" class="notifications-badge">{{ getRecordatoriosFiltrados().length }}</span>
   </div>

@@ -11,10 +11,8 @@ import { AuthService } from '../../../core/services/auth.service';
 export class HeaderComponent implements OnInit {
   @Input() sidebarCollapsed: boolean = false;
   @Output() toggleSidebar = new EventEmitter<void>();
-  
+
   user: any = null;
-  notifications: any[] = [];
-  showNotifications = false;
 
   constructor(
     private authService: AuthService,
@@ -23,39 +21,14 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authService.getUser();
-    this.loadNotifications();
   }
 
   onToggleSidebar() {
     this.toggleSidebar.emit();
   }
 
-  loadNotifications() {
-    // Simular notificaciones - en producción vendrían del servicio
-    this.notifications = [
-      { id: 1, message: 'Nueva cita programada para mañana', time: '2 min', read: false },
-      { id: 2, message: 'Tu pareja agregó un nuevo lugar favorito', time: '1 hora', read: false },
-      { id: 3, message: 'Recordatorio: Aniversario en 3 días', time: '3 horas', read: true }
-    ];
-  }
-
-  getUnreadCount(): number {
-    return this.notifications.filter(n => !n.read).length;
-  }
-
-  markAsRead(notificationId: number) {
-    const notification = this.notifications.find(n => n.id === notificationId);
-    if (notification) {
-      notification.read = true;
-    }
-  }
-
-  logout() {
-    this.authService.logout();
+  onLogoutConfirmed() {
+    // Redirigir al login después de confirmar el logout
     this.router.navigate(['/auth/login']);
-  }
-
-  toggleNotifications() {
-    this.showNotifications = !this.showNotifications;
   }
 }

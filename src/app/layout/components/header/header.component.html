@@ -1,11 +1,8 @@
 <div class="header-container">
-  <!-- Logo/Brand -->
-  <div class="header-left">
-    <div class="logo">
-      <i class="pi pi-heart-fill"></i>
-      <span class="logo-text">Nova</span>
-    </div>
-  </div>
+  <!-- Botón hamburguesa para móvil -->
+  <button class="mobile-menu-toggle" (click)="onToggleSidebar()" aria-label="Toggle menu">
+    <i class="pi pi-bars"></i>
+  </button>
 
   <!-- Espacio central para breadcrumbs o título -->
   <div class="header-center">
@@ -14,81 +11,16 @@
 
   <!-- Controles del usuario -->
   <div class="header-right">
-    <!-- Notificaciones -->
-    <div class="notification-container">
-      <p-button
-        [icon]="'pi pi-bell'"
-        [text]="true"
-        [rounded]="true"
-        [badge]="getUnreadCount() > 0 ? getUnreadCount().toString() : undefined"
-        badgeClass="p-badge-danger"
-        (onClick)="notificationPanel.toggle($event)"
-        pTooltip="Notificaciones"
-      />
+    <!-- Actividades recientes -->
+    <app-recent-activity></app-recent-activity>
 
-      <p-overlayPanel
-        #notificationPanel
-        [showCloseIcon]="true"
-        styleClass="notification-panel">
+    <!-- Eventos próximos -->
+    <app-upcoming-events></app-upcoming-events>
 
-        <ng-template pTemplate="content">
-          <div class="notification-header">
-            <h4>Notificaciones</h4>
-          </div>
+    <!-- Notificaciones de recordatorios -->
+    <app-recordatorio-notifications></app-recordatorio-notifications>
 
-          <div class="notification-list">
-            <div
-              *ngFor="let notification of notifications"
-              class="notification-item"
-              [class.unread]="!notification.read"
-              (click)="markAsRead(notification.id)">
-
-              <div class="notification-content">
-                <p class="notification-message">{{ notification.message }}</p>
-                <small class="notification-time">{{ notification.time }}</small>
-              </div>
-
-              <p-badge
-                *ngIf="!notification.read"
-                value="●"
-                severity="info"
-                size="small"
-              />
-            </div>
-          </div>
-
-          <div class="notification-footer">
-            <p-button
-              label="Ver todas"
-              [text]="true"
-              size="small"
-            />
-          </div>
-        </ng-template>
-      </p-overlayPanel>
-    </div>
-
-    <!-- Menú de usuario -->
-    <div class="user-menu">
-      <p-avatar
-        [label]="user?.name?.charAt(0) || 'U'"
-        size="normal"
-        shape="circle"
-      />
-
-      <div class="user-info">
-        <span class="user-name">{{ user?.name || 'Usuario' }}</span>
-        <small class="user-email">{{ user?.email || 'usuario@email.com' }}</small>
-      </div>
-
-      <p-button
-        [icon]="'pi pi-sign-out'"
-        [text]="true"
-        [rounded]="true"
-        (onClick)="logout()"
-        pTooltip="Cerrar sesión"
-        size="small"
-      />
-    </div>
+    <!-- Componente de logout -->
+    <app-logout (logoutConfirmed)="onLogoutConfirmed()"></app-logout>
   </div>
 </div>

@@ -7,7 +7,11 @@
 
   <!-- Main content area -->
   <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
-
+    <!-- Header -->
+    <app-header
+      [sidebarCollapsed]="sidebarCollapsed"
+      (toggleSidebar)="toggleSidebar()">
+    </app-header>
 
     <!-- Breadcrumb -->
     <app-breadcrumb></app-breadcrumb>
