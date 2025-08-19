@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { MensajeErrorDTO } from '../models/mensaje-error';
+import { MensajeErrorDTO } from '../models/Interfaces/Mensaje/mensaje-error';
 
 @Injectable({
   providedIn: 'root'

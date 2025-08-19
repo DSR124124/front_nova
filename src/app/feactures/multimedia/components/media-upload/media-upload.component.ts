@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
-import { Multimedia, TipoMultimedia } from '../../../../core/models/multimedia';
+import { Multimedia, TipoMultimedia } from '../../../../core/models/Interfaces/Multimendia/multimedia';
 
 interface UploadFile {
   file: File;

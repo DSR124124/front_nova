@@ -1,4 +1,4 @@
-import { MensajeErrorDTO } from '../mensaje-error';
+import { MensajeErrorDTO } from '../Mensaje/mensaje-error';
 import { Usuario } from './Usuario';
 
 // Interfaz para la respuesta del endpoint /usuarios/listar-por-id/{id}

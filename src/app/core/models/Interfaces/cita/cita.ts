@@ -1,8 +1,4 @@
-export enum EstadoCita {
-  PLANIFICADA = 'PLANIFICADA',
-  REALIZADA = 'REALIZADA',
-  CANCELADA = 'CANCELADA',
-}
+import { EstadoCita } from '../../enums/estado-cita.enum';
 
 export interface Cita {
   id?: number;

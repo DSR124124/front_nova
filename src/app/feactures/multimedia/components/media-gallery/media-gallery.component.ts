@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
-import { Multimedia, TipoMultimedia } from '../../../../core/models/multimedia';
+import { Multimedia, TipoMultimedia } from '../../../../core/models/Interfaces/Multimendia/multimedia';
 import { MediaFilters } from '../media-filter/media-filter.component';
 
 // Interfaz extendida para la galería que incluye propiedades adicionales

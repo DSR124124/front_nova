@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { JWT_CONSTANTS } from '../constants/jwt.constants';
-import { UsuarioResponse } from '../models/Usuario/UsuarioResponse';
-import { Usuario } from '../models/Usuario/Usuario';
-import { DecodedToken, CambioPasswordDTO, CambiarPasswordResponse, CambiarPasswordError } from '../models/auth.interface';
-import { MensajeErrorDTO } from '../models/mensaje-error';
+import { UsuarioResponse } from '../models/Interfaces/Usuario/UsuarioResponse';
+import { Usuario } from '../models/Interfaces/Usuario/Usuario';
+import { DecodedToken, CambioPasswordDTO, CambiarPasswordResponse, CambiarPasswordError } from '../models/Interfaces/Auth/auth.interface';
+import { MensajeErrorDTO } from '../models/Interfaces/Mensaje/mensaje-error';
 import { ResponseHandlerService } from './response-handler.service';
 
 

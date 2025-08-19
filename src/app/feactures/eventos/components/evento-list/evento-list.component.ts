@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { EventoService } from '../../../../core/services/evento.service';
-import { Evento } from '../../../../core/models/evento';
+import { Evento } from '../../../../core/models/Interfaces/evento/evento';
 
 @Component({
   selector: 'app-evento-list',

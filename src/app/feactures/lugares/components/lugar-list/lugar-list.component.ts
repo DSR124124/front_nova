@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { LugarService } from '../../../../core/services/lugar.service';
-import { Lugar, CategoriaLugar } from '../../../../core/models/lugar';
+import { Lugar, CategoriaLugar } from '../../../../core/models/Interfaces/lugar/lugar';
 
 @Component({
   selector: 'app-lugar-list',

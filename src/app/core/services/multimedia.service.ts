@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Multimedia } from '../models/multimedia';
+import { Multimedia } from '../models/Interfaces/Multimendia/multimedia';
 
 @Injectable({
   providedIn: 'root'

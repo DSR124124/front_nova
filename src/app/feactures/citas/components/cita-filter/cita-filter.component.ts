@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { EstadoCita } from '../../../../core/models/cita';
+import { EstadoCita } from '../../../../core/models/Interfaces/cita/cita';
 
 export interface CitaFilter {
   fechaInicio?: Date;

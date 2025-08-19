@@ -1,8 +1,4 @@
-export enum EstadoPareja {
-  ACTIVA = 'activa',
-  PAUSADA = 'pausada',
-  TERMINADA = 'terminada',
-}
+import { EstadoPareja } from "../../enums/estado-pareja.enum";
 
 export interface Pareja {
   id?: number;

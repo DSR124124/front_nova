@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { LugarDetailComponent } from './lugar-detail.component';
 import { LugarService } from '../../../../core/services/lugar.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { Lugar, CategoriaLugar } from '../../../../core/models/lugar';
+import { Lugar, CategoriaLugar } from '../../../../core/models/Interfaces/lugar/lugar';
 
 describe('LugarDetailComponent', () => {
   let component: LugarDetailComponent;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Pareja, EstadoPareja } from '../../../../core/models/pareja';
-import { Usuario } from '../../../../core/models/Usuario/Usuario';
+import { Pareja, EstadoPareja } from '../../../../core/models/Interfaces/Pareja/pareja';
+import { Usuario } from '../../../../core/models/Interfaces/Usuario/Usuario';
 // Role enum removido - ahora usamos string directamente
 import { AuthService } from '../../../../core/services/auth.service';
 import { UsuarioService } from '../../../../core/services/usuario.service';

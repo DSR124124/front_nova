@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Usuario } from '../../../../core/models/Usuario/Usuario';
-import { RegisterRequest } from '../../../../core/models/auth.interface';
+import { Usuario } from '../../../../core/models/Interfaces/Usuario/Usuario';
+import { RegisterRequest } from '../../../../core/models/Interfaces/Auth/auth.interface';
 import { UploadedFile } from '../../../../shared/components/image-upload/image-upload.component';
 import { Role } from '../../../../core/models/enums/role.enum';
 

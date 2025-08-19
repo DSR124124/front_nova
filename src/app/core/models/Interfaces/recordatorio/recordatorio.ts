@@ -1,22 +1,7 @@
-export enum TipoRecordatorio {
-  PERSONAL = 'PERSONAL',
-  PAREJA = 'PAREJA',
-  OTRO = 'OTRO',
-}
+import { FrecuenciaRecordatorio } from '../../enums/frecuencia-recordatorio.enum';
+import { EstadoRecordatorio } from '../../enums/estado-recordatorio.enum';
+import { TipoRecordatorio } from '../../enums/tipo-recordatorio.enum';
 
-export enum FrecuenciaRecordatorio {
-  NINGUNA = 'NINGUNA',
-  DIARIA = 'DIARIA',
-  SEMANAL = 'SEMANAL',
-  MENSUAL = 'MENSUAL',
-  ANUAL = 'ANUAL',
-}
-
-export enum EstadoRecordatorio {
-  ACTIVO = 'ACTIVO',
-  COMPLETADO = 'COMPLETADO',
-  CANCELADO = 'CANCELADO',
-}
 
 export interface Recordatorio {
   id?: number;

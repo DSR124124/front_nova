@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map, catchError } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { ResponseHandlerService } from './response-handler.service';
-import { MensajeErrorDTO } from '../models/mensaje-error';
+import { MensajeErrorDTO } from '../models/Interfaces/Mensaje/mensaje-error';
 import {
   CodigoRelacionResponseDTO,
   ValidacionCodigoResponseDTO,
   CodigoRelacionUsuarioDTO,
-} from '../models/codigo-relacion';
+} from '../models/Interfaces/Codigos-Relacion/codigo-relacion';
 
 @Injectable({
   providedIn: 'root',

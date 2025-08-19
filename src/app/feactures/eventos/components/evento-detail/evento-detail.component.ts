@@ -5,8 +5,8 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { EventoService } from '../../../../core/services/evento.service';
 import { LugarService } from '../../../../core/services/lugar.service';
-import { Evento } from '../../../../core/models/evento';
-import { Lugar } from '../../../../core/models/lugar';
+import { Evento } from '../../../../core/models/Interfaces/evento/evento';
+import { Lugar } from '../../../../core/models/Interfaces/lugar/lugar';
 
 @Component({
   selector: 'app-evento-detail',

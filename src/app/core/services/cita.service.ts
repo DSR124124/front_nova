@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Cita, EstadoCita } from '../models/cita';
+import { Cita, EstadoCita } from '../models/Interfaces/cita/cita';
 
 @Injectable({
   providedIn: 'root'
@@ -127,7 +127,7 @@ export class CitaService {
 
   citasFuturas(parejaId: number): Observable<Cita[]> {
     const ahora = new Date();
-    const citas = this.citasMock.filter(c => 
+    const citas = this.citasMock.filter(c =>
       c.parejaId === parejaId && new Date(c.fecha) > ahora
     );
     return of(citas).pipe(delay(500));
@@ -135,7 +135,7 @@ export class CitaService {
 
   citasPasadas(parejaId: number): Observable<Cita[]> {
     const ahora = new Date();
-    const citas = this.citasMock.filter(c => 
+    const citas = this.citasMock.filter(c =>
       c.parejaId === parejaId && new Date(c.fecha) <= ahora
     );
     return of(citas).pipe(delay(500));

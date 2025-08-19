@@ -1,4 +1,4 @@
-import { MensajeErrorDTO } from '../mensaje-error';
+import { MensajeErrorDTO } from '../Mensaje/mensaje-error';
 import { Usuario } from './Usuario';
 
 export interface UsuarioResponse extends MensajeErrorDTO<PData> {

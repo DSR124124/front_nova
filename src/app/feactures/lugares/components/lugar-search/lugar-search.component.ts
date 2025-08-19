@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/cor
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Lugar, CategoriaLugar } from '../../../../core/models/lugar';
+import { Lugar, CategoriaLugar } from '../../../../core/models/Interfaces/lugar/lugar';
 
 @Component({
   selector: 'app-lugar-search',

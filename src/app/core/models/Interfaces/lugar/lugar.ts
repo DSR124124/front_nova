@@ -1,11 +1,4 @@
-export enum CategoriaLugar {
-  RESTAURANTE = 'RESTAURANTE',
-  PARQUE = 'PARQUE',
-  CINE = 'CINE',
-  ENTRETENIMIENTO = 'ENTRETENIMIENTO',
-  CASA = 'CASA',
-  OTRO = 'OTRO',
-}
+import { CategoriaLugar } from '../../enums/categoria-lugar.enum';
 
 export interface Lugar {
   id?: number;

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
-import { Multimedia, TipoMultimedia } from '../../../../core/models/multimedia';
+import { Multimedia, TipoMultimedia } from '../../../../core/models/Interfaces/Multimendia/multimedia';
 
 export interface MediaFilters {
   searchTerm: string;

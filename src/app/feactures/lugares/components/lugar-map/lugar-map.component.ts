@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LugarService } from '../../../../core/services/lugar.service';
-import { Lugar, CategoriaLugar } from '../../../../core/models/lugar';
+import { Lugar, CategoriaLugar } from '../../../../core/models/Interfaces/lugar/lugar';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import * as L from 'leaflet';
 

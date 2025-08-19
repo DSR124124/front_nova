@@ -6,8 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { RecordatorioService } from '../../../../core/services/recordatorio.service';
 import { LugarService } from '../../../../core/services/lugar.service';
-import { Recordatorio, TipoRecordatorio, FrecuenciaRecordatorio, EstadoRecordatorio } from '../../../../core/models/recordatorio';
-import { Lugar } from '../../../../core/models/lugar';
+import { Recordatorio, TipoRecordatorio, FrecuenciaRecordatorio, EstadoRecordatorio } from '../../../../core/models/Interfaces/recordatorio/recordatorio';
+import { Lugar } from '../../../../core/models/Interfaces/lugar/lugar';
 
 @Component({
   selector: 'app-recordatorio-form',
@@ -274,7 +274,7 @@ export class RecordatorioFormComponent implements OnInit, OnDestroy {
   onRecurrenteChange() {
     const esRecurrente = this.recordatorioForm.get('esRecurrente')?.value;
     const frecuenciaControl = this.recordatorioForm.get('frecuencia');
-    
+
     if (esRecurrente) {
       frecuenciaControl?.enable();
     } else {

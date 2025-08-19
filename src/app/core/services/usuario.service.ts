@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, catchError } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { UsuarioByIdResponse } from '../models/Usuario/UsuarioByIdResponse';
-import { Usuario } from '../models/Usuario/Usuario';
-import { MensajeErrorDTO } from '../models/mensaje-error';
-import { CambioPasswordDTO } from '../models/auth.interface';
+import { UsuarioByIdResponse } from '../models/Interfaces/Usuario/UsuarioByIdResponse';
+import { Usuario } from '../models/Interfaces/Usuario/Usuario';
+import { MensajeErrorDTO } from '../models/Interfaces/Mensaje/mensaje-error';
+import { CambioPasswordDTO } from '../models/Interfaces/Auth/auth.interface';
 import { ResponseHandlerService } from './response-handler.service';
 
 @Injectable({

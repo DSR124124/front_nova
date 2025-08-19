@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { RecordatorioService } from '../../../../core/services/recordatorio.service';
-import { Recordatorio, TipoRecordatorio, EstadoRecordatorio, FrecuenciaRecordatorio } from '../../../../core/models/recordatorio';
+import { Recordatorio, TipoRecordatorio, EstadoRecordatorio, FrecuenciaRecordatorio } from '../../../../core/models/Interfaces/recordatorio/recordatorio';
 
 @Component({
   selector: 'app-recordatorio-list',

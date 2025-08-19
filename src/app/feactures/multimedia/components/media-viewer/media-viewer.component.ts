@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, Output, 
 import { Subject } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
-import { Multimedia, TipoMultimedia } from '../../../../core/models/multimedia';
+import { Multimedia, TipoMultimedia } from '../../../../core/models/Interfaces/Multimendia/multimedia';
 
 // Interfaz extendida para el visor
 interface MediaItem extends Multimedia {

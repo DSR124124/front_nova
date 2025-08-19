@@ -5,12 +5,12 @@ import { UsuarioService } from '../../../../core/services/usuario.service';
 import { ParejaService } from '../../../../core/services/pareja.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CodigoRelacionService } from '../../../../core/services/codigo-relacion.service';
-import { Usuario } from '../../../../core/models/Usuario/Usuario';
-import { Pareja } from '../../../../core/models/pareja';
+import { Usuario } from '../../../../core/models/Interfaces/Usuario/Usuario';
+import { Pareja } from '../../../../core/models/Interfaces/Pareja/pareja';
 import { MessageService } from 'primeng/api';
-import { CambioPasswordDTO } from '../../../../core/models/auth.interface';
+import { CambioPasswordDTO } from '../../../../core/models/Interfaces/Auth/auth.interface';
 import { Role, RoleLabels } from '../../../../core/models/enums/role.enum';
-import { CodigoRelacionResponseDTO, ValidacionCodigoResponseDTO } from '../../../../core/models/codigo-relacion';
+import { CodigoRelacionResponseDTO, ValidacionCodigoResponseDTO } from '../../../../core/models/Interfaces/Codigos-Relacion/codigo-relacion';
 
 @Component({
   selector: 'app-perfil-usuario',

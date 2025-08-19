@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Pareja } from '../models/pareja';
+import { Pareja } from '../models/Interfaces/Pareja/pareja';
 
 @Injectable({
   providedIn: 'root'

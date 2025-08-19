@@ -6,8 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { CitaService } from '../../../../core/services/cita.service';
 import { LugarService } from '../../../../core/services/lugar.service';
-import { Cita, EstadoCita } from '../../../../core/models/cita';
-import { Lugar, CategoriaLugar } from '../../../../core/models/lugar';
+import { Cita, EstadoCita } from '../../../../core/models/Interfaces/cita/cita';
+import { Lugar, CategoriaLugar } from '../../../../core/models/Interfaces/lugar/lugar';
 
 @Component({
   selector: 'app-cita-form',

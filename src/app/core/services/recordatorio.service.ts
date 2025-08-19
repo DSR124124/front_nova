@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Recordatorio, TipoRecordatorio, EstadoRecordatorio, FrecuenciaRecordatorio } from '../models/recordatorio';
+import { Recordatorio, TipoRecordatorio, EstadoRecordatorio, FrecuenciaRecordatorio } from '../models/Interfaces/recordatorio/recordatorio';
 
 @Injectable({
   providedIn: 'root'
@@ -155,7 +155,7 @@ export class RecordatorioService {
 
   listarActivos(parejaId: number): Observable<Recordatorio[]> {
     // Mock: filtrar por pareja y estado activo
-    const recordatorios = this.mockRecordatorios.filter(r => 
+    const recordatorios = this.mockRecordatorios.filter(r =>
       r.parejaId === parejaId && r.estado === EstadoRecordatorio.ACTIVO
     );
     return of(recordatorios);

@@ -1,9 +1,4 @@
-export enum EstadoMensaje {
-  ENVIADO = 'enviado',
-  LEIDO = 'leido',
-  ELIMINADO = 'eliminado',
-}
-
+import { EstadoMensaje } from "../../enums/estado-mensaje.enum";
 export interface Mensaje {
   id?: number;
   parejaId: number;

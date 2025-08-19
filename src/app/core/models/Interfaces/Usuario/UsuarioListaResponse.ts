@@ -1,5 +1,5 @@
 import { UsuarioResponse } from "./UsuarioResponse";
-import { MensajeErrorDTO } from "../mensaje-error";
+import { MensajeErrorDTO } from "../Mensaje/mensaje-error";
 
 
 export interface UsuarioListaResponse extends MensajeErrorDTO<PData> {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { DetalleRegalo } from '../models/regalo';
+import { DetalleRegalo } from '../models/Interfaces/recordatorio/regalo';
 
 @Injectable({
   providedIn: 'root'

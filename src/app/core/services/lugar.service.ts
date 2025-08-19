@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Lugar, CategoriaLugar } from '../models/lugar';
+import { Lugar, CategoriaLugar } from '../models/Interfaces/lugar/lugar';
 
 @Injectable({
   providedIn: 'root'

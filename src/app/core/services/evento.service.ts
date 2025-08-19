@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Evento } from '../models/evento';
+import { Evento } from '../models/Interfaces/evento/evento';
 
 @Injectable({
   providedIn: 'root'
