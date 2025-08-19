@@ -1,74 +1,10 @@
 <footer class="footer-container">
   <div class="footer-content">
-    <!-- Información principal -->
-    <div class="footer-section">
-      <div class="footer-brand">
-        <i class="pi pi-heart-fill"></i>
-        <span>Nova</span>
+    <div class="footer-info">
+      <div class="copyright">
+        <span>&copy; 2025 Novalink App. Todos los derechos reservados.</span>
       </div>
-      <p class="footer-description">
-        Conectando corazones, creando momentos inolvidables juntos.
-      </p>
-    </div>
 
-    <!-- Enlaces útiles -->
-    <div class="footer-section">
-      <h4>Enlaces útiles</h4>
-      <div class="footer-links">
-        <p-button
-          *ngFor="let link of footerLinks"
-          [label]="link.label"
-          [routerLink]="link.route"
-          [text]="true"
-          size="small"
-          styleClass="footer-link-btn"
-        />
-      </div>
-    </div>
-
-    <!-- Redes sociales -->
-    <div class="footer-section">
-      <h4>Síguenos</h4>
-      <div class="social-links">
-        <p-button
-          *ngFor="let social of socialLinks"
-          [icon]="social.icon"
-          [text]="true"
-          [rounded]="true"
-          size="small"
-          styleClass="social-link-btn"
-          [attr.aria-label]="social.label"
-          (onClick)="openSocialLink(social.url)"
-        />
-      </div>
-    </div>
-
-    <!-- Información de contacto -->
-    <div class="footer-section">
-      <h4>Contacto</h4>
-      <div class="contact-info">
-        <div class="contact-item">
-          <i class="pi pi-phone"></i>
-          <span>+1 (555) 123-4567</span>
-        </div>
-        <div class="contact-item">
-          <i class="pi pi-map-marker"></i>
-          <span>Ciudad, País</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Divisor simple -->
-  <p-divider />
-
-  <!-- Copyright y versión -->
-  <div class="footer-bottom">
-    <div class="copyright">
-      <span>&copy; {{ currentYear }} Nova App. Todos los derechos reservados.</span>
-    </div>
-    <div class="version">
-      <span class="version-tag">v1.0.0</span>
     </div>
   </div>
 </footer>

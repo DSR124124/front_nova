@@ -18,10 +18,10 @@
 
 /* Header del sidebar */
 .sidebar-header {
-  padding: 0.45rem;
+  padding: 1rem;
   border-bottom: 1px solid var(--sidebar-border);
   background: var(--surface-section);
-  min-height: 60px;
+  min-height: 70px;
   display: flex;
   align-items: center;
 }
@@ -73,6 +73,8 @@
   padding: 0;
   overflow-y: auto;
   background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
 }
 
 /* Footer del sidebar */
@@ -127,8 +129,6 @@
 .sidebar-container.collapsed .system-logo {
   display: none;
 }
-
-
 
 /* Responsive */
 @media (max-width: 768px) {
