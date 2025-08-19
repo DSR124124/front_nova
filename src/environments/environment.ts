@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   //base: "http://localhost:8080",
-  base : "https://787eb6cea45f.ngrok-free.app"
+  base : "https://5eac63bacb54.ngrok-free.app/"
+
 
 }
