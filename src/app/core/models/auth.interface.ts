@@ -23,6 +23,12 @@ export interface ChangePasswordRequest {
   confirmNewPassword: string;
 }
 
+export interface CambioPasswordDTO {
+  idUsuario: number;
+  passwordActual: string;
+  passwordNueva: string;
+}
+
 export interface ForgotPasswordRequest {
   email: string;
 }
@@ -40,4 +46,22 @@ export interface DecodedToken {
   role: string;
   exp: number;
   iat: number;
+}
+// Interfaces para respuestas de cambio de contraseña
+export interface CambiarPasswordResponse {
+  success: boolean;
+  message: string;
+  timestamp?: string;
+}
+
+export interface CambiarPasswordError {
+  error: string;
+  message: string;
+  errors?: {
+    passwordActual?: string;
+    passwordNueva?: string;
+    passwordConfirmacion?: string;
+  };
+  timestamp: string;
+  status: number;
 }

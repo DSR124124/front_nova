@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
 
   // ===== RELACIONES Y PAREJAS =====
   PAREJAS: buildUrl('/parejas'),
+  CODIGOS_RELACION: buildUrl('/codigos-relacion'),
 
   // ===== FUNCIONALIDADES PRINCIPALES =====
   CITAS: buildUrl('/citas'),

@@ -4,11 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../../core/services/usuario.service';
 import { ParejaService } from '../../../../core/services/pareja.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Usuario } from '../../../../core/models/usuario';
+import { CodigoRelacionService } from '../../../../core/services/codigo-relacion.service';
+import { Usuario } from '../../../../core/models/Usuario/Usuario';
 import { Pareja } from '../../../../core/models/pareja';
 import { MessageService } from 'primeng/api';
-import { CambioPasswordDTO } from '../../../../core/models/mensaje-error';
+import { CambioPasswordDTO } from '../../../../core/models/auth.interface';
 import { Role, RoleLabels } from '../../../../core/models/enums/role.enum';
+import { CodigoRelacionResponseDTO, ValidacionCodigoResponseDTO } from '../../../../core/models/codigo-relacion';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -33,6 +35,11 @@ export class PerfilUsuarioComponent implements OnInit {
   passwordDialogVisible = false;
   changingPassword = false;
 
+  // Gestión de códigos de relación
+  generandoCodigo = false;
+  codigoGenerado: string | null = null;
+  mostrandoCodigo = false;
+
   // Opciones para el formulario
   generos = [
     { label: 'Masculino', value: 'M' },
@@ -44,6 +51,7 @@ export class PerfilUsuarioComponent implements OnInit {
     private usuarioService: UsuarioService,
     private parejaService: ParejaService,
     private authService: AuthService,
+    private codigoRelacionService: CodigoRelacionService,
     private router: Router,
     private fb: FormBuilder,
     private messageService: MessageService
@@ -87,6 +95,7 @@ export class PerfilUsuarioComponent implements OnInit {
       this.usuarioService.obtenerUsuarioPorId(currentUser.idUsuario).subscribe({
         next: (usuario) => {
           this.usuario = usuario;
+
           // Verificar si tiene pareja usando el código de relación
           if (usuario.codigoRelacion) {
             this.cargarParejaPorCodigo(usuario.codigoRelacion);
@@ -95,14 +104,28 @@ export class PerfilUsuarioComponent implements OnInit {
           }
         },
         error: (err) => {
-          this.error = 'Error al cargar el perfil del usuario';
+          this.error = `Error al cargar el perfil: ${err.message || 'Error desconocido'}`;
           this.loading = false;
-          console.error('Error cargando usuario:', err);
+
+          // Mostrar mensaje de error al usuario
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al Cargar Perfil',
+            detail: this.error,
+            life: 8000
+          });
         }
       });
     } else {
       this.error = 'Usuario no autenticado';
       this.loading = false;
+
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error de Autenticación',
+        detail: 'No se pudo obtener la información del usuario autenticado.',
+        life: 5000
+      });
     }
   }
 
@@ -125,7 +148,6 @@ export class PerfilUsuarioComponent implements OnInit {
       error: (err) => {
         this.error = 'Error al cargar información de la pareja';
         this.loading = false;
-        console.error('Error cargando pareja:', err);
       }
     });
   }
@@ -140,7 +162,6 @@ export class PerfilUsuarioComponent implements OnInit {
       error: (err) => {
         this.error = 'Error al cargar información de la pareja';
         this.loading = false;
-        console.error('Error cargando pareja:', err);
       }
     });
   }
@@ -190,7 +211,7 @@ export class PerfilUsuarioComponent implements OnInit {
 
   getEdad(): number {
     if (!this.usuario?.fechaNacimiento) return 0;
-    const fechaNac = new Date(this.usuario.fechaNacimiento); // fechaNacimiento ya es string
+    const fechaNac = new Date(this.usuario.fechaNacimiento);
     const hoy = new Date();
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const mes = hoy.getMonth() - fechaNac.getMonth();
@@ -250,7 +271,6 @@ export class PerfilUsuarioComponent implements OnInit {
             summary: 'Error',
             detail: 'Error al actualizar el perfil'
           });
-          console.error('Error actualizando usuario:', err);
         }
       });
     }
@@ -346,7 +366,6 @@ export class PerfilUsuarioComponent implements OnInit {
             summary: 'Error',
             detail: errorMessage
           });
-          console.error('Error cambiando contraseña:', err);
         }
       });
     }
@@ -368,4 +387,89 @@ export class PerfilUsuarioComponent implements OnInit {
     const field = this.passwordForm.get(fieldName);
     return field ? field.invalid && (field.dirty || field.touched) : false;
   }
+
+  // ===== MÉTODOS PARA CÓDIGOS DE RELACIÓN =====
+
+  /**
+   * Generar un nuevo código de relación para el usuario
+   */
+  generarCodigoRelacion() {
+    if (this.usuario?.username) {
+      this.generandoCodigo = true;
+
+            this.codigoRelacionService.generarCodigo(this.usuario.username).subscribe({
+        next: (response) => {
+          if (response.p_exito) {
+            this.codigoGenerado = response.p_data.codigo;
+            this.mostrandoCodigo = true;
+            this.generandoCodigo = false;
+
+            // Actualizar el usuario local con el nuevo código
+            if (this.usuario) {
+              this.usuario.codigoRelacion = response.p_data.codigo;
+            }
+
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Código de relación generado correctamente'
+            });
+          } else {
+            this.generandoCodigo = false;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: response.p_mensavis || 'Error al generar el código'
+            });
+          }
+        },
+        error: (err: any) => {
+          this.generandoCodigo = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al generar el código de relación'
+          });
+        }
+      });
+    }
+  }
+
+  /**
+   * Ocultar el código generado
+   */
+  ocultarCodigo() {
+    this.mostrandoCodigo = false;
+    this.codigoGenerado = null;
+  }
+
+  /**
+   * Copiar código al portapapeles
+   */
+  copiarCodigo() {
+    if (this.codigoGenerado) {
+      navigator.clipboard.writeText(this.codigoGenerado).then(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Copiado',
+          detail: 'Código copiado al portapapeles'
+        });
+      }).catch(() => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo copiar el código'
+        });
+      });
+    }
+  }
+
+  /**
+   * Formatear código para mostrar (con guiones cada 4 caracteres)
+   */
+  formatearCodigo(codigo: string): string {
+    if (!codigo) return '';
+    return codigo.replace(/(.{4})/g, '$1-').replace(/-$/, '');
+  }
+
 }

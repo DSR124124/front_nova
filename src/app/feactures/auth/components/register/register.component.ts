@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Usuario } from '../../../../core/models/usuario';
+import { Usuario } from '../../../../core/models/Usuario/Usuario';
 import { RegisterRequest } from '../../../../core/models/auth.interface';
 import { UploadedFile } from '../../../../shared/components/image-upload/image-upload.component';
 import { Role } from '../../../../core/models/enums/role.enum';
@@ -92,15 +92,18 @@ export class RegisterComponent implements OnInit {
       const hashedPassword = bcrypt.hashSync(userData.password, 12);
 
       const usuario: Usuario = {
+        idUsuario: 0, // Se asignará desde el backend
         nombre: userData.nombre,
         apellido: userData.apellido,
         correo: userData.correo,
         username: userData.username,
         password: hashedPassword, // Usar la contraseña hasheada
+        enabled: true,
+        fotoPerfil: null, // Por defecto sin foto
         fechaNacimiento: this.formatDateToISO(userData.fechaNacimiento),
         genero: this.mapGeneroToBackend(userData.genero),
-        enabled: true,
-        role: { id: 1 } as any, // Mapear a objeto con id como espera el backend
+        role: Role.USER, // Usar el enum Role correctamente
+        codigoRelacion: null, // Por defecto sin código de relación
         disponibleParaPareja: true // Por defecto disponible para formar pareja
       };
 

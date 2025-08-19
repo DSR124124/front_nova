@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pareja, EstadoPareja } from '../../../../core/models/pareja';
-import { Usuario } from '../../../../core/models/usuario';
+import { Usuario } from '../../../../core/models/Usuario/Usuario';
 // Role enum removido - ahora usamos string directamente
 import { AuthService } from '../../../../core/services/auth.service';
 import { UsuarioService } from '../../../../core/services/usuario.service';
@@ -75,6 +75,7 @@ export class PerfilParejaComponent implements OnInit {
       username: 'maria_g',
       password: '',
       enabled: true,
+      fotoPerfil: null, // Sin foto por defecto
       fechaNacimiento: '1995-03-20',
       genero: 'F',
       role: Role.USER, // Usar el enum en lugar de objeto hardcodeado

@@ -199,6 +199,68 @@
   font-size: 0.85rem;
 }
 
+/* ===== ESTILOS PARA CÓDIGO DE RELACIÓN ===== */
+
+.codigo-relacion {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.codigo-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.codigo-content > span {
+  margin-bottom: 0.25rem;
+}
+
+.codigo-existente,
+.codigo-generado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--surface-ground);
+  border-radius: 4px;
+  border: 1px solid var(--surface-border);
+}
+
+.codigo-text {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.5rem;
+  background: var(--surface-card);
+  border-radius: 3px;
+  border: 1px solid var(--surface-border);
+}
+
+.codigo-text.nuevo {
+  color: var(--primary-color);
+  background: var(--primary-50);
+  border-color: var(--primary-200);
+}
+
+.codigo-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.generar-codigo {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem;
+}
+
 .edad {
   color: var(--text-color-muted);
   font-size: 0.75rem;
@@ -494,6 +556,36 @@
   font-size: 0.9rem;
 }
 
+/* Botones de acción de error */
+.error-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.error-actions .p-button {
+  min-width: 140px;
+}
+
+/* Información de debugging */
+.debug-info {
+  background: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.debug-info p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.debug-info .pi-info-circle {
+  color: var(--info-color);
+  margin-right: 0.5rem;
+}
+
 /* ===== FORMULARIO DE EDICIÓN ===== */
 .edit-form-wrapper {
   margin-bottom: 1.5rem;
@@ -594,6 +686,44 @@ input[type="date"].field-input.field-error {
 
   .field-label {
     font-size: 0.85rem;
+  }
+}
+
+/* ===== RESPONSIVE PARA CÓDIGO DE RELACIÓN ===== */
+@media (max-width: 768px) {
+  .codigo-existente,
+  .codigo-generado {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .codigo-actions {
+    justify-content: center;
+  }
+
+  .codigo-text {
+    text-align: center;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .codigo-relacion {
+    padding: 0.5rem;
+  }
+
+  .codigo-content {
+    gap: 0.25rem;
+  }
+
+  .codigo-text {
+    font-size: 0.75rem;
+    padding: 0.25rem;
+  }
+
+  .generar-codigo .p-button {
+    width: 100%;
   }
 }
 

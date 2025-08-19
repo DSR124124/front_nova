@@ -36,13 +36,25 @@
         </div>
         <h3 class="text-xl font-bold text-900 mb-3">Error al cargar perfil</h3>
         <p class="text-500 mb-4">{{ error }}</p>
-        <p-button
-          label="Reintentar"
-          icon="pi pi-refresh"
-          (onClick)="cargarPerfilUsuario()"
-          severity="secondary"
-          size="large">
-        </p-button>
+
+        <!-- Botones de acción -->
+        <div class="error-actions mb-4">
+          <p-button
+            label="Reintentar"
+            icon="pi pi-refresh"
+            (onClick)="cargarPerfilUsuario()"
+            severity="secondary"
+            size="large">
+          </p-button>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="error-info p-3 bg-gray-50 rounded">
+          <p class="text-sm text-600">
+            <i class="pi pi-info-circle"></i>
+            Verifica tu conexión a internet e intenta nuevamente.
+          </p>
+        </div>
       </div>
     </p-card>
   </div>
@@ -234,10 +246,67 @@
               <i class="pi pi-check-circle text-primary"></i>
               <span><strong>Estado:</strong> {{ usuario?.enabled ? 'Activo' : 'Inactivo' }}</span>
             </div>
-                         <div class="detalle-item" *ngIf="usuario?.codigoRelacion">
-               <i class="pi pi-heart text-primary"></i>
-               <span><strong>Código de Relación:</strong> {{ usuario?.codigoRelacion }}</span>
-             </div>
+                         <!-- Código de Relación -->
+                         <div class="detalle-item codigo-relacion">
+                           <i class="pi pi-heart text-primary"></i>
+                           <div class="codigo-content">
+                             <span><strong>Código de Relación:</strong></span>
+
+                             <!-- Mostrar código existente -->
+                             <div *ngIf="usuario && usuario.codigoRelacion && !mostrandoCodigo" class="codigo-existente">
+                                                               <span class="codigo-text">{{ formatearCodigo(usuario.codigoRelacion || '') }}</span>
+                               <div class="codigo-actions">
+                                 <p-button
+                                   icon="pi pi-copy"
+                                   [text]="true"
+                                   size="small"
+                                   pTooltip="Copiar código"
+                                   (onClick)="copiarCodigo()">
+                                 </p-button>
+                                 <p-button
+                                   icon="pi pi-refresh"
+                                   [text]="true"
+                                   size="small"
+                                   pTooltip="Generar nuevo código"
+                                   (onClick)="generarCodigoRelacion()">
+                                 </p-button>
+                               </div>
+                             </div>
+
+                             <!-- Mostrar código generado -->
+                             <div *ngIf="mostrandoCodigo && codigoGenerado" class="codigo-generado">
+                               <span class="codigo-text nuevo">{{ formatearCodigo(codigoGenerado) }}</span>
+                               <div class="codigo-actions">
+                                 <p-button
+                                   icon="pi pi-copy"
+                                   [text]="true"
+                                   size="small"
+                                   pTooltip="Copiar código"
+                                   (onClick)="copiarCodigo()">
+                                 </p-button>
+                                 <p-button
+                                   icon="pi pi-eye-slash"
+                                   [text]="true"
+                                   size="small"
+                                   pTooltip="Ocultar código"
+                                   (onClick)="ocultarCodigo()">
+                                 </p-button>
+                               </div>
+                             </div>
+
+                             <!-- Botón para generar código si no existe -->
+                             <div *ngIf="!usuario?.codigoRelacion && !mostrandoCodigo" class="generar-codigo">
+                               <p-button
+                                 label="Generar Código"
+                                 icon="pi pi-plus"
+                                 [outlined]="true"
+                                 size="small"
+                                 [loading]="generandoCodigo"
+                                 (onClick)="generarCodigoRelacion()">
+                               </p-button>
+                             </div>
+                           </div>
+                         </div>
           </div>
 
                      <!-- Acciones del perfil -->

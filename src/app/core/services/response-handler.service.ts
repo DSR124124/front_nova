@@ -36,7 +36,10 @@ export class ResponseHandlerService {
   handleHttpError(error: any): Observable<never> {
     let errorMessage = 'Error desconocido del servidor';
 
-    if (error && error.status) {
+    // Manejar errores de parsing HTTP (status 200 pero respuesta no parseable)
+    if (error && error.message && error.message.includes('Http failure during parsing')) {
+      errorMessage = 'Error al procesar la respuesta del servidor. La respuesta no es válida.';
+    } else if (error && error.status) {
       switch (error.status) {
         case 400:
           errorMessage = 'Solicitud incorrecta. Verifica los datos enviados.';

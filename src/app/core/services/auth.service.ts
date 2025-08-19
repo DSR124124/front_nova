@@ -1,41 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError, map, catchError } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, tap, catchError, throwError, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import * as bcrypt from 'bcryptjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { JWT_CONSTANTS } from '../constants/jwt.constants';
-import { Usuario } from '../models/usuario';
-import { DecodedToken } from '../models/auth.interface';
+import { UsuarioResponse } from '../models/Usuario/UsuarioResponse';
+import { Usuario } from '../models/Usuario/Usuario';
+import { DecodedToken, CambioPasswordDTO, CambiarPasswordResponse, CambiarPasswordError } from '../models/auth.interface';
 import { MensajeErrorDTO } from '../models/mensaje-error';
 import { ResponseHandlerService } from './response-handler.service';
-// Interfaces locales para el auth service
-interface CambiarPasswordRequest {
-  idUsuario: number;
-  passwordActual: string;
-  passwordNueva: string;
-  passwordConfirmacion: string;
-}
 
-interface CambiarPasswordResponse {
-  success: boolean;
-  message: string;
-  timestamp?: string;
-}
-
-interface CambiarPasswordError {
-  error: string;
-  message: string;
-  errors?: {
-    passwordActual?: string;
-    passwordNueva?: string;
-    passwordConfirmacion?: string;
-  };
-  timestamp: string;
-  status: number;
-}
 
 
 
@@ -90,7 +65,12 @@ export class AuthService {
   // Método helper para registro que extrae solo los datos
   registrarUsuario(usuario: Usuario): Observable<Usuario> {
     return this.register(usuario).pipe(
-      map(response => this.responseHandler.extractData(response).usuario),
+      map(response => {
+        if (response.p_exito && response.p_data?.usuario) {
+          return response.p_data.usuario;
+        }
+        throw new Error(response.p_menserror || 'Error al registrar usuario');
+      }),
       catchError(error => this.responseHandler.handleError({ p_exito: false, p_menserror: error.message, p_mensavis: '', p_data: {} }))
     );
   }
@@ -190,7 +170,7 @@ export class AuthService {
   }
 
   // Cambiar contraseña del usuario autenticado
-  changePassword(passwordData: CambiarPasswordRequest): Observable<CambiarPasswordResponse | CambiarPasswordError> {
+  changePassword(passwordData: CambioPasswordDTO): Observable<CambiarPasswordResponse | CambiarPasswordError> {
     return this.http.put<CambiarPasswordResponse | CambiarPasswordError>(API_ENDPOINTS.CHANGE_PASSWORD, passwordData, {
       headers: this.getAuthHeaders()
     });
