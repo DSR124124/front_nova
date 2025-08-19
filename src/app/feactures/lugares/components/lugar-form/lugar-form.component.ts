@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { LugarService } from '../../../../core/services/lugar.service';
-import { Lugar, CategoriaLugar } from '../../../../core/models/Interfaces/lugar/lugar';
+import { Lugar } from '../../../../core/models/Interfaces/lugar/lugar';
+import { CategoriaLugar } from '../../../../core/models/enums/categoria-lugar.enum';
 
 @Component({
   selector: 'app-lugar-form',

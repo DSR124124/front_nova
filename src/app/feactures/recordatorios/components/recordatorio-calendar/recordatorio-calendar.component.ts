@@ -4,7 +4,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { RecordatorioService } from '../../../../core/services/recordatorio.service';
-import { Recordatorio, EstadoRecordatorio, TipoRecordatorio } from '../../../../core/models/Interfaces/recordatorio/recordatorio';
+import { Recordatorio } from '../../../../core/models/Interfaces/recordatorio/recordatorio';
+import { EstadoRecordatorio } from '../../../../core/models/enums/estado-recordatorio.enum';
+import { TipoRecordatorio } from '../../../../core/models/enums/tipo-recordatorio.enum';
 
 interface CalendarEvent {
   id: number;

@@ -3,5 +3,6 @@ export enum CategoriaLugar {
   PARQUE = 'PARQUE',
   CINE = 'CINE',
   CASA = 'CASA',
+  ENTRETENIMIENTO = 'ENTRETENIMIENTO',
   OTRO = 'OTRO',
 }

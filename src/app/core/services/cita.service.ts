@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Cita, EstadoCita } from '../models/Interfaces/cita/cita';
+import { Cita } from '../models/Interfaces/cita/cita';
+import { EstadoCita } from '../models/enums/estado-cita.enum';
 
 @Injectable({
   providedIn: 'root'

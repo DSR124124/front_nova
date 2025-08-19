@@ -6,7 +6,10 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { RecordatorioService } from '../../../../core/services/recordatorio.service';
 import { LugarService } from '../../../../core/services/lugar.service';
-import { Recordatorio, TipoRecordatorio, FrecuenciaRecordatorio, EstadoRecordatorio } from '../../../../core/models/Interfaces/recordatorio/recordatorio';
+import { Recordatorio } from '../../../../core/models/Interfaces/recordatorio/recordatorio';
+import { TipoRecordatorio } from '../../../../core/models/enums/tipo-recordatorio.enum';
+import { FrecuenciaRecordatorio } from '../../../../core/models/enums/frecuencia-recordatorio.enum';
+import { EstadoRecordatorio } from '../../../../core/models/enums/estado-recordatorio.enum';
 import { Lugar } from '../../../../core/models/Interfaces/lugar/lugar';
 
 @Component({

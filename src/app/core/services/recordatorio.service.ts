@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Recordatorio, TipoRecordatorio, EstadoRecordatorio, FrecuenciaRecordatorio } from '../models/Interfaces/recordatorio/recordatorio';
+import { Recordatorio } from '../models/Interfaces/recordatorio/recordatorio';
+import { TipoRecordatorio } from '../models/enums/tipo-recordatorio.enum';
+import { EstadoRecordatorio } from '../models/enums/estado-recordatorio.enum';
+import { FrecuenciaRecordatorio } from '../models/enums/frecuencia-recordatorio.enum';
 
 @Injectable({
   providedIn: 'root'

@@ -4,7 +4,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { RecordatorioService } from '../../../../core/services/recordatorio.service';
-import { Recordatorio, TipoRecordatorio, EstadoRecordatorio, FrecuenciaRecordatorio } from '../../../../core/models/Interfaces/recordatorio/recordatorio';
+import { Recordatorio } from '../../../../core/models/Interfaces/recordatorio/recordatorio';
+import { TipoRecordatorio } from '../../../../core/models/enums/tipo-recordatorio.enum';
+import { EstadoRecordatorio } from '../../../../core/models/enums/estado-recordatorio.enum';
+import { FrecuenciaRecordatorio } from '../../../../core/models/enums/frecuencia-recordatorio.enum';
 
 @Component({
   selector: 'app-recordatorio-list',

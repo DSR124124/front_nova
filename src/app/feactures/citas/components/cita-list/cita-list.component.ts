@@ -4,7 +4,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { CitaService } from '../../../../core/services/cita.service';
-import { Cita, EstadoCita } from '../../../../core/models/Interfaces/cita/cita';
+import { Cita } from '../../../../core/models/Interfaces/cita/cita';
+import { EstadoCita } from '../../../../core/models/enums/estado-cita.enum';
 import { CitaFilter, LugarOption, CategoriaOption } from '../cita-filter/cita-filter.component';
 
 @Component({

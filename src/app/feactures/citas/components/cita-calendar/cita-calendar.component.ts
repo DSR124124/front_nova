@@ -5,7 +5,8 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { CitaService } from '../../../../core/services/cita.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Cita, EstadoCita } from '../../../../core/models/Interfaces/cita/cita';
+import { Cita } from '../../../../core/models/Interfaces/cita/cita';
+import { EstadoCita } from '../../../../core/models/enums/estado-cita.enum';
 
 interface CalendarEvent {
   id?: number;

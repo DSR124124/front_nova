@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/cor
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Lugar, CategoriaLugar } from '../../../../core/models/Interfaces/lugar/lugar';
+import { Lugar } from '../../../../core/models/Interfaces/lugar/lugar';
+import { CategoriaLugar } from '../../../../core/models/enums/categoria-lugar.enum';
 
 @Component({
   selector: 'app-lugar-search',

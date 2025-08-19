@@ -6,8 +6,10 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { CitaService } from '../../../../core/services/cita.service';
 import { LugarService } from '../../../../core/services/lugar.service';
-import { Cita, EstadoCita } from '../../../../core/models/Interfaces/cita/cita';
-import { Lugar, CategoriaLugar } from '../../../../core/models/Interfaces/lugar/lugar';
+import { Cita } from '../../../../core/models/Interfaces/cita/cita';
+import { EstadoCita } from '../../../../core/models/enums/estado-cita.enum';
+import { Lugar } from '../../../../core/models/Interfaces/lugar/lugar';
+import { CategoriaLugar } from '../../../../core/models/enums/categoria-lugar.enum';
 
 @Component({
   selector: 'app-cita-form',
