@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, catchError } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { PData } from '../models/Usuario/UsuarioResponse';
+import { UsuarioByIdResponse } from '../models/Usuario/UsuarioByIdResponse';
 import { Usuario } from '../models/Usuario/Usuario';
 import { MensajeErrorDTO } from '../models/mensaje-error';
 import { CambioPasswordDTO } from '../models/auth.interface';
@@ -28,8 +28,8 @@ export class UsuarioService {
     return this.http.put<MensajeErrorDTO<{usuario: Usuario}>>(`${this.baseUrl}/modificar`, usuario);
   }
 
-  listarPorId(id: number): Observable<MensajeErrorDTO<PData>> {
-    return this.http.get<MensajeErrorDTO<PData>>(`${this.baseUrl}/listar-por-id/${id}`);
+  listarPorId(id: number): Observable<UsuarioByIdResponse> {
+    return this.http.get<UsuarioByIdResponse>(`${this.baseUrl}/listar-por-id/${id}`);
   }
 
   listarPorUsername(username: string): Observable<MensajeErrorDTO<{usuario: Usuario}>> {
