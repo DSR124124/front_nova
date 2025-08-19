@@ -1,23 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError, map, catchError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import * as bcrypt from 'bcryptjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
+import { JWT_CONSTANTS } from '../constants/jwt.constants';
 import { Usuario } from '../models/usuario';
-import { CambiarPasswordRequest, CambiarPasswordResponse, CambiarPasswordError } from '../models/cambiar-password.model';
-
-export interface DecodedToken {
-  sub: string;
-  username: string;
-  email: string;
-  role: string;
-  exp: number;
-  iat: number;
-  idUsuario?: number;
+import { DecodedToken } from '../models/auth.interface';
+import { MensajeErrorDTO } from '../models/mensaje-error';
+import { ResponseHandlerService } from './response-handler.service';
+// Interfaces locales para el auth service
+interface CambiarPasswordRequest {
+  idUsuario: number;
+  passwordActual: string;
+  passwordNueva: string;
+  passwordConfirmacion: string;
 }
+
+interface CambiarPasswordResponse {
+  success: boolean;
+  message: string;
+  timestamp?: string;
+}
+
+interface CambiarPasswordError {
+  error: string;
+  message: string;
+  errors?: {
+    passwordActual?: string;
+    passwordNueva?: string;
+    passwordConfirmacion?: string;
+  };
+  timestamp: string;
+  status: number;
+}
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,36 +49,56 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private responseHandler: ResponseHandlerService
   ) {
     this.loadUserFromToken();
   }
 
-  // Login
-  login(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post<any>(API_ENDPOINTS.LOGIN, {
+  // Login - devuelve respuesta completa del backend
+  login(credentials: { username: string; password: string }): Observable<MensajeErrorDTO<{token: string, refreshToken: string, usuario: Usuario}>> {
+    return this.http.post<MensajeErrorDTO<{token: string, refreshToken: string, usuario: Usuario}>>(API_ENDPOINTS.LOGIN, {
       username: credentials.username,
       password: credentials.password
-    }).pipe(
-      tap(response => this.handleAuthentication(response))
+    });
+  }
+
+  // Método helper para login que maneja autenticación automáticamente
+  loginUsuario(credentials: { username: string; password: string }): Observable<Usuario> {
+    return this.login(credentials).pipe(
+      map(response => {
+        const data = this.responseHandler.extractData(response);
+        this.handleAuthentication({
+          accessToken: data.token,
+          refreshToken: data.refreshToken,
+          user: data.usuario
+        });
+        return data.usuario;
+      }),
+      catchError(error => this.responseHandler.handleError({ p_exito: false, p_menserror: error.message, p_mensavis: '', p_data: {} }))
     );
   }
 
-  // Registro
-  register(usuario: Usuario): Observable<void> {
-    if (usuario.password) {
-      usuario.password = bcrypt.hashSync(usuario.password, 12);
-    }
-
-    return this.http.post<void>(API_ENDPOINTS.REGISTER, usuario, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  // Registro - devuelve respuesta completa del backend
+  register(usuario: Usuario): Observable<MensajeErrorDTO<{usuario: Usuario}>> {
+    // No hasheamos la contraseña aquí, el backend se encarga de eso
+    return this.http.post<MensajeErrorDTO<{usuario: Usuario}>>(API_ENDPOINTS.REGISTER, usuario, {
+      headers: new HttpHeaders({ 'Content-Type': JWT_CONSTANTS.CONTENT_TYPE })
     });
+  }
+
+  // Método helper para registro que extrae solo los datos
+  registrarUsuario(usuario: Usuario): Observable<Usuario> {
+    return this.register(usuario).pipe(
+      map(response => this.responseHandler.extractData(response).usuario),
+      catchError(error => this.responseHandler.handleError({ p_exito: false, p_menserror: error.message, p_mensavis: '', p_data: {} }))
+    );
   }
 
   // Logout
   logout(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem(JWT_CONSTANTS.ACCESS_TOKEN_KEY);
+    localStorage.removeItem(JWT_CONSTANTS.REFRESH_TOKEN_KEY);
     this.currentUserSubject.next(null);
     this.router.navigate(['/auth/login']);
   }
@@ -76,42 +116,77 @@ export class AuthService {
 
   // Obtener token
   getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
+    return localStorage.getItem(JWT_CONSTANTS.ACCESS_TOKEN_KEY);
   }
 
   // Obtener refresh token
   getRefreshToken(): string | null {
-    return localStorage.getItem('refreshToken');
+    return localStorage.getItem(JWT_CONSTANTS.REFRESH_TOKEN_KEY);
   }
 
-  // Refresh token
-  refreshToken(): Observable<any> {
+  // Refresh token - devuelve respuesta completa del backend
+  refreshToken(): Observable<MensajeErrorDTO<{token: string, refreshToken: string}>> {
     const refreshToken = this.getRefreshToken();
     if (!refreshToken) {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.http.post<any>(API_ENDPOINTS.REFRESH_TOKEN, {
+    return this.http.post<MensajeErrorDTO<{token: string, refreshToken: string}>>(API_ENDPOINTS.REFRESH_TOKEN, {
       refreshToken: refreshToken
-    }).pipe(
-      tap(response => this.handleAuthentication(response))
+    });
+  }
+
+  // Método helper para refresh token
+  renovarToken(): Observable<string> {
+    return this.refreshToken().pipe(
+      map(response => {
+        const data = this.responseHandler.extractData(response);
+        this.handleAuthentication({
+          accessToken: data.token,
+          refreshToken: data.refreshToken
+        });
+        return data.token;
+      }),
+      catchError(error => this.responseHandler.handleError({ p_exito: false, p_menserror: error.message, p_mensavis: '', p_data: {} }))
     );
   }
 
-  // Recuperación de contraseña
-  forgotPassword(email: string): Observable<any> {
-    return this.http.post(API_ENDPOINTS.FORGOT_PASSWORD, { email });
+  // Recuperación de contraseña - devuelve respuesta completa del backend
+  forgotPassword(email: string): Observable<MensajeErrorDTO<{message: string}>> {
+    return this.http.post<MensajeErrorDTO<{message: string}>>(API_ENDPOINTS.FORGOT_PASSWORD, { email });
   }
 
-  validateResetToken(token: string): Observable<any> {
-    return this.http.post(API_ENDPOINTS.VALIDATE_RESET_TOKEN, { token });
+  validateResetToken(token: string): Observable<MensajeErrorDTO<{valid: boolean}>> {
+    return this.http.post<MensajeErrorDTO<{valid: boolean}>>(API_ENDPOINTS.VALIDATE_RESET_TOKEN, { token });
   }
 
-  resetPassword(token: string, password: string): Observable<any> {
-    return this.http.post(API_ENDPOINTS.RESET_PASSWORD, {
+  resetPassword(token: string, password: string): Observable<MensajeErrorDTO<{message: string}>> {
+    return this.http.post<MensajeErrorDTO<{message: string}>>(API_ENDPOINTS.RESET_PASSWORD, {
       token,
       password: password
     });
+  }
+
+  // Métodos helper para recuperación de contraseña
+  enviarEmailRecuperacion(email: string): Observable<string> {
+    return this.forgotPassword(email).pipe(
+      map(response => this.responseHandler.extractData(response).message),
+      catchError(error => this.responseHandler.handleError({ p_exito: false, p_menserror: error.message, p_mensavis: '', p_data: {} }))
+    );
+  }
+
+  validarTokenReset(token: string): Observable<boolean> {
+    return this.validateResetToken(token).pipe(
+      map(response => this.responseHandler.extractData(response).valid),
+      catchError(error => this.responseHandler.handleError({ p_exito: false, p_menserror: error.message, p_mensavis: '', p_data: {} }))
+    );
+  }
+
+  resetearPassword(token: string, password: string): Observable<string> {
+    return this.resetPassword(token, password).pipe(
+      map(response => this.responseHandler.extractData(response).message),
+      catchError(error => this.responseHandler.handleError({ p_exito: false, p_menserror: error.message, p_mensavis: '', p_data: {} }))
+    );
   }
 
   // Cambiar contraseña del usuario autenticado
@@ -157,8 +232,8 @@ export class AuthService {
   getAuthHeaders(): HttpHeaders {
     const token = this.getAccessToken();
     return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Content-Type': JWT_CONSTANTS.CONTENT_TYPE,
+      [JWT_CONSTANTS.AUTHORIZATION_HEADER]: `${JWT_CONSTANTS.BEARER_PREFIX}${token}`
     });
   }
 
@@ -171,9 +246,9 @@ export class AuthService {
       throw new Error('No se encontró token en la respuesta del servidor');
     }
 
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem(JWT_CONSTANTS.ACCESS_TOKEN_KEY, token);
     if (refreshToken) {
-      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem(JWT_CONSTANTS.REFRESH_TOKEN_KEY, refreshToken);
     }
 
     const user = this.decodeToken(token);

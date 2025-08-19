@@ -234,10 +234,10 @@
               <i class="pi pi-check-circle text-primary"></i>
               <span><strong>Estado:</strong> {{ usuario?.enabled ? 'Activo' : 'Inactivo' }}</span>
             </div>
-            <div class="detalle-item" *ngIf="usuario?.parejaId">
-              <i class="pi pi-heart text-primary"></i>
-              <span><strong>Pareja ID:</strong> {{ usuario?.parejaId }}</span>
-            </div>
+                         <div class="detalle-item" *ngIf="usuario?.codigoRelacion">
+               <i class="pi pi-heart text-primary"></i>
+               <span><strong>Código de Relación:</strong> {{ usuario?.codigoRelacion }}</span>
+             </div>
           </div>
 
                      <!-- Acciones del perfil -->
@@ -258,7 +258,7 @@
                [loading]="saving"
                size="large"
                styleClass="save-btn"
-               (onClick)="guardarPerfil()">
+               (onClick)="guardarCambios()">
              </p-button>
              <p-button
                *ngIf="editMode"

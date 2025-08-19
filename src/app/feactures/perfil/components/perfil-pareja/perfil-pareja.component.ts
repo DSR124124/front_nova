@@ -4,6 +4,7 @@ import { Usuario } from '../../../../core/models/usuario';
 // Role enum removido - ahora usamos string directamente
 import { AuthService } from '../../../../core/services/auth.service';
 import { UsuarioService } from '../../../../core/services/usuario.service';
+import { Role } from '../../../../core/models/enums/role.enum';
 
 @Component({
   selector: 'app-perfil-pareja',
@@ -41,7 +42,7 @@ export class PerfilParejaComponent implements OnInit {
     try {
       this.usuarioActual = this.authService.getUser();
 
-      if (this.usuarioActual?.parejaId) {
+      if (this.usuarioActual?.codigoRelacion) {
         // Aquí iría la llamada al servicio para obtener los datos de la pareja
         // Por ahora simulamos datos
         this.simularDatosPareja();
@@ -74,10 +75,11 @@ export class PerfilParejaComponent implements OnInit {
       username: 'maria_g',
       password: '',
       enabled: true,
-      fechaNacimiento: '1995-03-20', // Cambiado a string para coincidir con el modelo
+      fechaNacimiento: '1995-03-20',
       genero: 'F',
-      role: { id: 1, rol: 'USER' }, // Cambiado a objeto para coincidir con el modelo
-      parejaId: 1
+      role: Role.USER, // Usar el enum en lugar de objeto hardcodeado
+      codigoRelacion: 'ABC123',
+      disponibleParaPareja: false // Ya tiene pareja
     };
   }
 

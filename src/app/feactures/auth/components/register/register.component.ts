@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import * as bcrypt from 'bcryptjs';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Usuario } from '../../../../core/models/usuario';
+import { RegisterRequest } from '../../../../core/models/auth.interface';
 import { UploadedFile } from '../../../../shared/components/image-upload/image-upload.component';
+import { Role } from '../../../../core/models/enums/role.enum';
 
 @Component({
   selector: 'app-register',
@@ -85,27 +88,65 @@ export class RegisterComponent implements OnInit {
       const formData = this.registerForm.value;
       const { confirmPassword, acceptTerms, ...userData } = formData;
 
+      // Hashear la contraseña antes de enviarla
+      const hashedPassword = bcrypt.hashSync(userData.password, 12);
+
       const usuario: Usuario = {
         nombre: userData.nombre,
         apellido: userData.apellido,
         correo: userData.correo,
         username: userData.username,
-        password: userData.password,
+        password: hashedPassword, // Usar la contraseña hasheada
         fechaNacimiento: this.formatDateToISO(userData.fechaNacimiento),
         genero: this.mapGeneroToBackend(userData.genero),
         enabled: true,
-        role: { id: 1, rol: 'USER' }
+        role: { id: 1 } as any, // Mapear a objeto con id como espera el backend
+        disponibleParaPareja: true // Por defecto disponible para formar pareja
       };
 
-      this.authService.register(usuario).subscribe({
-        next: () => {
+
+
+      this.authService.registrarUsuario(usuario).subscribe({
+        next: (usuarioRegistrado: Usuario) => {
           this.loading = false;
-          this.showSuccess('¡Registro Exitoso!', 'Tu cuenta ha sido creada correctamente. Ahora puedes iniciar sesión.');
+          // Mostrar mensaje de éxito del backend
+          this.messageService.add({
+            severity: 'success',
+            summary: '¡Registro Exitoso!',
+            detail: 'Usuario registrado exitosamente. Ahora puedes iniciar sesión.',
+            life: 5000
+          });
           setTimeout(() => this.router.navigate(['/auth/login']), 2000);
         },
-        error: () => {
+                error: (error) => {
           this.loading = false;
-          // ErrorInterceptor ya maneja los errores HTTP automáticamente
+          // Mostrar mensaje de error del backend si está disponible
+          let errorMessage = 'Error al registrar usuario';
+          let errorSummary = 'Error de Registro';
+
+          if (error && error.p_menserror) {
+            errorMessage = error.p_menserror;
+          } else if (error && error.message) {
+            errorMessage = error.message;
+          }
+
+          // Si es error 400, dar más contexto
+          if (error && error.status === 400) {
+            errorSummary = 'Error de Validación';
+            errorMessage = 'Los datos enviados no son válidos. Por favor, verifica que todos los campos estén completos y sean correctos.';
+          }
+          // Si es error 500, dar más contexto
+          else if (error && error.status === 500) {
+            errorSummary = 'Error del Servidor';
+            errorMessage = 'Error interno del servidor. Por favor, verifica que todos los campos sean correctos o contacta al administrador.';
+          }
+
+          this.messageService.add({
+            severity: 'error',
+            summary: errorSummary,
+            detail: errorMessage,
+            life: 8000
+          });
         }
       });
     } else {

@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       const credentials = this.loginForm.value;
 
-      this.authService.login(credentials).subscribe({
-        next: (response) => {
+      this.authService.loginUsuario(credentials).subscribe({
+        next: (usuario) => {
           this.loading = false;
 
           // Guardar credenciales si "Recordarme" está marcado
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
           this.messageService.add({
             severity: 'success',
             summary: '¡Bienvenido!',
-            detail: 'Has iniciado sesión correctamente',
+            detail: `Has iniciado sesión correctamente, ${usuario.nombre}`,
             life: 3000
           });
 

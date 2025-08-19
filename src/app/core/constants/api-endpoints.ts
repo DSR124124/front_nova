@@ -5,17 +5,17 @@ const buildUrl = (path: string): string => `${environment.base}${path}`;
 
 export const API_ENDPOINTS = {
   // ===== AUTENTICACIÓN =====
-  LOGIN: buildUrl('/login'),
-  REGISTER: buildUrl('/usuarios/registrar'),
-  REFRESH_TOKEN: buildUrl('/refresh-token'),
-  FORGOT_PASSWORD: buildUrl('/forgot-password'),
-  VALIDATE_RESET_TOKEN: buildUrl('/validate-reset-token'),
-  RESET_PASSWORD: buildUrl('/reset-password'),
-  CHANGE_PASSWORD: buildUrl('/usuarios/cambiar-password'),
-  LOGOUT: buildUrl('/logout'),
+  LOGIN: buildUrl('/login'), // Verificar si es /login o /usuarios/login
+  REGISTER: buildUrl('/usuarios/registrar'), // ✅ Confirmado funcionando
+  REFRESH_TOKEN: buildUrl('/refresh-token'), // Verificar si existe
+  FORGOT_PASSWORD: buildUrl('/forgot-password'), // Verificar si existe
+  VALIDATE_RESET_TOKEN: buildUrl('/validate-reset-token'), // Verificar si existe
+  RESET_PASSWORD: buildUrl('/reset-password'), // Verificar si existe
+  CHANGE_PASSWORD: buildUrl('/usuarios/cambiar-password'), // ✅ Confirmado funcionando
+  LOGOUT: buildUrl('/logout'), // Verificar si existe
 
   // ===== GESTIÓN DE USUARIOS =====
-  USUARIOS: buildUrl('/usuarios'),
+  USUARIOS: buildUrl('/usuarios'), // ✅ Base URL para todos los endpoints de usuarios
 
   // ===== RELACIONES Y PAREJAS =====
   PAREJAS: buildUrl('/parejas'),

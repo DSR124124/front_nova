@@ -21,9 +21,11 @@ export const parejaGuard: CanActivateFn = (route, state) => {
     return false;
   }
 
-  return usuarioService.listarPorUsername(user.username).pipe(
+  // Usar el método helper que extrae solo los datos
+  return usuarioService.obtenerUsuarioPorUsername(user.username).pipe(
     map(usuario => {
-      if (usuario && usuario.parejaId) {
+      // Verificar si el usuario tiene pareja usando el código de relación
+      if (usuario && usuario.codigoRelacion) {
         return true;
       } else {
         router.navigate(['/pareja/crear']);

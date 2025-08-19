@@ -7,7 +7,8 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { Usuario } from '../../../../core/models/usuario';
 import { Pareja } from '../../../../core/models/pareja';
 import { MessageService } from 'primeng/api';
-import { CambiarPasswordRequest, CambiarPasswordError } from '../../../../core/models/cambiar-password.model';
+import { CambioPasswordDTO } from '../../../../core/models/mensaje-error';
+import { Role, RoleLabels } from '../../../../core/models/enums/role.enum';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -82,11 +83,13 @@ export class PerfilUsuarioComponent implements OnInit {
     const currentUser = this.authService.getUser();
 
     if (currentUser && currentUser.idUsuario) {
-      this.usuarioService.listarPorId(currentUser.idUsuario).subscribe({
+      // Usar el método helper que extrae solo los datos
+      this.usuarioService.obtenerUsuarioPorId(currentUser.idUsuario).subscribe({
         next: (usuario) => {
           this.usuario = usuario;
-          if (usuario.parejaId) {
-            this.cargarPareja(usuario.parejaId);
+          // Verificar si tiene pareja usando el código de relación
+          if (usuario.codigoRelacion) {
+            this.cargarParejaPorCodigo(usuario.codigoRelacion);
           } else {
             this.loading = false;
           }
@@ -103,6 +106,31 @@ export class PerfilUsuarioComponent implements OnInit {
     }
   }
 
+  cargarParejaPorCodigo(codigoRelacion: string) {
+    // Por ahora, como no tenemos un método específico para buscar por código,
+    // vamos a buscar en la lista de parejas del usuario
+    this.parejaService.listar().subscribe({
+      next: (parejas) => {
+        // Buscar la pareja que contenga este usuario
+        const parejaEncontrada = parejas.find(pareja =>
+          pareja.usuario1Id === this.usuario?.idUsuario ||
+          pareja.usuario2Id === this.usuario?.idUsuario
+        );
+
+        if (parejaEncontrada) {
+          this.pareja = parejaEncontrada;
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Error al cargar información de la pareja';
+        this.loading = false;
+        console.error('Error cargando pareja:', err);
+      }
+    });
+  }
+
+  // Método anterior mantenido para compatibilidad
   cargarPareja(parejaId: number) {
     this.parejaService.listarPorId(parejaId).subscribe({
       next: (pareja) => {
@@ -156,11 +184,8 @@ export class PerfilUsuarioComponent implements OnInit {
 
   getRoleTexto(): string {
     if (!this.usuario?.role) return '';
-    switch (this.usuario.role.rol) { // Acceder a la propiedad 'rol' del objeto
-      case 'ADMIN': return 'Administrador';
-      case 'USER': return 'Usuario';
-      default: return 'Desconocido';
-    }
+    // Usar el enum y los labels predefinidos
+    return RoleLabels[this.usuario.role as Role] || 'Desconocido';
   }
 
   getEdad(): number {
@@ -179,12 +204,12 @@ export class PerfilUsuarioComponent implements OnInit {
   activarEdicion() {
     if (this.usuario) {
       this.editForm.patchValue({
-        nombre: this.usuario.nombre || '',
-        apellido: this.usuario.apellido || '',
-        username: this.usuario.username || '',
-        correo: this.usuario.correo || '',
+        nombre: this.usuario.nombre,
+        apellido: this.usuario.apellido,
+        username: this.usuario.username,
+        correo: this.usuario.correo,
         fechaNacimiento: this.usuario.fechaNacimiento ? new Date(this.usuario.fechaNacimiento) : null,
-        genero: this.usuario.genero || ''
+        genero: this.usuario.genero
       });
       this.editMode = true;
     }
@@ -195,21 +220,21 @@ export class PerfilUsuarioComponent implements OnInit {
     this.editForm.reset();
   }
 
-  guardarPerfil() {
+  guardarCambios() {
     if (this.editForm.valid && this.usuario) {
       this.saving = true;
 
-      const datosActualizados = {
+      const datosActualizados: Usuario = {
         ...this.usuario,
         ...this.editForm.value,
         fechaNacimiento: this.editForm.value.fechaNacimiento ?
-          this.editForm.value.fechaNacimiento.toISOString().split('T')[0] : null
+          this.editForm.value.fechaNacimiento.toISOString().split('T')[0] : undefined
       };
 
-      this.usuarioService.modificar(datosActualizados).subscribe({
-        next: () => {
-          // Recargar el usuario actualizado
-          this.cargarPerfilUsuario();
+      // Usar el método helper que extrae solo los datos
+      this.usuarioService.modificarUsuario(datosActualizados).subscribe({
+        next: (usuarioActualizado) => {
+          this.usuario = usuarioActualizado;
           this.editMode = false;
           this.saving = false;
           this.messageService.add({
@@ -280,22 +305,21 @@ export class PerfilUsuarioComponent implements OnInit {
       this.changingPassword = true;
 
       // Enviar contraseñas en texto plano - el backend se encarga de la encriptación
-      const passwordData: CambiarPasswordRequest = {
+      const passwordData: CambioPasswordDTO = {
         idUsuario: this.usuario.idUsuario,
-        passwordActual: this.passwordForm.value.currentPassword,        // Texto plano
-        passwordNueva: this.passwordForm.value.newPassword,            // Texto plano
-        passwordConfirmacion: this.passwordForm.value.confirmPassword  // Texto plano
+        passwordActual: this.passwordForm.value.currentPassword,
+        passwordNueva: this.passwordForm.value.newPassword
       };
 
-      // Llamar al servicio real para cambiar la contraseña
-      this.authService.changePassword(passwordData).subscribe({
-        next: (response) => {
+      // Llamar al servicio de usuario para cambiar la contraseña
+      this.usuarioService.cambiarPasswordUsuario(passwordData).subscribe({
+        next: (idUsuario: number) => {
           this.changingPassword = false;
           this.hidePasswordDialog();
           this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
-            detail: response.message || 'Contraseña cambiada correctamente'
+            detail: 'Contraseña cambiada correctamente'
           });
         },
         error: (err: any) => {
