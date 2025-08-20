@@ -157,12 +157,27 @@ export class PerfilParejaComponent implements OnInit {
       next: (response) => {
         if (response.p_exito && response.p_data?.usuario) {
           this.codigoValido = true;
-          this.usuarioEncontrado = response.p_data.usuario;
+          // Create a complete Usuario object from the partial data
+          this.usuarioEncontrado = {
+            idUsuario: response.p_data.usuario.id,
+            nombre: response.p_data.usuario.nombre,
+            apellido: '', // Not provided by the service
+            correo: '', // Not provided by the service
+            username: response.p_data.usuario.username,
+            password: '', // Not provided by the service
+            enabled: true, // Default value
+            fotoPerfil: response.p_data.usuario.fotoPerfil || null,
+            fechaNacimiento: '', // Not provided by the service
+            genero: '', // Not provided by the service
+            role: Role.USER, // Default value
+            codigoRelacion: null, // Not provided by the service
+            disponibleParaPareja: response.p_data.disponibleParaPareja || false
+          };
 
           this.messageService.add({
             severity: 'success',
             summary: 'Código Válido',
-            detail: `Usuario encontrado: ${this.usuarioEncontrado.nombre} ${this.usuarioEncontrado.apellido}`
+            detail: `Usuario encontrado: ${this.usuarioEncontrado.nombre}`
           });
         } else {
           this.codigoValido = false;
@@ -205,27 +220,31 @@ export class PerfilParejaComponent implements OnInit {
     // Aquí iría la llamada al servicio para crear la pareja
     // Por ahora simulamos la creación
     setTimeout(() => {
-      this.pareja = {
-        id: Date.now(), // ID temporal
-        usuario1Id: this.usuarioActual!.idUsuario!,
-        usuario2Id: this.usuarioEncontrado.idUsuario!,
-        fechaCreacion: new Date().toISOString().split('T')[0],
-        estadoRelacion: EstadoPareja.ACTIVA,
-        usuario1Nombre: `${this.usuarioActual!.nombre} ${this.usuarioActual!.apellido}`,
-        usuario2Nombre: `${this.usuarioEncontrado.nombre} ${this.usuarioEncontrado.apellido}`
-      };
+      if (this.usuarioEncontrado) {
+        this.pareja = {
+          id: Date.now(), // ID temporal
+          usuario1Id: this.usuarioActual!.idUsuario!,
+          usuario2Id: this.usuarioEncontrado.idUsuario,
+          fechaCreacion: new Date().toISOString().split('T')[0],
+          estadoRelacion: EstadoPareja.ACTIVA,
+          usuario1Nombre: `${this.usuarioActual!.nombre} ${this.usuarioActual!.apellido}`,
+          usuario2Nombre: this.usuarioEncontrado.apellido ?
+            `${this.usuarioEncontrado.nombre} ${this.usuarioEncontrado.apellido}` :
+            this.usuarioEncontrado.nombre
+        };
 
-      this.companero = this.usuarioEncontrado;
-      this.loading = false;
-      this.codigoValido = false;
-      this.usuarioEncontrado = null;
-      this.formPareja.reset();
+        this.companero = this.usuarioEncontrado;
+        this.loading = false;
+        this.codigoValido = false;
+        this.usuarioEncontrado = null;
+        this.formPareja.reset();
 
-      this.messageService.add({
-        severity: 'success',
-        summary: '¡Pareja Formada!',
-        detail: `Ahora estás vinculado con ${this.companero.nombre} ${this.companero.apellido}`
-      });
+        this.messageService.add({
+          severity: 'success',
+          summary: '¡Pareja Formada!',
+          detail: `Ahora estás vinculado con ${this.companero?.nombre || 'tu compañero'}`
+        });
+      }
     }, 1000);
   }
 

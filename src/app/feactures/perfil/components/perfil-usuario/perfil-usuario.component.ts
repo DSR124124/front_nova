@@ -18,6 +18,7 @@ import { CodigoRelacionResponseDTO, ValidacionCodigoResponseDTO } from '../../..
 })
 export class PerfilUsuarioComponent implements OnInit {
   usuario: Usuario | null = null;
+  pareja: any | null = null; // Add missing pareja property
   loading = true;
   error = '';
   isAuthenticated = false;
