@@ -18,18 +18,95 @@
     <p-card header="Sin Pareja">
       <p-message
         severity="info"
-        text="No tienes una pareja vinculada actualmente">
+        text="No tienes una pareja vinculada actualmente. Puedes formar una pareja ingresando el código de relación de otro usuario.">
       </p-message>
 
-      <div class="acciones-sin-pareja">
+      <!-- Formulario para formar pareja -->
+      <div class="formulario-pareja">
+        <h5>Formar Pareja</h5>
+
+        <form [formGroup]="formPareja" (ngSubmit)="validarCodigoRelacion()">
+          <div class="campo-codigo">
+            <label for="codigoRelacion">Código de Relación:</label>
+            <input
+              id="codigoRelacion"
+              type="text"
+              pInputText
+              formControlName="codigoRelacion"
+              placeholder="Ingresa el código de relación"
+              [class.ng-invalid]="isFieldInvalid('codigoRelacion')"
+              [class.ng-dirty]="isFieldInvalid('codigoRelacion')"
+            />
+            <small *ngIf="isFieldInvalid('codigoRelacion')" class="p-error">
+              {{ getFieldError('codigoRelacion') }}
+            </small>
+          </div>
+
+          <div class="acciones-formulario">
+            <p-button
+              type="submit"
+              label="Validar Código"
+              icon="pi pi-check"
+              [loading]="validandoCodigo"
+              [disabled]="formPareja.invalid || validandoCodigo">
+            </p-button>
+
+            <p-button
+              type="button"
+              label="Limpiar"
+              icon="pi pi-times"
+              styleClass="p-button-outlined p-button-secondary"
+              (click)="limpiarFormulario()">
+            </p-button>
+          </div>
+        </form>
+
+        <!-- Usuario encontrado -->
+        <div *ngIf="codigoValido && usuarioEncontrado" class="usuario-encontrado">
+          <p-card header="Usuario Encontrado" styleClass="usuario-card">
+            <div class="usuario-info">
+              <p-avatar
+                [label]="getIniciales(usuarioEncontrado)"
+                size="large"
+                shape="circle">
+              </p-avatar>
+
+              <div class="datos-usuario">
+                <h4>{{ getNombreCompleto(usuarioEncontrado) }}</h4>
+                <p class="username">{{ '@' + usuarioEncontrado.username }}</p>
+                <p class="email">{{ usuarioEncontrado.correo }}</p>
+              </div>
+            </div>
+
+            <div class="acciones-usuario">
+              <p-button
+                label="Formar Pareja"
+                icon="pi pi-heart"
+                styleClass="p-button-success"
+                (click)="formarPareja()"
+                [loading]="loading">
+              </p-button>
+            </div>
+          </p-card>
+        </div>
+      </div>
+
+      <!-- Generar mi código -->
+      <div class="mi-codigo">
+        <h5>Mi Código de Relación</h5>
+        <p-message
+          *ngIf="usuarioActual?.codigoRelacion"
+          severity="info"
+          [text]="'Tu código: ' + (usuarioActual?.codigoRelacion || '')">
+        </p-message>
+
         <p-button
-          label="Buscar Pareja"
-          icon="pi pi-search"
-          styleClass="p-button-outlined">
-        </p-button>
-        <p-button
-          label="Invitar Usuario"
-          icon="pi pi-user-plus">
+          *ngIf="!usuarioActual?.codigoRelacion"
+          label="Generar Código"
+          icon="pi pi-key"
+          styleClass="p-button-outlined p-button-info"
+          (click)="generarMiCodigo()"
+          [loading]="loading">
         </p-button>
       </div>
     </p-card>

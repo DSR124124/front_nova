@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, catchError } from 'rxjs';
+import { Observable, map, catchError, throwError } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { UsuarioByIdResponse } from '../models/Interfaces/Usuario/UsuarioByIdResponse';
 import { Usuario } from '../models/Interfaces/Usuario/Usuario';
@@ -19,6 +19,15 @@ export class UsuarioService {
     private responseHandler: ResponseHandlerService
   ) {}
 
+  // Método de prueba para verificar conectividad
+  testConnection(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/test`).pipe(
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
   // Métodos básicos que devuelven la respuesta completa del backend
   registrar(usuario: Usuario): Observable<MensajeErrorDTO<{usuario: Usuario}>> {
     return this.http.post<MensajeErrorDTO<{usuario: Usuario}>>(`${this.baseUrl}/registrar`, usuario);
@@ -33,7 +42,8 @@ export class UsuarioService {
   }
 
   listarPorUsername(username: string): Observable<MensajeErrorDTO<{usuario: Usuario}>> {
-    return this.http.get<MensajeErrorDTO<{usuario: Usuario}>>(`${this.baseUrl}/listar-por-username/${username}`);
+    const url = `${this.baseUrl}/listar-por-username/${username}`;
+    return this.http.get<MensajeErrorDTO<{usuario: Usuario}>>(url);
   }
 
   cambiarPassword(cambioPassword: CambioPasswordDTO): Observable<MensajeErrorDTO<{idUsuario: number}>> {
@@ -65,7 +75,7 @@ export class UsuarioService {
     );
   }
 
-  obtenerUsuarioPorUsername(username: string): Observable<Usuario> {
+    obtenerUsuarioPorUsername(username: string): Observable<Usuario> {
     return this.listarPorUsername(username).pipe(
       map(response => {
         if (response.p_exito && response.p_data?.usuario) {
@@ -73,7 +83,9 @@ export class UsuarioService {
         }
         throw new Error(response.p_menserror || 'Error al obtener usuario');
       }),
-      catchError(error => this.responseHandler.handleHttpError(error))
+      catchError(error => {
+        return this.responseHandler.handleHttpError(error);
+      })
     );
   }
 

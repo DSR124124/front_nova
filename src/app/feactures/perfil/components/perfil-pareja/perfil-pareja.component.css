@@ -21,7 +21,118 @@
   margin-bottom: 1.5rem;
 }
 
-/* Acciones sin pareja */
+/* Formulario para formar pareja */
+.formulario-pareja {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  background-color: var(--surface-card);
+}
+
+.formulario-pareja h5 {
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+  font-size: 1.1rem;
+}
+
+.campo-codigo {
+  margin-bottom: 1rem;
+}
+
+.campo-codigo label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.campo-codigo input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.campo-codigo input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-alpha-20);
+}
+
+.campo-codigo input.ng-invalid.ng-dirty {
+  border-color: var(--red-500);
+}
+
+.campo-codigo .p-error {
+  color: var(--red-500);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.acciones-formulario {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Usuario encontrado */
+.usuario-encontrado {
+  margin-top: 1.5rem;
+}
+
+.usuario-card {
+  border: 2px solid var(--green-500);
+  background-color: var(--green-50);
+}
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.datos-usuario h4 {
+  margin: 0 0 0.25rem 0;
+  color: var(--text-color);
+}
+
+.datos-usuario .username {
+  margin: 0 0 0.25rem 0;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.datos-usuario .email {
+  margin: 0;
+  color: var(--text-color-secondary);
+}
+
+.acciones-usuario {
+  text-align: center;
+}
+
+/* Mi código */
+.mi-codigo {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  background-color: var(--surface-ground);
+}
+
+.mi-codigo h5 {
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+/* Acciones sin pareja (mantenido para compatibilidad) */
 .acciones-sin-pareja {
   display: flex;
   gap: 1rem;
@@ -122,5 +233,18 @@
 
   .acciones-sin-pareja {
     flex-direction: column;
+  }
+
+  .formulario-pareja {
+    padding: 1rem;
+  }
+
+  .acciones-formulario {
+    flex-direction: column;
+  }
+
+  .usuario-info {
+    flex-direction: column;
+    text-align: center;
   }
 }

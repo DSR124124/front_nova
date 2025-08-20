@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../../core/services/usuario.service';
-import { ParejaService } from '../../../../core/services/pareja.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { CodigoRelacionService } from '../../../../core/services/codigo-relacion.service';
 import { Usuario } from '../../../../core/models/Interfaces/Usuario/Usuario';
-import { Pareja } from '../../../../core/models/Interfaces/Pareja/pareja';
 import { MessageService } from 'primeng/api';
 import { CambioPasswordDTO } from '../../../../core/models/Interfaces/Auth/auth.interface';
 import { Role, RoleLabels } from '../../../../core/models/enums/role.enum';
@@ -20,7 +18,6 @@ import { CodigoRelacionResponseDTO, ValidacionCodigoResponseDTO } from '../../..
 })
 export class PerfilUsuarioComponent implements OnInit {
   usuario: Usuario | null = null;
-  pareja: Pareja | null = null;
   loading = true;
   error = '';
   isAuthenticated = false;
@@ -49,7 +46,6 @@ export class PerfilUsuarioComponent implements OnInit {
 
   constructor(
     private usuarioService: UsuarioService,
-    private parejaService: ParejaService,
     private authService: AuthService,
     private codigoRelacionService: CodigoRelacionService,
     private router: Router,
@@ -86,22 +82,36 @@ export class PerfilUsuarioComponent implements OnInit {
     }
   }
 
-  cargarPerfilUsuario() {
+    cargarPerfilUsuario() {
     this.loading = true;
     const currentUser = this.authService.getUser();
 
-    if (currentUser && currentUser.idUsuario) {
-      // Usar el método helper que extrae solo los datos
+    if (currentUser && currentUser.username) {
+      // Usar el método helper que extrae solo los datos por username
+      this.usuarioService.obtenerUsuarioPorUsername(currentUser.username).subscribe({
+        next: (usuario) => {
+          this.usuario = usuario;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = `Error al cargar el perfil: ${err.message || 'Error desconocido'}`;
+          this.loading = false;
+
+          // Mostrar mensaje de error al usuario
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al Cargar Perfil',
+            detail: this.error,
+            life: 8000
+          });
+        }
+      });
+    } else if (currentUser && currentUser.idUsuario) {
+      // Fallback: usar ID si no hay username disponible
       this.usuarioService.obtenerUsuarioPorId(currentUser.idUsuario).subscribe({
         next: (usuario) => {
           this.usuario = usuario;
-
-          // Verificar si tiene pareja usando el código de relación
-          if (usuario.codigoRelacion) {
-            this.cargarParejaPorCodigo(usuario.codigoRelacion);
-          } else {
-            this.loading = false;
-          }
+          this.loading = false;
         },
         error: (err) => {
           this.error = `Error al cargar el perfil: ${err.message || 'Error desconocido'}`;
@@ -129,42 +139,9 @@ export class PerfilUsuarioComponent implements OnInit {
     }
   }
 
-  cargarParejaPorCodigo(codigoRelacion: string) {
-    // Por ahora, como no tenemos un método específico para buscar por código,
-    // vamos a buscar en la lista de parejas del usuario
-    this.parejaService.listar().subscribe({
-      next: (parejas) => {
-        // Buscar la pareja que contenga este usuario
-        const parejaEncontrada = parejas.find(pareja =>
-          pareja.usuario1Id === this.usuario?.idUsuario ||
-          pareja.usuario2Id === this.usuario?.idUsuario
-        );
 
-        if (parejaEncontrada) {
-          this.pareja = parejaEncontrada;
-        }
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Error al cargar información de la pareja';
-        this.loading = false;
-      }
-    });
-  }
 
-  // Método anterior mantenido para compatibilidad
-  cargarPareja(parejaId: number) {
-    this.parejaService.listarPorId(parejaId).subscribe({
-      next: (pareja) => {
-        this.pareja = pareja;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Error al cargar información de la pareja';
-        this.loading = false;
-      }
-    });
-  }
+
 
   goToLogin() {
     this.router.navigate(['/auth/login']);
@@ -180,18 +157,11 @@ export class PerfilUsuarioComponent implements OnInit {
   }
 
   getEstadoPareja(): string {
-    if (!this.pareja) return 'Sin pareja';
-
-    switch (this.pareja.estadoRelacion) {
-      case 'activa': return 'Activa';
-      case 'pausada': return 'Pausada';
-      case 'terminada': return 'Terminada';
-      default: return 'Desconocido';
-    }
+    return 'Sin pareja';
   }
 
   tienePareja(): boolean {
-    return this.pareja !== null && this.pareja.estadoRelacion === 'activa';
+    return false;
   }
 
   getGeneroTexto(): string {

@@ -89,9 +89,38 @@ export class AuthService {
     return token ? !this.jwtHelper.isTokenExpired(token) : false;
   }
 
-  // Obtener usuario actual
+    // Obtener usuario actual
   getUser(): any {
-    return this.currentUserSubject.value;
+    // Si no hay usuario en el subject, intentar obtenerlo del token
+    let user = this.currentUserSubject.value;
+
+    if (!user) {
+      const token = this.getAccessToken();
+      if (token && !this.jwtHelper.isTokenExpired(token)) {
+        try {
+          user = this.decodeToken(token);
+          if (user) {
+            // Asegurarse de que el username esté disponible
+            if (user.sub && !user.username) {
+              user.username = user.sub;
+            }
+            // Actualizar el subject con el usuario del token
+            this.currentUserSubject.next(user);
+          }
+        } catch (error) {
+          console.error('Error decodificando token:', error);
+        }
+      }
+    } else {
+      // Asegurarse de que el usuario actual tenga username
+      if (user.sub && !user.username) {
+        user.username = user.sub;
+        // Actualizar el subject
+        this.currentUserSubject.next(user);
+      }
+    }
+
+    return user;
   }
 
   // Obtener token
@@ -181,6 +210,7 @@ export class AuthService {
     const token = this.getAccessToken();
     if (!token) return null;
     const decoded = this.jwtHelper.decodeToken(token);
+    // Usar username si existe, sino usar sub como fallback
     return decoded?.username ?? decoded?.sub ?? null;
   }
 
@@ -233,6 +263,10 @@ export class AuthService {
 
     const user = this.decodeToken(token);
     if (user) {
+      // Asegurarse de que el username esté disponible
+      if (user.sub && !user.username) {
+        user.username = user.sub;
+      }
       this.currentUserSubject.next(user);
     }
   }
@@ -243,6 +277,10 @@ export class AuthService {
       try {
         const user = this.decodeToken(token);
         if (user && !this.jwtHelper.isTokenExpired(token)) {
+          // Asegurarse de que el username esté disponible
+          if (user.sub && !user.username) {
+            user.username = user.sub;
+          }
           this.currentUserSubject.next(user);
         } else {
           this.logout();
@@ -253,9 +291,16 @@ export class AuthService {
     }
   }
 
-  private decodeToken(token: string): DecodedToken | null {
+    private decodeToken(token: string): DecodedToken | null {
     try {
-      return this.jwtHelper.decodeToken(token);
+      const decoded = this.jwtHelper.decodeToken(token);
+
+      // Mapear el campo 'sub' a 'username' si no existe
+      if (decoded && decoded.sub && !decoded.username) {
+        decoded.username = decoded.sub;
+      }
+
+      return decoded;
     } catch (error) {
       return null;
     }
