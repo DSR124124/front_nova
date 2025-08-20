@@ -1,0 +1,414 @@
+/* Estilos específicos para el Landing Page de Nova */
+
+/* Variables CSS específicas del Landing */
+:root {
+  /* Colores principales del Landing */
+  --landing-primary: #3b82f6;
+  --landing-primary-light: #60a5fa;
+  --landing-primary-dark: #1d4ed8;
+  --landing-accent: #f59e0b;
+  --landing-success: #10b981;
+  --landing-danger: #ef4444;
+
+  /* Colores de fondo del Landing */
+  --landing-bg-primary: #0f172a;
+  --landing-bg-secondary: #1e293b;
+  --landing-bg-card: #334155;
+  --landing-bg-overlay: #475569;
+
+  /* Colores de texto del Landing */
+  --landing-text-primary: #f8fafc;
+  --landing-text-secondary: #cbd5e1;
+  --landing-text-muted: #94a3b8;
+
+  /* Sombras específicas del Landing */
+  --landing-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --landing-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+  --landing-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+  --landing-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.25);
+
+  /* Espaciado del Landing */
+  --landing-spacing-xs: 0.5rem;
+  --landing-spacing-sm: 1rem;
+  --landing-spacing-md: 1.5rem;
+  --landing-spacing-lg: 2.5rem;
+  --landing-spacing-xl: 4rem;
+  --landing-spacing-2xl: 6rem;
+
+  /* Bordes redondeados del Landing */
+  --landing-radius-sm: 0.5rem;
+  --landing-radius-md: 1rem;
+  --landing-radius-lg: 1.5rem;
+  --landing-radius-xl: 2rem;
+
+  /* Transiciones del Landing */
+  --landing-transition-fast: 0.2s ease;
+  --landing-transition-normal: 0.3s ease;
+  --landing-transition-slow: 0.5s ease;
+}
+
+/* Estilos base del Landing */
+.landing-page {
+  background: var(--landing-bg-primary);
+  color: var(--landing-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Contenedor principal del Landing */
+.landing-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--landing-spacing-md);
+}
+
+/* Secciones del Landing */
+.landing-section {
+  padding: var(--landing-spacing-2xl) 0;
+  position: relative;
+}
+
+.landing-section-alt {
+  background: var(--landing-bg-secondary);
+}
+
+/* Headers de sección */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--landing-spacing-xl);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--landing-primary);
+  margin-bottom: var(--landing-spacing-md);
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  color: var(--landing-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Grids responsivos del Landing */
+.landing-grid {
+  display: grid;
+  gap: var(--landing-spacing-lg);
+}
+
+.landing-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.landing-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.landing-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Cards del Landing */
+.landing-card {
+  background: var(--landing-bg-card);
+  border-radius: var(--landing-radius-lg);
+  padding: var(--landing-spacing-lg);
+  box-shadow: var(--landing-shadow-md);
+  transition: all var(--landing-transition-normal);
+  border: 1px solid var(--landing-bg-overlay);
+}
+
+.landing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--landing-shadow-lg);
+  border-color: var(--landing-primary);
+}
+
+/* Botones del Landing */
+.landing-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-spacing-sm);
+  padding: var(--landing-spacing-sm) var(--landing-spacing-lg);
+  border-radius: var(--landing-radius-md);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--landing-transition-normal);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.landing-btn-primary {
+  background: var(--landing-primary);
+  color: white;
+}
+
+.landing-btn-primary:hover {
+  background: var(--landing-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--landing-shadow-lg);
+}
+
+.landing-btn-secondary {
+  background: transparent;
+  color: var(--landing-primary);
+  border: 2px solid var(--landing-primary);
+}
+
+.landing-btn-secondary:hover {
+  background: var(--landing-primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.landing-btn-outline {
+  background: transparent;
+  color: var(--landing-text-primary);
+  border: 2px solid var(--landing-text-secondary);
+}
+
+.landing-btn-outline:hover {
+  border-color: var(--landing-primary);
+  color: var(--landing-primary);
+}
+
+/* Iconos del Landing */
+.landing-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--landing-primary);
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: var(--landing-spacing-md);
+}
+
+.landing-icon-large {
+  width: 80px;
+  height: 80px;
+  font-size: 2rem;
+}
+
+/* Animaciones del Landing */
+@keyframes landingFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landingSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes landingSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes landingPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes landingFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Clases de animación del Landing */
+.landing-animate-fade-in {
+  animation: landingFadeIn 0.8s ease-out;
+}
+
+.landing-animate-slide-left {
+  animation: landingSlideInLeft 0.8s ease-out;
+}
+
+.landing-animate-slide-right {
+  animation: landingSlideInRight 0.8s ease-out;
+}
+
+.landing-animate-pulse {
+  animation: landingPulse 2s infinite;
+}
+
+.landing-animate-float {
+  animation: landingFloat 3s ease-in-out infinite;
+}
+
+/* Estados de hover del Landing */
+.landing-hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--landing-shadow-xl);
+}
+
+.landing-hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.landing-hover-glow:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+/* Utilidades del Landing */
+.landing-text-center { text-align: center; }
+.landing-text-left { text-align: left; }
+.landing-text-right { text-align: right; }
+
+.landing-hidden { display: none; }
+.landing-block { display: block; }
+.landing-inline-block { display: inline-block; }
+
+.landing-relative { position: relative; }
+.landing-absolute { position: absolute; }
+.landing-fixed { position: fixed; }
+
+/* Responsive del Landing */
+@media (max-width: 1024px) {
+  .landing-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .landing-section {
+    padding: var(--landing-spacing-xl) 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-grid-2,
+  .landing-grid-3,
+  .landing-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-section {
+    padding: var(--landing-spacing-lg) 0;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+  }
+
+  .landing-container {
+    padding: 0 var(--landing-spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-section {
+    padding: var(--landing-spacing-md) 0;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .landing-card {
+    padding: var(--landing-spacing-md);
+  }
+
+  .landing-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Scrollbar personalizada del Landing */
+.landing-page::-webkit-scrollbar {
+  width: 10px;
+}
+
+.landing-page::-webkit-scrollbar-track {
+  background: var(--landing-bg-secondary);
+}
+
+.landing-page::-webkit-scrollbar-thumb {
+  background: var(--landing-primary);
+  border-radius: 5px;
+}
+
+.landing-page::-webkit-scrollbar-thumb:hover {
+  background: var(--landing-primary-dark);
+}
+
+/* Focus states para accesibilidad del Landing */
+.landing-btn:focus,
+.landing-card:focus {
+  outline: 2px solid var(--landing-primary);
+  outline-offset: 2px;
+}
+
+/* Selección de texto del Landing */
+.landing-page::selection {
+  background-color: var(--landing-primary);
+  color: white;
+}
+
+/* Loading states del Landing */
+.landing-loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.landing-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 3px solid var(--landing-primary);
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: landingSpin 1s linear infinite;
+}
+
+@keyframes landingSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
