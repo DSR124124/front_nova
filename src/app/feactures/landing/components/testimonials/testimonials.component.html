@@ -1,0 +1,91 @@
+<section class="testimonials-section">
+  <div class="testimonials-container">
+    <div class="testimonials-header">
+      <h2 class="testimonials-title">Lo que dicen nuestras parejas</h2>
+      <p class="testimonials-subtitle">
+        Descubre cómo Nova está transformando relaciones en todo el mundo
+      </p>
+    </div>
+
+    <div class="testimonials-content">
+      <div class="testimonial-carousel">
+        <!-- Botones de navegación -->
+        <button
+          class="carousel-btn prev-btn"
+          (click)="previousTestimonial()"
+          aria-label="Testimonio anterior"
+        >
+          <i class="pi pi-chevron-left"></i>
+        </button>
+
+        <button
+          class="carousel-btn next-btn"
+          (click)="nextTestimonial()"
+          aria-label="Siguiente testimonio"
+        >
+          <i class="pi pi-chevron-right"></i>
+        </button>
+
+        <!-- Testimonio actual -->
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">
+              <p-image
+                [src]="testimonials[currentTestimonial].avatar"
+                alt="Avatar"
+                [preview]="false"
+                styleClass="avatar-image"
+              />
+            </div>
+            <div class="testimonial-info">
+              <h3 class="testimonial-name">{{ testimonials[currentTestimonial].name }}</h3>
+              <p class="testimonial-location">{{ testimonials[currentTestimonial].location }}</p>
+              <div class="testimonial-rating">
+                <i
+                  *ngFor="let star of getStars(testimonials[currentTestimonial].rating)"
+                  class="pi pi-star-fill star-icon"
+                ></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-content">
+            <blockquote class="testimonial-text">
+              "{{ testimonials[currentTestimonial].text }}"
+            </blockquote>
+            <div class="testimonial-feature">
+              <span class="feature-badge">{{ testimonials[currentTestimonial].feature }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+          <button
+            *ngFor="let testimonial of testimonials; let i = index"
+            class="indicator-btn"
+            [class.active]="i === currentTestimonial"
+            (click)="goToTestimonial(i)"
+            [attr.aria-label]="'Ir al testimonio ' + (i + 1)"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estadísticas adicionales -->
+    <div class="testimonials-stats">
+      <div class="stat-item">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Recomiendan Nova</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">4.9/5</div>
+        <div class="stat-label">Calificación Promedio</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">15K+</div>
+        <div class="stat-label">Testimonios Verificados</div>
+      </div>
+    </div>
+  </div>
+</section>

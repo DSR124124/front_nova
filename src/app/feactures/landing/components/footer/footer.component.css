@@ -1,12 +1,12 @@
 .footer-section {
   background: var(--surface-section);
-  padding: 1rem 0;
+  padding: var(--spacing-md) 0;
 }
 
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--spacing-xl);
 }
 
 .footer-bottom {
@@ -15,13 +15,13 @@
 
 .footer-bottom p {
   color: var(--text-color-secondary);
-  margin: 0.25rem 0;
+  margin: var(--spacing-xs) 0;
   font-size: 0.85rem;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .footer-container {
-    padding: 0 1rem;
+    padding: 0 var(--spacing-md);
   }
 }
