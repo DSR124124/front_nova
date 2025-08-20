@@ -4,19 +4,21 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: var(--surface-section, var(--surface-card)); /* Fondo sólido */
-  border-bottom: 1px solid var(--surface-border);
-  transition: all 0.3s ease;
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+  transition: all var(--landing-transition-normal);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
 .header-nav {
-  padding: 1rem 0;
+  padding: 0.75rem 0;
 }
 
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--landing-spacing-lg);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,41 +27,42 @@
 .header-brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--landing-spacing-sm);
 }
 
-/* Tamaño del logo (p-image) */
+/* Tamaño del logo optimizado */
 :host ::ng-deep .header-brand .p-image img {
-  height: 40px;
+  height: 32px;
   width: auto;
   display: block;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
 }
 
 .header-brand-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--landing-primary);
+  letter-spacing: -0.025em;
 }
 
 .header-menu {
   display: flex;
-  gap: 2rem;
+  gap: var(--landing-spacing-lg);
 }
 
 .header-actions {
   display: flex;
-  gap: 1rem;
+  gap: var(--landing-spacing-sm);
   align-items: center;
 }
 
-/* Botón hamburguesa */
+/* Botón hamburguesa optimizado */
 .hamburger-btn {
   display: none;
   flex-direction: column;
   justify-content: space-around;
-  width: 30px;
-  height: 25px;
+  width: 24px;
+  height: 20px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -69,15 +72,15 @@
 
 .hamburger-line {
   width: 100%;
-  height: 3px;
-  background: var(--text-color);
-  border-radius: 2px;
-  transition: all 0.3s ease;
+  height: 2px;
+  background: var(--landing-text-primary);
+  border-radius: 1px;
+  transition: all var(--landing-transition-normal);
   transform-origin: center;
 }
 
 .hamburger-btn.active .hamburger-line:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px);
+  transform: rotate(45deg) translate(5px, 5px);
 }
 
 .hamburger-btn.active .hamburger-line:nth-child(2) {
@@ -85,10 +88,10 @@
 }
 
 .hamburger-btn.active .hamburger-line:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Menú móvil */
+/* Menú móvil optimizado */
 .mobile-menu {
   display: none;
   position: fixed;
@@ -96,11 +99,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--surface-section, var(--surface-card)); /* Fondo sólido */
+  background: var(--landing-bg-secondary);
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: all var(--landing-transition-normal);
 }
 
 .mobile-menu.open {
@@ -114,76 +117,99 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding: 2rem;
-  gap: 2rem;
+  padding: var(--landing-spacing-lg);
+  gap: var(--landing-spacing-lg);
+  background: var(--landing-bg-secondary);
 }
 
 .mobile-actions {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: var(--landing-spacing-sm);
+  margin-top: var(--landing-spacing-lg);
 }
 
-/* Estilos para botones PrimeNG */
+/* Estilos para botones PrimeNG optimizados */
 :host ::ng-deep .header-menu-item.p-button {
   background: transparent !important;
   border: none !important;
-  color: var(--text-color) !important;
+  color: var(--landing-text-secondary) !important;
   font-weight: 500;
-  padding: 0.5rem 0;
+  font-size: 0.9rem !important;
+  padding: 0.5rem 0.75rem !important;
   box-shadow: none !important;
+  border-radius: var(--landing-radius-md) !important;
+  transition: all var(--landing-transition-fast) !important;
 }
 
 :host ::ng-deep .header-menu-item.p-button:hover {
-  background: transparent !important;
-  color: var(--primary-color) !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: var(--landing-primary) !important;
   transform: none !important;
 }
 
 :host ::ng-deep .mobile-menu-item.p-button {
   background: transparent !important;
   border: none !important;
-  color: var(--text-color) !important;
+  color: var(--landing-text-primary) !important;
   font-weight: 500;
-  font-size: 1.25rem !important;
-  padding: 1rem 0 !important;
+  font-size: 1.1rem !important;
+  padding: var(--landing-spacing-sm) 0 !important;
   box-shadow: none !important;
 }
 
 :host ::ng-deep .mobile-menu-item.p-button:hover {
   background: transparent !important;
-  color: var(--primary-color) !important;
+  color: var(--landing-primary) !important;
   transform: none !important;
 }
 
 :host ::ng-deep .header-login-btn.p-button {
-  border-color: var(--primary-color) !important;
-  color: var(--primary-color) !important;
+  border-color: var(--landing-primary) !important;
+  color: var(--landing-primary) !important;
+  font-size: 0.85rem !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: var(--landing-radius-md) !important;
+  font-weight: 500 !important;
 }
 
 :host ::ng-deep .header-register-btn.p-button {
-  background: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-  color: var(--primary-color-text) !important;
+  background: var(--landing-primary) !important;
+  border-color: var(--landing-primary) !important;
+  color: white !important;
+  font-size: 0.85rem !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: var(--landing-radius-md) !important;
+  font-weight: 500 !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+}
+
+:host ::ng-deep .header-register-btn.p-button:hover {
+  background: var(--landing-primary-dark) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
 }
 
 :host ::ng-deep .mobile-login-btn.p-button {
-  border-color: var(--primary-color) !important;
-  color: var(--primary-color) !important;
-  font-size: 1rem !important;
+  border-color: var(--landing-primary) !important;
+  color: var(--landing-primary) !important;
+  font-size: 0.9rem !important;
   padding: 0.75rem 1.5rem !important;
+  border-radius: var(--landing-radius-md) !important;
+  font-weight: 500 !important;
 }
 
 :host ::ng-deep .mobile-register-btn.p-button {
-  background: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-  color: var(--primary-color-text) !important;
-  font-size: 1rem !important;
+  background: var(--landing-primary) !important;
+  border-color: var(--landing-primary) !important;
+  color: white !important;
+  font-size: 0.9rem !important;
   padding: 0.75rem 1.5rem !important;
+  border-radius: var(--landing-radius-md) !important;
+  font-weight: 500 !important;
 }
 
-/* Responsive */
+/* Responsive optimizado */
 @media (max-width: 768px) {
   .desktop-menu {
     display: none;
@@ -204,28 +230,36 @@
   .header-container {
     justify-content: space-between;
   }
+
+  .header-nav {
+    padding: 0.5rem 0;
+  }
 }
 
 @media (max-width: 480px) {
   .header-container {
-    padding: 0 1rem;
+    padding: 0 var(--landing-spacing-md);
   }
 
   .header-brand-name {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
   :host ::ng-deep .header-brand .p-image img {
-    height: 32px;
+    height: 28px;
   }
 
   .mobile-menu-content {
-    padding: 1.5rem;
-    gap: 1.5rem;
+    padding: var(--landing-spacing-md);
+    gap: var(--landing-spacing-md);
   }
 
   .mobile-actions {
-    margin-top: 1.5rem;
-    gap: 0.75rem;
+    margin-top: var(--landing-spacing-md);
+    gap: var(--landing-spacing-sm);
+  }
+
+  .header-nav {
+    padding: 0.4rem 0;
   }
 }

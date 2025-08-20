@@ -1,0 +1,387 @@
+.pricing-section {
+  padding: var(--landing-spacing-lg) 0;
+  background: linear-gradient(135deg, var(--landing-bg-primary) 0%, var(--landing-bg-secondary) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.02"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.02"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.01"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  pointer-events: none;
+}
+
+.pricing-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--landing-spacing-md);
+  position: relative;
+  z-index: 1;
+}
+
+.pricing-header {
+  text-align: center;
+  margin-bottom: var(--landing-spacing-lg);
+}
+
+.pricing-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--landing-primary) 0%, var(--landing-primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--landing-spacing-sm);
+  letter-spacing: -0.02em;
+}
+
+.pricing-subtitle {
+  font-size: 1.1rem;
+  color: var(--landing-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.pricing-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-spacing-lg);
+}
+
+/* Grid de precios optimizado */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--landing-spacing-md);
+  margin-bottom: var(--landing-spacing-md);
+  align-items: start;
+}
+
+.pricing-card {
+  background: rgba(51, 65, 85, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: var(--landing-radius-lg);
+  padding: var(--landing-spacing-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transition: all var(--landing-transition-normal);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: var(--landing-primary);
+}
+
+.pricing-card.popular {
+  border-color: var(--landing-primary);
+  border-width: 2px;
+  transform: scale(1.01);
+  background: rgba(51, 65, 85, 0.9);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+}
+
+.pricing-card.popular:hover {
+  transform: scale(1.01) translateY(-4px);
+  box-shadow: 0 10px 28px rgba(59, 130, 246, 0.3);
+}
+
+/* Badge popular mejorado */
+.popular-badge {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--landing-primary) 0%, var(--landing-primary-light) 100%);
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: var(--landing-radius-lg);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+/* Header del plan optimizado */
+.plan-header {
+  text-align: center;
+  margin-bottom: var(--landing-spacing-md);
+  padding-bottom: var(--landing-spacing-md);
+  border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.plan-name {
+  font-size: 1.4rem;
+  color: var(--landing-text-primary);
+  margin: 0 0 var(--landing-spacing-sm) 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.plan-price {
+  margin-bottom: var(--landing-spacing-sm);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.price-currency {
+  font-size: 1.1rem;
+  color: var(--landing-text-secondary);
+  font-weight: 500;
+}
+
+.price-amount {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--landing-primary);
+  line-height: 1;
+}
+
+.price-period {
+  font-size: 0.85rem;
+  color: var(--landing-text-secondary);
+  font-weight: 400;
+}
+
+.plan-description {
+  color: var(--landing-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+/* Características del plan mejoradas */
+.plan-features {
+  margin-bottom: var(--landing-spacing-md);
+  flex-grow: 1;
+}
+
+.plan-features h4 {
+  color: var(--landing-primary);
+  margin: 0 0 var(--landing-spacing-sm) 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-spacing-xs);
+  margin-bottom: var(--landing-spacing-xs);
+  color: var(--landing-text-primary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.feature-icon {
+  color: var(--landing-success);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* Limitaciones del plan mejoradas */
+.plan-limitations {
+  margin-bottom: var(--landing-spacing-md);
+}
+
+.plan-limitations h4 {
+  color: var(--landing-danger);
+  margin: 0 0 var(--landing-spacing-sm) 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.limitations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.limitations-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-spacing-xs);
+  margin-bottom: var(--landing-spacing-xs);
+  color: var(--landing-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.limitation-icon {
+  color: var(--landing-danger);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* Botón de acción mejorado */
+.plan-action {
+  text-align: center;
+  margin-bottom: var(--landing-spacing-md);
+  margin-top: auto;
+}
+
+.pricing-free-btn,
+.pricing-premium-btn,
+.pricing-pro-btn {
+  width: 100%;
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--landing-radius-md);
+  transition: all var(--landing-transition-normal);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pricing-free-btn {
+  background: linear-gradient(135deg, var(--landing-success) 0%, #059669 100%);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.pricing-free-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.pricing-premium-btn {
+  background: linear-gradient(135deg, var(--landing-primary) 0%, var(--landing-primary-dark) 100%);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.pricing-premium-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.pricing-pro-btn {
+  background: linear-gradient(135deg, var(--landing-accent) 0%, #d97706 100%);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.pricing-pro-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+/* Información adicional del plan mejorada */
+.plan-info {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--landing-text-secondary);
+  padding-top: var(--landing-spacing-sm);
+  border-top: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.trial-info {
+  margin: 0 0 var(--landing-spacing-xs) 0;
+  color: var(--landing-success);
+  font-weight: 600;
+}
+
+.cancel-info {
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Responsive optimizado */
+@media (max-width: 1024px) {
+  .pricing-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--landing-spacing-sm);
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-section {
+    padding: var(--landing-spacing-md) 0;
+  }
+
+  .pricing-title {
+    font-size: 2rem;
+  }
+
+  .pricing-subtitle {
+    font-size: 1rem;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: var(--landing-spacing-md);
+    max-width: 450px;
+    margin: 0 auto var(--landing-spacing-md) auto;
+  }
+
+  .pricing-card {
+    padding: var(--landing-spacing-md);
+  }
+
+  .pricing-card.popular {
+    transform: none;
+  }
+
+  .pricing-card.popular:hover {
+    transform: translateY(-4px);
+  }
+
+  .price-amount {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-container {
+    padding: 0 var(--landing-spacing-sm);
+  }
+
+  .pricing-title {
+    font-size: 1.75rem;
+  }
+
+  .pricing-card {
+    padding: var(--landing-spacing-sm);
+  }
+
+  .plan-name {
+    font-size: 1.25rem;
+  }
+
+  .price-amount {
+    font-size: 2rem;
+  }
+
+  .pricing-free-btn,
+  .pricing-premium-btn,
+  .pricing-pro-btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.85rem;
+  }
+}

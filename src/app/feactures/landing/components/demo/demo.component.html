@@ -1,0 +1,74 @@
+<section class="demo-section">
+  <div class="demo-container">
+    <div class="demo-header">
+      <h2 class="demo-title">Descubre Nova en Acción</h2>
+      <p class="demo-subtitle">
+        Explora las principales funcionalidades de nuestra aplicación
+      </p>
+    </div>
+
+    <div class="demo-content">
+      <div class="demo-showcase">
+        <!-- Navegación del demo -->
+        <div class="demo-navigation">
+          <button
+            class="demo-nav-btn prev-btn"
+            (click)="previousFeature()"
+            aria-label="Característica anterior"
+          >
+            <i class="pi pi-chevron-left"></i>
+          </button>
+
+          <button
+            class="demo-nav-btn next-btn"
+            (click)="nextFeature()"
+            aria-label="Siguiente característica"
+          >
+            <i class="pi pi-chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- Preview de la aplicación -->
+        <div class="demo-preview">
+          <div class="preview-container">
+            <div class="preview-header">
+              <div class="preview-icon" [style.background-color]="demoFeatures[currentFeature].color">
+                <i [class]="demoFeatures[currentFeature].icon"></i>
+              </div>
+              <h3 class="preview-title">{{ demoFeatures[currentFeature].title }}</h3>
+            </div>
+
+            <div class="preview-image">
+              <p-image
+                [src]="demoFeatures[currentFeature].image"
+                alt="Demo de {{ demoFeatures[currentFeature].title }}"
+                [preview]="false"
+                styleClass="demo-screenshot"
+              />
+            </div>
+
+            <p class="preview-description">
+              {{ demoFeatures[currentFeature].description }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Indicadores de características -->
+        <div class="demo-indicators">
+          <button
+            *ngFor="let feature of demoFeatures; let i = index"
+            class="demo-indicator"
+            [class.active]="i === currentFeature"
+            (click)="goToFeature(i)"
+            [attr.aria-label]="'Ver ' + feature.title"
+          >
+            <div class="indicator-icon" [style.background-color]="feature.color">
+              <i [class]="feature.icon"></i>
+            </div>
+            <span class="indicator-title">{{ feature.title }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

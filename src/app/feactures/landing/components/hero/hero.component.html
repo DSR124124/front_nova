@@ -1,42 +1,55 @@
 <section class="hero-section">
   <div class="hero-container">
     <div class="hero-content">
-
-      <h1 class="hero-title">
-        Gestiona tu relación de pareja de manera inteligente
-      </h1>
-
+      <div class="hero-logo">
+        <img src="assets/images/logo_blanco.png" alt="Nova Logo" height="40">
+      </div>
+      <h1 class="hero-title" data-text="Gestiona tu relación de manera inteligente">Gestiona tu relación de manera inteligente</h1>
       <p class="hero-subtitle">
-        Organiza citas, eventos, lugares favoritos y mantén viva la magia de tu relación con Nova
+        La aplicación que transforma tu relación en una experiencia mágica y organizada.
+        Gestiona eventos, comparte momentos y fortalece el amor con tecnología inteligente.
       </p>
-
       <div class="hero-actions">
         <p-button
           label="Comenzar Ahora"
-          icon="pi pi-rocket"
-          (onClick)="onGetStarted()"
-          styleClass="hero-primary-btn"
-          size="large"
+          icon="pi pi-heart"
+          (onClick)="onRegister()"
+          styleClass="hero-primary-btn p-button-lg"
         />
-
         <p-button
-          label="Iniciar Sesión"
-          icon="pi pi-sign-in"
-          (onClick)="onLogin()"
-          styleClass="hero-secondary-btn"
-          [outlined]="true"
-          size="large"
+          label="Ver Demo"
+          icon="pi pi-play"
+          (onClick)="onWatchDemo()"
+          styleClass="hero-secondary-btn p-button-lg"
         />
       </div>
     </div>
 
     <div class="hero-visual">
       <div class="hero-illustration">
-        <i class="pi pi-heart hero-heart-icon"></i>
+        <!-- Partículas flotantes -->
+        <div class="particles">
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+        </div>
+
+        <!-- Corazón principal -->
+        <div class="hero-heart-icon">❤</div>
+
+        <!-- Elementos flotantes -->
         <div class="floating-elements">
-          <i class="pi pi-calendar floating-icon calendar-icon"></i>
-          <i class="pi pi-map-marker floating-icon location-icon"></i>
-          <i class="pi pi-gift floating-icon gift-icon"></i>
+          <div class="floating-icon calendar-icon">
+            <i class="pi pi-calendar"></i>
+          </div>
+          <div class="floating-icon location-icon">
+            <i class="pi pi-map-marker"></i>
+          </div>
+          <div class="floating-icon gift-icon">
+            <i class="pi pi-gift"></i>
+          </div>
         </div>
       </div>
     </div>

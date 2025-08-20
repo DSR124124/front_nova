@@ -10,11 +10,14 @@ import { Router } from '@angular/router';
 export class HeroComponent {
   constructor(private router: Router) {}
 
-  onGetStarted(): void {
+  onRegister(): void {
     this.router.navigate(['/auth/register']);
   }
 
-  onLogin(): void {
-    this.router.navigate(['/auth/login']);
+  onWatchDemo(): void {
+    // Scroll to demo section
+    document.querySelector('.demo-section')?.scrollIntoView({
+      behavior: 'smooth'
+    });
   }
 }

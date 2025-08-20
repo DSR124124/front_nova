@@ -1,0 +1,71 @@
+<section class="about-section" id="about">
+  <div class="about-container">
+    <div class="about-header">
+      <h2 class="about-title">Acerca de Nova</h2>
+      <p class="about-subtitle">
+        Somos más que una aplicación, somos tu compañero en el viaje del amor
+      </p>
+    </div>
+
+    <div class="about-content">
+      <!-- Misión y Visión -->
+      <div class="mission-vision">
+        <div class="mission-card">
+          <p-card styleClass="about-card">
+            <ng-template pTemplate="header">
+              <div class="card-icon mission-icon">
+                <i [class]="aboutData.mission.icon"></i>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="title">
+              <h3>{{ aboutData.mission.title }}</h3>
+            </ng-template>
+            <ng-template pTemplate="content">
+              <p>{{ aboutData.mission.description }}</p>
+            </ng-template>
+          </p-card>
+        </div>
+
+        <div class="vision-card">
+          <p-card styleClass="about-card">
+            <ng-template pTemplate="header">
+              <div class="card-icon vision-icon">
+                <i [class]="aboutData.vision.icon"></i>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="title">
+              <h3>{{ aboutData.vision.title }}</h3>
+            </ng-template>
+            <ng-template pTemplate="content">
+              <p>{{ aboutData.vision.description }}</p>
+            </ng-template>
+          </p-card>
+        </div>
+      </div>
+
+      <!-- Valores -->
+      <div class="values-section">
+        <h3 class="values-title">Nuestros Valores</h3>
+        <div class="values-grid">
+          <p-card
+            *ngFor="let value of aboutData.values"
+            styleClass="value-card"
+          >
+            <ng-template pTemplate="header">
+              <div class="value-icon">
+                <i [class]="value.icon"></i>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="title">
+              <h4>{{ value.title }}</h4>
+            </ng-template>
+            <ng-template pTemplate="content">
+              <p>{{ value.description }}</p>
+            </ng-template>
+          </p-card>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

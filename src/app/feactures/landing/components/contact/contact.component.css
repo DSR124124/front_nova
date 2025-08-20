@@ -1,0 +1,218 @@
+.contact-section {
+  padding: var(--landing-spacing-lg) 0;
+  background: var(--landing-bg-primary);
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--landing-spacing-md);
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: var(--landing-spacing-lg);
+}
+
+.contact-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--landing-primary);
+  margin-bottom: var(--landing-spacing-sm);
+}
+
+.contact-subtitle {
+  font-size: 1.1rem;
+  color: var(--landing-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--landing-spacing-lg);
+  align-items: start;
+}
+
+/* Información de contacto */
+.contact-info h3 {
+  font-size: 1.3rem;
+  color: var(--landing-primary);
+  margin-bottom: var(--landing-spacing-md);
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-spacing-sm);
+}
+
+.info-item {
+  background: var(--landing-bg-card);
+  border-radius: var(--landing-radius-lg);
+  padding: var(--landing-spacing-sm);
+  transition: transform var(--landing-transition-normal), box-shadow var(--landing-transition-normal);
+}
+
+.info-item:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--landing-shadow-md);
+}
+
+.info-link {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-spacing-sm);
+  text-decoration: none;
+  color: inherit;
+}
+
+.info-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--landing-primary);
+  color: white;
+  font-size: 1.1rem;
+}
+
+.info-content h4 {
+  margin: 0 0 var(--landing-spacing-xs) 0;
+  color: var(--landing-primary);
+  font-size: 0.9rem;
+}
+
+.info-content p {
+  margin: 0;
+  color: var(--landing-text-secondary);
+  font-size: 0.85rem;
+}
+
+/* Formulario de contacto */
+.contact-form h3 {
+  font-size: 1.3rem;
+  color: var(--landing-primary);
+  margin-bottom: var(--landing-spacing-md);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--landing-spacing-sm);
+}
+
+.form-group {
+  margin-bottom: var(--landing-spacing-md);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--landing-spacing-xs);
+  color: var(--landing-text-primary);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.625rem;
+  border: 2px solid var(--landing-bg-overlay);
+  border-radius: var(--landing-radius-md);
+  font-size: 0.9rem;
+  background: var(--landing-bg-card);
+  color: var(--landing-text-primary);
+  transition: border-color var(--landing-transition-normal);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--landing-primary);
+}
+
+.form-group input.ng-invalid,
+.form-group textarea.ng-invalid {
+  border-color: var(--landing-danger);
+}
+
+.error-message {
+  color: var(--landing-danger);
+  font-size: 0.75rem;
+  margin-top: var(--landing-spacing-xs);
+  display: block;
+}
+
+.form-actions {
+  text-align: center;
+}
+
+.contact-submit-btn {
+  background: var(--landing-primary);
+  border: none;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.contact-submit-btn:hover:not(:disabled) {
+  background: var(--landing-primary-dark);
+  transform: translateY(-1px);
+}
+
+.contact-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-section {
+    padding: var(--landing-spacing-md) 0;
+  }
+
+  .contact-title {
+    font-size: 1.875rem;
+  }
+
+  .contact-subtitle {
+    font-size: 1rem;
+  }
+
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: var(--landing-spacing-md);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    gap: var(--landing-spacing-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-container {
+    padding: 0 var(--landing-spacing-sm);
+  }
+
+  .info-item {
+    padding: var(--landing-spacing-xs);
+  }
+
+  .info-link {
+    gap: var(--landing-spacing-xs);
+  }
+
+  .info-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}

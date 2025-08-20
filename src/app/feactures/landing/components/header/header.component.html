@@ -14,19 +14,33 @@
           styleClass="header-menu-item"
         />
         <p-button
-          label="Características"
+          label="Acerca de"
           [text]="true"
-          (onClick)="scrollToFeatures()"
+          (onClick)="scrollToAbout()"
           styleClass="header-menu-item"
         />
         <p-button
-          label="Acerca de"
+          label="Demo"
           [text]="true"
+          (onClick)="scrollToDemo()"
+          styleClass="header-menu-item"
+        />
+        <p-button
+          label="Testimonios"
+          [text]="true"
+          (onClick)="scrollToTestimonials()"
+          styleClass="header-menu-item"
+        />
+        <p-button
+          label="Precios"
+          [text]="true"
+          (onClick)="scrollToPricing()"
           styleClass="header-menu-item"
         />
         <p-button
           label="Contacto"
           [text]="true"
+          (onClick)="scrollToContact()"
           styleClass="header-menu-item"
         />
       </div>
@@ -35,7 +49,7 @@
       <button
         class="hamburger-btn"
         (click)="toggleMobileMenu()"
-        [class.active]="isMobileMenuOpen"
+        [class.active]="this.isMobileMenuOpen"
         aria-label="Toggle mobile menu"
       >
         <span class="hamburger-line"></span>
@@ -44,7 +58,7 @@
       </button>
 
       <!-- Menú móvil -->
-      <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+      <div class="mobile-menu" [class.open]="this.isMobileMenuOpen">
         <div class="mobile-menu-content">
           <p-button
             label="Home"
@@ -53,15 +67,27 @@
             styleClass="mobile-menu-item"
           />
           <p-button
-            label="Características"
-            [text]="true"
-            (onClick)="onMobileMenuClick('features')"
-            styleClass="mobile-menu-item"
-          />
-          <p-button
             label="Acerca de"
             [text]="true"
             (onClick)="onMobileMenuClick('about')"
+            styleClass="mobile-menu-item"
+          />
+          <p-button
+            label="Demo"
+            [text]="true"
+            (onClick)="onMobileMenuClick('demo')"
+            styleClass="mobile-menu-item"
+          />
+          <p-button
+            label="Testimonios"
+            [text]="true"
+            (onClick)="onMobileMenuClick('testimonials')"
+            styleClass="mobile-menu-item"
+          />
+          <p-button
+            label="Precios"
+            [text]="true"
+            (onClick)="onMobileMenuClick('pricing')"
             styleClass="mobile-menu-item"
           />
           <p-button

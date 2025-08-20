@@ -24,9 +24,33 @@ export class HeaderComponent {
     this.router.navigate(['/auth/register']);
   }
 
-  scrollToFeatures(): void {
-    document.querySelector('.features-section')?.scrollIntoView({ 
-      behavior: 'smooth' 
+  scrollToDemo(): void {
+    document.querySelector('.demo-section')?.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+
+  scrollToTestimonials(): void {
+    document.querySelector('.testimonials-section')?.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+
+  scrollToAbout(): void {
+    document.querySelector('#about')?.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+
+  scrollToPricing(): void {
+    document.querySelector('#pricing')?.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+
+  scrollToContact(): void {
+    document.querySelector('#contact')?.scrollIntoView({
+      behavior: 'smooth'
     });
   }
 
@@ -36,19 +60,25 @@ export class HeaderComponent {
 
   onMobileMenuClick(action: string): void {
     this.isMobileMenuOpen = false; // Cerrar menú al hacer clic
-    
+
     switch (action) {
       case 'home':
         this.onHome();
         break;
-      case 'features':
-        this.scrollToFeatures();
+      case 'demo':
+        this.scrollToDemo();
+        break;
+      case 'testimonials':
+        this.scrollToTestimonials();
         break;
       case 'about':
-        // TODO: Implementar navegación a sección Acerca de
+        this.scrollToAbout();
+        break;
+      case 'pricing':
+        this.scrollToPricing();
         break;
       case 'contact':
-        // TODO: Implementar navegación a sección Contacto
+        this.scrollToContact();
         break;
       case 'login':
         this.onLogin();

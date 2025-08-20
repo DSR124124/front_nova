@@ -1,27 +1,121 @@
 .footer-section {
-  background: var(--surface-section);
-  padding: 1rem 0;
+  background: var(--landing-bg-secondary);
+  padding: var(--landing-spacing-md) 0;
 }
 
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--landing-spacing-md);
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--landing-spacing-md);
+  margin-bottom: var(--landing-spacing-md);
+}
+
+.footer-column h3 {
+  color: var(--landing-primary);
+  font-size: 1.1rem;
+  margin-bottom: var(--landing-spacing-sm);
+  font-weight: 600;
+}
+
+.footer-column p {
+  color: var(--landing-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0 0 var(--landing-spacing-sm) 0;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: var(--landing-spacing-xs);
+}
+
+.footer-links a {
+  color: var(--landing-text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color var(--landing-transition-normal);
+}
+
+.footer-links a:hover {
+  color: var(--landing-primary);
+}
+
+.footer-social {
+  display: flex;
+  gap: var(--landing-spacing-sm);
+  margin-top: var(--landing-spacing-sm);
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: var(--landing-bg-card);
+  color: var(--landing-text-secondary);
+  text-decoration: none;
+  transition: all var(--landing-transition-normal);
+}
+
+.social-link:hover {
+  background: var(--landing-primary);
+  color: white;
+  transform: translateY(-1px);
 }
 
 .footer-bottom {
+  border-top: 1px solid var(--landing-bg-overlay);
+  padding-top: var(--landing-spacing-sm);
   text-align: center;
 }
 
 .footer-bottom p {
-  color: var(--text-color-secondary);
-  margin: 0.25rem 0;
-  font-size: 0.85rem;
+  color: var(--landing-text-muted);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.footer-bottom a {
+  color: var(--landing-primary);
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--landing-spacing-sm);
+    text-align: center;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 480px) {
   .footer-container {
-    padding: 0 1rem;
+    padding: 0 var(--landing-spacing-sm);
+  }
+
+  .footer-section {
+    padding: var(--landing-spacing-sm) 0;
   }
 }
