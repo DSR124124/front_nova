@@ -18,7 +18,6 @@ import { CodigoRelacionResponseDTO, ValidacionCodigoResponseDTO } from '../../..
 })
 export class PerfilUsuarioComponent implements OnInit {
   usuario: Usuario | null = null;
-  pareja: any | null = null; // Add missing pareja property
   loading = true;
   error = '';
   isAuthenticated = false;
@@ -157,13 +156,7 @@ export class PerfilUsuarioComponent implements OnInit {
     return `${this.usuario.nombre} ${this.usuario.apellido}`;
   }
 
-  getEstadoPareja(): string {
-    return 'Sin pareja';
-  }
 
-  tienePareja(): boolean {
-    return false;
-  }
 
   getGeneroTexto(): string {
     if (!this.usuario?.genero) return '';

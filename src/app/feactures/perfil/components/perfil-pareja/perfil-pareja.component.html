@@ -1,5 +1,16 @@
 <div class="perfil-pareja-container">
 
+  <!-- Header del perfil -->
+  <div class="perfil-header">
+    <h2 class="perfil-title">
+      <i class="pi pi-heart"></i>
+      Mi Perfil de Pareja
+    </h2>
+    <p class="perfil-subtitle">
+      Gestiona tu relación y configuración de pareja
+    </p>
+  </div>
+
   <!-- Estado de carga -->
   <div *ngIf="loading" class="loading-state">
     <p-progressSpinner />
@@ -14,41 +25,62 @@
   </p-message>
 
   <!-- Sin pareja -->
-  <div *ngIf="!loading && !error && !pareja" class="sin-pareja">
+  <div *ngIf="!loading && !error && disponibleParaPareja" class="sin-pareja">
     <p-card header="Sin Pareja">
       <p-message
         severity="info"
-        text="No tienes una pareja vinculada actualmente. Puedes formar una pareja ingresando el código de relación de otro usuario.">
+        text="No tienes una pareja vinculada actualmente. Puedes formar una pareja uniendo dos códigos de relación.">
       </p-message>
 
-      <!-- Formulario para formar pareja -->
+      <!-- Formulario para unir códigos -->
       <div class="formulario-pareja">
         <h5>Formar Pareja</h5>
+        <p class="descripcion-formulario">
+          Para formar una pareja, necesitas dos códigos de relación. Ingresa ambos códigos para crear la vinculación.
+        </p>
 
-        <form [formGroup]="formPareja" (ngSubmit)="validarCodigoRelacion()">
-          <div class="campo-codigo">
-            <label for="codigoRelacion">Código de Relación:</label>
-            <input
-              id="codigoRelacion"
-              type="text"
-              pInputText
-              formControlName="codigoRelacion"
-              placeholder="Ingresa el código de relación"
-              [class.ng-invalid]="isFieldInvalid('codigoRelacion')"
-              [class.ng-dirty]="isFieldInvalid('codigoRelacion')"
-            />
-            <small *ngIf="isFieldInvalid('codigoRelacion')" class="p-error">
-              {{ getFieldError('codigoRelacion') }}
-            </small>
+        <form [formGroup]="formUnirCodigos" (ngSubmit)="unirCodigos()">
+          <div class="campos-codigos">
+            <div class="campo-codigo">
+              <label for="codigo1">Primer Código:</label>
+              <input
+                id="codigo1"
+                type="text"
+                pInputText
+                formControlName="codigo1"
+                placeholder="Ingresa el primer código"
+                [class.ng-invalid]="isFieldInvalid('codigo1')"
+                [class.ng-dirty]="isFieldInvalid('codigo1')"
+              />
+              <small *ngIf="isFieldInvalid('codigo1')" class="p-error">
+                {{ getFieldError('codigo1') }}
+              </small>
+            </div>
+
+            <div class="campo-codigo">
+              <label for="codigo2">Segundo Código:</label>
+              <input
+                id="codigo2"
+                type="text"
+                pInputText
+                formControlName="codigo2"
+                placeholder="Ingresa el segundo código"
+                [class.ng-invalid]="isFieldInvalid('codigo2')"
+                [class.ng-dirty]="isFieldInvalid('codigo2')"
+              />
+              <small *ngIf="isFieldInvalid('codigo2')" class="p-error">
+                {{ getFieldError('codigo2') }}
+              </small>
+            </div>
           </div>
 
           <div class="acciones-formulario">
             <p-button
               type="submit"
-              label="Validar Código"
-              icon="pi pi-check"
-              [loading]="validandoCodigo"
-              [disabled]="formPareja.invalid || validandoCodigo">
+              label="Unir Códigos"
+              icon="pi pi-heart"
+              [loading]="validandoCodigos"
+              [disabled]="formUnirCodigos.invalid || validandoCodigos">
             </p-button>
 
             <p-button
@@ -61,33 +93,12 @@
           </div>
         </form>
 
-        <!-- Usuario encontrado -->
-        <div *ngIf="codigoValido && usuarioEncontrado" class="usuario-encontrado">
-          <p-card header="Usuario Encontrado" styleClass="usuario-card">
-            <div class="usuario-info">
-              <p-avatar
-                [label]="getIniciales(usuarioEncontrado)"
-                size="large"
-                shape="circle">
-              </p-avatar>
-
-              <div class="datos-usuario">
-                <h4>{{ getNombreCompleto(usuarioEncontrado) }}</h4>
-                <p class="username">{{ '@' + usuarioEncontrado.username }}</p>
-                <p class="email">{{ usuarioEncontrado.correo }}</p>
-              </div>
-            </div>
-
-            <div class="acciones-usuario">
-              <p-button
-                label="Formar Pareja"
-                icon="pi pi-heart"
-                styleClass="p-button-success"
-                (click)="formarPareja()"
-                [loading]="loading">
-              </p-button>
-            </div>
-          </p-card>
+        <!-- Mensaje de éxito -->
+        <div *ngIf="codigosValidos" class="mensaje-exito">
+          <p-message
+            severity="success"
+            text="¡Códigos unidos exitosamente! Se ha creado la pareja.">
+          </p-message>
         </div>
       </div>
 
@@ -95,13 +106,13 @@
       <div class="mi-codigo">
         <h5>Mi Código de Relación</h5>
         <p-message
-          *ngIf="usuarioActual?.codigoRelacion"
+          *ngIf="codigoRelacion"
           severity="info"
-          [text]="'Tu código: ' + (usuarioActual?.codigoRelacion || '')">
+          [text]="'Tu código: ' + codigoRelacion">
         </p-message>
 
         <p-button
-          *ngIf="!usuarioActual?.codigoRelacion"
+          *ngIf="!codigoRelacion"
           label="Generar Código"
           icon="pi pi-key"
           styleClass="p-button-outlined p-button-info"
@@ -113,7 +124,7 @@
   </div>
 
   <!-- Con pareja -->
-  <div *ngIf="!loading && !error && pareja" class="con-pareja">
+  <div *ngIf="!loading && !error && pareja && !disponibleParaPareja" class="con-pareja">
 
     <!-- Información general de la pareja -->
     <p-card header="Información de la Pareja">
@@ -160,57 +171,101 @@
           <div class="datos-companero">
             <h4>{{ getNombreCompleto(companero) }}</h4>
             <p class="username">{{ '@' + (companero?.username || '') }}</p>
-            <p class="email">{{ companero?.correo }}</p>
           </div>
         </div>
 
         <!-- Detalles adicionales -->
         <div class="detalles-companero">
-          <div class="detalle-item" *ngIf="companero?.fechaNacimiento">
+          <div class="detalle-item">
             <p-chip
-              label="Nacimiento"
-              icon="pi pi-calendar">
-            </p-chip>
-            <span>{{ companero?.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
-          </div>
-
-          <div class="detalle-item" *ngIf="companero?.genero">
-            <p-chip
-              label="Género"
+              label="ID Usuario"
               icon="pi pi-user">
             </p-chip>
-            <span>{{ companero?.genero === 'M' ? 'Masculino' : companero?.genero === 'F' ? 'Femenino' : 'Otro' }}</span>
+            <span>{{ companero?.id }}</span>
           </div>
         </div>
       </div>
     </p-card>
 
-    <!-- Acciones de pareja -->
-    <p-card header="Acciones">
-      <div class="acciones-pareja">
-        <p-button
-          label="Ver Chat"
-          icon="pi pi-comments"
-          styleClass="p-button-success">
-        </p-button>
+    <!-- Configuración de Pareja -->
+    <p-card header="Configuración de Pareja">
+      <div class="configuracion-pareja">
 
-        <p-button
-          label="Ver Citas"
-          icon="pi pi-calendar"
-          styleClass="p-button-info">
-        </p-button>
+        <!-- Verificar Estado -->
+        <div class="verificar-estado">
+          <h5>Verificar Estado de Disponibilidad</h5>
+          <p-button
+            label="Verificar Estado"
+            icon="pi pi-refresh"
+            styleClass="p-button-outlined p-button-info"
+            (click)="verificarEstadoManual()"
+            [loading]="loading">
+          </p-button>
+        </div>
 
-        <p-button
-          label="Ver Eventos"
-          icon="pi pi-star"
-          styleClass="p-button-warning">
-        </p-button>
+        <!-- Reconfigurar Códigos -->
+        <div class="reconfigurar-codigos">
+          <h5>Reconfigurar Relación</h5>
+          <p class="descripcion-reconfig">
+            Si necesitas reconfigurar la relación, puedes unir nuevos códigos.
+          </p>
 
-        <p-button
-          label="Configurar Pareja"
-          icon="pi pi-cog"
-          styleClass="p-button-outlined">
-        </p-button>
+          <form [formGroup]="formUnirCodigos" (ngSubmit)="reconfigurarPareja()">
+            <div class="campos-codigos-reconfig">
+              <div class="campo-codigo">
+                <label for="codigo1-reconfig">Primer Código:</label>
+                <input
+                  id="codigo1-reconfig"
+                  type="text"
+                  pInputText
+                  formControlName="codigo1"
+                  placeholder="Nuevo primer código"
+                  [class.ng-invalid]="isFieldInvalid('codigo1')"
+                  [class.ng-dirty]="isFieldInvalid('codigo1')"
+                />
+                <small *ngIf="isFieldInvalid('codigo1')" class="p-error">
+                  {{ getFieldError('codigo1') }}
+                </small>
+              </div>
+
+              <div class="campo-codigo">
+                <label for="codigo2-reconfig">Segundo Código:</label>
+                <input
+                  id="codigo2-reconfig"
+                  type="text"
+                  pInputText
+                  formControlName="codigo2"
+                  placeholder="Nuevo segundo código"
+                  [class.ng-invalid]="isFieldInvalid('codigo2')"
+                  [class.ng-dirty]="isFieldInvalid('codigo2')"
+                />
+                <small *ngIf="isFieldInvalid('codigo2')" class="p-error">
+                  {{ getFieldError('codigo2') }}
+                </small>
+              </div>
+            </div>
+
+            <div class="acciones-reconfig">
+              <p-button
+                type="submit"
+                label="Reconfigurar Relación"
+                icon="pi pi-cog"
+                styleClass="p-button-warning"
+                [loading]="validandoCodigos"
+                [disabled]="formUnirCodigos.invalid || validandoCodigos">
+              </p-button>
+
+              <p-button
+                type="button"
+                label="Limpiar"
+                icon="pi pi-times"
+                styleClass="p-button-outlined p-button-secondary"
+                (click)="limpiarFormulario()">
+              </p-button>
+            </div>
+          </form>
+        </div>
+
       </div>
     </p-card>
 

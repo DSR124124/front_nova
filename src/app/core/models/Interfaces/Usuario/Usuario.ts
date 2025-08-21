@@ -31,3 +31,8 @@ export interface Usuario {
   codigoRelacion:       string | null;
   disponibleParaPareja: boolean;
 }
+export interface UsuarioPareja {
+  id:       number;
+  nombre: string;
+  username: string;
+}

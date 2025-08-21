@@ -9,7 +9,7 @@
       Mi Perfil
     </h2>
     <p class="perfil-subtitle">
-      Gestiona tu información personal y estado de pareja
+      Gestiona tu información personal
     </p>
   </div>
 
@@ -352,74 +352,7 @@
       </div>
     </div>
 
-    <!-- Estado de pareja -->
-    <div class="perfil-section">
-      <h3 class="section-title">
-        <i class="pi pi-heart"></i>
-        Estado de Pareja
-      </h3>
 
-      <div class="pareja-info p-4">
-        <!-- Con pareja -->
-        <div *ngIf="tienePareja()" class="pareja-activa text-center">
-          <div class="status-section mb-4">
-            <div class="status-badge activa">
-              <i class="pi pi-heart-fill"></i>
-              <span>Pareja Activa</span>
-            </div>
-            <div class="pareja-details max-w-md mx-auto">
-              <div class="detalle-item">
-                <strong>Estado:</strong> {{ getEstadoPareja() }}
-              </div>
-              <div class="detalle-item" *ngIf="pareja?.fechaCreacion">
-                <strong>Desde:</strong> {{ pareja?.fechaCreacion | date:'dd/MM/yyyy' }}
-              </div>
-              <div class="detalle-item" *ngIf="pareja?.usuario1Nombre && pareja?.usuario2Nombre">
-                <strong>Integrantes:</strong> {{ pareja?.usuario1Nombre }} & {{ pareja?.usuario2Nombre }}
-              </div>
-            </div>
-          </div>
-
-          <div class="pareja-actions">
-            <p-button
-              label="Ver Perfil de Pareja"
-              icon="pi pi-eye"
-              [outlined]="true"
-              size="large">
-            </p-button>
-          </div>
-        </div>
-
-        <!-- Sin pareja -->
-        <div *ngIf="!tienePareja()" class="sin-pareja text-center">
-          <div class="status-section mb-4">
-            <div class="status-badge inactiva">
-              <i class="pi pi-heart"></i>
-              <span>Sin Pareja</span>
-            </div>
-            <p class="mensaje-sin-pareja text-500 text-lg mb-4">
-              No tienes una pareja vinculada actualmente. ¡Conecta con alguien especial!
-            </p>
-          </div>
-
-          <div class="acciones-pareja flex gap-3 justify-center flex-wrap">
-            <p-button
-              label="Buscar Pareja"
-              icon="pi pi-search"
-              styleClass="search-btn"
-              size="large">
-            </p-button>
-            <p-button
-              label="Invitar por Username"
-              icon="pi pi-user-plus"
-              [outlined]="true"
-              styleClass="invite-btn"
-              size="large">
-            </p-button>
-          </div>
-        </div>
-      </div>
-    </div>
 
   </div>
 </div>

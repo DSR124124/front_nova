@@ -1,13 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Pareja } from '../../../../core/models/Interfaces/Pareja/pareja';
-import { EstadoPareja } from '../../../../core/models/enums/estado-pareja.enum';
-import { Usuario } from '../../../../core/models/Interfaces/Usuario/Usuario';
-import { AuthService } from '../../../../core/services/auth.service';
-import { UsuarioService } from '../../../../core/services/usuario.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ParejaService } from '../../../../core/services/pareja.service';
 import { CodigoRelacionService } from '../../../../core/services/codigo-relacion.service';
-import { Role } from '../../../../core/models/enums/role.enum';
+import { AuthService } from '../../../../core/services/auth.service';
 import { MessageService } from 'primeng/api';
+
+// Interfaces para el componente
+interface EstadoPareja {
+  label: string;
+  value: string;
+  icon: string;
+  color: string;
+}
+
+interface UsuarioSimplificado {
+  id: number;
+  nombre: string;
+  username: string;
+  fotoPerfil?: string;
+}
+
+interface ParejaInfo {
+  id: number;
+  fechaCreacion: string;
+  estadoRelacion: string;
+}
 
 @Component({
   selector: 'app-perfil-pareja',
@@ -15,35 +33,43 @@ import { MessageService } from 'primeng/api';
   templateUrl: './perfil-pareja.component.html',
   styleUrl: './perfil-pareja.component.css'
 })
-export class PerfilParejaComponent implements OnInit {
-  pareja: Pareja | null = null;
-  usuarioActual: Usuario | null = null;
-  companero: Usuario | null = null;
+export class PerfilParejaComponent implements OnInit, OnDestroy {
+  // Estados del componente
   loading = false;
   error: string | null = null;
+  private destroy$ = new Subject<void>();
 
-  // Formulario para formar pareja
-  formPareja: FormGroup;
-  validandoCodigo = false;
-  codigoValido = false;
-  usuarioEncontrado: Usuario | null = null;
+  // Datos de la pareja
+  pareja: ParejaInfo | null = null;
+  usuarioActual: UsuarioSimplificado | null = null;
+  companero: UsuarioSimplificado | null = null;
+
+  // Estado de disponibilidad
+  disponibleParaPareja = true;
+  codigoRelacion: string | null = null;
+
+  // Formulario para unir códigos
+  formUnirCodigos: FormGroup;
+  validandoCodigos = false;
+  codigosValidos = false;
 
   // Estados para mostrar en la UI
-  estadosPareja = [
-    { label: 'Activa', value: EstadoPareja.ACTIVA, icon: 'pi pi-heart-fill', color: 'success' },
-    { label: 'Pausada', value: EstadoPareja.PAUSADA, icon: 'pi pi-pause', color: 'warning' },
-    { label: 'Terminada', value: EstadoPareja.TERMINADA, icon: 'pi pi-times', color: 'danger' }
+  estadosPareja: EstadoPareja[] = [
+    { label: 'Activa', value: 'ACTIVA', icon: 'pi pi-heart-fill', color: 'success' },
+    { label: 'Pausada', value: 'PAUSADA', icon: 'pi pi-pause', color: 'warning' },
+    { label: 'Terminada', value: 'TERMINADA', icon: 'pi pi-times', color: 'danger' }
   ];
 
   constructor(
-    private authService: AuthService,
-    private usuarioService: UsuarioService,
+    private parejaService: ParejaService,
     private codigoRelacionService: CodigoRelacionService,
+    private authService: AuthService,
     private fb: FormBuilder,
     private messageService: MessageService
   ) {
-    this.formPareja = this.fb.group({
-      codigoRelacion: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]]
+    this.formUnirCodigos = this.fb.group({
+      codigo1: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+      codigo2: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]]
     });
   }
 
@@ -51,59 +77,305 @@ export class PerfilParejaComponent implements OnInit {
     this.cargarDatosPareja();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /**
+   * Cargar datos iniciales de la pareja
+   */
   cargarDatosPareja(): void {
     this.loading = true;
     this.error = null;
 
     try {
-      this.usuarioActual = this.authService.getUser();
-
-      if (this.usuarioActual?.codigoRelacion) {
-        // Aquí iría la llamada al servicio para obtener los datos de la pareja
-        // Por ahora simulamos datos
-        this.simularDatosPareja();
+      const usuario = this.authService.getUser();
+      if (!usuario?.idUsuario) {
+        this.error = 'Usuario no autenticado';
+        this.loading = false;
+        return;
       }
+
+      this.usuarioActual = {
+        id: usuario.idUsuario,
+        nombre: usuario.nombre,
+        username: usuario.username,
+        fotoPerfil: usuario.fotoPerfil
+      };
+
+      // Verificar disponibilidad para crear pareja
+      this.verificarDisponibilidadPareja(usuario.idUsuario);
+
+      // Cargar información de la relación si existe
+      this.cargarInfoRelacion(usuario.idUsuario);
+
     } catch (error) {
       this.error = 'Error al cargar los datos de la pareja';
       console.error('Error:', error);
-    } finally {
       this.loading = false;
     }
   }
 
-  private simularDatosPareja(): void {
-    // Simulación de datos mientras no tengamos el servicio completo
-    this.pareja = {
-      id: 1,
-      usuario1Id: this.usuarioActual!.idUsuario!,
-      usuario2Id: 2,
-      fechaCreacion: '2024-01-15',
-      estadoRelacion: EstadoPareja.ACTIVA,
-      usuario1Nombre: this.usuarioActual!.nombre + ' ' + this.usuarioActual!.apellido,
-      usuario2Nombre: 'María González'
-    };
-
-    this.companero = {
-      idUsuario: 2,
-      nombre: 'María',
-      apellido: 'González',
-      correo: 'maria@email.com',
-      username: 'maria_g',
-      password: '',
-      enabled: true,
-      fotoPerfil: null, // Sin foto por defecto
-      fechaNacimiento: '1995-03-20',
-      genero: 'F',
-      role: Role.USER, // Usar el enum en lugar de objeto hardcodeado
-      codigoRelacion: 'ABC123',
-      disponibleParaPareja: false // Ya tiene pareja
-    };
+  /**
+   * Verificar si el usuario puede crear una pareja
+   */
+  private verificarDisponibilidadPareja(idUsuario: number): void {
+    this.parejaService.puedeCrearPareja(idUsuario)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.p_exito) {
+            this.disponibleParaPareja = response.p_data.disponibleParaPareja;
+            this.codigoRelacion = response.p_data.codigoRelacion;
+          } else {
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Advertencia',
+              detail: response.p_mensavis || 'No se pudo verificar la disponibilidad'
+            });
+          }
+        },
+        error: (error) => {
+          console.error('Error al verificar disponibilidad:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al verificar disponibilidad para pareja'
+          });
+        }
+      });
   }
 
-  getEstadoInfo() {
+  /**
+   * Cargar información de la relación existente
+   */
+  private cargarInfoRelacion(idUsuario: number): void {
+    this.parejaService.obtenerInfoRelacion(idUsuario)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.p_exito) {
+            this.pareja = {
+              id: response.p_data.pareja.id,
+              fechaCreacion: new Date().toISOString().split('T')[0], // Por defecto
+              estadoRelacion: 'ACTIVA' // Por defecto
+            };
+
+            // Determinar quién es el compañero
+            const usuario1 = response.p_data.usuario1;
+            const usuario2 = response.p_data.usuario2;
+
+            if (usuario1.id === idUsuario) {
+              this.companero = usuario2;
+            } else {
+              this.companero = usuario1;
+            }
+
+            this.disponibleParaPareja = false; // Ya tiene pareja
+          }
+        },
+        error: (error) => {
+          // Si no hay relación, el usuario está disponible
+          console.log('Usuario sin relación:', error);
+          this.disponibleParaPareja = true;
+        },
+        complete: () => {
+          this.loading = false;
+        }
+      });
+  }
+
+  /**
+   * Unir dos códigos de relación para formar una pareja
+   */
+  unirCodigos(): void {
+    if (this.formUnirCodigos.invalid) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Formulario Inválido',
+        detail: 'Por favor ingresa ambos códigos válidos'
+      });
+      return;
+    }
+
+    const { codigo1, codigo2 } = this.formUnirCodigos.value;
+    this.validandoCodigos = true;
+    this.codigosValidos = false;
+
+    this.parejaService.unirCodigos(codigo1, codigo2)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.p_exito) {
+            this.codigosValidos = true;
+            this.messageService.add({
+              severity: 'success',
+              summary: '¡Pareja Creada!',
+              detail: response.p_mensavis || 'Los códigos se unieron exitosamente'
+            });
+
+            // Recargar datos de la pareja
+            this.cargarDatosPareja();
+
+            // Limpiar formulario
+            this.formUnirCodigos.reset();
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: response.p_mensavis || 'No se pudieron unir los códigos'
+            });
+          }
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al unir los códigos. Intenta nuevamente.'
+          });
+        },
+        complete: () => {
+          this.validandoCodigos = false;
+        }
+      });
+  }
+
+  /**
+   * Generar código de relación para compartir
+   */
+  generarMiCodigo(): void {
+    if (!this.usuarioActual?.username) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se puede generar el código. Usuario no disponible.'
+      });
+      return;
+    }
+
+    this.loading = true;
+
+    this.codigoRelacionService.generarCodigo(this.usuarioActual.username)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.p_exito && response.p_data?.codigo) {
+            this.codigoRelacion = response.p_data.codigo;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Código Generado',
+              detail: `Tu código de relación es: ${response.p_data.codigo}`
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: response.p_mensavis || 'No se pudo generar el código'
+            });
+          }
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al generar el código. Intenta nuevamente.'
+          });
+        },
+        complete: () => {
+          this.loading = false;
+        }
+      });
+  }
+
+  /**
+   * Limpiar formulario
+   */
+  limpiarFormulario(): void {
+    this.formUnirCodigos.reset();
+    this.codigosValidos = false;
+  }
+
+  /**
+   * Verificar estado de disponibilidad manualmente
+   */
+  verificarEstadoManual(): void {
+    if (!this.usuarioActual?.id) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Usuario no disponible para verificar estado'
+      });
+      return;
+    }
+
+    this.loading = true;
+    this.verificarDisponibilidadPareja(this.usuarioActual.id);
+  }
+
+  /**
+   * Reconfigurar pareja con nuevos códigos
+   */
+  reconfigurarPareja(): void {
+    if (this.formUnirCodigos.invalid) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Formulario Inválido',
+        detail: 'Por favor ingresa ambos códigos válidos para reconfigurar'
+      });
+      return;
+    }
+
+    const { codigo1, codigo2 } = this.formUnirCodigos.value;
+    this.validandoCodigos = true;
+
+    this.parejaService.unirCodigos(codigo1, codigo2)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.p_exito) {
+            this.messageService.add({
+              severity: 'success',
+              summary: '¡Relación Reconfigurada!',
+              detail: response.p_mensavis || 'La relación se ha reconfigurado exitosamente'
+            });
+
+            // Recargar datos de la pareja
+            this.cargarDatosPareja();
+
+            // Limpiar formulario
+            this.formUnirCodigos.reset();
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error en Reconfiguración',
+              detail: response.p_mensavis || 'No se pudo reconfigurar la relación'
+            });
+          }
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al reconfigurar la relación. Intenta nuevamente.'
+          });
+        },
+        complete: () => {
+          this.validandoCodigos = false;
+        }
+      });
+  }
+
+  /**
+   * Obtener información del estado de la pareja
+   */
+  getEstadoInfo(): EstadoPareja {
     return this.estadosPareja.find(e => e.value === this.pareja?.estadoRelacion) || this.estadosPareja[0];
   }
 
+  /**
+   * Calcular tiempo juntos
+   */
   calcularTiempoJuntos(): string {
     if (!this.pareja?.fechaCreacion) return 'No disponible';
 
@@ -123,194 +395,28 @@ export class PerfilParejaComponent implements OnInit {
     }
   }
 
-  getNombreCompleto(usuario: Usuario | null): string {
+  /**
+   * Obtener nombre completo del usuario
+   */
+  getNombreCompleto(usuario: UsuarioSimplificado | null): string {
     if (!usuario) return 'Usuario no disponible';
-    return `${usuario.nombre} ${usuario.apellido}`;
+    return usuario.nombre || usuario.username;
   }
 
-  getIniciales(usuario: Usuario | null): string {
+  /**
+   * Obtener iniciales del usuario
+   */
+  getIniciales(usuario: UsuarioSimplificado | null): string {
     if (!usuario) return 'N/A';
-    return `${usuario.nombre.charAt(0)}${usuario.nombre.charAt(0)}`.toUpperCase();
-  }
-
-  // ===== MÉTODOS PARA FORMAR PAREJA =====
-
-  /**
-   * Validar código de relación ingresado por el usuario
-   */
-  validarCodigoRelacion(): void {
-    if (this.formPareja.invalid) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Formulario Inválido',
-        detail: 'Por favor ingresa un código válido'
-      });
-      return;
-    }
-
-    const codigo = this.formPareja.get('codigoRelacion')?.value;
-    this.validandoCodigo = true;
-    this.codigoValido = false;
-    this.usuarioEncontrado = null;
-
-    this.codigoRelacionService.validarCodigo(codigo).subscribe({
-      next: (response) => {
-        if (response.p_exito && response.p_data?.usuario) {
-          this.codigoValido = true;
-          // Create a complete Usuario object from the partial data
-          this.usuarioEncontrado = {
-            idUsuario: response.p_data.usuario.id,
-            nombre: response.p_data.usuario.nombre,
-            apellido: '', // Not provided by the service
-            correo: '', // Not provided by the service
-            username: response.p_data.usuario.username,
-            password: '', // Not provided by the service
-            enabled: true, // Default value
-            fotoPerfil: response.p_data.usuario.fotoPerfil || null,
-            fechaNacimiento: '', // Not provided by the service
-            genero: '', // Not provided by the service
-            role: Role.USER, // Default value
-            codigoRelacion: null, // Not provided by the service
-            disponibleParaPareja: response.p_data.disponibleParaPareja || false
-          };
-
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Código Válido',
-            detail: `Usuario encontrado: ${this.usuarioEncontrado.nombre}`
-          });
-        } else {
-          this.codigoValido = false;
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Código Inválido',
-            detail: response.p_mensavis || 'El código ingresado no es válido'
-          });
-        }
-      },
-      error: (err) => {
-        this.codigoValido = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al validar el código. Intenta nuevamente.'
-        });
-      },
-      complete: () => {
-        this.validandoCodigo = false;
-      }
-    });
-  }
-
-  /**
-   * Formar pareja con el usuario encontrado
-   */
-  formarPareja(): void {
-    if (!this.usuarioEncontrado || !this.usuarioActual) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'No se puede formar la pareja. Verifica la información.'
-      });
-      return;
-    }
-
-    this.loading = true;
-
-    // Aquí iría la llamada al servicio para crear la pareja
-    // Por ahora simulamos la creación
-    setTimeout(() => {
-      if (this.usuarioEncontrado) {
-        this.pareja = {
-          id: Date.now(), // ID temporal
-          usuario1Id: this.usuarioActual!.idUsuario!,
-          usuario2Id: this.usuarioEncontrado.idUsuario,
-          fechaCreacion: new Date().toISOString().split('T')[0],
-          estadoRelacion: EstadoPareja.ACTIVA,
-          usuario1Nombre: `${this.usuarioActual!.nombre} ${this.usuarioActual!.apellido}`,
-          usuario2Nombre: this.usuarioEncontrado.apellido ?
-            `${this.usuarioEncontrado.nombre} ${this.usuarioEncontrado.apellido}` :
-            this.usuarioEncontrado.nombre
-        };
-
-        this.companero = this.usuarioEncontrado;
-        this.loading = false;
-        this.codigoValido = false;
-        this.usuarioEncontrado = null;
-        this.formPareja.reset();
-
-        this.messageService.add({
-          severity: 'success',
-          summary: '¡Pareja Formada!',
-          detail: `Ahora estás vinculado con ${this.companero?.nombre || 'tu compañero'}`
-        });
-      }
-    }, 1000);
-  }
-
-  /**
-   * Limpiar formulario y estado
-   */
-  limpiarFormulario(): void {
-    this.formPareja.reset();
-    this.codigoValido = false;
-    this.usuarioEncontrado = null;
-  }
-
-  /**
-   * Generar código de relación para compartir
-   */
-  generarMiCodigo(): void {
-    if (!this.usuarioActual?.username) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'No se puede generar el código. Usuario no disponible.'
-      });
-      return;
-    }
-
-    this.loading = true;
-
-    this.codigoRelacionService.generarCodigo(this.usuarioActual.username).subscribe({
-      next: (response) => {
-        if (response.p_exito && response.p_data?.codigo) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Código Generado',
-            detail: `Tu código de relación es: ${response.p_data.codigo}`
-          });
-
-          // Actualizar el usuario local con el nuevo código
-          if (this.usuarioActual) {
-            this.usuarioActual.codigoRelacion = response.p_data.codigo;
-          }
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: response.p_mensavis || 'No se pudo generar el código'
-          });
-        }
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al generar el código. Intenta nuevamente.'
-        });
-      },
-      complete: () => {
-        this.loading = false;
-      }
-    });
+    const nombre = usuario.nombre || usuario.username;
+    return nombre.charAt(0).toUpperCase();
   }
 
   /**
    * Verificar si el campo del formulario es inválido
    */
   isFieldInvalid(fieldName: string): boolean {
-    const field = this.formPareja.get(fieldName);
+    const field = this.formUnirCodigos.get(fieldName);
     return field ? field.invalid && (field.dirty || field.touched) : false;
   }
 
@@ -318,7 +424,7 @@ export class PerfilParejaComponent implements OnInit {
    * Obtener mensaje de error del campo
    */
   getFieldError(fieldName: string): string {
-    const field = this.formPareja.get(fieldName);
+    const field = this.formUnirCodigos.get(fieldName);
     if (field && field.errors) {
       if (field.errors['required']) return 'Este campo es requerido';
       if (field.errors['minlength']) return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;

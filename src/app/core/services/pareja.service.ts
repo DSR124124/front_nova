@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { Pareja } from '../models/Interfaces/Pareja/pareja';
+import { ParejaUnirCodigosResponse } from '../models/Interfaces/Pareja/ParejaUnirCodigosResponse';
+import { EstadoDisponibilidadParejaResponse } from '../models/Interfaces/Pareja/EstadoDisponibilidadParejaResponse';
+import { InformacionParejaResponse } from '../models/Interfaces/Pareja/InformacionParejaResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,23 +14,24 @@ export class ParejaService {
 
   constructor(private http: HttpClient) {}
 
-  registrar(pareja: Pareja): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/registrar`, pareja);
+  unirCodigos(codigo1: string, codigo2: string): Observable<ParejaUnirCodigosResponse> {
+    const url = `${this.baseUrl}/unir-codigos`;
+    const payload = {
+      codigo1,
+      codigo2
+    };
+
+    return this.http.post<ParejaUnirCodigosResponse>(url, payload);
   }
 
-  listar(): Observable<Pareja[]> {
-    return this.http.get<Pareja[]>(`${this.baseUrl}/listar`);
+
+  puedeCrearPareja(idUsuario: number): Observable<EstadoDisponibilidadParejaResponse> {
+    const url = `${this.baseUrl}/puede-crear-pareja/${idUsuario}`;
+    return this.http.get<EstadoDisponibilidadParejaResponse>(url);
   }
 
-  eliminar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/eliminar/${id}`);
-  }
-
-  modificar(pareja: Pareja): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/modificar`, pareja);
-  }
-
-  listarPorId(id: number): Observable<Pareja> {
-    return this.http.get<Pareja>(`${this.baseUrl}/listar-por-id/${id}`);
+  obtenerInfoRelacion(idUsuario: number): Observable<InformacionParejaResponse> {
+    const url = `${this.baseUrl}/info-relacion/${idUsuario}`;
+    return this.http.get<InformacionParejaResponse>(url);
   }
 }
