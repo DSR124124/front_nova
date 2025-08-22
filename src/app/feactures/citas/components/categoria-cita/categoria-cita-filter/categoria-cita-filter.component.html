@@ -1,0 +1,106 @@
+<div class="filter-container">
+
+  <!-- Header del filtro -->
+  <div class="filter-header">
+    <h3 class="filter-title">
+      <i class="pi pi-search"></i>
+      Buscar Categoría por ID
+    </h3>
+    <p class="filter-subtitle">
+      Ingresa el ID de la categoría que deseas encontrar
+    </p>
+  </div>
+
+  <!-- Formulario de búsqueda -->
+  <div class="search-form-container">
+    <form [formGroup]="searchForm" (ngSubmit)="buscarCategoria()" class="search-form">
+
+      <!-- Campo ID -->
+      <div class="form-field">
+        <label for="id" class="form-label">
+          ID de Categoría <span class="required">*</span>
+        </label>
+        <div class="input-group">
+          <span class="input-prefix">
+            <i class="pi pi-hashtag"></i>
+          </span>
+          <input
+            id="id"
+            type="number"
+            pInputText
+            formControlName="id"
+            placeholder="Ej: 1, 2, 3..."
+            [class.ng-invalid]="isFieldInvalid('id')"
+            class="form-input"
+            min="1">
+        </div>
+        <small *ngIf="isFieldInvalid('id')" class="error-message">
+          {{ getFieldError('id') }}
+        </small>
+        <small *ngIf="!isFieldInvalid('id')" class="help-text">
+          Ingresa un número de ID válido mayor a 0
+        </small>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <p-button
+          type="submit"
+          [label]="getSearchButtonText()"
+          [icon]="getSearchButtonIcon()"
+          [loading]="searching"
+          [disabled]="searchForm.invalid || searching"
+          styleClass="p-button-primary search-button">
+        </p-button>
+
+        <p-button
+          type="button"
+          label="Limpiar"
+          icon="pi pi-times"
+          (click)="limpiarBusqueda()"
+          [disabled]="searching"
+          styleClass="p-button-outlined p-button-secondary clear-button">
+        </p-button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Estado de búsqueda -->
+  <div *ngIf="loading" class="search-status">
+    <div class="loading-indicator">
+      <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
+      <span>Buscando categoría...</span>
+    </div>
+  </div>
+
+  <!-- Información de búsqueda -->
+  <div *ngIf="hasSearchResults() && !loading" class="search-info">
+    <div class="info-card">
+      <div class="info-icon">
+        <i class="pi pi-info-circle"></i>
+      </div>
+      <div class="info-content">
+        <h4>Última búsqueda</h4>
+        <p>ID buscado: <strong>{{ lastSearchId }}</strong></p>
+        <small>Usa el formulario para realizar una nueva búsqueda</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instrucciones de uso -->
+  <div class="usage-instructions">
+    <div class="instructions-card">
+      <h4>
+        <i class="pi pi-lightbulb"></i>
+        Cómo usar el filtro
+      </h4>
+      <ul class="instructions-list">
+        <li>Ingresa el ID numérico de la categoría que deseas encontrar</li>
+        <li>El ID debe ser un número mayor a 0</li>
+        <li>Haz clic en "Buscar" para realizar la búsqueda</li>
+        <li>Usa "Limpiar" para resetear el formulario</li>
+      </ul>
+    </div>
+  </div>
+
+</div>

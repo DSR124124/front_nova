@@ -1,0 +1,401 @@
+/* Estilos para el componente de filtro de categorías */
+
+.filter-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Header del filtro */
+.filter-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+}
+
+.filter-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.filter-title i {
+  font-size: 1.5rem;
+  color: #ffd700;
+}
+
+.filter-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 300;
+}
+
+/* Contenedor del formulario */
+.search-form-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Campo del formulario */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.required {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* Grupo de entrada */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-prefix {
+  position: absolute;
+  left: 1rem;
+  color: #6c757d;
+  font-size: 1rem;
+  z-index: 1;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-input.ng-invalid.ng-touched {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+/* Mensajes de error y ayuda */
+.error-message {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.help-text {
+  color: #6c757d;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+  font-style: italic;
+}
+
+/* Botones de acción */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.search-button,
+.clear-button {
+  min-width: 120px;
+}
+
+::ng-deep .search-button .p-button {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .search-button .p-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+::ng-deep .clear-button .p-button {
+  border: 2px solid #6c757d;
+  color: #6c757d;
+  background: transparent;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .clear-button .p-button:hover:not(:disabled) {
+  background: #6c757d;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Estado de búsqueda */
+.search-status {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #6c757d;
+  font-size: 1rem;
+}
+
+/* Información de búsqueda */
+.search-info {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.info-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0, 123, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #007bff;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.info-content h4 {
+  color: #333;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.info-content p {
+  color: #6c757d;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.info-content small {
+  color: #6c757d;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Instrucciones de uso */
+.usage-instructions {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.instructions-card h4 {
+  color: #333;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.instructions-card h4 i {
+  color: #ffc107;
+  font-size: 1.1rem;
+}
+
+.instructions-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+.instructions-list li {
+  margin-bottom: 0.5rem;
+}
+
+.instructions-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filter-container {
+    padding: 1rem;
+  }
+
+  .filter-header {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-title {
+    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-title i {
+    font-size: 1.25rem;
+  }
+
+  .search-form-container {
+    padding: 1.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-button,
+  .clear-button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-container {
+    padding: 0.5rem;
+  }
+
+  .filter-header {
+    padding: 0.75rem;
+  }
+
+  .filter-title {
+    font-size: 1.25rem;
+  }
+
+  .search-form-container {
+    padding: 1rem;
+  }
+
+  .form-input {
+    padding: 0.75rem 1rem 0.75rem 2.25rem;
+    font-size: 0.9rem;
+  }
+
+  .input-prefix {
+    left: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Animaciones */
+.filter-header,
+.search-form-container,
+.search-status,
+.search-info,
+.usage-instructions {
+  animation: slideInUp 0.6s ease;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estados de hover para elementos interactivos */
+.input-prefix:hover {
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+/* Estilos para el scrollbar personalizado */
+.filter-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.filter-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.filter-container::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 4px;
+}
+
+.filter-container::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
+}
+
+/* Efectos de transición */
+.form-input,
+.search-button,
+.clear-button {
+  transition: all 0.3s ease;
+}
+
+/* Estados de focus mejorados */
+.form-input:focus {
+  transform: translateY(-1px);
+}
+
+/* Efectos de hover para botones */
+::ng-deep .p-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+}

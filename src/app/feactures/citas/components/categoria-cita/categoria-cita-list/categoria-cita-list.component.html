@@ -1,0 +1,153 @@
+<div class="categoria-list-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner />
+    <p>Cargando categorías...</p>
+  </div>
+
+  <!-- Tabla de Categorías -->
+  <div *ngIf="!loading && categorias.length > 0" class="table-container">
+    <p-table
+      [value]="categorias"
+      [paginator]="true"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} categorías"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [globalFilterFields]="['nombre', 'descripcion']"
+      responsiveLayout="scroll"
+      styleClass="p-datatable-sm nova-table"
+    >
+      <!-- Header -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Color</th>
+          <th>Icono</th>
+          <th>Orden</th>
+          <th>Estado</th>
+          <th>Total Citas</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+
+      <!-- Filas -->
+      <ng-template pTemplate="body" let-categoria>
+        <tr>
+          <!-- Nombre -->
+          <td>
+            <div class="categoria-nombre">
+              <div class="nombre-principal">{{ categoria.nombre }}</div>
+              <div class="descripcion" *ngIf="categoria.descripcion">
+                {{ categoria.descripcion | slice:0:50 }}
+                <span *ngIf="categoria.descripcion && categoria.descripcion.length > 50">...</span>
+              </div>
+            </div>
+          </td>
+
+          <!-- Descripción -->
+          <td>
+            <div class="descripcion-completa">
+              {{ categoria.descripcion || 'Sin descripción' }}
+            </div>
+          </td>
+
+          <!-- Color -->
+          <td>
+            <div class="color-info">
+              <div class="color-preview">
+                <div class="color-circle" [style.background-color]="categoria.color"></div>
+                <span class="color-code">{{ categoria.color }}</span>
+              </div>
+            </div>
+          </td>
+
+          <!-- Icono -->
+          <td>
+            <div class="icono-info">
+              <i [class]="getIconClass(categoria.icono)" class="categoria-icono"></i>
+              <span class="icono-nombre">{{ categoria.icono || 'Sin icono' }}</span>
+            </div>
+          </td>
+
+          <!-- Orden -->
+          <td>
+            <div class="orden-info">
+              <span class="orden-badge">{{ categoria.orden }}</span>
+            </div>
+          </td>
+
+          <!-- Estado -->
+          <td>
+            <p-tag
+              [value]="getTagText(categoria.activo)"
+              [severity]="getTagSeverity(categoria.activo)"
+            />
+          </td>
+
+          <!-- Total Citas -->
+          <td>
+            <div class="citas-info">
+              <span class="citas-count">{{ categoria.totalCitas || 0 }}</span>
+            </div>
+          </td>
+
+          <!-- Acciones -->
+          <td>
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-eye"
+                severity="info"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Ver detalle"
+                (onClick)="verDetalle(categoria)"
+              />
+
+              <p-button
+                icon="pi pi-pencil"
+                severity="secondary"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Editar"
+                (onClick)="editarCategoria(categoria)"
+              />
+
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [text]="true"
+                [rounded]="true"
+                pTooltip="Eliminar"
+                (onClick)="eliminarCategoria(categoria)"
+              />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <!-- Empty State -->
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="8" class="empty-state">
+            <div class="empty-content">
+              <i class="pi pi-tags empty-icon"></i>
+              <h3>No hay categorías</h3>
+              <p>No se han encontrado categorías de citas</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Estado vacío -->
+  <div *ngIf="!loading && categorias.length === 0" class="empty-state">
+    <div class="empty-content">
+      <i class="pi pi-tags empty-icon"></i>
+      <h3>No hay categorías</h3>
+      <p>No se han encontrado categorías de citas</p>
+    </div>
+  </div>
+</div>

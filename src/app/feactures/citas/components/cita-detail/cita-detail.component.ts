@@ -66,14 +66,31 @@ export class CitaDetailComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: (err) => {
-          this.error = 'Error al cargar los detalles de la cita';
-          this.loading = false;
           console.error('Error cargando cita:', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudieron cargar los detalles de la cita'
-          });
+
+          // Manejar diferentes tipos de errores
+          if (err.message === 'Cita no encontrada') {
+            this.error = 'La cita solicitada no existe o ha sido eliminada';
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Cita no encontrada',
+              detail: 'La cita que buscas no existe. Serás redirigido a la lista de citas.'
+            });
+
+            // Redirigir a la lista de citas después de un breve delay
+            setTimeout(() => {
+              this.router.navigate(['/user/citas']);
+            }, 2000);
+          } else {
+            this.error = 'Error al cargar los detalles de la cita';
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'No se pudieron cargar los detalles de la cita. Inténtalo de nuevo.'
+            });
+          }
+
+          this.loading = false;
         }
       });
   }

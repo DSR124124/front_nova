@@ -10,7 +10,11 @@ import { CitaFormComponent } from './components/cita-form/cita-form.component';
 import { CitaDetailComponent } from './components/cita-detail/cita-detail.component';
 import { CitaCalendarComponent } from './components/cita-calendar/cita-calendar.component';
 import { CitaFilterComponent } from './components/cita-filter/cita-filter.component';
-
+import { CategoriaCitaComponent } from './components/categoria-cita/categoria-cita.component';
+import { CategoriaCitaFormsComponent } from './components/categoria-cita/categoria-cita-forms/categoria-cita-forms.component';
+import { CategoriaCitaListComponent } from './components/categoria-cita/categoria-cita-list/categoria-cita-list.component';
+import { CategoriaCitaDeleteComponent } from './components/categoria-cita/categoria-cita-delete/categoria-cita-delete.component';
+import { CategoriaCitaFilterComponent } from './components/categoria-cita/categoria-cita-filter/categoria-cita-filter.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,12 @@ import { CitaFilterComponent } from './components/cita-filter/cita-filter.compon
     CitaFormComponent,
     CitaDetailComponent,
     CitaCalendarComponent,
-    CitaFilterComponent
+    CitaFilterComponent,
+    CategoriaCitaComponent,
+    CategoriaCitaFormsComponent,
+    CategoriaCitaListComponent,
+    CategoriaCitaDeleteComponent,
+    CategoriaCitaFilterComponent
   ],
   imports: [
     CommonModule,
@@ -26,13 +35,6 @@ import { CitaFilterComponent } from './components/cita-filter/cita-filter.compon
     ReactiveFormsModule,
     PrimeNgModule,
     CitasRoutingModule
-  ],
-  exports: [
-    CitaCalendarComponent,
-    CitaDetailComponent,
-    CitaFilterComponent,
-    CitaFormComponent,
-    CitaListComponent
   ],
   providers: [
     ConfirmationService,

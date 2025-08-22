@@ -1,0 +1,100 @@
+<div class="delete-container">
+
+  <!-- Header del componente -->
+  <div class="delete-header">
+    <h3 class="delete-title">
+      <i class="pi pi-trash"></i>
+      Eliminar Categoría
+    </h3>
+    <p class="delete-subtitle">
+      Confirma la eliminación de la categoría seleccionada
+    </p>
+  </div>
+
+  <!-- Información de la categoría -->
+  <div *ngIf="hasCategoriaData()" class="categoria-info-container">
+    <div class="categoria-info-card">
+      <div class="info-header">
+        <div class="info-icon">
+          <i class="pi pi-exclamation-triangle"></i>
+        </div>
+        <div class="info-content">
+          <h4>Información de la Categoría</h4>
+          <p class="categoria-name">{{ getCategoriaInfo() }}</p>
+          <p class="categoria-details">{{ getCategoriaDetails() }}</p>
+        </div>
+      </div>
+
+      <div class="warning-message">
+        <div class="warning-icon">
+          <i class="pi pi-info-circle"></i>
+        </div>
+        <div class="warning-content">
+          <h5>⚠️ Advertencia</h5>
+          <p>Esta acción no se puede deshacer. La categoría será eliminada permanentemente del sistema.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado sin categoría -->
+  <div *ngIf="!hasCategoriaData()" class="no-categoria-state">
+    <div class="no-categoria-content">
+      <div class="no-categoria-icon">
+        <i class="pi pi-inbox"></i>
+      </div>
+      <h4>No hay categoría seleccionada</h4>
+      <p>Selecciona una categoría para poder eliminarla</p>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="action-buttons">
+    <p-button
+      *ngIf="hasCategoriaData()"
+      [label]="getDeleteButtonText()"
+      [icon]="getDeleteButtonIcon()"
+      [loading]="deleting"
+      [disabled]="!puedeEliminar()"
+      (click)="confirmarEliminacion()"
+      styleClass="p-button-danger delete-button">
+    </p-button>
+
+    <p-button
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="cerrarDialogo()"
+      [disabled]="deleting"
+      styleClass="p-button-outlined p-button-secondary cancel-button">
+    </p-button>
+  </div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="loading-content">
+      <p-progressSpinner [style]="{width: '40px', height: '40px'}"></p-progressSpinner>
+      <p>Procesando eliminación...</p>
+    </div>
+  </div>
+
+  <!-- Información adicional -->
+  <div class="additional-info">
+    <div class="info-card">
+      <h4>
+        <i class="pi pi-lightbulb"></i>
+        Información Importante
+      </h4>
+      <ul class="info-list">
+        <li>La eliminación es permanente y no se puede revertir</li>
+        <li>Se eliminarán todos los datos asociados a la categoría</li>
+        <li>Las citas que usen esta categoría pueden quedar sin clasificación</li>
+        <li>Se recomienda verificar que no haya dependencias antes de eliminar</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Servicios de PrimeNG -->
+  <p-confirmDialog></p-confirmDialog>
+  <p-toast></p-toast>
+
+</div>

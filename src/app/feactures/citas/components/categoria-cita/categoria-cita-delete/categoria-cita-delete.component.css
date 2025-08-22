@@ -1,0 +1,461 @@
+/* Estilos para el componente de eliminación de categorías */
+
+.delete-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Header del componente */
+.delete-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+}
+
+.delete-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.delete-title i {
+  font-size: 1.5rem;
+  color: #ffd700;
+}
+
+.delete-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 300;
+}
+
+/* Información de la categoría */
+.categoria-info-container {
+  margin-bottom: 2rem;
+}
+
+.categoria-info-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  border-left: 4px solid #dc3545;
+}
+
+.info-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(220, 53, 69, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc3545;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.info-content h4 {
+  color: #333;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.categoria-name {
+  color: #dc3545;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.categoria-details {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Mensaje de advertencia */
+.warning-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 193, 7, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid #ffc107;
+}
+
+.warning-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 193, 7, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffc107;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.warning-content h5 {
+  color: #856404;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.warning-content p {
+  color: #856404;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Estado sin categoría */
+.no-categoria-state {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 3rem 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.no-categoria-content {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.no-categoria-icon {
+  font-size: 4rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.no-categoria-state h4 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.no-categoria-state p {
+  color: #6c757d;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Botones de acción */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.delete-button,
+.cancel-button {
+  min-width: 140px;
+}
+
+::ng-deep .delete-button .p-button {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .delete-button .p-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #c82333, #a71e2a);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+::ng-deep .cancel-button .p-button {
+  border: 2px solid #6c757d;
+  color: #6c757d;
+  background: transparent;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .cancel-button .p-button:hover:not(:disabled) {
+  background: #6c757d;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Estado de carga */
+.loading-state {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: #6c757d;
+}
+
+.loading-content p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Información adicional */
+.additional-info {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.info-card h4 {
+  color: #333;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.info-card h4 i {
+  color: #ffc107;
+  font-size: 1rem;
+}
+
+.info-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+.info-list li {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.info-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .delete-container {
+    padding: 1rem;
+  }
+
+  .delete-header {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .delete-title {
+    font-size: 1.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .delete-title i {
+    font-size: 1.25rem;
+  }
+
+  .categoria-info-card {
+    padding: 1rem;
+  }
+
+  .info-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .warning-message {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .delete-button,
+  .cancel-button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .delete-container {
+    padding: 0.5rem;
+  }
+
+  .delete-header {
+    padding: 0.75rem;
+  }
+
+  .delete-title {
+    font-size: 1.25rem;
+  }
+
+  .categoria-info-card {
+    padding: 0.75rem;
+  }
+
+  .info-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .warning-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .no-categoria-state {
+    padding: 2rem 1rem;
+  }
+
+  .no-categoria-icon {
+    font-size: 3rem;
+  }
+}
+
+/* Animaciones */
+.delete-header,
+.categoria-info-card,
+.no-categoria-state,
+.loading-state,
+.additional-info {
+  animation: slideInUp 0.6s ease;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estados de hover para elementos interactivos */
+.info-icon:hover,
+.warning-icon:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+/* Estilos para el scrollbar personalizado */
+.delete-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.delete-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.delete-container::-webkit-scrollbar-thumb {
+  background: #dc3545;
+  border-radius: 4px;
+}
+
+.delete-container::-webkit-scrollbar-thumb:hover {
+  background: #c82333;
+}
+
+/* Efectos de transición */
+.delete-button,
+.cancel-button {
+  transition: all 0.3s ease;
+}
+
+/* Estados de focus mejorados */
+::ng-deep .p-button:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+}
+
+/* Efectos de hover para botones */
+::ng-deep .p-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  transition: transform 0.3s ease;
+}
+
+/* Estilos específicos para el diálogo de confirmación */
+::ng-deep .p-confirm-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+}
+
+::ng-deep .p-confirm-dialog .p-dialog-header .p-dialog-title {
+  color: white;
+}
+
+::ng-deep .p-confirm-dialog .p-dialog-header .p-dialog-header-icon {
+  color: white;
+}
+
+/* Estilos para los mensajes toast */
+::ng-deep .p-toast .p-toast-message {
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+}
+
+::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+}
+
+::ng-deep .p-toast .p-toast-message.p-toast-message-info {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+  color: white;
+}

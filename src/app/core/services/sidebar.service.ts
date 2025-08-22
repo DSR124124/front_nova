@@ -33,7 +33,8 @@ export class SidebarService {
       items: [
         { label: 'Lista de Citas', icon: 'pi pi-list', routerLink: '/user/citas/listar' },
         { label: 'Calendario', icon: 'pi pi-calendar', routerLink: '/user/citas/calendario' },
-        { label: 'Nueva Cita', icon: 'pi pi-plus', routerLink: '/user/citas/nueva' }
+        { label: 'Nueva Cita', icon: 'pi pi-plus', routerLink: '/user/citas/nueva' },
+        { label: 'Categorías', icon: 'pi pi-tag', routerLink: '/user/citas/categorias' }
       ]
     },
     {

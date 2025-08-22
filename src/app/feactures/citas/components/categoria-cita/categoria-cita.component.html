@@ -1,0 +1,120 @@
+<div class="categoria-cita-container">
+  <!-- Header Principal -->
+  <div class="main-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1>
+          <i class="pi pi-tags"></i>
+          Categorías de Citas
+        </h1>
+        <p>Gestiona las categorías para organizar tus citas</p>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="mostrarFormularioCrear()">
+          <i class="pi pi-plus"></i>
+          Nueva Categoría
+        </button>
+        <button class="btn btn-secondary" (click)="mostrarFiltro()">
+          <i class="pi pi-search"></i>
+          Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <div class="main-content">
+
+    <!-- Vista de Listado (por defecto) -->
+    <div *ngIf="isListView()" class="content-section">
+      <div class="section-header">
+        <h2>Lista de Categorías</h2>
+        <div class="section-actions">
+          <button class="btn btn-outline" (click)="mostrarFormularioCrear()">
+            <i class="pi pi-plus"></i>
+            Agregar
+          </button>
+        </div>
+      </div>
+
+      <div class="content-body">
+        <app-categoria-cita-list [showActions]="true"></app-categoria-cita-list>
+      </div>
+    </div>
+
+    <!-- Vista de Formulario -->
+    <div *ngIf="isFormView()" class="content-section">
+      <div class="section-header">
+        <h2>
+          <i class="pi pi-edit"></i>
+          {{ isEditing ? 'Editar Categoría' : 'Nueva Categoría' }}
+        </h2>
+        <button class="btn btn-outline" (click)="mostrarListado()">
+          <i class="pi pi-arrow-left"></i>
+          Volver
+        </button>
+      </div>
+
+      <div class="content-body">
+        <app-categoria-cita-forms
+          [categoria]="categoriaSeleccionada"
+          [isEditing]="isEditing"
+          [visible]="showForm"
+          (save)="guardarCategoria($event)"
+          (cancel)="cerrarFormulario()"
+          (visibleChange)="cerrarFormulario()">
+        </app-categoria-cita-forms>
+      </div>
+    </div>
+
+    <!-- Vista de Eliminación -->
+    <div *ngIf="isDeleteView()" class="content-section">
+      <div class="section-header">
+        <h2>
+          <i class="pi pi-trash"></i>
+          Eliminar Categoría
+        </h2>
+        <button class="btn btn-outline" (click)="mostrarListado()">
+          <i class="pi pi-arrow-left"></i>
+          Volver
+        </button>
+      </div>
+
+      <div class="content-body">
+        <app-categoria-cita-delete
+          [categoria]="categoriaParaEliminar"
+          [visible]="showDelete"
+          (deleteSuccess)="onDeleteSuccess()"
+          (deleteError)="onDeleteError($event)"
+          (visibleChange)="cerrarEliminacion()">
+        </app-categoria-cita-delete>
+      </div>
+    </div>
+
+    <!-- Vista de Filtro -->
+    <div *ngIf="isFilterView()" class="content-section">
+      <div class="section-header">
+        <h2>
+          <i class="pi pi-search"></i>
+          Buscar Categoría
+        </h2>
+        <button class="btn btn-outline" (click)="mostrarListado()">
+          <i class="pi pi-arrow-left"></i>
+          Volver
+        </button>
+      </div>
+
+      <div class="content-body">
+        <app-categoria-cita-filter
+          (searchResult)="onSearchResult($event)"
+          (searchError)="onSearchError($event)">
+        </app-categoria-cita-filter>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Servicios de PrimeNG -->
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>

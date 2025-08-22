@@ -5,6 +5,7 @@ import { CitaFormComponent } from './components/cita-form/cita-form.component';
 import { CitaDetailComponent } from './components/cita-detail/cita-detail.component';
 import { CitaCalendarComponent } from './components/cita-calendar/cita-calendar.component';
 import { CitaFilterComponent } from './components/cita-filter/cita-filter.component';
+import { CategoriaCitaComponent } from './components/categoria-cita/categoria-cita.component';
 
 const routes: Routes = [
   {
@@ -28,11 +29,6 @@ const routes: Routes = [
     title: 'Editar Cita'
   },
   {
-    path: ':id',
-    component: CitaDetailComponent,
-    title: 'Detalle de Cita'
-  },
-  {
     path: 'calendario',
     component: CitaCalendarComponent,
     title: 'Calendario de Citas'
@@ -41,6 +37,16 @@ const routes: Routes = [
     path: 'filtros',
     component: CitaFilterComponent,
     title: 'Filtros de Citas'
+  },
+  {
+    path: 'categorias',
+    component: CategoriaCitaComponent,
+    title: 'Categorías de Citas'
+  },
+  {
+    path: ':id',
+    component: CitaDetailComponent,
+    title: 'Detalle de Cita'
   }
 ];
 

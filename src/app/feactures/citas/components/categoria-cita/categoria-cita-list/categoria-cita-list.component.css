@@ -1,0 +1,198 @@
+/* Estilos para el componente de listado de categorías - Tema Oscuro */
+
+.categoria-list-container {
+  width: 100%;
+  padding: 0;
+  background: transparent;
+}
+
+/* Loading Section */
+.loading-container {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--surface-card);
+  border-radius: 12px;
+  border: 1px solid var(--surface-border);
+}
+
+.loading-container p {
+  margin-top: 1rem;
+  color: var(--text-color-secondary);
+  font-size: 1.1rem;
+}
+
+/* Tabla de categorías */
+.table-container {
+  background: var(--surface-card);
+  border-radius: 12px;
+  border: 1px solid var(--surface-border);
+  overflow: hidden;
+}
+
+/* Estilos específicos de la tabla de categorías */
+.categoria-nombre {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nombre-principal {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.descripcion {
+  font-size: 0.8rem;
+  color: var(--text-color-secondary);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.descripcion-completa {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Color preview */
+.color-info {
+  display: flex;
+  align-items: center;
+}
+
+.color-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.color-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--surface-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.color-code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: var(--text-color-secondary);
+  font-weight: 500;
+}
+
+/* Icono info */
+.icono-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.categoria-icono {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+}
+
+.icono-nombre {
+  font-size: 0.8rem;
+  color: var(--text-color-secondary);
+  text-align: center;
+}
+
+/* Orden info */
+.orden-info {
+  display: flex;
+  justify-content: center;
+}
+
+.orden-badge {
+  background: var(--success-color);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Citas info */
+.citas-info {
+  display: flex;
+  justify-content: center;
+}
+
+.citas-count {
+  background: var(--info-color);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Botones de acción */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--surface-card);
+  border-radius: 12px;
+  border: 1px solid var(--surface-border);
+}
+
+.empty-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: var(--surface-border);
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.empty-state p {
+  color: var(--text-color-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .loading-section,
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-section,
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+}
+
+/* Estados de hover para elementos interactivos */
+.color-circle:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}

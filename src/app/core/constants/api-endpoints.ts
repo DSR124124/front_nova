@@ -30,6 +30,7 @@ export const API_ENDPOINTS = {
   MENSAJES: buildUrl('/mensajes'),
   MULTIMEDIA: buildUrl('/multimedia'),
   LUGARES: buildUrl('/lugares'),
+  CATEGORIAS_CITA: buildUrl('/categorias-cita'),
 
   // ===== ADMINISTRACIÓN =====
   ADMIN_USERS: buildUrl('/admin/usuarios'),

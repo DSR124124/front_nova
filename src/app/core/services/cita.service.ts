@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { Cita } from '../models/Interfaces/cita/cita';
@@ -61,7 +61,8 @@ export class CitaService {
     if (cita) {
       return of(cita).pipe(delay(300));
     }
-    throw new Error('Cita no encontrada');
+    // En lugar de throw, retornar un Observable que emite error
+    return throwError(() => new Error('Cita no encontrada'));
   }
 
   registrar(cita: Cita): Observable<void> {
@@ -76,7 +77,7 @@ export class CitaService {
       this.citasMock[index] = { ...cita };
       return of(void 0).pipe(delay(500));
     }
-    throw new Error('Cita no encontrada');
+    return throwError(() => new Error('Cita no encontrada'));
   }
 
   eliminar(id: number): Observable<void> {
@@ -85,7 +86,7 @@ export class CitaService {
       this.citasMock.splice(index, 1);
       return of(void 0).pipe(delay(500));
     }
-    throw new Error('Cita no encontrada');
+    return throwError(() => new Error('Cita no encontrada'));
   }
 
   completarCita(id: number): Observable<void> {
@@ -94,7 +95,7 @@ export class CitaService {
       cita.estado = EstadoCita.REALIZADA;
       return of(void 0).pipe(delay(500));
     }
-    throw new Error('Cita no encontrada');
+    return throwError(() => new Error('Cita no encontrada'));
   }
 
   cancelarCita(id: number): Observable<void> {
@@ -103,7 +104,7 @@ export class CitaService {
       cita.estado = EstadoCita.CANCELADA;
       return of(void 0).pipe(delay(500));
     }
-    throw new Error('Cita no encontrada');
+    return throwError(() => new Error('Cita no encontrada'));
   }
 
   calificarCita(id: number, rating: number): Observable<void> {
@@ -112,7 +113,7 @@ export class CitaService {
       cita.rating = rating;
       return of(void 0).pipe(delay(500));
     }
-    throw new Error('Cita no encontrada');
+    return throwError(() => new Error('Cita no encontrada'));
   }
 
   // Métodos adicionales
