@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { EstadoDisponibilidadParejaResponse } from '../models/Interfaces/Pareja/EstadoDisponibilidadParejaResponse';
 import { ParejaUnirCodigosResponse } from '../models/Interfaces/Pareja/ParejaUnirCodigosResponse';
-import { InformacionParejaResponse } from '../models/Interfaces/Pareja/InformacionParejaResponse';
+import { InfoParejaResponse } from '../models/Interfaces/Pareja/InformacionParejaResponse';
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,8 @@ export class ParejaService {
     return this.http.get<EstadoDisponibilidadParejaResponse>(url);
   }
 
-  obtenerInfoRelacion(idUsuario: number): Observable<InformacionParejaResponse> {
+  obtenerInfoRelacion(idUsuario: number): Observable<InfoParejaResponse> {
     const url = `${this.baseUrl}/info-relacion/${idUsuario}`;
-    return this.http.get<InformacionParejaResponse>(url);
+    return this.http.get<InfoParejaResponse>(url);
   }
 }
