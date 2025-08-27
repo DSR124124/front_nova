@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { ParejaUnirCodigosResponse } from '../models/Interfaces/Pareja/ParejaUnirCodigosResponse';
 import { EstadoDisponibilidadParejaResponse } from '../models/Interfaces/Pareja/EstadoDisponibilidadParejaResponse';
+import { ParejaUnirCodigosResponse } from '../models/Interfaces/Pareja/ParejaUnirCodigosResponse';
 import { InformacionParejaResponse } from '../models/Interfaces/Pareja/InformacionParejaResponse';
 
 @Injectable({
