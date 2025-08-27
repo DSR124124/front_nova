@@ -39,12 +39,17 @@
             </div>
 
             <div class="preview-image">
-              <p-image
-                [src]="demoFeatures[currentFeature].image"
-                alt="Demo de {{ demoFeatures[currentFeature].title }}"
-                [preview]="false"
-                styleClass="demo-screenshot"
-              />
+              <div class="image-container">
+                <!-- Imagen principal -->
+                <p-image
+                  [src]="demoFeatures[currentFeature].image"
+                  [alt]="demoFeatures[currentFeature].alt"
+                  [preview]="true"
+                  styleClass="demo-screenshot"
+                  [showTransitionOptions]="'150ms'"
+                  [hideTransitionOptions]="'150ms'"
+                />
+              </div>
             </div>
 
             <p class="preview-description">

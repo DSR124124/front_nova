@@ -12,30 +12,38 @@ export class DemoComponent {
     {
       title: 'Calendario Inteligente',
       description: 'Organiza citas con recordatorios automáticos y sincronización entre parejas',
-      image: 'assets/images/demo-calendar.jpg',
+      image: 'assets/images/landing-resouces/imagen01.jpg',
       icon: 'pi pi-calendar',
-      color: 'var(--primary-color)'
+      color: 'var(--primary-color)',
+      alt: 'Demo del calendario inteligente de Nova',
+      aspectRatio: '16/9'
     },
     {
       title: 'Chat en Tiempo Real',
       description: 'Comunicación fluida con emojis, archivos y notificaciones push',
-      image: 'assets/images/demo-chat.jpg',
+      image: 'assets/images/landing-resouces/imagen02.jpg',
       icon: 'pi pi-comments',
-      color: 'var(--info-color)'
+      color: 'var(--info-color)',
+      alt: 'Demo del chat en tiempo real de Nova',
+      aspectRatio: '16/9'
     },
     {
       title: 'Galería Compartida',
       description: 'Almacena y organiza todos tus recuerdos especiales en un solo lugar',
-      image: 'assets/images/demo-gallery.jpg',
+      image: 'assets/images/landing-resouces/imagen03.jpg',
       icon: 'pi pi-images',
-      color: 'var(--success-color)'
+      color: 'var(--success-color)',
+      alt: 'Demo de la galería compartida de Nova',
+      aspectRatio: '16/9'
     },
     {
       title: 'Lugares Favoritos',
       description: 'Descubre y guarda los mejores lugares para crear momentos inolvidables',
-      image: 'assets/images/demo-places.jpg',
+      image: 'assets/images/landing-resouces/imagen04.jpg',
       icon: 'pi pi-map-marker',
-      color: 'var(--warning-color)'
+      color: 'var(--warning-color)',
+      alt: 'Demo de lugares favoritos de Nova',
+      aspectRatio: '16/9'
     }
   ];
 

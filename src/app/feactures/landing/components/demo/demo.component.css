@@ -54,13 +54,14 @@
   justify-content: space-between;
   pointer-events: none;
   z-index: 10;
+  padding: 0 var(--landing-spacing-sm);
 }
 
 .demo-nav-btn {
   background: var(--landing-bg-card);
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   box-shadow: var(--landing-shadow-md);
   cursor: pointer;
@@ -69,16 +70,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--landing-bg-overlay);
 }
 
 .demo-nav-btn:hover {
   background: var(--landing-primary);
   color: white;
-  transform: scale(1.05);
+  transform: scale(1.1);
+  box-shadow: var(--landing-shadow-lg);
+}
+
+.demo-nav-btn:active {
+  transform: scale(0.95);
 }
 
 .demo-nav-btn i {
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 /* Preview */
@@ -119,13 +128,65 @@
 
 .preview-image {
   margin: var(--landing-spacing-md) 0;
+  position: relative;
 }
 
-.demo-screenshot {
+
+
+/* Contenedor de imagen con aspect ratio */
+.image-container {
   width: 100%;
   max-width: 500px;
+  margin: 0 auto;
   border-radius: var(--landing-radius-lg);
+  overflow: hidden;
   box-shadow: var(--landing-shadow-md);
+  background: var(--landing-bg-overlay);
+  position: relative;
+  transition: all var(--landing-transition-normal);
+}
+
+.image-container:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--landing-shadow-lg);
+}
+
+
+
+.demo-screenshot {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  border-radius: var(--landing-radius-lg);
+  transition: transform var(--landing-transition-normal);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.demo-screenshot:hover {
+  transform: scale(1.05);
+}
+
+/* Estilos para PrimeNG Image */
+:host ::ng-deep .demo-screenshot img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  border-radius: var(--landing-radius-lg);
+  transition: transform var(--landing-transition-normal);
+}
+
+:host ::ng-deep .demo-screenshot img:hover {
+  transform: scale(1.05);
+}
+
+:host ::ng-deep .p-image-preview {
+  border-radius: var(--landing-radius-lg);
+}
+
+:host ::ng-deep .p-image-preview img {
+  border-radius: var(--landing-radius-lg);
 }
 
 .preview-description {
@@ -138,7 +199,7 @@
 /* Indicadores */
 .demo-indicators {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--landing-spacing-sm);
   margin-top: var(--landing-spacing-md);
 }
@@ -154,33 +215,62 @@
   display: flex;
   align-items: center;
   gap: var(--landing-spacing-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.demo-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left var(--landing-transition-slow);
+}
+
+.demo-indicator:hover::before {
+  left: 100%;
 }
 
 .demo-indicator:hover {
   border-color: var(--landing-primary);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: var(--landing-shadow-md);
 }
 
 .demo-indicator.active {
   border-color: var(--landing-primary);
   background: var(--landing-primary-50);
+  box-shadow: var(--landing-shadow-sm);
 }
 
 .indicator-icon {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  transition: all var(--landing-transition-normal);
+}
+
+.demo-indicator:hover .indicator-icon {
+  transform: scale(1.1);
 }
 
 .indicator-title {
   font-weight: 500;
   color: var(--landing-text-primary);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  transition: color var(--landing-transition-normal);
+}
+
+.demo-indicator:hover .indicator-title {
+  color: var(--landing-primary);
 }
 
 /* Acciones */
@@ -254,6 +344,25 @@
   font-size: 0.85rem;
 }
 
+/* Loading state para imágenes */
+.image-loading {
+  display: none;
+}
+
+/* Estado de error para imágenes */
+.image-error {
+  display: none;
+}
+
+.retry-btn {
+  display: none;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .demo-section {
@@ -299,6 +408,14 @@
     grid-template-columns: 1fr;
     gap: var(--landing-spacing-sm);
   }
+
+  .image-container {
+    max-width: 100%;
+  }
+
+  .image-container::before {
+    padding-top: 66.67%; /* 3:2 aspect ratio en tablets */
+  }
 }
 
 @media (max-width: 480px) {
@@ -322,5 +439,13 @@
 
   .highlight-item {
     padding: var(--landing-spacing-sm);
+  }
+
+  .image-container {
+    max-width: 100%;
+  }
+
+  .image-container::before {
+    padding-top: 75%; /* 4:3 aspect ratio en móviles */
   }
 }
