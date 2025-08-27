@@ -94,22 +94,67 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--landing-spacing-sm);
+  gap: var(--landing-spacing-md);
   margin-bottom: var(--landing-spacing-md);
+  flex-wrap: wrap;
 }
 
 .testimonial-avatar {
-  width: 60px;
-  height: 60px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid var(--landing-primary);
+  box-shadow: var(--landing-shadow-sm);
+  flex-shrink: 0;
+  transition: all var(--landing-transition-normal);
+  position: relative;
+}
+
+.testimonial-avatar:hover {
+  border-color: var(--landing-primary-light);
+  box-shadow: var(--landing-shadow-md);
+  transform: translateY(-2px);
 }
 
 .avatar-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--landing-transition-normal);
+  border-radius: 50%;
+  display: block;
+}
+
+/* Estilos específicos para las imágenes de avatares */
+.avatar-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform var(--landing-transition-normal);
+}
+
+/* Hover effect para las imágenes */
+.testimonial-avatar:hover .avatar-image img {
+  transform: scale(1.1);
+}
+
+.testimonial-avatar:hover .avatar-image {
+  transform: scale(1.1);
+}
+
+/* Asegurar que las imágenes de PrimeNG se vean correctamente */
+:host ::ng-deep .avatar-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  display: block !important;
+}
+
+:host ::ng-deep .avatar-image .p-image-preview {
+  border-radius: 50% !important;
 }
 
 .testimonial-info {
@@ -253,10 +298,17 @@
   .testimonial-header {
     flex-direction: column;
     text-align: center;
+    gap: var(--landing-spacing-sm);
   }
 
   .testimonial-info {
     text-align: center;
+  }
+
+  .testimonial-avatar {
+    width: 65px;
+    height: 65px;
+    border-width: 2px;
   }
 
   .testimonials-stats {
@@ -276,6 +328,12 @@
 
   .testimonial-card {
     padding: var(--landing-spacing-sm);
+  }
+
+  .testimonial-avatar {
+    width: 60px;
+    height: 60px;
+    border-width: 2px;
   }
 
   .testimonials-stats {

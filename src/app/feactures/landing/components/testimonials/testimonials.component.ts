@@ -11,7 +11,7 @@ export class TestimonialsComponent {
     {
       name: 'María & Carlos',
       location: 'Madrid, España',
-      avatar: 'assets/images/avatar1.jpg',
+      avatar: 'assets/images/landing-resouces/avatar01.jpg',
       rating: 5,
       text: 'Nova ha transformado completamente nuestra relación. Ahora nunca olvidamos nuestras fechas especiales y siempre tenemos planes emocionantes para hacer juntos.',
       feature: 'Gestión de Citas'
@@ -19,7 +19,7 @@ export class TestimonialsComponent {
     {
       name: 'Ana & David',
       location: 'Barcelona, España',
-      avatar: 'assets/images/avatar2.jpg',
+      avatar: 'assets/images/landing-resouces/avatar02.jpg',
       rating: 5,
       text: 'El chat en tiempo real nos mantiene conectados todo el día. Es como tener a mi pareja siempre cerca, sin importar dónde estemos.',
       feature: 'Chat en Tiempo Real'
@@ -27,7 +27,7 @@ export class TestimonialsComponent {
     {
       name: 'Sofía & Miguel',
       location: 'Valencia, España',
-      avatar: 'assets/images/avatar3.jpg',
+      avatar: 'assets/images/landing-resouces/avatar03.jpg',
       rating: 5,
       text: 'Los lugares favoritos nos han ayudado a descubrir rincones mágicos en nuestra ciudad. Cada fin de semana es una nueva aventura.',
       feature: 'Lugares Favoritos'
@@ -35,7 +35,7 @@ export class TestimonialsComponent {
     {
       name: 'Laura & Javier',
       location: 'Sevilla, España',
-      avatar: 'assets/images/avatar4.jpg',
+      avatar: 'assets/images/landing-resouces/avatar04.png',
       rating: 5,
       text: 'El sistema de regalos es genial. Ahora siempre sé qué regalarle a mi pareja y nunca me quedo sin ideas.',
       feature: 'Sistema de Regalos'
@@ -43,7 +43,7 @@ export class TestimonialsComponent {
     {
       name: 'Carmen & Roberto',
       location: 'Málaga, España',
-      avatar: 'assets/images/avatar5.jpg',
+      avatar: 'assets/images/landing-resouces/avatar01.jpg',
       rating: 5,
       text: 'Las notificaciones inteligentes nos recuerdan fechas importantes. Es como tener un asistente personal para nuestra relación.',
       feature: 'Recordatorios Inteligentes'
@@ -51,7 +51,7 @@ export class TestimonialsComponent {
     {
       name: 'Isabel & Fernando',
       location: 'Bilbao, España',
-      avatar: 'assets/images/avatar6.jpg',
+      avatar: 'assets/images/landing-resouces/avatar02  .jpg',
       rating: 5,
       text: 'La galería multimedia nos permite guardar todos nuestros recuerdos en un solo lugar. Es nuestro álbum digital de amor.',
       feature: 'Multimedia Compartida'
