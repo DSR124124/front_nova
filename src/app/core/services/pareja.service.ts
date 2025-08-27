@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { EstadoDisponibilidadParejaResponse } from '../models/Interfaces/Pareja/EstadoDisponibilidadParejaResponse';
 import { ParejaUnirCodigosResponse } from '../models/Interfaces/Pareja/ParejaUnirCodigosResponse';
-import { InfoParejaResponse } from '../models/Interfaces/Pareja/InformacionParejaResponse';
+import { InfoParejaResponse } from '../models/Interfaces/Pareja/InfoParejaResponse';
 
 
 @Injectable({
