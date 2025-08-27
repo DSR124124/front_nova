@@ -14,6 +14,7 @@ export class ParejaService {
 
   constructor(private http: HttpClient) {}
 
+
   unirCodigos(codigo1: string, codigo2: string): Observable<ParejaUnirCodigosResponse> {
     const url = `${this.baseUrl}/unir-codigos`;
     const payload = {
