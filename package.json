@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:optimized": "ng build --configuration optimized",
     "build:github": "ng build --configuration github",
     "build:vercel": "ng build --configuration vercel",
     "watch": "ng build --watch --configuration development",

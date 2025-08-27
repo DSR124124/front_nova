@@ -3,13 +3,13 @@ import { UsuarioPareja } from "../Usuario/Usuario";
 
 export interface InformacionParejaResponse extends MensajeErrorDTO<PData> {
   p_menserror: null;
-  p_mensavis:  string;
-  p_exito:     boolean;
-  p_data:      PData;
+  p_mensavis: string;
+  p_exito: boolean;
+  p_data: PData;
 }
 
 export interface PData {
-  pareja:   Pareja;
+  pareja: Pareja;
   usuario1: UsuarioPareja;
   usuario2: UsuarioPareja;
 }

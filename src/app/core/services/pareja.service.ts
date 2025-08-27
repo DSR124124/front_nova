@@ -14,17 +14,11 @@ export class ParejaService {
 
   constructor(private http: HttpClient) {}
 
-
   unirCodigos(codigo1: string, codigo2: string): Observable<ParejaUnirCodigosResponse> {
     const url = `${this.baseUrl}/unir-codigos`;
-    const payload = {
-      codigo1,
-      codigo2
-    };
-
+    const payload = { codigo1, codigo2 };
     return this.http.post<ParejaUnirCodigosResponse>(url, payload);
   }
-
 
   puedeCrearPareja(idUsuario: number): Observable<EstadoDisponibilidadParejaResponse> {
     const url = `${this.baseUrl}/puede-crear-pareja/${idUsuario}`;
