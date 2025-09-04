@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeNgModule } from '../../prime-ng/prime-ng.module';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 import { CitasRoutingModule } from './citas-routing.module';
 import { CitaListComponent } from './components/cita-list/cita-list.component';
@@ -37,8 +37,7 @@ import { CategoriaCitaFilterComponent } from './components/categoria-cita/catego
     CitasRoutingModule
   ],
   providers: [
-    ConfirmationService,
-    MessageService
+    ConfirmationService
   ]
 })
 export class CitasModule { }

@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { CategoriaCitaService } from '../../../../core/services/categoria-cita.service';
 import { MessageInfoService } from '../../../../core/services/message-info.service';
 import { CategoriaCita } from '../../../../core/models/Interfaces/cita/CategoriaCita';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-categoria-cita',
@@ -36,7 +36,8 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
   constructor(
     private categoriaCitaService: CategoriaCitaService,
     private messageInfoService: MessageInfoService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -164,7 +165,13 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
   onSearchResult(categoria: CategoriaCita | null): void {
     if (categoria) {
       this.messageInfoService.showInfo(`Mostrando detalles de "${categoria.nombre}"`, 'Detalle de Categoría');
-      // Aquí podrías navegar a la vista de edición o mostrar detalles
+      // Mostrar los detalles de la categoría encontrada
+      this.categoriaSeleccionada = categoria;
+      this.isViewing = true;
+      this.isEditing = false;
+      this.currentView = 'form';
+      this.showForm = true;
+      this.cerrarFiltro(); // Cerrar la vista de filtro y mostrar el detalle
     }
   }
 
@@ -282,5 +289,6 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
     this.isEditing = false;
     this.currentView = 'form';
   }
+
 
 }

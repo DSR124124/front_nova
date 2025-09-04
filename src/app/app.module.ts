@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import Aura from '@primeuix/themes/aura';
+import { MessageService } from 'primeng/api';
 
 import { AppRoutingModule } from './app-routing.module';
 import { PrimeNgModule } from './prime-ng/prime-ng.module';
@@ -36,6 +37,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
     SharedModule
   ],
   providers: [
+    MessageService,
     providePrimeNG({
         theme: {
             preset: Aura,

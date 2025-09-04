@@ -16,7 +16,7 @@ export class MessageInfoService {
     if (response.p_exito) {
       // Éxito
       if (showSuccessToast) {
-        this.messageService.add({
+        const toastMessage = {
           severity: 'success',
           summary: 'Éxito',
           detail:
@@ -24,16 +24,24 @@ export class MessageInfoService {
             response.p_mensavis ||
             'Operación realizada correctamente',
           life: 3000,
+        };
+        this.messageService.add({
+          ...toastMessage,
+          key: 'main-toast'
         });
       }
       return true;
     } else {
       // Error
-      this.messageService.add({
+      const errorMessage = {
         severity: 'error',
         summary: 'Error',
         detail: response.p_menserror || 'Ha ocurrido un error inesperado',
         life: 5000,
+      };
+      this.messageService.add({
+        ...errorMessage,
+        key: 'main-toast'
       });
       return false;
     }
@@ -41,6 +49,7 @@ export class MessageInfoService {
 
   showSuccess(message: string, summary: string = 'Éxito'): void {
     this.messageService.add({
+      key: 'main-toast',
       severity: 'success',
       summary: summary,
       detail: message,
@@ -50,6 +59,7 @@ export class MessageInfoService {
 
   showError(message: string, summary: string = 'Error'): void {
     this.messageService.add({
+      key: 'main-toast',
       severity: 'error',
       summary: summary,
       detail: message,
@@ -59,6 +69,7 @@ export class MessageInfoService {
 
   showInfo(message: string, summary: string = 'Información'): void {
     this.messageService.add({
+      key: 'main-toast',
       severity: 'info',
       summary: summary,
       detail: message,
@@ -68,6 +79,7 @@ export class MessageInfoService {
 
   showWarning(message: string, summary: string = 'Advertencia'): void {
     this.messageService.add({
+      key: 'main-toast',
       severity: 'warn',
       summary: summary,
       detail: message,

@@ -52,6 +52,7 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
     if (this.searchForm.invalid) {
       this.marcarCamposInvalidos();
       this.messageService.add({
+        key: 'main-toast',
         severity: 'warn',
         summary: 'Formulario Incompleto',
         detail: 'Por favor, completa todos los campos requeridos'
@@ -74,6 +75,7 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
             this.searchResult.emit(response.p_data.categoriaCita);
             this.searchError.emit(''); // Limpiar errores previos
             this.messageService.add({
+              key: 'main-toast',
               severity: 'success',
               summary: 'Categoría encontrada',
               detail: `Categoría "${response.p_data.categoriaCita.nombre}" encontrada correctamente`
@@ -82,6 +84,7 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
             this.searchResult.emit(null);
             this.searchError.emit(response.p_menserror || 'No se encontró la categoría');
             this.messageService.add({
+              key: 'main-toast',
               severity: 'warn',
               summary: 'Categoría no encontrada',
               detail: `No se encontró ninguna categoría con ID ${id}`
@@ -93,6 +96,7 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
           this.searchResult.emit(null);
           this.searchError.emit('Error de conexión al buscar la categoría');
           this.messageService.add({
+            key: 'main-toast',
             severity: 'error',
             summary: 'Error de conexión',
             detail: 'No se pudo conectar con el servidor para realizar la búsqueda'
@@ -112,6 +116,7 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
     this.searchError.emit('');
     this.lastSearchId = null;
     this.messageService.add({
+      key: 'main-toast',
       severity: 'info',
       summary: 'Formulario limpiado',
       detail: 'El formulario de búsqueda ha sido limpiado'
