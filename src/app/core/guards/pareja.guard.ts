@@ -23,7 +23,7 @@ export const parejaGuard: CanActivateFn = (route, state) => {
 
   // Usar el método helper que extrae solo los datos
   return usuarioService.obtenerUsuarioPorUsername(user.username).pipe(
-    map(usuario => {
+    map((usuario: any) => {
       // Verificar si el usuario tiene pareja usando el código de relación
       if (usuario && usuario.codigoRelacion) {
         return true;

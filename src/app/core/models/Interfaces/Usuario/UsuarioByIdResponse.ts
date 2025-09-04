@@ -1,8 +1,8 @@
-import { MensajeErrorDTO } from '../Mensaje/mensaje-error';
+import { Mensaje } from '../Mensaje/mensaje-error';
 import { Usuario } from './Usuario';
 
 // Interfaz para la respuesta del endpoint /usuarios/listar-por-id/{id}
-export interface UsuarioByIdResponse extends MensajeErrorDTO<UsuarioByIdData> {
+export interface UsuarioByIdResponse extends Mensaje<UsuarioByIdData> {
   p_menserror: null;
   p_mensavis: string;
   p_exito: boolean;

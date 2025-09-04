@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { MessageInfoService } from '../../../../../core/services/message-info.service';
 
 // Services and Interfaces
   import { CategoriaCita } from '../../../../../core/models/Interfaces/cita/CategoriaCita';
@@ -11,10 +12,11 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './categoria-cita-forms.component.html',
   styleUrl: './categoria-cita-forms.component.css'
 })
-export class CategoriaCitaFormsComponent implements OnInit, OnDestroy {
+export class CategoriaCitaFormsComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() categoria: CategoriaCita | null = null;
   @Input() isEditing = false;
+  @Input() isViewing = false; // Nuevo input para modo solo lectura
   @Input() visible = false;
 
   @Output() save = new EventEmitter<CategoriaCita>();
@@ -23,6 +25,7 @@ export class CategoriaCitaFormsComponent implements OnInit, OnDestroy {
 
   // Form
   categoriaForm: FormGroup;
+  loading = false;
 
   // Icons disponibles
   iconosDisponibles = [
@@ -34,31 +37,43 @@ export class CategoriaCitaFormsComponent implements OnInit, OnDestroy {
     { label: 'Usuario', value: 'pi-user' },
     { label: 'Casa', value: 'pi-home' },
     { label: 'Coche', value: 'pi-car' },
-    { label: 'Avión', value: 'pi-plane' },
+    { label: 'Avión', value: 'pi-send' },
     { label: 'Cámara', value: 'pi-camera' },
-    { label: 'Música', value: 'pi-music' },
-    { label: 'Comida', value: 'pi-utensils' },
+    { label: 'Música', value: 'pi-volume-up' },
+    { label: 'Comida', value: 'pi-shopping-bag' },
     { label: 'Deportes', value: 'pi-bolt' },
-    { label: 'Salud', value: 'pi-heartbeat' },
+    { label: 'Salud', value: 'pi-heart' },
     { label: 'Educación', value: 'pi-book' },
-    { label: 'Trabajo', value: 'pi-briefcase' }
+    { label: 'Trabajo', value: 'pi-briefcase' },
+    { label: 'Regalo', value: 'pi-gift' },
+    { label: 'Reloj', value: 'pi-clock' },
+    { label: 'Ubicación', value: 'pi-map-marker' },
+    { label: 'Teléfono', value: 'pi-phone' }
   ];
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private messageInfoService: MessageInfoService
+  ) {
     this.categoriaForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
-      color: ['#007bff', Validators.required],
-      icono: ['pi-heart', Validators.required],
-      orden: [1, [Validators.required, Validators.min(1)]],
-      activo: [true]
+      color: ['#3b82f6', Validators.required],
+      icono: ['pi-heart', Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.initializeForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Detectar cambios en la categoría y actualizar el formulario
+    if (changes['categoria'] && this.categoriaForm) {
+      this.initializeForm();
+    }
   }
 
   ngOnDestroy(): void {
@@ -68,26 +83,30 @@ export class CategoriaCitaFormsComponent implements OnInit, OnDestroy {
 
   // Inicializar formulario
   initializeForm(): void {
-    if (this.isEditing && this.categoria) {
-      // Modo edición
+    if ((this.isEditing || this.isViewing) && this.categoria) {
+      // Modo edición o visualización
       this.categoriaForm.patchValue({
         nombre: this.categoria.nombre,
         descripcion: this.categoria.descripcion,
         color: this.categoria.color,
-        icono: this.categoria.icono,
-        orden: this.categoria.orden,
-        activo: this.categoria.activo
+        icono: this.categoria.icono
       });
+
+      // Si es modo solo lectura, deshabilitar el formulario
+      if (this.isViewing) {
+        this.categoriaForm.disable();
+      } else {
+        this.categoriaForm.enable();
+      }
     } else {
       // Modo creación
       this.categoriaForm.reset({
         nombre: '',
         descripcion: '',
-        color: '#007bff',
-        icono: 'pi-heart',
-        orden: 1,
-        activo: true
+        color: '#3b82f6',
+        icono: 'pi-heart'
       });
+      this.categoriaForm.enable();
     }
   }
 
@@ -98,19 +117,28 @@ export class CategoriaCitaFormsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loading = true;
     const categoriaData = this.categoriaForm.value;
 
-    if (this.isEditing && this.categoria) {
-      // Actualizar
-      const categoriaActualizada: CategoriaCita = {
-        ...this.categoria,
-        ...categoriaData
-      };
-      this.save.emit(categoriaActualizada);
-    } else {
-      // Crear - Solo enviar los campos del formulario
-      this.save.emit(categoriaData as any);
-    }
+    setTimeout(() => {
+      if (this.isEditing && this.categoria) {
+        // Actualizar - mantener orden y activo existentes
+        const categoriaActualizada: CategoriaCita = {
+          ...this.categoria,
+          ...categoriaData
+        };
+        this.save.emit(categoriaActualizada);
+      } else {
+        // Crear - agregar valores por defecto
+        const nuevaCategoria = {
+          ...categoriaData,
+          orden: 1,
+          activo: true
+        };
+        this.save.emit(nuevaCategoria as any);
+      }
+      this.loading = false;
+    }, 1000);
   }
 
   // Cancelar
@@ -153,7 +181,13 @@ export class CategoriaCitaFormsComponent implements OnInit, OnDestroy {
 
   // Obtener título del diálogo
   getDialogTitle(): string {
-    return this.isEditing ? 'Editar Categoría' : 'Nueva Categoría';
+    if (this.isViewing) {
+      return 'Detalle de Categoría';
+    } else if (this.isEditing) {
+      return 'Editar Categoría';
+    } else {
+      return 'Nueva Categoría';
+    }
   }
 
   // Obtener texto del botón

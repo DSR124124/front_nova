@@ -1,133 +1,161 @@
 <!-- Formulario de Categorías -->
 <div class="categoria-form-container">
-  <form [formGroup]="categoriaForm" (ngSubmit)="guardarCategoria()" class="categoria-form">
+  <!-- Header -->
+  <div class="form-header">
+    <h2 class="form-title">
+      <i class="pi pi-bookmark"></i>
+      {{ getDialogTitle() }}
+    </h2>
+    <p class="form-subtitle">
+      {{ isViewing ? 'Información completa de la categoría de cita' : (isEditing ? 'Actualiza la información de la categoría' : 'Crea una nueva categoría para organizar tus citas románticas') }}
+    </p>
+  </div>
 
-    <!-- Nombre -->
-    <div class="form-field">
-      <label for="nombre" class="form-label">
-        Nombre <span class="required">*</span>
-      </label>
-      <input
-        id="nombre"
-        type="text"
-        pInputText
-        formControlName="nombre"
-        placeholder="Ej: Cita Romántica"
-        [class.ng-invalid]="isFieldInvalid('nombre')"
-        class="form-input">
-      <small *ngIf="isFieldInvalid('nombre')" class="error-message">
-        {{ getFieldError('nombre') }}
-      </small>
-    </div>
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">{{ isEditing ? 'Cargando categoría...' : 'Guardando categoría...' }}</p>
+  </div>
 
-    <!-- Descripción -->
-    <div class="form-field">
-      <label for="descripcion" class="form-label">
-        Descripción <span class="required">*</span>
-      </label>
-      <textarea
-        id="descripcion"
-        pInputTextarea
-        formControlName="descripcion"
-        placeholder="Describe el propósito de esta categoría"
-        [rows]="3"
-        [class.ng-invalid]="isFieldInvalid('descripcion')"
-        class="form-textarea">
-      </textarea>
-      <small *ngIf="isFieldInvalid('descripcion')" class="error-message">
-        {{ getFieldError('descripcion') }}
-      </small>
-    </div>
+  <!-- Formulario -->
+  <div class="form-wrapper" *ngIf="!loading">
+    <form [formGroup]="categoriaForm" (ngSubmit)="guardarCategoria()" class="categoria-form">
 
-    <!-- Color e Icono en la misma fila -->
-    <div class="form-row">
-      <!-- Color -->
-      <div class="form-field">
-        <label for="color" class="form-label">
-          Color <span class="required">*</span>
-        </label>
-        <p-colorPicker
-          formControlName="color"
-          class="form-color-picker">
-        </p-colorPicker>
+      <!-- Información Básica -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-info-circle"></i>
+          Información Básica
+        </h3>
+
+        <!-- Nombre -->
+        <div class="form-field">
+          <label for="nombre" class="field-label">
+            Nombre de la Categoría <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            pInputText
+            id="nombre"
+            formControlName="nombre"
+            placeholder="Ej: Cita Romántica"
+            class="field-input"
+            [class.field-error]="isFieldInvalid('nombre')"
+          />
+          <small *ngIf="isFieldInvalid('nombre')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('nombre') }}
+          </small>
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-field">
+          <label for="descripcion" class="field-label">
+            Descripción <span class="required">*</span>
+          </label>
+          <textarea
+            pInputTextarea
+            id="descripcion"
+            formControlName="descripcion"
+            placeholder="Describe el propósito de esta categoría"
+            rows="3"
+            class="field-input"
+            [class.field-error]="isFieldInvalid('descripcion')"
+          ></textarea>
+          <small *ngIf="isFieldInvalid('descripcion')" class="error-message">
+            <i class="pi pi-exclamation-circle"></i>
+            {{ getFieldError('descripcion') }}
+          </small>
+        </div>
       </div>
 
-      <!-- Icono -->
-      <div class="form-field">
-        <label for="icono" class="form-label">
-          Icono <span class="required">*</span>
-        </label>
-        <p-dropdown
-          id="icono"
-          formControlName="icono"
-          [options]="iconosDisponibles"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="Selecciona un icono"
-          [class.ng-invalid]="isFieldInvalid('icono')"
-          class="form-dropdown">
-          <ng-template pTemplate="selectedItem" let-item>
-            <i [class]="item.value"></i>
-            <span>{{ item.label }}</span>
-          </ng-template>
-          <ng-template pTemplate="item" let-item>
-            <i [class]="item.value"></i>
-            <span>{{ item.label }}</span>
-          </ng-template>
-        </p-dropdown>
-      </div>
-    </div>
+      <!-- Personalización -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-palette"></i>
+          Personalización
+        </h3>
 
-    <!-- Orden y Activo en la misma fila -->
-    <div class="form-row">
-      <!-- Orden -->
-      <div class="form-field">
-        <label for="orden" class="form-label">
-          Orden <span class="required">*</span>
-        </label>
-        <p-inputNumber
-          id="orden"
-          formControlName="orden"
-          [min]="1"
-          [max]="999"
-          placeholder="1"
-          [class.ng-invalid]="isFieldInvalid('orden')"
-          class="form-input-number">
-        </p-inputNumber>
-        <small *ngIf="isFieldInvalid('orden')" class="error-message">
-          {{ getFieldError('orden') }}
-        </small>
+        <div class="form-row">
+          <!-- Color -->
+          <div class="form-field">
+            <label for="color" class="field-label">
+              Color <span class="required">*</span>
+            </label>
+            <p-colorpicker
+              formControlName="color"
+              [inline]="false"
+              [appendTo]="'body'"
+              styleClass="field-input">
+            </p-colorpicker>
+          </div>
+
+          <!-- Icono -->
+          <div class="form-field">
+            <label for="icono" class="field-label">
+              Icono <span class="required">*</span>
+            </label>
+            <p-select
+              id="icono"
+              formControlName="icono"
+              [options]="iconosDisponibles"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Selecciona un icono"
+              [class.field-error]="isFieldInvalid('icono')"
+              styleClass="field-input"
+              [filter]="true"
+              filterBy="label">
+              <ng-template pTemplate="selectedItem" let-item>
+                <div class="dropdown-item" *ngIf="item">
+                  <i [class]="'pi ' + item.value" class="dropdown-icon"></i>
+                  <span>{{ item.label }}</span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="item" let-item>
+                <div class="dropdown-item">
+                  <i [class]="'pi ' + item.value" class="dropdown-icon"></i>
+                  <span class="dropdown-name">{{ item.label }}</span>
+                </div>
+              </ng-template>
+            </p-select>
+            <small *ngIf="isFieldInvalid('icono')" class="error-message">
+              <i class="pi pi-exclamation-circle"></i>
+              {{ getFieldError('icono') }}
+            </small>
+          </div>
+        </div>
       </div>
 
-      <!-- Activo -->
-      <div class="form-field checkbox-field">
-        <p-checkbox
-          id="activo"
-          formControlName="activo"
-          [binary]="true"
-          label="Categoría activa"
-          class="form-checkbox">
-        </p-checkbox>
-      </div>
-    </div>
+
 
     <!-- Botones de acción -->
     <div class="form-actions">
-      <button
+      <p-button
         type="button"
-        class="btn btn-outline"
-        (click)="cancelar()">
-        <i class="pi pi-times"></i>
-        Cancelar
-      </button>
+        label="Cancelar"
+        icon="pi pi-times"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="cancelar()"
+        styleClass="cancel-btn">
+      </p-button>
 
-      <button
+      <p-button
+        *ngIf="!isViewing"
         type="submit"
-        class="btn btn-primary"
-        [disabled]="categoriaForm.invalid">
-        <i [class]="getButtonIcon()"></i>
-        {{ getButtonText() }}
-      </button>
+        [label]="getButtonText()"
+        [icon]="getButtonIcon()"
+        severity="primary"
+        [loading]="loading"
+        [disabled]="categoriaForm.invalid"
+        styleClass="submit-btn">
+      </p-button>
     </div>
-  </form>
+    </form>
+  </div>
+
 </div>
+
+<!-- Toast para mensajes -->
+<p-toast />

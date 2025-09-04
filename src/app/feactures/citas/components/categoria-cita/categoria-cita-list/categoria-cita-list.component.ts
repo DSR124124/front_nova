@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { MessageInfoService } from '../../../../../core/services/message-info.service';
 
 // Services and Interfaces
 import { CategoriaCitaService } from '../../../../../core/services/categoria-cita.service';
@@ -15,6 +16,11 @@ export class CategoriaCitaListComponent implements OnInit, OnDestroy {
 
   @Input() showActions = false; // Para mostrar/ocultar botones de acción
 
+  // Outputs para comunicarse con el componente padre
+  @Output() edit = new EventEmitter<CategoriaCita>();
+  @Output() delete = new EventEmitter<CategoriaCita>();
+  @Output() detail = new EventEmitter<CategoriaCita>();
+
   // Data
   categorias: CategoriaCita[] = [];
 
@@ -23,7 +29,10 @@ export class CategoriaCitaListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private categoriaCitaService: CategoriaCitaService) { }
+  constructor(
+    private categoriaCitaService: CategoriaCitaService,
+    private messageInfoService: MessageInfoService
+  ) { }
 
   ngOnInit(): void {
     this.cargarCategorias();
@@ -41,7 +50,7 @@ export class CategoriaCitaListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          if (response.p_exito) {
+          if (this.messageInfoService.handleBackendResponse(response)) {
             this.categorias = response.p_data.categorias;
           }
         },
@@ -86,19 +95,16 @@ export class CategoriaCitaListComponent implements OnInit, OnDestroy {
 
   // Ver detalle de categoría
   verDetalle(categoria: CategoriaCita): void {
-    console.log('Ver detalle de categoría:', categoria);
-    // Aquí puedes implementar la lógica para ver detalles
+    this.detail.emit(categoria);
   }
 
   // Editar categoría
   editarCategoria(categoria: CategoriaCita): void {
-    console.log('Editar categoría:', categoria);
-    // Aquí puedes implementar la lógica para editar
+    this.edit.emit(categoria);
   }
 
   // Eliminar categoría
   eliminarCategoria(categoria: CategoriaCita): void {
-    console.log('Eliminar categoría:', categoria);
-    // Aquí puedes implementar la lógica para eliminar
+    this.delete.emit(categoria);
   }
 }

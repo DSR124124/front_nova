@@ -28,7 +28,7 @@
           <th>Orden</th>
           <th>Estado</th>
           <th>Total Citas</th>
-          <th>Acciones</th>
+          <th *ngIf="showActions">Acciones</th>
         </tr>
       </ng-template>
 
@@ -94,7 +94,7 @@
           </td>
 
           <!-- Acciones -->
-          <td>
+          <td *ngIf="showActions">
             <div class="action-buttons">
               <p-button
                 icon="pi pi-eye"
@@ -130,7 +130,7 @@
       <!-- Empty State -->
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="8" class="empty-state">
+          <td [attr.colspan]="showActions ? 8 : 7" class="empty-state">
             <div class="empty-content">
               <i class="pi pi-tags empty-icon"></i>
               <h3>No hay categorías</h3>
@@ -151,3 +151,6 @@
     </div>
   </div>
 </div>
+
+<!-- Toast para mensajes -->
+<p-toast />

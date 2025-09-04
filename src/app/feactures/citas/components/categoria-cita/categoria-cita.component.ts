@@ -3,8 +3,9 @@ import { Subject, takeUntil } from 'rxjs';
 
 // Services and Interfaces
 import { CategoriaCitaService } from '../../../../core/services/categoria-cita.service';
+import { MessageInfoService } from '../../../../core/services/message-info.service';
 import { CategoriaCita } from '../../../../core/models/Interfaces/cita/CategoriaCita';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-categoria-cita',
@@ -25,6 +26,7 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
   showDelete = false;
   showFilter = false;
   isEditing = false;
+  isViewing = false;
 
   // View modes
   currentView: 'list' | 'form' | 'delete' | 'filter' = 'list';
@@ -33,7 +35,7 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
 
   constructor(
     private categoriaCitaService: CategoriaCitaService,
-    private messageService: MessageService,
+    private messageInfoService: MessageInfoService,
     private confirmationService: ConfirmationService
   ) { }
 
@@ -53,28 +55,12 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          if (response.p_exito) {
+          if (this.messageInfoService.handleBackendResponse(response)) {
             this.categorias = response.p_data.categorias;
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: `${response.p_data.total} categorías cargadas`
-            });
-          } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: response.p_menserror || 'Error al cargar categorías'
-            });
           }
         },
         error: (error) => {
           console.error('Error al cargar categorías:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error de conexión al cargar categorías'
-          });
         },
         complete: () => {
           this.loading = false;
@@ -93,6 +79,7 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
   // Mostrar formulario para crear
   mostrarFormularioCrear(): void {
     this.isEditing = false;
+    this.isViewing = false;
     this.categoriaSeleccionada = null;
     this.currentView = 'form';
     this.showForm = true;
@@ -101,6 +88,7 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
   // Mostrar formulario para editar
   mostrarFormularioEditar(categoria: CategoriaCita): void {
     this.isEditing = true;
+    this.isViewing = false;
     this.categoriaSeleccionada = categoria;
     this.currentView = 'form';
     this.showForm = true;
@@ -129,29 +117,13 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
-            if (response.p_exito) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Categoría actualizada correctamente'
-              });
+            if (this.messageInfoService.handleBackendResponse(response)) {
               this.cargarCategorias();
               this.cerrarFormulario();
-            } else {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: response.p_menserror || 'Error al actualizar categoría'
-              });
             }
           },
           error: (error) => {
             console.error('Error al actualizar:', error);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error de conexión al actualizar'
-            });
           }
         });
     } else {
@@ -160,29 +132,13 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
-            if (response.p_exito) {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Categoría creada correctamente'
-              });
+            if (this.messageInfoService.handleBackendResponse(response)) {
               this.cargarCategorias();
               this.cerrarFormulario();
-            } else {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: response.p_menserror || 'Error al crear categoría'
-              });
             }
           },
           error: (error) => {
             console.error('Error al crear:', error);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error de conexión al crear'
-            });
           }
         });
     }
@@ -192,22 +148,14 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
 
   // Eliminación exitosa desde subcomponente
   onDeleteSuccess(): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: 'Categoría eliminada correctamente'
-    });
+    this.messageInfoService.showSuccess('Categoría eliminada correctamente');
     this.cargarCategorias();
     this.cerrarEliminacion();
   }
 
   // Error en eliminación desde subcomponente
   onDeleteError(error: string): void {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: error
-    });
+    this.messageInfoService.showError(error);
   }
 
   // === MANEJO DE BÚSQUEDA ===
@@ -215,11 +163,7 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
   // Resultado de búsqueda desde subcomponente
   onSearchResult(categoria: CategoriaCita | null): void {
     if (categoria) {
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Búsqueda',
-        detail: `Categoría encontrada: ${categoria.nombre}`
-      });
+      this.messageInfoService.showInfo(`Mostrando detalles de "${categoria.nombre}"`, 'Detalle de Categoría');
       // Aquí podrías navegar a la vista de edición o mostrar detalles
     }
   }
@@ -227,11 +171,7 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
   // Error en búsqueda desde subcomponente
   onSearchError(error: string): void {
     if (error) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Búsqueda',
-        detail: error
-      });
+      this.messageInfoService.showWarning(error, 'Búsqueda');
     }
   }
 
@@ -249,27 +189,15 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response.p_exito) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: `Categoría ${nuevaCategoria.activo ? 'activada' : 'desactivada'} correctamente`
-            });
+            this.messageInfoService.showSuccess(`Categoría ${nuevaCategoria.activo ? 'activada' : 'desactivada'} correctamente`);
             this.cargarCategorias();
           } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: response.p_menserror || 'Error al cambiar estado'
-            });
+            this.messageInfoService.showError(response.p_menserror || 'Error al cambiar estado');
           }
         },
         error: (error) => {
           console.error('Error al cambiar estado:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error de conexión al cambiar estado'
-          });
+          this.messageInfoService.showError('Error de conexión al cambiar estado');
         }
       });
   }
@@ -281,6 +209,7 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
     this.showForm = false;
     this.categoriaSeleccionada = null;
     this.isEditing = false;
+    this.isViewing = false;
     this.currentView = 'list';
   }
 
@@ -307,6 +236,7 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
     this.categoriaSeleccionada = null;
     this.categoriaParaEliminar = null;
     this.isEditing = false;
+    this.isViewing = false;
   }
 
   // Obtener icono para mostrar
@@ -343,4 +273,14 @@ export class CategoriaCitaComponent implements OnInit, OnDestroy {
   isFilterView(): boolean {
     return this.currentView === 'filter';
   }
+
+  // Ver detalle de categoría (nuevo método)
+  verDetalleCategoria(categoria: CategoriaCita): void {
+    // Establecer la categoría seleccionada y cambiar a vista de formulario para mostrar detalles
+    this.categoriaSeleccionada = categoria;
+    this.isViewing = true;
+    this.isEditing = false;
+    this.currentView = 'form';
+  }
+
 }

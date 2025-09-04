@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 // Services and Interfaces
 import { CategoriaCitaService } from '../../../../../core/services/categoria-cita.service';
@@ -29,7 +30,8 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
 
   constructor(
     private categoriaCitaService: CategoriaCitaService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) {
     this.searchForm = this.fb.group({
       id: ['', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]+$')]]
@@ -49,6 +51,11 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
   buscarCategoria(): void {
     if (this.searchForm.invalid) {
       this.marcarCamposInvalidos();
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Formulario Incompleto',
+        detail: 'Por favor, completa todos los campos requeridos'
+      });
       return;
     }
 
@@ -66,15 +73,30 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
           if (response.p_exito && response.p_data.categoriaCita) {
             this.searchResult.emit(response.p_data.categoriaCita);
             this.searchError.emit(''); // Limpiar errores previos
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Categoría encontrada',
+              detail: `Categoría "${response.p_data.categoriaCita.nombre}" encontrada correctamente`
+            });
           } else {
             this.searchResult.emit(null);
             this.searchError.emit(response.p_menserror || 'No se encontró la categoría');
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Categoría no encontrada',
+              detail: `No se encontró ninguna categoría con ID ${id}`
+            });
           }
         },
         error: (error) => {
           console.error('Error al buscar categoría:', error);
           this.searchResult.emit(null);
           this.searchError.emit('Error de conexión al buscar la categoría');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error de conexión',
+            detail: 'No se pudo conectar con el servidor para realizar la búsqueda'
+          });
         },
         complete: () => {
           this.loading = false;
@@ -89,6 +111,11 @@ export class CategoriaCitaFilterComponent implements OnInit, OnDestroy {
     this.searchResult.emit(null);
     this.searchError.emit('');
     this.lastSearchId = null;
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Formulario limpiado',
+      detail: 'El formulario de búsqueda ha sido limpiado'
+    });
   }
 
   // Marcar campos inválidos

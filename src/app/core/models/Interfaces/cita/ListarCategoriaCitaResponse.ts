@@ -1,7 +1,7 @@
-import { MensajeErrorDTO } from "../Mensaje/mensaje-error";
+import { Mensaje } from "../Mensaje/mensaje-error";
 import { CategoriaCita } from "./CategoriaCita";
 
-export interface ListarCategoriaCitaResponse extends MensajeErrorDTO<PData> {
+export interface ListarCategoriaCitaResponse extends Mensaje<PData> {
   p_data: PData;
 }
 

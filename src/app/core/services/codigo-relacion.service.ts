@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
-import { ResponseHandlerService } from './response-handler.service';
-import { MensajeErrorDTO } from '../models/Interfaces/Mensaje/mensaje-error';
+import { Mensaje } from '../models/Interfaces/Mensaje/mensaje-error';
 import {
   CodigoRelacionResponseDTO,
   ValidacionCodigoResponseDTO,
@@ -17,30 +16,29 @@ export class CodigoRelacionService {
   private baseUrl = API_ENDPOINTS.CODIGOS_RELACION;
 
   constructor(
-    private http: HttpClient,
-    private responseHandler: ResponseHandlerService
+    private http: HttpClient
   ) {}
 
   // ===== MÉTODOS PRINCIPALES =====
 
   generarCodigo(
     username: string
-  ): Observable<MensajeErrorDTO<CodigoRelacionResponseDTO>> {
+  ): Observable<Mensaje<CodigoRelacionResponseDTO>> {
     const url = `${this.baseUrl}/generar/${username}`;
-    return this.http.post<MensajeErrorDTO<CodigoRelacionResponseDTO>>(url, {});
+    return this.http.post<Mensaje<CodigoRelacionResponseDTO>>(url, {});
   }
 
   validarCodigo(
     codigo: string
-  ): Observable<MensajeErrorDTO<ValidacionCodigoResponseDTO>> {
+  ): Observable<Mensaje<ValidacionCodigoResponseDTO>> {
     const url = `${this.baseUrl}/validar/${codigo}`;
-    return this.http.get<MensajeErrorDTO<ValidacionCodigoResponseDTO>>(url);
+    return this.http.get<Mensaje<ValidacionCodigoResponseDTO>>(url);
   }
 
   obtenerCodigoUsuario(
     username: string
-  ): Observable<MensajeErrorDTO<CodigoRelacionUsuarioDTO>> {
+  ): Observable<Mensaje<CodigoRelacionUsuarioDTO>> {
     const url = `${this.baseUrl}/usuario/${username}`;
-    return this.http.get<MensajeErrorDTO<CodigoRelacionUsuarioDTO>>(url);
+    return this.http.get<Mensaje<CodigoRelacionUsuarioDTO>>(url);
   }
 }

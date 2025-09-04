@@ -1,44 +1,45 @@
 <div class="filter-container">
-
-  <!-- Header del filtro -->
-  <div class="filter-header">
-    <h3 class="filter-title">
+  <!-- Header -->
+  <div class="form-header">
+    <h2 class="form-title">
       <i class="pi pi-search"></i>
-      Buscar Categoría por ID
-    </h3>
-    <p class="filter-subtitle">
-      Ingresa el ID de la categoría que deseas encontrar
+      Buscar Categoría
+    </h2>
+    <p class="form-subtitle">
+      Encuentra una categoría específica por su ID
     </p>
   </div>
 
-  <!-- Formulario de búsqueda -->
-  <div class="search-form-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <p-progressSpinner strokeWidth="3" />
+    <p class="loading-text">Buscando categoría...</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="form-wrapper" *ngIf="!loading">
     <form [formGroup]="searchForm" (ngSubmit)="buscarCategoria()" class="search-form">
 
       <!-- Campo ID -->
       <div class="form-field">
-        <label for="id" class="form-label">
+        <label for="id" class="field-label">
           ID de Categoría <span class="required">*</span>
         </label>
-        <div class="input-group">
-          <span class="input-prefix">
-            <i class="pi pi-hashtag"></i>
-          </span>
+        <p-iconfield iconPosition="left">
+          <p-inputicon styleClass="pi pi-hashtag"></p-inputicon>
           <input
-            id="id"
             type="number"
             pInputText
+            id="id"
             formControlName="id"
             placeholder="Ej: 1, 2, 3..."
-            [class.ng-invalid]="isFieldInvalid('id')"
-            class="form-input"
+            class="field-input"
+            [class.field-error]="isFieldInvalid('id')"
             min="1">
-        </div>
+        </p-iconfield>
         <small *ngIf="isFieldInvalid('id')" class="error-message">
+          <i class="pi pi-exclamation-circle"></i>
           {{ getFieldError('id') }}
-        </small>
-        <small *ngIf="!isFieldInvalid('id')" class="help-text">
-          Ingresa un número de ID válido mayor a 0
         </small>
       </div>
 
@@ -50,57 +51,35 @@
           [icon]="getSearchButtonIcon()"
           [loading]="searching"
           [disabled]="searchForm.invalid || searching"
-          styleClass="p-button-primary search-button">
+          styleClass="submit-btn">
         </p-button>
 
         <p-button
           type="button"
           label="Limpiar"
           icon="pi pi-times"
-          (click)="limpiarBusqueda()"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="limpiarBusqueda()"
           [disabled]="searching"
-          styleClass="p-button-outlined p-button-secondary clear-button">
+          styleClass="cancel-btn">
         </p-button>
       </div>
     </form>
   </div>
 
-  <!-- Estado de búsqueda -->
-  <div *ngIf="loading" class="search-status">
-    <div class="loading-indicator">
-      <p-progressSpinner [style]="{width: '30px', height: '30px'}"></p-progressSpinner>
-      <span>Buscando categoría...</span>
-    </div>
-  </div>
-
-  <!-- Información de búsqueda -->
-  <div *ngIf="hasSearchResults() && !loading" class="search-info">
+  <!-- Información adicional -->
+  <div *ngIf="hasSearchResults() && !loading" class="form-info">
     <div class="info-card">
-      <div class="info-icon">
-        <i class="pi pi-info-circle"></i>
-      </div>
+      <i class="pi pi-info-circle info-icon"></i>
       <div class="info-content">
-        <h4>Última búsqueda</h4>
-        <p>ID buscado: <strong>{{ lastSearchId }}</strong></p>
-        <small>Usa el formulario para realizar una nueva búsqueda</small>
+        <h4 class="info-title">Última búsqueda</h4>
+        <p class="info-text">ID buscado: <strong>{{ lastSearchId }}</strong></p>
       </div>
-    </div>
-  </div>
-
-  <!-- Instrucciones de uso -->
-  <div class="usage-instructions">
-    <div class="instructions-card">
-      <h4>
-        <i class="pi pi-lightbulb"></i>
-        Cómo usar el filtro
-      </h4>
-      <ul class="instructions-list">
-        <li>Ingresa el ID numérico de la categoría que deseas encontrar</li>
-        <li>El ID debe ser un número mayor a 0</li>
-        <li>Haz clic en "Buscar" para realizar la búsqueda</li>
-        <li>Usa "Limpiar" para resetear el formulario</li>
-      </ul>
     </div>
   </div>
 
 </div>
+
+<!-- Toast para mensajes -->
+<p-toast />

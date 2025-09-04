@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, catchError, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '../constants/api-endpoints';
 import { UsuarioByIdResponse } from '../models/Interfaces/Usuario/UsuarioByIdResponse';
 import { Usuario } from '../models/Interfaces/Usuario/Usuario';
-import { MensajeErrorDTO } from '../models/Interfaces/Mensaje/mensaje-error';
+import { Mensaje } from '../models/Interfaces/Mensaje/mensaje-error';
 import { CambioPasswordDTO } from '../models/Interfaces/Auth/auth.interface';
-import { ResponseHandlerService } from './response-handler.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,101 +15,98 @@ export class UsuarioService {
   private baseUrl = API_ENDPOINTS.USUARIOS;
 
   constructor(
-    private http: HttpClient,
-    private responseHandler: ResponseHandlerService
+    private http: HttpClient
   ) {}
 
   // Método de prueba para verificar conectividad
   testConnection(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/test`).pipe(
-      catchError(error => {
-        return throwError(() => error);
-      })
-    );
+    return this.http.get(`${this.baseUrl}/test`);
   }
 
   // Métodos básicos que devuelven la respuesta completa del backend
-  registrar(usuario: Usuario): Observable<MensajeErrorDTO<{usuario: Usuario}>> {
-    return this.http.post<MensajeErrorDTO<{usuario: Usuario}>>(`${this.baseUrl}/registrar`, usuario);
+  registrar(usuario: Usuario): Observable<Mensaje<{usuario: Usuario}>> {
+    return this.http.post<Mensaje<{usuario: Usuario}>>(`${this.baseUrl}/registrar`, usuario);
   }
 
-  modificar(usuario: Usuario): Observable<MensajeErrorDTO<{usuario: Usuario}>> {
-    return this.http.put<MensajeErrorDTO<{usuario: Usuario}>>(`${this.baseUrl}/modificar`, usuario);
+  modificar(usuario: Usuario): Observable<Mensaje<{usuario: Usuario}>> {
+    return this.http.put<Mensaje<{usuario: Usuario}>>(`${this.baseUrl}/modificar`, usuario);
   }
 
   listarPorId(id: number): Observable<UsuarioByIdResponse> {
     return this.http.get<UsuarioByIdResponse>(`${this.baseUrl}/listar-por-id/${id}`);
   }
 
-  listarPorUsername(username: string): Observable<MensajeErrorDTO<{usuario: Usuario}>> {
+  listarPorUsername(username: string): Observable<Mensaje<{usuario: Usuario}>> {
     const url = `${this.baseUrl}/listar-por-username/${username}`;
-    return this.http.get<MensajeErrorDTO<{usuario: Usuario}>>(url);
+    return this.http.get<Mensaje<{usuario: Usuario}>>(url);
   }
 
-  cambiarPassword(cambioPassword: CambioPasswordDTO): Observable<MensajeErrorDTO<{idUsuario: number}>> {
-    return this.http.post<MensajeErrorDTO<{idUsuario: number}>>(`${this.baseUrl}/cambiar-password`, cambioPassword);
+  cambiarPassword(cambioPassword: CambioPasswordDTO): Observable<Mensaje<{idUsuario: number}>> {
+    return this.http.post<Mensaje<{idUsuario: number}>>(`${this.baseUrl}/cambiar-password`, cambioPassword);
   }
 
-  // Métodos helper que extraen solo los datos
-  registrarUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.registrar(usuario).pipe(
-      map(response => {
-        if (response.p_exito && response.p_data?.usuario) {
-          return response.p_data.usuario;
-        }
-        throw new Error(response.p_menserror || 'Error al registrar usuario');
-      }),
-      catchError(error => this.responseHandler.handleHttpError(error))
-    );
+  // Métodos helper simplificados (sin ResponseHandlerService)
+  obtenerUsuarioPorUsername(username: string): Observable<Usuario> {
+    return new Observable(subscriber => {
+      this.listarPorUsername(username).subscribe({
+        next: (response) => {
+          if (response.p_exito && response.p_data?.usuario) {
+            subscriber.next(response.p_data.usuario);
+            subscriber.complete();
+          } else {
+            subscriber.error(new Error(response.p_menserror || 'Error al obtener usuario'));
+          }
+        },
+        error: (error) => subscriber.error(error)
+      });
+    });
   }
 
   obtenerUsuarioPorId(id: number): Observable<Usuario> {
-    return this.listarPorId(id).pipe(
-      map(response => {
-        if (response.p_exito && response.p_data?.usuario) {
-          return response.p_data.usuario;
-        }
-        throw new Error(response.p_menserror || 'Error al obtener usuario');
-      }),
-      catchError(error => this.responseHandler.handleHttpError(error))
-    );
-  }
-
-    obtenerUsuarioPorUsername(username: string): Observable<Usuario> {
-    return this.listarPorUsername(username).pipe(
-      map(response => {
-        if (response.p_exito && response.p_data?.usuario) {
-          return response.p_data.usuario;
-        }
-        throw new Error(response.p_menserror || 'Error al obtener usuario');
-      }),
-      catchError(error => {
-        return this.responseHandler.handleHttpError(error);
-      })
-    );
+    return new Observable(subscriber => {
+      this.listarPorId(id).subscribe({
+        next: (response) => {
+          if (response.p_exito && response.p_data?.usuario) {
+            subscriber.next(response.p_data.usuario);
+            subscriber.complete();
+          } else {
+            subscriber.error(new Error(response.p_menserror || 'Error al obtener usuario'));
+          }
+        },
+        error: (error) => subscriber.error(error)
+      });
+    });
   }
 
   modificarUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.modificar(usuario).pipe(
-      map(response => {
-        if (response.p_exito && response.p_data?.usuario) {
-          return response.p_data.usuario;
-        }
-        throw new Error(response.p_menserror || 'Error al modificar usuario');
-      }),
-      catchError(error => this.responseHandler.handleHttpError(error))
-    );
+    return new Observable(subscriber => {
+      this.modificar(usuario).subscribe({
+        next: (response) => {
+          if (response.p_exito && response.p_data?.usuario) {
+            subscriber.next(response.p_data.usuario);
+            subscriber.complete();
+          } else {
+            subscriber.error(new Error(response.p_menserror || 'Error al modificar usuario'));
+          }
+        },
+        error: (error) => subscriber.error(error)
+      });
+    });
   }
 
   cambiarPasswordUsuario(cambioPassword: CambioPasswordDTO): Observable<number> {
-    return this.cambiarPassword(cambioPassword).pipe(
-      map(response => {
-        if (response.p_exito && response.p_data?.idUsuario) {
-          return response.p_data.idUsuario;
-        }
-        throw new Error(response.p_menserror || 'Error al cambiar contraseña');
-      }),
-      catchError(error => this.responseHandler.handleHttpError(error))
-    );
+    return new Observable(subscriber => {
+      this.cambiarPassword(cambioPassword).subscribe({
+        next: (response) => {
+          if (response.p_exito && response.p_data?.idUsuario) {
+            subscriber.next(response.p_data.idUsuario);
+            subscriber.complete();
+          } else {
+            subscriber.error(new Error(response.p_menserror || 'Error al cambiar contraseña'));
+          }
+        },
+        error: (error) => subscriber.error(error)
+      });
+    });
   }
 }

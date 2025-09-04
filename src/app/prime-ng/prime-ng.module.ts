@@ -8,6 +8,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { CarouselModule } from 'primeng/carousel';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ColorPickerModule } from 'primeng/colorpicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
@@ -58,6 +59,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     CardModule,
     CarouselModule,
     CheckboxModule,
+    ColorPickerModule,
     ConfirmDialogModule,
     DatePickerModule,
     DialogModule,

@@ -1,7 +1,7 @@
-import { MensajeErrorDTO } from "../Mensaje/mensaje-error";
+import { Mensaje } from "../Mensaje/mensaje-error";
 import { UsuarioPareja } from "../Usuario/Usuario";
 
-export interface EstadoDisponibilidadParejaResponse extends MensajeErrorDTO<PData> {
+export interface EstadoDisponibilidadParejaResponse extends Mensaje<PData> {
   p_menserror: null;
   p_mensavis: string;
   p_exito: boolean;

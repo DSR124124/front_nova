@@ -1,7 +1,7 @@
-import { MensajeErrorDTO } from "../Mensaje/mensaje-error";
+import { Mensaje } from "../Mensaje/mensaje-error";
 import { UsuarioPareja } from "../Usuario/Usuario";
 
-export interface ParejaUnirCodigosResponse extends MensajeErrorDTO<PData> {
+export interface ParejaUnirCodigosResponse extends Mensaje<PData> {
   p_menserror: null;
   p_mensavis: string;
   p_exito: boolean;
